@@ -133,20 +133,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AddBulletSpread: 1
   BulletSpreadVariance: {x: 0.1, y: 0.1, z: 0.1}
-  ShootingSystem: {fileID: 0}
   BulletSpawnPoint: {fileID: 0}
   ImpactParticleSystem: {fileID: 0}
   BloodParticleSystem: {fileID: 0}
   BulletTrail: {fileID: 0}
-  ShootDelay: 0.5
-  Mask:
-    serializedVersion: 2
-    m_Bits: 0
   Damage: 0
   ParentGunTip: {fileID: 0}
   MuzzleFlash: {fileID: 0}
   BulletImpact: {fileID: 0}
   JustFired: 0
+  Explosion: {fileID: 0}
+  itemID: 38
+  ExplosionTimer: 0
 --- !u!114 &1067331602659612361
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -107,8 +107,9 @@ public class Projectile : MonoBehaviour
     {
         this.transform.position += GetDirection() * 1;
         this.transform.rotation = Quaternion.Euler(GetDirection().x, GetDirection().y, GetDirection().z);
-        this.GetComponent<Rigidbody>().velocity = transform.forward * 200;
         this.GetComponent<Rigidbody>().isKinematic = false;
+        this.GetComponent<Rigidbody>().velocity = transform.forward * 200;
+
     }
     public void SetAimCone(float AimCone)
     {
