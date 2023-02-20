@@ -237,7 +237,7 @@ public class InventoryManager : MonoBehaviour
             InventoryList[SlotNum].SetItemCount(QuantityToAdd+ InventoryList[SlotNum].GetItemCount());
         }
         UpdateItemCountPerSlot();
-    }
+    } 
     public void AddQuantity(ItemInfo item, int QuantityToAdd = 0)
     {
         print("ATTEMPT TO ADD ITEM: " + item.itemID);
