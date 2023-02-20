@@ -16,6 +16,7 @@ public class ReadCrafts : MonoBehaviour
         SlotText = this.gameObject.GetComponent<TMPro.TMP_Text>();
         CM = Crafting.GetComponent<CraftingManager>();
         IM = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryManager>();
+        SlotText.fontSize = 24;
     }
 
     void Update()

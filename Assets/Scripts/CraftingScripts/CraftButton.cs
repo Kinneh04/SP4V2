@@ -18,7 +18,8 @@ public class CraftButton : MonoBehaviour
     {
         if (CM.UpdateCanCraft())
         {
-            CM.craft();
+            if (CM.CraftAmount > 0)
+                CM.craft();
         }
     }
 

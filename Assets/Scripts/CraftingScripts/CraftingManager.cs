@@ -15,6 +15,8 @@ public class CraftingManager : MonoBehaviour
     public ItemInfo prefab1, prefab2, prefab3, prefab4, prefab5, prefab6, prefab7, prefab8, prefab9, prefab10, prefab11, prefab12, prefab13, prefab14, prefab15, prefab16, prefab17, prefab18, prefab19, prefab20, prefab21, prefab22, prefab23, prefab24, prefab25, prefab26, prefab27, prefab28, prefab29, prefab30;
     public ItemInfo Metal, Sulfur, Wood, Stone, WeaponParts, Cloth, Water;
 
+    public List<CraftSelection> CraftSelections = new List<CraftSelection>();
+
     int SelectedCraft;
     bool Craftable;
 
@@ -28,6 +30,8 @@ public class CraftingManager : MonoBehaviour
 
     public int CraftAmount;
     public int CurrentWorkbenchLv;
+
+    bool made = false;
 
     private void Awake()
     {
@@ -58,6 +62,7 @@ public class CraftingManager : MonoBehaviour
         CraftableList.Add(prefab26);
         CraftableList.Add(prefab27);
         CraftableList.Add(prefab28);
+
         IM = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryManager>();
         //description = FindObjectOfType<CraftDescription>();
 
@@ -66,7 +71,7 @@ public class CraftingManager : MonoBehaviour
 
     public ItemInfo IntGetItem(int SlotNumber)
     {
-        if(CraftableList[SlotNumber] != null)
+        if (CraftableList[SlotNumber] != null)
         {
             return CraftableList[SlotNumber];
         }
@@ -141,8 +146,6 @@ public class CraftingManager : MonoBehaviour
 
     public bool canCraft()
     {
-        if (WorkbenchNeeded > CurrentWorkbenchLv)
-            return false;
         return IM.Checkforcraft(Material_1, Quantity_1, Material_2, Quantity_2, Material_3, Quantity_3);
     }
 
@@ -155,11 +158,27 @@ public class CraftingManager : MonoBehaviour
 
     public void LoadCrafts(int WorkbenchLv)
     {
-        CurrentWorkbenchLv = WorkbenchLv;
-        for (int i = 0; i < CraftableList.Count; i++)
+        if (!made)
         {
-            FindObjectsOfType<CraftSelection>()[i].load();
-            Debug.Log("Loaded " + i);
+            made = true;
+            for (int i = 0; i < FindObjectsOfType<CraftSelection>().Length; i++)
+            {
+                CraftSelections.Add(FindObjectsOfType<CraftSelection>()[i]);
+            }
+        }
+
+        CurrentWorkbenchLv = WorkbenchLv;
+        int count = CraftableList.Count;
+        for (int i = 0; i < count; i++)
+        {
+            CraftSelection temp = CraftSelections[i];
+            temp.gameObject.SetActive(true);
+            Debug.Log("General: " + i);
+            temp.load();
+            if (CurrentWorkbenchLv < WorkbenchNeeded)
+            {
+                temp.gameObject.SetActive(false);
+            }
         }
         description.ChangeDescription(CraftableList[0]);
     }
@@ -173,13 +192,10 @@ public class CraftingManager : MonoBehaviour
 
     public void craft()
     {
-        Debug.Log("Removing Materials");
         if (Material_1)
         {
             bool b;
-            Debug.Log("Removing now");
             b = IM.Remove(Material_1.itemID, Quantity_1 * CraftAmount, false);
-            Debug.Log("After Removing: " + b);
             if (Material_2)
             {
                 IM.Remove(Material_2.itemID, Quantity_2 * CraftAmount, false);
@@ -189,11 +205,10 @@ public class CraftingManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Adding");
         ItemInfo temp = Instantiate<ItemInfo>(CraftableList[SelectedCraft]);
         IM.AddQuantity(temp, CraftAmount);
-        Debug.Log("After Adding");
         CraftAmount = 0;
         Selected(SelectedCraft, false);
+        IM.UpdateItemCountPerSlot();
     }
 }

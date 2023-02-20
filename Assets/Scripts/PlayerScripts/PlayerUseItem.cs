@@ -161,6 +161,11 @@ public class PlayerUseItem : MonoBehaviour
                     // Input Level
                     playerProperties.OpenCrafting(playerProperties.PlayerLookingAtItem.GetComponent<Workbench>().Level);
                 }
+                else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "ResearchTable")
+                {
+                    // Input Level
+                    playerProperties.OpenCrafting(playerProperties.PlayerLookingAtItem.GetComponent<Workbench>().Level);
+                }
             }
             if (Input.GetKeyDown(KeyCode.R))
             {

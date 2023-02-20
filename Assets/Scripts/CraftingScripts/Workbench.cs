@@ -8,7 +8,6 @@ public class Workbench : MonoBehaviour
 
     void Awake()
     {
-        Level = 1;
     }
 
 
