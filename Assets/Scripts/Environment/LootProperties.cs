@@ -11,6 +11,8 @@ public class LootProperties : MonoBehaviour
     public List<int> ItemQuantityInCrate = new List<int>();
     public InventoryManager IM;
 
+    public bool forceLoot = false;
+
     private void Start()
     {
        
@@ -52,6 +54,7 @@ public class LootProperties : MonoBehaviour
             if (IM.InventoryList[i + 30] != null)
             {
                 IM.InventoryList[i + 30].ItemCount = 0;
+                IM.InventoryList[i + 30] = null;
                 IM.Remove(i);
             }
         }
@@ -60,27 +63,29 @@ public class LootProperties : MonoBehaviour
     public void ChooseRandomLoot()
     {
         int o = Random.Range(1, MaxPossibleItems);
-        
 
-        for(int i = 0; i < o; i++)
+        if (!forceLoot)
         {
-            int y = Random.Range(0, PossibleItemsPool.Count);
-            GameObject GO = Instantiate(PossibleItemsPool[y].gameObject);
-            GO.SetActive(false);
-            GO.transform.parent = GameObject.FindGameObjectWithTag("LootPool").transform;
-            ItemsInCrate.Add(GO.GetComponent<ItemInfo>());
-            int q = Random.Range(1, MaxQuantityOfEachItem);
-            ItemQuantityInCrate.Add(q);
+            for (int i = 0; i < o; i++)
+            {
+                int y = Random.Range(0, PossibleItemsPool.Count);
+                GameObject GO = Instantiate(PossibleItemsPool[y].gameObject);
+                GO.SetActive(false);
+                GO.transform.parent = GameObject.FindGameObjectWithTag("LootPool").transform;
+                ItemsInCrate.Add(GO.GetComponent<ItemInfo>());
+                int q = Random.Range(1, MaxQuantityOfEachItem);
+                ItemQuantityInCrate.Add(q);
 
+            }
         }
     }
 
     public void DisplayLoot()
     {
+        ClearLastLootPool();
         for(int i = 0; i < ItemsInCrate.Count; i++)
-        {   
-            IM.AddQuantityInSpecifiedBox(ItemsInCrate[i], ItemQuantityInCrate[i], 30 + i);
-            IM.UpdateItemCountPerSlot();
+        {
+                IM.AddQuantityInSpecifiedBox(ItemsInCrate[i], ItemQuantityInCrate[i], 30 + i);
         }
         
     }

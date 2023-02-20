@@ -24,6 +24,19 @@ public class InventoryManager : MonoBehaviour
         UpdateItemCountPerSlot();
     }
 
+    public void ClearInventory()
+    {
+        for (int i = 0; i < 30; i++)
+        {
+            if (InventoryList[i] != null)
+            {
+                InventoryList[i] = null;
+            }
+        }
+        UpdateItemCountPerSlot();
+        Destroy(pp.CurrentlyHoldingItem);
+        pp.CurrentlyHoldingItem = null;
+    }
     public bool Checkforcraft(ItemInfo Item1, int Item1Quantity = 1, ItemInfo Item2 = null, int Item2Quantity = 1, ItemInfo Item3 = null, int Item3Quantity = 1)
     {
         bool item1Found;

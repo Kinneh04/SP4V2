@@ -34,7 +34,7 @@ public class PlayerProperties : MonoBehaviour
     public bool isHealing;
 
     public PlayerMovement playerMovement;
-  
+    public InventoryManager IM;
 
     public bool isFull;
     public float FullTimer;
@@ -65,6 +65,7 @@ public class PlayerProperties : MonoBehaviour
     float RTimer;
 
 
+
     float Htimer, Ttimer, BTimer;
     public float bleedingInterval, poisonInterval, fullinterval, sickInterval, HealInterval;
     public bool isDead;
@@ -77,7 +78,8 @@ public class PlayerProperties : MonoBehaviour
     public GameObject craftingScreen;
 
     public GameObject LootScreen, inventoryScreen, furnaceScreen;
-
+    public PlayerMovement PM;
+    public GameObject DeathBag;
 
     public void TurnOnFurnace()
     {
@@ -162,7 +164,10 @@ public class PlayerProperties : MonoBehaviour
 
     public void RespawnAfterDeath()
     {
-        if(Lastbedclaimed != null)
+        IM.ClearInventory();
+        IM.UpdateItemCountPerSlot();
+
+        if (Lastbedclaimed != null)
             transform.position = Spawnpoint;
         else transform.position = new Vector3(-9.11f, 0.15f, 3.24f);
 
@@ -183,6 +188,9 @@ public class PlayerProperties : MonoBehaviour
         awokenMenu.SetActive(true);
         isDead = false;
         panim.Play("PBeanIdle");
+
+        PM.canLookAround = true;
+        PM.isMovementEnabled = true;
     }
 
     public void HealHealth(int HealthAmt, bool HealsBleed, bool HealsPoison, float poisonChance)
@@ -429,12 +437,34 @@ public class PlayerProperties : MonoBehaviour
     {
         if (!isDead)
         {
+            PM.isMovementEnabled = false;
+            PM.canLookAround = false;
             panim.StopPlayback();
             panim.Play("PBeanDeath");
             StartCoroutine(DeathSequence());
             
             awokenMenu.SetActive(false);
+            isDead = true;
         }
+    }
+
+    public void ShoveLootInDeathBag(GameObject DB)
+    {
+        IM.UpdateItemCountPerSlot();
+        if(IM.InventoryList[IM.EquippedSlot] != null)
+        {
+            DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[IM.EquippedSlot]));
+            DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[IM.EquippedSlot].GetItemCount()));
+        }
+        for(int i = 0; i < 30; i++)
+        {
+            if(IM.InventoryList[i] != null)
+            {
+                DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[i]));
+                DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[i].GetItemCount()));
+            }
+        }
+        
     }
 
     public IEnumerator DeathSequence()
@@ -442,8 +472,12 @@ public class PlayerProperties : MonoBehaviour
         yield return new WaitForSeconds(1.6f);
         isDead = true;
         deathscreen.SetActive(true);
+        GameObject GO = Instantiate(DeathBag, transform.position, Quaternion.identity);
+        ShoveLootInDeathBag(GO);
 
-        isDead = true;
+       
+        
+
 
     }
 }
