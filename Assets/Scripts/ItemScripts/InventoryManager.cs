@@ -249,7 +249,7 @@ public class InventoryManager : MonoBehaviour
                 Debug.Log("Path2 - 1");
                 GameObject newItem = Instantiate(item.gameObject);
                 InventoryList[SlotNum] = newItem.GetComponent<ItemInfo>();
-                InventoryList[SlotNum].SetItemCount(item.ItemCount + QuantityToAdd + InventoryList[SlotNum].GetItemCount());
+                InventoryList[SlotNum].SetItemCount(item.ItemCount + QuantityToAdd);
                 //InventoryList[SlotNum].SetItemCount(QuantityToAdd + InventoryList[SlotNum].GetItemCount());
                 newItem.SetActive(false);
                 Destroy(item);
