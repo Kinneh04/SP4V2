@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Grip
+  - Tree
+  - Stone
+  - Enemy
+  - Bullet
+  - Metal
+  - Sulfur
+  - GripArea
+  - Floor
+  - Monument
+  - Heal
+  - Crate
+  - Unmarked
+  - NormalStructure
+  - FoundationStructure
+  - FloorStructure
+  - Camera
+  - SleepingPoint
+  - Wolf
+  - Tank
+  - BGM
+  - SFX
+  - Inventory
+  - Deer
+  - Chicken
+  - iSlot
+  - Crafting
+  - dropArea
+  - Campfire
+  - LootPool
+  - Workbench
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Player
+  - Buildable
+  - BuildPreview
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

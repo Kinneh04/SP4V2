@@ -1,0 +1,12 @@
+# Blender MTL File: 'Plant_02.blend'
+# Material Count: 1
+
+newmtl DarkGreenPlant_02
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.076027 0.157435 0.020922
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2

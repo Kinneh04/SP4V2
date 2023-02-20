@@ -1,0 +1,131 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+public class Projectile : MonoBehaviour
+{
+    [SerializeField]
+    private bool AddBulletSpread = true;
+    [SerializeField]
+    private Vector3 BulletSpreadVariance = new Vector3(0.1f, 0.1f, 0.1f);
+    [SerializeField]
+    private ParticleSystem ShootingSystem;
+    public Transform BulletSpawnPoint;
+    [SerializeField]
+    private GameObject ImpactParticleSystem;
+    [SerializeField]
+    private GameObject BloodParticleSystem;
+    [SerializeField]
+    private TrailRenderer BulletTrail;
+    [SerializeField]
+    private float ShootDelay = 0.5f;
+    [SerializeField]
+    private LayerMask Mask;
+    public float Damage;
+    public GameObject ParentGunTip;
+    private float LastShootTime;
+    public ParticleSystem MuzzleFlash;
+    public GameObject BulletImpact;
+    public bool JustFired = false;
+
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (JustFired)
+        {
+            if(gameObject.GetComponentInParent<ItemInfo>().itemID == ItemInfo.ItemID.Rocket)
+            {
+                Destroy(this.gameObject);
+            }
+            else if (gameObject.GetComponentInParent<ItemInfo>().itemID == ItemInfo.ItemID.Arrow)
+            {
+                if (collision.transform.gameObject.CompareTag("Enemy"))
+                {
+                    collision.transform.GetComponent<Enemy>().GetDamaged((int)Damage);
+                    Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
+                }
+                else if (collision.transform.gameObject.CompareTag("Wolf"))
+                {
+                    collision.transform.GetComponent<WolfAI>().GetDamaged((int)Damage);
+                    Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
+                }
+                else if (collision.transform.gameObject.CompareTag("Tank"))
+                {
+                    collision.transform.GetComponent<TankAI>().GetDamaged((int)Damage);
+                    Instantiate(ImpactParticleSystem, collision.transform.position, Quaternion.identity);
+                }
+                else if (collision.transform.gameObject.CompareTag("Deer"))
+                {
+                    collision.transform.GetComponent<DeerAI>().GetDamaged((int)Damage);
+                    Instantiate(ImpactParticleSystem, collision.transform.position, Quaternion.identity);
+                }
+                else if (collision.transform.gameObject.CompareTag("Chicken"))
+                {
+                    collision.transform.GetComponent<ChickenAI>().GetDamaged((int)Damage);
+                    Instantiate(ImpactParticleSystem, collision.transform.position, Quaternion.identity);
+                }
+                else if (collision.transform.gameObject.CompareTag("Player"))
+                {
+                    Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
+                }
+                Vector3 PushPreviousDirection; // so the arrow is doesnt go through the wall
+                PushPreviousDirection = GetDirection();
+                PushPreviousDirection *= 0.05f;
+                this.transform.position -= PushPreviousDirection;
+                this.GetComponent<Rigidbody>().isKinematic = true;
+                this.transform.parent = collision.transform.parent;
+            }
+            JustFired = false;
+        }
+    }
+    // Start is called before the first frame update
+    void Awake()
+    {
+
+    }
+
+    public void ShootNonRaycastType()
+    {
+        
+        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.velocity = transform.forward * 50;
+        }
+    }
+
+    public void Shoot()
+    {
+        this.transform.position += GetDirection() * 1;
+        this.transform.rotation = Quaternion.Euler(GetDirection().x, GetDirection().y, GetDirection().z);
+        this.GetComponent<Rigidbody>().velocity = transform.forward * 200;
+        this.GetComponent<Rigidbody>().isKinematic = false;
+    }
+
+
+    public void SetAimCone(float AimCone)
+    {
+        BulletSpreadVariance.x = BulletSpreadVariance.y = BulletSpreadVariance.z = 10 * (AimCone / 90);
+    }
+    private Vector3 GetDirection()
+    {
+        Vector3 direction = BulletSpawnPoint.transform.forward;
+        if (AddBulletSpread)
+        {
+            direction += new Vector3(
+                UnityEngine.Random.Range(-BulletSpreadVariance.x, BulletSpreadVariance.x),
+                 UnityEngine.Random.Range(-BulletSpreadVariance.y, BulletSpreadVariance.y),
+                 UnityEngine.Random.Range(-BulletSpreadVariance.z, BulletSpreadVariance.z)
+                );
+        }
+        direction.Normalize();
+        return direction;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
