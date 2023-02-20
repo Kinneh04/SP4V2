@@ -23,7 +23,6 @@ public class C4 : WeaponInfo
         itemID = ItemID.C4;
         itemType = ItemType.Ranged;
         MaxItemCount = 10;
-        ItemCount = 1;
     }
 
 
@@ -52,14 +51,13 @@ public class C4 : WeaponInfo
 				CanFire = false;
 				//Doesnt need to reload
 				// Reduce the rounds by 1
-				//ItemCount-=1;
-
+				ItemCount-=1;
+				if (ItemCount <= 0)
+				{
+					Destroy(this.gameObject);
+				}
 				return true;
 			}
-			else
-            {
-				Destroy(this.gameObject);
-            }
 		}
 		return false;
 	}
