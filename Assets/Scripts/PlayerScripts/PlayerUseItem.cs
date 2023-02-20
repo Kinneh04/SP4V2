@@ -329,6 +329,7 @@ public class PlayerUseItem : MonoBehaviour
                         {
                             OnShoot();
                             PAnimator.Play("PBeanThrow");
+                            inventoryManager.RemoveQuantityFromSlot(inventoryManager.EquippedSlot, 1);
                         }
                     }
                     else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.ROCKETLAUNCHER && !LeftMouseButtonPressed)
