@@ -15,6 +15,8 @@ public class PlayerProperties : MonoBehaviour
     public GameObject PlayerLookingAtItem;
     public GameObject CurrentlyHoldingItem;
 
+    private PhotonView pv;
+
     public Image BloodImage;
 
     public Slider HealthSlider;
@@ -83,6 +85,11 @@ public class PlayerProperties : MonoBehaviour
     public GameObject LootScreen, inventoryScreen, furnaceScreen;
     public PlayerMovement PM;
     public GameObject DeathBag;
+
+    private void Awake()
+    {
+        pv = GetComponent<PhotonView>();
+    }
 
     public void TurnOnFurnace()
     {
@@ -269,7 +276,7 @@ public class PlayerProperties : MonoBehaviour
 
     private void Update()
     {
-        if(!isDead)
+        if(!isDead && pv.IsMine)
         { 
             Htimer += Time.deltaTime;
             Ttimer += Time.deltaTime;
@@ -444,7 +451,7 @@ public class PlayerProperties : MonoBehaviour
         }
         else
         {
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKey(KeyCode.E) && pv.IsMine)
             {
                 RespawnAfterDeath();
             }
@@ -503,23 +510,29 @@ public class PlayerProperties : MonoBehaviour
         }
     }
 
-    public void ShoveLootInDeathBag(GameObject DB)
+    [PunRPC]
+    public void ShoveLootInDeathBag(int DB)
     {
-        IM.UpdateItemCountPerSlot();
-        if(IM.InventoryList[IM.EquippedSlot] != null)
+        if (pv.IsMine)
         {
-            DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[IM.EquippedSlot]));
-            DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[IM.EquippedSlot].GetItemCount()));
-        }
-        for(int i = 0; i < 30; i++)
-        {
-            if(IM.InventoryList[i] != null)
+
+            GameObject DeathBag = PhotonView.Find(DB).gameObject;
+
+            IM.UpdateItemCountPerSlot();
+            if (IM.InventoryList[IM.EquippedSlot] != null)
             {
-                DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[i]));
-                DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[i].GetItemCount()));
+                DeathBag.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[IM.EquippedSlot]));
+                DeathBag.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[IM.EquippedSlot].GetItemCount()));
+            }
+            for (int i = 0; i < 30; i++)
+            {
+                if (IM.InventoryList[i] != null)
+                {
+                    DeathBag.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[i]));
+                    DeathBag.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[i].GetItemCount()));
+                }
             }
         }
-        
     }
 
     public IEnumerator DeathSequence()
@@ -527,7 +540,7 @@ public class PlayerProperties : MonoBehaviour
         yield return new WaitForSeconds(1.6f);
         isDead = true;
         deathscreen.SetActive(true);
-        GameObject GO = Instantiate(DeathBag, transform.position, Quaternion.identity);
-        ShoveLootInDeathBag(GO);
+        GameObject GO = PhotonNetwork.Instantiate("PlayerDeathBag", transform.position, Quaternion.identity);
+        pv.RPC("ShoveLootInDeathBag", RpcTarget.All, GO.GetPhotonView().ViewID);
     }
 }

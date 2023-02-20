@@ -11850,7 +11850,7 @@ MonoBehaviour:
   Thirst: 40
   PlayerLookingAtItem: {fileID: 0}
   CurrentlyHoldingItem: {fileID: 0}
-  BloodImage: {fileID: 0}
+  BloodImage: {fileID: 2384686408693558852}
   HealthSlider: {fileID: 3020595904471520344}
   HungerSlider: {fileID: 4544724133599871150}
   ThirstSlider: {fileID: 1892742622648227602}

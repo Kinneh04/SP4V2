@@ -96,6 +96,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
                 Destroy(Player.GetComponent<PlayerMovement>());
                 Destroy(Player.GetComponent<PlayerUseItem>());
                 Destroy(Player.GetComponent<BuildingSystem>());
+                Destroy(Player.transform.Find("Canvas").gameObject);
             }
         }
 
