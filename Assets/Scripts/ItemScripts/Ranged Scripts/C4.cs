@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RocketLauncher : WeaponInfo
+public class C4 : WeaponInfo
 {
 	public GameObject BarrlTip;
 
@@ -10,19 +10,19 @@ public class RocketLauncher : WeaponInfo
     {
         MagRounds = MaxMagRounds = 1;
         FiringType = FIRINGTYPE.SEMI_AUTO;
-        GunName = GUNNAME.ROCKETLAUNCHER;
-		AmmoType = ItemID.Rocket;
-		Damage = 350;
-		TimeBetweenShots = 3.0f;
+        GunName = GUNNAME.C4;
+		AmmoType = ItemID.C4;
+		Damage = 550;
+		TimeBetweenShots = 0.0f;
         ElapsedTime = ReloadTime = 0;
-        MaxReloadTime = 3.0f;
+        MaxReloadTime = 0.0f;
         CanFire = false;
-        AimCone = 2.25f;
+        AimCone = 0.0f;
 		InfiniteAmmo = false;
 		DrawTime = 1;
-        itemID = ItemID.RocketLauncher;
+        itemID = ItemID.C4;
         itemType = ItemType.Ranged;
-        MaxItemCount = 1;
+        MaxItemCount = 10;
         ItemCount = 1;
     }
 
@@ -33,28 +33,33 @@ public class RocketLauncher : WeaponInfo
 		if (CanFire)
 		{
 			// If there is still ammo in the magazine, then fire
-			if (MagRounds > 0)
+			if (ItemCount > 0)
 			{
 				GameObject projectile = Instantiate(BulletPrefab, BarrlTip.transform.position, Quaternion.identity);
 				projectile.GetComponent<Projectile>().Damage = Damage;
 				projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
 				projectile.GetComponent<Projectile>().ParentGunTip = BarrlTip;
 				projectile.GetComponent<Projectile>().SetAimCone(AimCone);
-                projectile.transform.parent = null;
+				projectile.GetComponent<Rigidbody>().isKinematic = false;
+				projectile.transform.parent = null;
 				projectile.transform.rotation = transform.rotation;
-				projectile.GetComponent<Projectile>().itemID = AmmoType;
 				projectile.GetComponent<Projectile>().JustFired = true;
+				projectile.GetComponent<Projectile>().itemID = AmmoType;
+				projectile.GetComponent<Projectile>().ExplosionTimer = 3;
 				projectile.GetComponent<Projectile>().ShootNonRaycastType();
 
 				// Lock the weapon after this discharge
 				CanFire = false;
-				// Reset the dElapsedTime to dTimeBetweenShots for the next shot
-				ElapsedTime = TimeBetweenShots;
+				//Doesnt need to reload
 				// Reduce the rounds by 1
-				MagRounds--;
+				//ItemCount-=1;
 
 				return true;
 			}
+			else
+            {
+				Destroy(this.gameObject);
+            }
 		}
 		return false;
 	}

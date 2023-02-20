@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 145405780013686352}
   - component: {fileID: 5158569715687409169}
   - component: {fileID: 8214271447542717008}
-  - component: {fileID: 7155676836939093727}
   - component: {fileID: 1539710076314461585}
   m_Layer: 0
   m_Name: missile
@@ -70,24 +69,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7155676836939093727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 670831172828349674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58bf2f12439aabd41904882ca9ee9ff2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ReplacementObj: {fileID: 0}
-  OwnerActor: {fileID: 0}
-  itemType: 6
-  itemID: 39
-  ItemCount: 1
-  MaxItemCount: 3
 --- !u!114 &1539710076314461585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,20 +83,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AddBulletSpread: 1
   BulletSpreadVariance: {x: 0.1, y: 0.1, z: 0.1}
-  ShootingSystem: {fileID: 0}
   BulletSpawnPoint: {fileID: 0}
   ImpactParticleSystem: {fileID: 0}
   BloodParticleSystem: {fileID: 0}
   BulletTrail: {fileID: 0}
   ShootDelay: 0.5
-  Mask:
-    serializedVersion: 2
-    m_Bits: 0
   Damage: 0
   ParentGunTip: {fileID: 0}
   MuzzleFlash: {fileID: 0}
   BulletImpact: {fileID: 0}
   JustFired: 0
+  Explosion: {fileID: 2738436938548131024, guid: e526920918ff6f2488718212285cb067,
+    type: 3}
 --- !u!1 &8761530255967939386
 GameObject:
   m_ObjectHideFlags: 0

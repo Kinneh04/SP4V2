@@ -23,6 +23,7 @@ public abstract class WeaponInfo : ItemInfo
 		REMINGTON870,
 		BOLT_ACTION_RIFLE,
 		ROCKETLAUNCHER,
+		C4,
 		NUM_GUNNAME
 	};
 	GameObject pm;
@@ -154,6 +155,18 @@ public abstract class WeaponInfo : ItemInfo
 				return "Gun";
 			case 5:
 				return "Hunting Bow";
+			case 6:
+				return "Revolver";
+			case 7:
+				return "MP5A4";
+			case 8:
+				return "Remington 870";
+			case 9:
+				return "Bolt Action Rifle";
+			case 10:
+				return "Rocket Launcher";
+			case 11:
+				return "C4";
 			default:
 				return "Gun";
         }

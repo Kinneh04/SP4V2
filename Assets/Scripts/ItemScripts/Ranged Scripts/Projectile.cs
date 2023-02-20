@@ -8,8 +8,6 @@ public class Projectile : MonoBehaviour
     private bool AddBulletSpread = true;
     [SerializeField]
     private Vector3 BulletSpreadVariance = new Vector3(0.1f, 0.1f, 0.1f);
-    [SerializeField]
-    private ParticleSystem ShootingSystem;
     public Transform BulletSpawnPoint;
     [SerializeField]
     private GameObject ImpactParticleSystem;
@@ -18,27 +16,33 @@ public class Projectile : MonoBehaviour
     [SerializeField]
     private TrailRenderer BulletTrail;
     [SerializeField]
-    private float ShootDelay = 0.5f;
-    [SerializeField]
-    private LayerMask Mask;
     public float Damage;
     public GameObject ParentGunTip;
     private float LastShootTime;
     public ParticleSystem MuzzleFlash;
     public GameObject BulletImpact;
     public bool JustFired = false;
-
-
+    public GameObject Explosion;
+    public ItemInfo.ItemID itemID;
+    public float ExplosionTimer = 0;
 
     private void OnCollisionEnter(Collision collision)
     {
         if (JustFired)
         {
-            if(gameObject.GetComponentInParent<ItemInfo>().itemID == ItemInfo.ItemID.Rocket)
+            if (itemID == ItemInfo.ItemID.Rocket)
             {
+                GameObject Go = Instantiate(Explosion);
+                Go.transform.position = transform.position;
+                Go.GetComponent<Explosion>().Damage = Damage;
                 Destroy(this.gameObject);
             }
-            else if (gameObject.GetComponentInParent<ItemInfo>().itemID == ItemInfo.ItemID.Arrow)
+            else if (itemID == ItemInfo.ItemID.C4)
+            {
+                this.GetComponent<Rigidbody>().isKinematic = true;
+                this.transform.parent = collision.transform.parent;
+            }
+            else if (itemID == ItemInfo.ItemID.Arrow)
             {
                 if (collision.transform.gameObject.CompareTag("Enemy"))
                 {
@@ -87,14 +91,18 @@ public class Projectile : MonoBehaviour
 
     public void ShootNonRaycastType()
     {
-        
+
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.velocity = transform.forward * 50;
+            if (itemID == ItemInfo.ItemID.Arrow)
+                rb.velocity = transform.forward * 50;
+            else if (itemID == ItemInfo.ItemID.Rocket)
+                rb.velocity = transform.forward * 100;
+            else if (itemID == ItemInfo.ItemID.C4)
+                rb.velocity = transform.forward * 10;
         }
     }
-
     public void Shoot()
     {
         this.transform.position += GetDirection() * 1;
@@ -102,8 +110,6 @@ public class Projectile : MonoBehaviour
         this.GetComponent<Rigidbody>().velocity = transform.forward * 200;
         this.GetComponent<Rigidbody>().isKinematic = false;
     }
-
-
     public void SetAimCone(float AimCone)
     {
         BulletSpreadVariance.x = BulletSpreadVariance.y = BulletSpreadVariance.z = 10 * (AimCone / 90);
@@ -122,10 +128,22 @@ public class Projectile : MonoBehaviour
         direction.Normalize();
         return direction;
     }
-
     // Update is called once per frame
     void Update()
     {
-
+        if (!JustFired && itemID == ItemInfo.ItemID.C4)
+        {
+            if (ExplosionTimer > 0)
+            {
+                ExplosionTimer -= Time.deltaTime;
+            }
+            else
+            {
+                GameObject Go = Instantiate(Explosion);
+                Go.transform.position = transform.position;
+                Go.GetComponent<Explosion>().Damage = Damage;
+                Destroy(this.gameObject);
+            }
+        }
     }
 }

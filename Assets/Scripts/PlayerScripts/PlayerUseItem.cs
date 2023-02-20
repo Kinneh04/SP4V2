@@ -320,6 +320,14 @@ public class PlayerUseItem : MonoBehaviour
                             PAnimator.Play("PBeanShotgunShoot");
                         }
                     }
+                    else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.C4 && !LeftMouseButtonPressed)
+                    {
+                        if (ItemGO.GetComponent<WeaponInfo>().ItemCount > 0)
+                        {
+                            OnShoot();
+                            PAnimator.Play("PBeanThrow");
+                        }
+                    }
                     else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.ROCKETLAUNCHER && !LeftMouseButtonPressed)
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
