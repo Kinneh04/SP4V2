@@ -32,6 +32,8 @@ public class CraftQuantity : MonoBehaviour
     public void DecreaseCount()
     {
         CM.CraftAmount -= 1;
+        if (CM.CraftAmount < 0)
+            CM.CraftAmount = 0;
         CM.UpdateAmountCost();
     }
 

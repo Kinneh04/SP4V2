@@ -76,6 +76,8 @@ public class ItemInfo : MonoBehaviour
         Workbench_1_Ghost,
         Workbench_2_Ghost,
         Workbench_3_Ghost,
+        ResearchTable,
+        ResearchTable_Ghost,
         NUM_ITEMID  
     };
 

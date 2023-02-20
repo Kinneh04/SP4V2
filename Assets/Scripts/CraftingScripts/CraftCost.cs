@@ -342,6 +342,15 @@ public class CraftCost : MonoBehaviour
                 materials[1] = CM.Stone;
                 materials[2] = CM.Metal;
                 break;
+            case ItemInfo.ItemID.ResearchTable:
+                CM.WorkbenchNeeded = 1;
+                materialCounts[0] = 200;
+                materialCounts[1] = 50;
+                materialCounts[2] = 50;
+                materials[0] = CM.Metal;
+                materials[1] = CM.Stone;
+                materials[2] = CM.Wood;
+                break;
 
 
         }
