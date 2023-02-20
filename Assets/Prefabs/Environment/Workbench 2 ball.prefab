@@ -149,8 +149,8 @@ MonoBehaviour:
   OwnerActor: {fileID: 0}
   itemType: 9
   itemID: 51
-  ItemCount: 0
-  MaxItemCount: 0
+  ItemCount: 1
+  MaxItemCount: 1
 --- !u!54 &6603215771838742309
 Rigidbody:
   m_ObjectHideFlags: 0

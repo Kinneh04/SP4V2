@@ -141,7 +141,6 @@ public class PlayerUseItem : MonoBehaviour
                                 isPlacingItem = true;
                             }
                             inventoryManager.UpdateItemCountPerSlot();
-                            Debug.Log("HEY!");
                         }
                         else
                         {
@@ -152,7 +151,7 @@ public class PlayerUseItem : MonoBehaviour
                                     bs.SetIsBuilding(false);
                                 }
                             }
-                            inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>());
+                            inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), 1);
                             playerProperties.PlayerLookingAtItem.SetActive(false);
                             inventoryManager.UpdateItemCountPerSlot();
                             if (GO_Type == ItemInfo.ItemType.BuildPlan)
@@ -243,7 +242,7 @@ public class PlayerUseItem : MonoBehaviour
                     print("PlacedItem!");
                     ItemGO.GetComponent<ItemPlacing>().PlaceItem();
                     isPlacingItem = false;
-                    inventoryManager.UpdateItemCountPerSlot();
+                    inventoryManager.RemoveQuantityFromSlot(inventoryManager.EquippedSlot, 1);
                     inventoryManager.UpdateItemCountPerSlot();
                 }
                 else if (ItemGO.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)

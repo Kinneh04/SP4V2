@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Photon.Pun;
 public class PlayerProperties : MonoBehaviour
 {
     public float Health;
@@ -491,7 +491,7 @@ public class PlayerProperties : MonoBehaviour
         yield return new WaitForSeconds(1.6f);
         isDead = true;
         deathscreen.SetActive(true);
-        GameObject GO = Instantiate(DeathBag, transform.position, Quaternion.identity);
+        GameObject GO = PhotonNetwork.Instantiate("DeathBag", transform.position, Quaternion.identity);
         ShoveLootInDeathBag(GO);
 
        
