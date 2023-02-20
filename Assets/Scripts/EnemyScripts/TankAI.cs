@@ -30,32 +30,37 @@ public class TankAI : Enemy
     void Start()
     {
         MaxHealth = 1500;
-        float dist = 5;
+        float dist = 100;
 
         Waypoints = new List<Vector3>();
-        Vector3 temp = new Vector3(gameObject.transform.position.x + dist, 0, transform.position.z + dist);
+        Vector3 temp;
+
+
+        temp = new Vector3(transform.position.x + dist, 5, transform.position.z);
         Waypoints.Add(temp);
 
-        temp = new Vector3(transform.position.x, 0, transform.position.z + dist);
+
+        temp = new Vector3(gameObject.transform.position.x + dist, 5, transform.position.z + dist);
         Waypoints.Add(temp);
 
-        temp = new Vector3(transform.position.x - dist, 0, transform.position.z + dist);
+        temp = new Vector3(transform.position.x, 5, transform.position.z + dist);
         Waypoints.Add(temp);
 
-        temp = new Vector3(transform.position.x - dist, 0, transform.position.z);
+        temp = new Vector3(transform.position.x - dist, 5, transform.position.z + dist);
         Waypoints.Add(temp);
 
-        temp = new Vector3(transform.position.x - dist, 0, transform.position.z - dist);
+        temp = new Vector3(transform.position.x - dist, 5, transform.position.z);
         Waypoints.Add(temp);
 
-        temp = new Vector3(transform.position.x, 0, transform.position.z - dist);
+        temp = new Vector3(transform.position.x - dist, 5, transform.position.z - dist);
         Waypoints.Add(temp);
 
-        temp = new Vector3(transform.position.x + dist, 0, transform.position.z - dist);
+        temp = new Vector3(transform.position.x, 5, transform.position.z - dist);
         Waypoints.Add(temp);
 
-        temp = new Vector3(transform.position.x + dist, 0, transform.position.z);
+        temp = new Vector3(transform.position.x + dist, 5, transform.position.z - dist);
         Waypoints.Add(temp);
+
 
         currentWaypoint = 0;
 
@@ -82,6 +87,7 @@ public class TankAI : Enemy
         if (CurrentState != FSM.ATTACK && TargetPlayer != null && !GoingMonument)
         {
             CurrentState = FSM.ATTACK;
+            navMeshAgent.Stop();
         }
         if (Health <= 0)
         {
@@ -100,7 +106,7 @@ public class TankAI : Enemy
                     else
                     {
                         CurrentState = FSM.PATROL;
-                        MoveTime = 4;
+                        MoveTime = 180;
                     }
                     break;
                 }
@@ -120,6 +126,7 @@ public class TankAI : Enemy
                     {
                         destination = Waypoints[currentWaypoint];
                         navMeshAgent.SetDestination(destination);
+                        Debug.Log(destination);
                         if (++currentWaypoint >= Waypoints.Count)
                             currentWaypoint = 0;
                         isMoving = true;
@@ -147,28 +154,6 @@ public class TankAI : Enemy
                         navMeshAgent.Resume();
                         break;
                     }
-                    if (isMoving)
-                    {
-                        if (Vector3.Distance(gameObject.transform.position, destination) < 1)
-                        {
-                            isMoving = false;
-                        }
-                    }
-                    else
-                    {
-                        navMeshAgent.Stop();
-                    }
-                    if (Vector3.Distance(gameObject.transform.position, TargetPlayer.transform.position) <= 10)
-                    {
-                        Attack();
-                    }
-                    if (MoveTime <= 0)
-                    {
-                        isMoving = false;
-                        MoveTime = 4;
-                    }
-                    else
-                        MoveTime -= Time.deltaTime;
                     break;
                 }
             case FSM.DEAD: // Dead
