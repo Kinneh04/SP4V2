@@ -149,7 +149,26 @@ public class PlayerProperties : MonoBehaviour
             craftingScreen.SetActive(true);
             CraftingManager CM = FindObjectOfType<CraftingManager>();
             Debug.Log("Loading Crafts");
-            CM.LoadCrafts(WorkbenchLv);
+            CM.LoadCrafts(WorkbenchLv, true);
+            craftingIsOpen = true;
+            playerMovement.UnlockCursor();
+        }
+    }
+
+    public void OpenResearch()
+    {
+        if (craftingIsOpen)
+        {
+            craftingScreen.SetActive(false);
+            craftingIsOpen = false;
+            playerMovement.LockCursor();
+        }
+        else
+        {
+            craftingScreen.SetActive(true);
+            CraftingManager CM = FindObjectOfType<CraftingManager>();
+            Debug.Log("Loading Research");
+            CM.LoadCrafts(0, false);
             craftingIsOpen = true;
             playerMovement.UnlockCursor();
         }

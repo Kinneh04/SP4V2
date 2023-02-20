@@ -8,6 +8,7 @@ public class CraftSelection : MonoBehaviour
 {
     CraftingManager CM;
     bool craftable = false;
+    public bool researched = false;
     int slot;
 
     private void Awake()

@@ -152,7 +152,7 @@ MonoBehaviour:
   ReplacementObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 1
-  itemID: 0
+  itemID: 28
   ItemCount: 0
   MaxItemCount: 0
 --- !u!95 &-16432584504138097

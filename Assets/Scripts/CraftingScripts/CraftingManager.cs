@@ -16,9 +16,12 @@ public class CraftingManager : MonoBehaviour
     public ItemInfo Metal, Sulfur, Wood, Stone, WeaponParts, Cloth, Water;
 
     public List<CraftSelection> CraftSelections = new List<CraftSelection>();
+    public GameObject craftColumn, researchColumn;
 
     int SelectedCraft;
     bool Craftable;
+
+    public bool ScreenCraft = false;
 
     public ItemInfo Material_1;
     public int Quantity_1;
@@ -86,33 +89,56 @@ public class CraftingManager : MonoBehaviour
         {
             SelectedCraft = Craft;
             Craftable = craftable;
+            if (ScreenCraft)
+            {
+                if (Craftable)
+                    CraftAmount = 1;
+                else
+                    CraftAmount = 0;
 
-            if (Craftable)
-                CraftAmount = 1;
+                // Update Costs + Matereials & Quantites
+                int[] aNum = new int[3];
+                aNum = cost.GetCostInt(CraftableList[SelectedCraft]);
+                ItemInfo[] itemInfos = new ItemInfo[3];
+                itemInfos = cost.GetCostItem(CraftableList[SelectedCraft]);
+                Quantity_1 = aNum[0];
+                Quantity_2 = aNum[1];
+                Quantity_3 = aNum[2];
+                Material_1 = itemInfos[0];
+                Material_2 = itemInfos[1];
+                Material_3 = itemInfos[2];
+                cost.ChangeCost();
+
+                // Update Description
+                description.ChangeDescription(CraftableList[SelectedCraft]);
+
+                // Reset Quantity based on can craft
+
+                button.UpdateCraftButton();
+                quantity.ChangeAmount();
+            }
             else
-                CraftAmount = 0;
+            {
+                // Update Costs + Matereials & Quantites
+                int[] aNum = new int[3];
+                aNum = cost.GetCostInt(CraftableList[SelectedCraft]);
+                ItemInfo[] itemInfos = new ItemInfo[3];
+                itemInfos = cost.GetCostItem(CraftableList[SelectedCraft]);
+                Quantity_1 = aNum[0];
+                Quantity_2 = aNum[1];
+                Quantity_3 = aNum[2];
+                Material_1 = itemInfos[0];
+                Material_2 = itemInfos[1];
+                Material_3 = itemInfos[2];
+                cost.ChangeCost();
 
-            // Update Costs + Matereials & Quantites
-            int[] aNum = new int[3];
-            aNum = cost.GetCostInt(CraftableList[SelectedCraft]);
-            ItemInfo[] itemInfos = new ItemInfo[3];
-            itemInfos = cost.GetCostItem(CraftableList[SelectedCraft]);
-            Quantity_1 = aNum[0];
-            Quantity_2 = aNum[1];
-            Quantity_3 = aNum[2];
-            Material_1 = itemInfos[0];
-            Material_2 = itemInfos[1];
-            Material_3 = itemInfos[2];
-            cost.ChangeCost();
+                // Update Description
+                description.ChangeDescription(CraftableList[SelectedCraft]);
 
-            // Update Description
-            description.ChangeDescription(CraftableList[SelectedCraft]);
+                // Reset Quantity based on can craft
 
-            // Reset Quantity based on can craft
-
-            button.UpdateCraftButton();
-            quantity.ChangeAmount();
-            // Change Craft Button color based on Craftable
+                button.UpdateCraftButton();
+            }
         }
     }
 
@@ -156,31 +182,68 @@ public class CraftingManager : MonoBehaviour
         return IM.Checkforcraft(Material_1, Quantity_1 * CraftAmount, Material_2, Quantity_2 * CraftAmount, Material_3, Quantity_3 * CraftAmount);
     }
 
-    public void LoadCrafts(int WorkbenchLv)
+    public void LoadCrafts(int WorkbenchLv, bool ScreenType)
     {
+        ScreenCraft = ScreenType;
+        quantity.gameObject.SetActive(ScreenCraft);
         if (!made)
         {
+            craftColumn.SetActive(true);
+            researchColumn.SetActive(false);
             made = true;
             for (int i = 0; i < FindObjectsOfType<CraftSelection>().Length; i++)
             {
                 CraftSelections.Add(FindObjectsOfType<CraftSelection>()[i]);
+                if (ScreenCraft)
+                {
+                    ScreenCraft = false;
+                    CraftSelections[i].load();
+                    if (!Material_1)
+                    {
+                        Debug.Log("i:" + i);
+                        CraftSelections[i].researched = true;
+                    }
+                    ScreenCraft = true;
+                }
             }
+
         }
 
+        craftColumn.SetActive(true);
+        researchColumn.SetActive(false);
+
+        bool desTrue = false;
         CurrentWorkbenchLv = WorkbenchLv;
         int count = CraftableList.Count;
         for (int i = 0; i < count; i++)
         {
             CraftSelection temp = CraftSelections[i];
             temp.gameObject.SetActive(true);
-            Debug.Log("General: " + i);
             temp.load();
-            if (CurrentWorkbenchLv < WorkbenchNeeded)
+            if (ScreenCraft)
             {
-                temp.gameObject.SetActive(false);
+                Debug.Log("i:" + i + ", " +( CurrentWorkbenchLv < WorkbenchNeeded) + ", " + temp.researched);
+                if (CurrentWorkbenchLv < WorkbenchNeeded || !temp.researched)
+                {
+                    temp.gameObject.SetActive(false);
+                }
+                else if (!desTrue)
+                {
+                    desTrue = true;
+                    description.ChangeDescription(CraftableList[i]);
+                }
+            }
+            else
+            {
+                if (CraftSelections[i].researched || !Material_1)
+                    temp.gameObject.SetActive(false);
+                else if (!desTrue)
+                {
+                    desTrue = true;
+                    description.ChangeDescription(CraftableList[i]);
+                }
             }
         }
-        description.ChangeDescription(CraftableList[0]);
     }
 
     public void UpdateAmountCost()
@@ -208,7 +271,14 @@ public class CraftingManager : MonoBehaviour
         ItemInfo temp = Instantiate<ItemInfo>(CraftableList[SelectedCraft]);
         IM.AddQuantity(temp, CraftAmount);
         CraftAmount = 0;
-        Selected(SelectedCraft, false);
+        //Selected(SelectedCraft, false);
+        if (ScreenCraft)
+            CraftSelections[SelectedCraft].load();
+        else
+        {
+            CraftSelections[SelectedCraft].researched = true;
+            CraftSelections[SelectedCraft].gameObject.SetActive(false);
+        }
         IM.UpdateItemCountPerSlot();
     }
 }

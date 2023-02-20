@@ -44,15 +44,12 @@ public class InventoryManager : MonoBehaviour
         bool item3Found;
         if (Item1)
         {
-            Debug.Log("item1 yes : " + Item1.GetItemID());
             item1Found = CheckForItem(Item1, Item1Quantity);
             if (Item2)
             {
-                Debug.Log("item2 yes");
                 item2Found = CheckForItem(Item2, Item2Quantity);
                 if (Item3)
                 {
-                    Debug.Log("item3 yes");
                     item3Found = CheckForItem(Item3, Item3Quantity);
                 }
                 else
@@ -66,11 +63,8 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            item1Found = true;
-            item2Found = true;
-            item3Found = true;
+            return false;
         }
-        Debug.Log(item1Found + ", " + item2Found + ", " + item3Found);
         
         
 

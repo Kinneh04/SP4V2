@@ -38,6 +38,7 @@ public class CraftDescription : MonoBehaviour
                 Time.text = "20.0";
                 break;
         }
-        Workbench.text = "Level " + CM.WorkbenchNeeded;
+        if (!CM.ScreenCraft)
+            Workbench.text = "Level " + CM.WorkbenchNeeded;
     }
 }

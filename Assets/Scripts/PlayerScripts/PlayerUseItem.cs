@@ -171,7 +171,7 @@ public class PlayerUseItem : MonoBehaviour
                 else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "ResearchTable")
                 {
                     // Input Level
-                    playerProperties.OpenCrafting(playerProperties.PlayerLookingAtItem.GetComponent<Workbench>().Level);
+                    playerProperties.OpenResearch();
                 }
             }
             if (Input.GetKeyDown(KeyCode.R))

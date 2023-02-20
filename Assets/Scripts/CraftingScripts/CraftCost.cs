@@ -78,281 +78,378 @@ public class CraftCost : MonoBehaviour
 
     public int[] GetCostInt(ItemInfo craft)
     {
-        switch (craft.itemID)
+        if (CM.ScreenCraft)
         {
-            case ItemInfo.ItemID.AK47_Rifle:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 1;
-                materialCounts[1] = 0;
-                materialCounts[2] = 0;
-                materials[0] = CM.prefab2;
-                materials[1] = null;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.M1911_Pistol:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 1;
-                materialCounts[1] = 0;
-                materialCounts[2] = 0;
-                materials[0] = CM.prefab1;
-                materials[1] = null;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Arrow:
-                CM.WorkbenchNeeded = 0;
-                materialCounts[0] = 1;
-                materialCounts[1] = 1;
-                materialCounts[2] = 0;
-                materials[0] = CM.Stone;
-                materials[1] = CM.Wood;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Bolt_Action_Rifle:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 1;
-                materialCounts[1] = 1;
-                materialCounts[2] = 0;
-                materials[0] = CM.Stone;
-                materials[1] = CM.Wood;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Hunting_Bow: // Bow
-                CM.WorkbenchNeeded = 0;
-                materialCounts[0] = 1;
-                materialCounts[1] = 1;
-                materialCounts[2] = 0;
-                materials[0] = CM.Stone;
-                materials[1] = CM.Wood;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Rocket: // Missile
-                CM.WorkbenchNeeded = 3;
-                materialCounts[0] = 5;
-                materialCounts[1] = 5;
-                materialCounts[2] = 0;
-                materials[0] = CM.Metal;
-                materials[1] = CM.Sulfur;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.RocketLauncher:
-                CM.WorkbenchNeeded = 3;
-                materialCounts[0] = 1;
-                materialCounts[1] = 50;
-                materialCounts[2] = 50;
-                materials[0] = CM.Stone;
-                materials[1] = CM.Metal;
-                materials[2] = CM.WeaponParts;
-                break;
-            case ItemInfo.ItemID.MP5A4:
-                CM.WorkbenchNeeded = 2;
-                materialCounts[0] = 25;
-                materialCounts[1] = 10;
-                materialCounts[2] = 0;
-                materials[0] = CM.WeaponParts;
-                materials[1] = CM.Metal;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.PistolAmmo:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 1;
-                materialCounts[1] = 1;
-                materialCounts[2] = 0;
-                materials[0] = CM.Metal;
-                materials[1] = CM.Sulfur;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Remington870:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 20;
-                materialCounts[1] = 10;
-                materialCounts[2] = 0;
-                materials[0] = CM.WeaponParts;
-                materials[1] = CM.Metal;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Revolver:
-                CM.WorkbenchNeeded = 2;
-                materialCounts[0] = 25;
-                materialCounts[1] = 10;
-                materialCounts[2] = 0;
-                materials[0] = CM.WeaponParts;
-                materials[1] = CM.Metal;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.RifleAmmo:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 1;
-                materialCounts[1] = 2;
-                materialCounts[2] = 0;
-                materials[0] = CM.Metal;
-                materials[1] = CM.Sulfur;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.ShotgunAmmo:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 1;
-                materialCounts[1] = 3;
-                materialCounts[2] = 0;
-                materials[0] = CM.Metal;
-                materials[1] = CM.Sulfur;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.SmgAmmo:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 1;
-                materialCounts[1] = 1;
-                materialCounts[2] = 0;
-                materials[0] = CM.Metal;
-                materials[1] = CM.Sulfur;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.SniperAmmo:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 2;
-                materialCounts[1] = 1;
-                materialCounts[2] = 0;
-                materials[0] = CM.Metal;
-                materials[1] = CM.Sulfur;
-                materials[2] = null;
-                break;
-            // Combined Axe here
-            case ItemInfo.ItemID.Homemade_Axe:
-                CM.WorkbenchNeeded = 0;
-                materialCounts[0] = 10;
-                materialCounts[1] = 5;
-                materialCounts[2] = 0;
-                materials[0] = CM.Stone;
-                materials[1] = CM.Wood;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Metal_Axe:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 10;
-                materialCounts[1] = 5;
-                materialCounts[2] = 0;
-                materials[0] = CM.Metal;
-                materials[1] = CM.Wood;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Homemade_Pick:
-                CM.WorkbenchNeeded = 0;
-                materialCounts[0] = 10;
-                materialCounts[1] = 5;
-                materialCounts[2] = 0;
-                materials[0] = CM.Stone;
-                materials[1] = CM.Wood;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Metal_Pick:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 10;
-                materialCounts[1] = 5;
-                materialCounts[2] = 0;
-                materials[0] = CM.Metal;
-                materials[1] = CM.Wood;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Spear:
-                CM.WorkbenchNeeded = 0;
-                materialCounts[0] = 10;
-                materialCounts[1] = 5;
-                materialCounts[2] = 0;
-                materials[0] = CM.Metal;
-                materials[1] = CM.Wood;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Torch:
-                CM.WorkbenchNeeded = 0;
-                materialCounts[0] = 5;
-                materialCounts[1] = 0;
-                materialCounts[2] = 0;
-                materials[0] = CM.Wood;
-                materials[1] = null;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Bandage:
-                CM.WorkbenchNeeded = 0;
-                materialCounts[0] = 10;
-                materialCounts[1] = 1;
-                materialCounts[2] = 0;
-                materials[0] = CM.Cloth;
-                materials[1] = CM.Water;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Ibuprofen:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 10;
-                materialCounts[1] = 0;
-                materialCounts[2] = 0;
-                materials[0] = CM.Water;
-                materials[1] = null;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Toilet_Paper:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 4;
-                materialCounts[1] = 2;
-                materialCounts[2] = 0;
-                materials[0] = CM.Cloth;
-                materials[1] = CM.Water;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Campfire:
-                CM.WorkbenchNeeded = 0;
-                materialCounts[0] = 10;
-                materialCounts[1] = 0;
-                materialCounts[2] = 0;
-                materials[0] = CM.Wood;
-                materials[1] = null;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.SleepingBag:
-                CM.WorkbenchNeeded = 0;
-                materialCounts[0] = 10;
-                materialCounts[1] = 0;
-                materialCounts[2] = 0;
-                materials[0] = CM.Cloth;
-                materials[1] = null;
-                materials[2] = null;
-                break;
-            case ItemInfo.ItemID.Workbench_1:
-                CM.WorkbenchNeeded = 0;
-                materialCounts[0] = 50;
-                materialCounts[1] = 50;
-                materialCounts[2] = 50;
-                materials[0] = CM.Wood;
-                materials[1] = CM.Stone;
-                materials[2] = CM.Metal;
-                break;
-            case ItemInfo.ItemID.Workbench_2:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 300;
-                materialCounts[1] = 300;
-                materialCounts[2] = 300;
-                materials[0] = CM.Metal;
-                materials[1] = CM.Sulfur;
-                materials[2] = CM.Stone;
-                break;
-            case ItemInfo.ItemID.Workbench_3:
-                CM.WorkbenchNeeded = 2;
-                materialCounts[0] = 1000;
-                materialCounts[1] = 1000;
-                materialCounts[2] = 1000;
-                materials[0] = CM.Wood;
-                materials[1] = CM.Stone;
-                materials[2] = CM.Metal;
-                break;
-            case ItemInfo.ItemID.ResearchTable:
-                CM.WorkbenchNeeded = 1;
-                materialCounts[0] = 200;
-                materialCounts[1] = 50;
-                materialCounts[2] = 50;
-                materials[0] = CM.Metal;
-                materials[1] = CM.Stone;
-                materials[2] = CM.Wood;
-                break;
+            switch (craft.itemID)
+            {
+                case ItemInfo.ItemID.AK47_Rifle:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 0;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.prefab2;
+                    materials[1] = null;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.M1911_Pistol:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 0;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.prefab1;
+                    materials[1] = null;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Arrow:
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 1;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Stone;
+                    materials[1] = CM.Wood;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Bolt_Action_Rifle:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 1;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Stone;
+                    materials[1] = CM.Wood;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Hunting_Bow: // Bow
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 1;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Stone;
+                    materials[1] = CM.Wood;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Rocket: // Missile
+                    CM.WorkbenchNeeded = 3;
+                    materialCounts[0] = 5;
+                    materialCounts[1] = 5;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.RocketLauncher:
+                    CM.WorkbenchNeeded = 3;
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 50;
+                    materialCounts[2] = 50;
+                    materials[0] = CM.Stone;
+                    materials[1] = CM.Metal;
+                    materials[2] = CM.WeaponParts;
+                    break;
+                case ItemInfo.ItemID.MP5A4:
+                    CM.WorkbenchNeeded = 2;
+                    materialCounts[0] = 25;
+                    materialCounts[1] = 10;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.WeaponParts;
+                    materials[1] = CM.Metal;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.PistolAmmo:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 1;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Remington870:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 20;
+                    materialCounts[1] = 10;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.WeaponParts;
+                    materials[1] = CM.Metal;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Revolver:
+                    CM.WorkbenchNeeded = 2;
+                    materialCounts[0] = 25;
+                    materialCounts[1] = 10;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.WeaponParts;
+                    materials[1] = CM.Metal;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.RifleAmmo:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 2;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.ShotgunAmmo:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 3;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.SmgAmmo:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 1;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.SniperAmmo:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 2;
+                    materialCounts[1] = 1;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                // Combined Axe here
+                case ItemInfo.ItemID.Homemade_Axe:
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 10;
+                    materialCounts[1] = 5;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Stone;
+                    materials[1] = CM.Wood;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Metal_Axe:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 10;
+                    materialCounts[1] = 5;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Wood;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Homemade_Pick:
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 10;
+                    materialCounts[1] = 5;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Stone;
+                    materials[1] = CM.Wood;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Metal_Pick:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 10;
+                    materialCounts[1] = 5;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Wood;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Spear:
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 10;
+                    materialCounts[1] = 5;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Wood;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Torch:
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 5;
+                    materialCounts[1] = 0;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Wood;
+                    materials[1] = null;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Bandage:
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 10;
+                    materialCounts[1] = 1;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Cloth;
+                    materials[1] = CM.Water;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Ibuprofen:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 10;
+                    materialCounts[1] = 0;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Water;
+                    materials[1] = null;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Toilet_Paper:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 4;
+                    materialCounts[1] = 2;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Cloth;
+                    materials[1] = CM.Water;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Campfire:
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 10;
+                    materialCounts[1] = 0;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Wood;
+                    materials[1] = null;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.SleepingBag:
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 10;
+                    materialCounts[1] = 0;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Cloth;
+                    materials[1] = null;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Workbench_1:
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 50;
+                    materialCounts[1] = 50;
+                    materialCounts[2] = 50;
+                    materials[0] = CM.Wood;
+                    materials[1] = CM.Stone;
+                    materials[2] = CM.Metal;
+                    break;
+                case ItemInfo.ItemID.Workbench_2:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 300;
+                    materialCounts[1] = 300;
+                    materialCounts[2] = 300;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = CM.Stone;
+                    break;
+                case ItemInfo.ItemID.Workbench_3:
+                    CM.WorkbenchNeeded = 2;
+                    materialCounts[0] = 1000;
+                    materialCounts[1] = 1000;
+                    materialCounts[2] = 1000;
+                    materials[0] = CM.Wood;
+                    materials[1] = CM.Stone;
+                    materials[2] = CM.Metal;
+                    break;
+                case ItemInfo.ItemID.ResearchTable:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 200;
+                    materialCounts[1] = 50;
+                    materialCounts[2] = 50;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Stone;
+                    materials[2] = CM.Wood;
+                    break;
 
 
+            }
+        }
+        else
+        {
+            switch (craft.itemID)
+            {
+                case ItemInfo.ItemID.AK47_Rifle:
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 0;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.prefab2;
+                    materials[1] = null;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Rocket: // Missile
+                    materialCounts[0] = 5;
+                    materialCounts[1] = 5;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.RocketLauncher:
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 50;
+                    materialCounts[2] = 50;
+                    materials[0] = CM.Stone;
+                    materials[1] = CM.Metal;
+                    materials[2] = CM.WeaponParts;
+                    break;
+                case ItemInfo.ItemID.PistolAmmo:
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 1;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Remington870:
+                    materialCounts[0] = 20;
+                    materialCounts[1] = 10;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.WeaponParts;
+                    materials[1] = CM.Metal;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Revolver:
+                    materialCounts[0] = 25;
+                    materialCounts[1] = 10;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.WeaponParts;
+                    materials[1] = CM.Metal;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.RifleAmmo:
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 2;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.ShotgunAmmo:
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 3;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.SmgAmmo:
+                    materialCounts[0] = 1;
+                    materialCounts[1] = 1;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.SniperAmmo:
+                    materialCounts[0] = 2;
+                    materialCounts[1] = 1;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.Sulfur;
+                    materials[2] = null;
+                    break;
+                default:
+                    materialCounts[0] = 0;
+                    materialCounts[1] = 0;
+                    materialCounts[2] = 0;
+                    materials[0] = null;
+                    materials[1] = null;
+                    materials[2] = null;
+                    break;
+            }
         }
         return materialCounts;
     }
