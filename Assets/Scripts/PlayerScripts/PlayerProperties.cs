@@ -15,6 +15,8 @@ public class PlayerProperties : MonoBehaviour
     public GameObject PlayerLookingAtItem;
     public GameObject CurrentlyHoldingItem;
 
+    public Image BloodImage;
+
     public Slider HealthSlider;
     public Slider HungerSlider;
     public Slider ThirstSlider;
@@ -64,7 +66,8 @@ public class PlayerProperties : MonoBehaviour
     public float RadiationExpireTimer;
     float RTimer;
 
-
+    bool isShowingBlood = false;
+    float bloodTimer = 0f;
 
     float Htimer, Ttimer, BTimer;
     public float bleedingInterval, poisonInterval, fullinterval, sickInterval, HealInterval;
@@ -185,11 +188,13 @@ public class PlayerProperties : MonoBehaviour
     {
         IM.ClearInventory();
         IM.UpdateItemCountPerSlot();
-
+        BloodImage.color = new Color(1, 0, 0, 0);
         if (Lastbedclaimed != null)
             transform.position = Spawnpoint;
         else transform.position = new Vector3(-9.11f, 0.15f, 3.24f);
 
+        RadiationAmount = 0;
+        RadiationIcon.SetActive(false);
         isPoisoned = false;
         isBleeding = false;
         isFull = false;
@@ -268,6 +273,8 @@ public class PlayerProperties : MonoBehaviour
             Htimer += Time.deltaTime;
             Ttimer += Time.deltaTime;
             
+
+
             RadiationExpireTimer -= Time.deltaTime;
            
             if (RadiationExpireTimer <= 0)
@@ -281,11 +288,11 @@ public class PlayerProperties : MonoBehaviour
             if (RadiationAmount >= 30)
             {
                 RadiationAmountText.text = RadiationAmount.ToString();
-                
+                RTimer += Time.deltaTime;
                 if (RTimer > 1)
                 {
                     RTimer = 0;
-                    TakeDamage(1);
+                    TakeDamage(1 + RadiationAmount / 50);
                 }
             }
             else if(RadiationAmount > 0)
@@ -392,6 +399,16 @@ public class PlayerProperties : MonoBehaviour
                 }
             }
 
+            if(isShowingBlood)
+            {
+                bloodTimer -= Time.deltaTime;
+                if(bloodTimer <= 0)
+                {
+                    isShowingBlood = false;
+                    BloodImage.color = Color.Lerp(BloodImage.color, new Color(1, 0, 0, 0), 0.5f);
+                }
+            }
+
             if (isSick)
             {
                 sickInterval -= Time.deltaTime;
@@ -433,11 +450,29 @@ public class PlayerProperties : MonoBehaviour
         }
     }
 
+    public IEnumerator ShowBlood()
+    {
+        while (BloodImage.color.a < 0.2f)
+        {
+            BloodImage.color =new Color(BloodImage.color.r, BloodImage.color.g, BloodImage.color.b, BloodImage.color.a + 0.01f);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
     public void TakeDamage(float damage)
     {
         Health -= damage;
 
-        if(Health <= 0)
+        if (Health < 50)
+        {
+            float q = Health / MaxHealth;
+            StartCoroutine(ShowBlood());
+            isShowingBlood = true;
+            bloodTimer = 5.0f;
+        }
+
+
+
+        if (Health <= 0)
         {
             die();
         }
@@ -491,12 +526,7 @@ public class PlayerProperties : MonoBehaviour
         yield return new WaitForSeconds(1.6f);
         isDead = true;
         deathscreen.SetActive(true);
-        GameObject GO = PhotonNetwork.Instantiate("DeathBag", transform.position, Quaternion.identity);
+        GameObject GO = Instantiate(DeathBag, transform.position, Quaternion.identity);
         ShoveLootInDeathBag(GO);
-
-       
-        
-
-
     }
 }

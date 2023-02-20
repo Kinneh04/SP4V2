@@ -344,7 +344,7 @@ public class InventoryManager : MonoBehaviour
 
     public void RemoveQuantityFromSlot(int SlotToRemove, int Quantity)
     {
-        InventoryList[SlotToRemove].SetItemCount(InventoryList[SlotToRemove].GetItemCount()- Quantity);
+        InventoryList[SlotToRemove].SetItemCount(InventoryList[SlotToRemove].GetItemCount() - Quantity);
         if (InventoryList[SlotToRemove].GetItemCount() <= 0)
         {
             Destroy(InventoryList[SlotToRemove]);
