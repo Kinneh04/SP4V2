@@ -35,6 +35,8 @@ TagManager:
   - Campfire
   - LootPool
   - Workbench
+  - ResearchTable
+  - EnemyPlayer
   layers:
   - Default
   - TransparentFX

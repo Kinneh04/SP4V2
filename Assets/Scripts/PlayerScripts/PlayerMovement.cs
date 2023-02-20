@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float Yrotation = 0f;
     private bool isGrounded;
     public bool isMovementEnabled;
-
+    public PhotonView pv;
     public bool canLookAround;
 
     public GameObject Torso;
@@ -45,58 +45,60 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        if (canLookAround)
+        if (pv.IsMine)
         {
-            Xrotation += Input.GetAxis("Mouse X") * turnSpeedX * Time.deltaTime;
-            Yrotation += Input.GetAxis("Mouse Y") * turnSpeedY * Time.deltaTime;
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
 
-            Yrotation = Mathf.Clamp(Yrotation, -60f, 60f);
-            Torso.transform.rotation = Quaternion.Euler(0, 0, 0);
-            Xrotation %= 360;
-            transform.rotation = Quaternion.Euler(-Yrotation, Xrotation, 0f);
-        }
-        if (Mathf.Approximately(horizontal, 0f) && Mathf.Approximately(vertical, 0f) && isGrounded || !isMovementEnabled && isGrounded)
-        {
-            // If no movement keys are being pressed, set velocity to zero
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-            rb.Sleep();
-        }
-        else
-        {
-            rb.constraints = RigidbodyConstraints.None;
-            Vector3 movement = transform.forward * vertical + transform.right * horizontal;
-            movement.y = 0;
-            rb.MovePosition(transform.position + movement.normalized * moveSpeed * Time.deltaTime);
-        }
-        isGrounded = Physics.Raycast(Torso.transform.position, Vector3.down, 0.4f);
+            if (canLookAround)
+            {
+                Xrotation += Input.GetAxis("Mouse X") * turnSpeedX * Time.deltaTime;
+                Yrotation += Input.GetAxis("Mouse Y") * turnSpeedY * Time.deltaTime;
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            rb.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
-            isGrounded = false;
-        }
+                Yrotation = Mathf.Clamp(Yrotation, -60f, 60f);
+                Torso.transform.rotation = Quaternion.Euler(0, 0, 0);
+                Xrotation %= 360;
+                transform.rotation = Quaternion.Euler(-Yrotation, Xrotation, 0f);
+            }
+            if (Mathf.Approximately(horizontal, 0f) && Mathf.Approximately(vertical, 0f) && isGrounded || !isMovementEnabled && isGrounded)
+            {
+                // If no movement keys are being pressed, set velocity to zero
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+                rb.Sleep();
+            }
+            else
+            {
+                rb.constraints = RigidbodyConstraints.None;
+                Vector3 movement = transform.forward * vertical + transform.right * horizontal;
+                movement.y = 0;
+                rb.MovePosition(transform.position + movement.normalized * moveSpeed * Time.deltaTime);
+            }
+            isGrounded = Physics.Raycast(Torso.transform.position, Vector3.down, 0.4f);
 
-        if(Input.GetKey(KeyCode.LeftShift))
-        {
-            moveSpeed = sprintSpeed;
-            swayAmount = 0.5f;
-           // print("SPRINTING!");
-        }
-        else
-        {
-            moveSpeed = OGmoveSpeed;
-            swayAmount = 0.0f;
-        }
+            if (Input.GetButtonDown("Jump") && isGrounded)
+            {
+                rb.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
+                isGrounded = false;
+            }
 
-    
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                moveSpeed = sprintSpeed;
+                swayAmount = 0.5f;
+                // print("SPRINTING!");
+            }
+            else
+            {
+                moveSpeed = OGmoveSpeed;
+                swayAmount = 0.0f;
+            }
 
-        float sway = Mathf.Sin(Time.time * moveSpeed / 5) * swayAmount;
-        transform.rotation *= Quaternion.Euler(0f, sway, 0f);
+
+
+            float sway = Mathf.Sin(Time.time * moveSpeed / 5) * swayAmount;
+            transform.rotation *= Quaternion.Euler(0f, sway, 0f);
+        }
     }
 }
