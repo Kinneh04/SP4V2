@@ -11,7 +11,7 @@ public class PlayerUseItem : MonoBehaviour
     public GameObject RHand;
     public GameObject Inventory;
     public InventoryManager inventoryManager;
-
+    public Camera Cam;
     public Image imageToFade;
     public GameObject sniperScopeImage;
     public float fadeDuration = 0.2f;
@@ -52,7 +52,11 @@ public class PlayerUseItem : MonoBehaviour
         // Wait for a short delay
         yield return new WaitForSeconds(scopeDelay);
         // Enable the sniper scope image
-        sniperScopeImage.SetActive(true);
+        if (Input.GetMouseButton(1))
+        {
+            sniperScopeImage.SetActive(true);
+            Cam.fieldOfView = 15;
+        }
         // Show the sniper scope image by fading out the black image
         elapsedTime = 0;
         while (elapsedTime < fadeDuration)
@@ -446,19 +450,22 @@ public class PlayerUseItem : MonoBehaviour
             }
             else if (Input.GetMouseButtonUp(1))
             {
+                StopCoroutine(FadeToBlack());
                 GameObject ItemGO = playerProperties.CurrentlyHoldingItem;
                 if (playerProperties.CurrentlyHoldingItem && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
                 {
                     isADS = false;
                     playerLookAt.showDot = true;
+                    sniperScopeImage.SetActive(false);
                     playerLookAt.dot.SetActive(true);
                     PAnimator.Play("PBeanIdle");
                     if (playerProperties.CurrentlyHoldingItem && playerProperties.CurrentlyHoldingItem.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.BOLT_ACTION_RIFLE)
                     {
                         sniperScopeImage.SetActive(false);
+                        Cam.fieldOfView = 75;
                     }
                 }
-                
+
             }
 
             //Updates Gun Ammo if Gun is done reloading
