@@ -65,7 +65,7 @@ public class ItemInfo : MonoBehaviour
         SniperAmmo,
         Revolver,
         MP5A4,
-        Remington870,
+        Remington870,//
         C4,
         RocketLauncher,
         Campfire,

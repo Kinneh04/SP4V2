@@ -124,17 +124,20 @@ public class PlayerUseItem : MonoBehaviour
                             GO.GetComponent<Rigidbody>().isKinematic = true;
                             GameObject GO_Dupe = Instantiate(GO, transform.position, Quaternion.identity);
                             GO_Dupe.name = GOName;
-                            
+
+                            inventoryManager.AddQuantity(GO_Dupe.GetComponent<ItemInfo>(), 1);
                             if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)
                             {
                                 Destroy(GO_Dupe);
                             }
-                            inventoryManager.Add(GO_Dupe.GetComponent<ItemInfo>());
+                           
                             Destroy(playerProperties.PlayerLookingAtItem);
                             if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID == GO_Dupe.GetComponent<ItemInfo>().itemID)
                             {
                                 isPlacingItem = true;
                             }
+                            inventoryManager.UpdateItemCountPerSlot();
+                            Debug.Log("HEY!");
                         }
                         else
                         {
@@ -236,6 +239,8 @@ public class PlayerUseItem : MonoBehaviour
                     print("PlacedItem!");
                     ItemGO.GetComponent<ItemPlacing>().PlaceItem();
                     isPlacingItem = false;
+                    inventoryManager.UpdateItemCountPerSlot();
+                    inventoryManager.UpdateItemCountPerSlot();
                 }
                 else if (ItemGO.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
                 {
