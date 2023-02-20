@@ -11,6 +11,7 @@ public class WolfDetectionRange : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.gameObject.name + ", " + other.gameObject.tag);
         if (other.gameObject.CompareTag("Player"))
         {
             DetectedPlayers.Add(other.gameObject);
@@ -29,6 +30,7 @@ public class WolfDetectionRange : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Chicken"))
         {
+            Debug.Log("Found Chicken");
             DetectedPrey.Add(other.gameObject);
             WolfAI wolf = gameObject.GetComponentInParent<WolfAI>();
             if (wolf.Prey == null)

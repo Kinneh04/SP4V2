@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8277599478127788070}
   - component: {fileID: 1279330342075495685}
   - component: {fileID: 8078810540977047671}
-  - component: {fileID: 3424713491751419886}
+  - component: {fileID: 9138072416114595080}
   m_Layer: 2
   m_Name: DetectionRadius
   m_TagString: Unmarked
@@ -98,7 +98,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3424713491751419886
+--- !u!114 &9138072416114595080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 315155995339088210}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91a9ed263e50d43499b6476c5dd79e5e, type: 3}
+  m_Script: {fileID: 11500000, guid: 0fd2be175e0a8f540b9f686d99e76289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6062121161130344991

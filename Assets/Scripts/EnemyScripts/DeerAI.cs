@@ -16,10 +16,12 @@ public class DeerAI : Enemy
     float stamina = 100;
     bool isMoving = false;
     bool isRunning = false;
+    float runTime;
     public bool change = false;
     NavMeshAgent navMeshAgent;
     Vector3 destination;
     Vector3 FromWhere;
+    int enemyType;
     float hitTime;
 
     public GameObject Predator;
@@ -32,11 +34,12 @@ public class DeerAI : Enemy
         Health = MaxHealth;
         navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
         navMeshAgent.speed = MSpd;
-        IdleTime = 2;
-        MoveTime = 2;
+        IdleTime = 0;
+        MoveTime = 0;
         hitTime = 0;
         deadTime = 1;
         CurrentState = FSM.IDLE;
+        enemyType = 0;
     }
 
     // Update is called once per frame
@@ -49,22 +52,27 @@ public class DeerAI : Enemy
                 if (Vector3.Distance(transform.position, TargetPlayer.transform.position) < Vector3.Distance(transform.position, Predator.transform.position))
                 {
                     FromWhere = TargetPlayer.transform.position;
+                    enemyType = 1;
                 }
                 else
                 {
                     FromWhere = Predator.transform.position;
+                    enemyType = 2;
                 }
             }
             else if (TargetPlayer != null)
             {
                 FromWhere = TargetPlayer.transform.position;
+                enemyType = 1;
             }
             else if (Predator != null)
             {
                 FromWhere = Predator.transform.position;
+                enemyType = 2;
             }
             change = false;
             isRunning = true;
+            runTime = 2;
             navMeshAgent.speed = MSpd * 2.0f;
         }
         if (hitTime > 0)
@@ -73,6 +81,7 @@ public class DeerAI : Enemy
             if (!isRunning)
             {
                 isRunning = true;
+                runTime = 2;
                 navMeshAgent.speed = MSpd * 2.0f;
             }
             else if (TargetPlayer != null || Predator != null && hitTime > 0)
@@ -80,9 +89,24 @@ public class DeerAI : Enemy
         }
         else if (TargetPlayer == null && Predator == null && isRunning)
         {
-            isRunning = false;
-            isMoving = false;
-            CurrentState = FSM.WANDER;
+            navMeshAgent.speed = MSpd;
+            enemyType = 0;
+            if (runTime > 0)
+                runTime -= Time.deltaTime;
+            else
+            {
+                isRunning = false;
+                isMoving = false;
+                CurrentState = FSM.WANDER;
+            }
+        }
+        if (enemyType == 1)
+        {
+            FromWhere = TargetPlayer.transform.position;
+        }
+        else if (enemyType == 2)
+        {
+            FromWhere = Predator.transform.position;
         }
 
         if (Health <= 0)
@@ -106,7 +130,7 @@ public class DeerAI : Enemy
                     else
                     {
                         CurrentState = FSM.WANDER;
-                        MoveTime = 2;
+                        MoveTime = 0.5f;
                     }
                     break;
                 }
@@ -140,11 +164,11 @@ public class DeerAI : Enemy
                             transform.LookAt(transform.position + FromWhere);
                             Quaternion angleOfDanger = transform.rotation;
                             transform.rotation = prev;
-                            float result = angleOfDanger.eulerAngles.y + Random.Range(-45, 45);
+                            float result = angleOfDanger.eulerAngles.y + Random.Range(-30, 30);
 
                             Vector3 direction = new Vector3(Mathf.Sin(result * Mathf.Deg2Rad), 0, Mathf.Cos(result * Mathf.Deg2Rad));
 
-                            destination = transform.position + direction * 5;
+                            destination = transform.position + direction * 10;
                             navMeshAgent.SetDestination(destination);
                             isMoving = true;
                         }
@@ -166,25 +190,30 @@ public class DeerAI : Enemy
                             if (Vector3.Distance(gameObject.transform.position, destination) < 1)
                             {
                                 isMoving = false;
-                                IdleTime = Random.Range(1, 5);
+                                IdleTime = Random.Range(0, 1);
                                 CurrentState = FSM.IDLE;
                                 break;
                             }
                         }
                         else
                         {
-                            float x = Random.Range(-5, 5);
-                            float z = Random.Range(-5, 5);
-                            destination = transform.position;
-                            destination += new Vector3(x, 0.0f, z);
+                            Quaternion prev = transform.rotation;
+                            transform.LookAt(transform.position + transform.forward);
+                            Quaternion angleOfDanger = transform.rotation;
+                            transform.rotation = prev;
+                            float result = angleOfDanger.eulerAngles.y + Random.Range(-30, 30);
+
+                            Vector3 direction = new Vector3(Mathf.Sin(result * Mathf.Deg2Rad), 0, Mathf.Cos(result * Mathf.Deg2Rad));
+
+                            destination = transform.position + direction * 10;
                             navMeshAgent.SetDestination(destination);
                             isMoving = true;
-                            MoveTime = 2;
+                            MoveTime = 0.5f;
                         }
                         if (MoveTime <= 0)
                         {
                             isMoving = false;
-                            IdleTime = Random.Range(1, 5);
+                            IdleTime = Random.Range(0, 1);
                             CurrentState = FSM.IDLE;
                             break;
                         }
@@ -221,11 +250,11 @@ public class DeerAI : Enemy
                             transform.LookAt(transform.position + FromWhere);
                             Quaternion angleOfDanger = transform.rotation;
                             transform.rotation = prev;
-                            float result = angleOfDanger.eulerAngles.y + Random.Range(-45, 45);
+                            float result = angleOfDanger.eulerAngles.y + Random.Range(-30, 30);
 
                             Vector3 direction = new Vector3(Mathf.Sin(result * Mathf.Deg2Rad), 0, Mathf.Cos(result * Mathf.Deg2Rad));
 
-                            destination = transform.position + direction * 5;
+                            destination = transform.position + direction * 10;
                             navMeshAgent.SetDestination(destination);
                             isMoving = true;
                         }

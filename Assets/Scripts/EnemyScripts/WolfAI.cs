@@ -150,7 +150,7 @@ public class WolfAI : Enemy
                             break;
                         }
                     }
-                    float distance = Vector3.Distance(transform.position, TargetPlayer.transform.position);
+                    float distance = Vector3.Distance(transform.position, Target.transform.position);
                     if (isMoving)
                     {
                         if (Vector3.Distance(gameObject.transform.position, destination) < 1)
@@ -163,7 +163,7 @@ public class WolfAI : Enemy
                         if (!Pouncing)
                         {
                             Debug.Log(destination);
-                            destination = TargetPlayer.transform.position;
+                            destination = Target.transform.position;
                             navMeshAgent.SetDestination(destination);
                             isMoving = true;
                         }
@@ -181,7 +181,7 @@ public class WolfAI : Enemy
                             PounceCD = 6;
                             Pouncing = true;
                             navMeshAgent.speed = 10;
-                            destination = (TargetPlayer.transform.position - transform.position) * 5 + transform.position;
+                            destination = (Target.transform.position - transform.position) * 5 + transform.position;
 
                             navMeshAgent.SetDestination(destination);
                             isMoving = false;
