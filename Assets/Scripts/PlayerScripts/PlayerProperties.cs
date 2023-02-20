@@ -264,6 +264,7 @@ public class PlayerProperties : MonoBehaviour
         OGBI = bleedingInterval;
         OGPI = poisonInterval;
         OGSI = sickInterval;
+        OGHI = HealInterval;
     }
 
     private void Update()
