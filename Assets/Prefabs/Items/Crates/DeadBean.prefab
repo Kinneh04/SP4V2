@@ -376,7 +376,6 @@ MonoBehaviour:
   - {fileID: 7268146472781844992, guid: 8dec6d3383d68714cb6b5e801ca543a1, type: 3}
   - {fileID: 315452422639623956, guid: 5bde42d35ba41af4c981a4a4270e882f, type: 3}
   - {fileID: 1641132884159096686, guid: 55bb5ae451ae3da45bbba16fdb6e8ed5, type: 3}
-  - {fileID: 5184089546666817614, guid: 34ff1d2c70577fe469299a64ddfa4c48, type: 3}
   MaxPossibleItems: 7
   MaxQuantityOfEachItem: 2
   ItemsInCrate: []
