@@ -115,34 +115,37 @@ public class PlayerProperties : MonoBehaviour
     }
     public void OpenInventory()
     {
-        print("HEY!");
-        if (!playerMovement.isMovementEnabled)
+        if (pv.IsMine)
         {
-            inventoryScreen.SetActive(false);
-            inventoryIsOpen = false;
-            furnaceScreen.SetActive(false);
-            
-            
-            LootScreen.SetActive(false);
-            if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Crate")
+            print("HEY!");
+            if (!playerMovement.isMovementEnabled)
             {
-                print("UpdatingCrate!");
-                PlayerLookingAtItem.GetComponent<LootProperties>().UpdateLoot();
-                PlayerLookingAtItem.GetComponent<LootProperties>().ClearLastLootPool();
+                inventoryScreen.SetActive(false);
+                inventoryIsOpen = false;
+                furnaceScreen.SetActive(false);
+
+
+                LootScreen.SetActive(false);
+                if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Crate")
+                {
+                    print("UpdatingCrate!");
+                    PlayerLookingAtItem.GetComponent<LootProperties>().UpdateLoot();
+                    PlayerLookingAtItem.GetComponent<LootProperties>().ClearLastLootPool();
+                }
+                else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
+                {
+                    PlayerLookingAtItem.GetComponent<FurnaceProperties>().isLookingAtIt = false;
+                    PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
+                    PlayerLookingAtItem.GetComponent<FurnaceProperties>().ClearLastLootPool();
+                }
+                playerMovement.LockCursor();
             }
-            else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
+            else
             {
-                PlayerLookingAtItem.GetComponent<FurnaceProperties>().isLookingAtIt = false;
-                PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
-                PlayerLookingAtItem.GetComponent<FurnaceProperties>().ClearLastLootPool();
+                inventoryScreen.SetActive(true);
+                inventoryIsOpen = true;
+                playerMovement.UnlockCursor();
             }
-            playerMovement.LockCursor();
-        }
-        else
-        {
-            inventoryScreen.SetActive(true);
-            inventoryIsOpen = true;
-            playerMovement.UnlockCursor();
         }
     }
 

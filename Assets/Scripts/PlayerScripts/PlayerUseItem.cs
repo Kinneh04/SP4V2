@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Photon.Pun.Demo.Cockpit;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class PlayerUseItem : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class PlayerUseItem : MonoBehaviour
     public GameObject sniperScopeImage;
     public float fadeDuration = 0.2f;
     public float scopeDelay = 0.2f;
+
+    public PhotonView pv;
 
     public Animator PAnimator;
     bool LeftMouseButtonPressed = false;   //click once only
@@ -34,6 +37,7 @@ public class PlayerUseItem : MonoBehaviour
     private void Awake()
     {
         inventoryManager = Inventory.GetComponent<InventoryManager>();
+        pv = GetComponent<PhotonView>();
     }
 
 
@@ -635,7 +639,12 @@ public class PlayerUseItem : MonoBehaviour
                 )
             )
             {
-                ForceGiveItem(CurrentItem);
+                if (pv.IsMine)
+                {
+                    ForceGiveItem(CurrentItem);
+                    pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.Others, CurrentItem.name, PhotonNetwork.LocalPlayer.ActorNumber);
+                }
+
             }
             else if(!CurrentItem && playerProperties.CurrentlyHoldingItem) // if player holding something but current slot supposed to have nothing held
             {
@@ -645,6 +654,24 @@ public class PlayerUseItem : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    void UpdateOtherClientsAboutYourNewHandItem(string newItem, int ActorNumber)
+    {
+        //get RHand from actor number
+        //Instantiate item from newItem string
+        // parent newItem to Rhand
+        Player ActorView = PhotonNetwork.CurrentRoom.GetPlayer(ActorNumber);
+        GameObject Actor = ActorView.TagObject as GameObject;
+        //PhotonView ActorView = PhotonView.Find(ActorNumber);
+        //GameObject Actor = ActorView.gameObject;
+        GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
+
+        GameObject ItemToPairToHand = GameObject.Find("newItem");
+        ItemToPairToHand.transform.position = RHand.transform.position;
+        ItemToPairToHand.transform.rotation = RHand.transform.rotation;
+        ItemToPairToHand.transform.SetParent(RHand.transform);
+        ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = true;
+    }
     
 
    public void ForceGiveItem(ItemInfo itemInfo)
