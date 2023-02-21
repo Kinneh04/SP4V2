@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class Remington870 : WeaponInfo
 {
@@ -38,12 +39,8 @@ public class Remington870 : WeaponInfo
             {
                 for (int i = 0; i < PelletCount; i++)
                 {
-                    GameObject projectile = Instantiate(BulletPrefab, transform.position, Quaternion.identity);
-                    projectile.GetComponent<Raycast>().Damage = Damage;
-                    projectile.GetComponent<Raycast>().BulletSpawnPoint = transform;
-                    projectile.GetComponent<Raycast>().ParentGunTip = BarrelTip;
-                    projectile.GetComponent<Raycast>().SetAimCone(AimCone);
-                    projectile.GetComponent<Raycast>().Shoot();
+                    PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
+                    ProjectilephotonView.RPC("DefaultBulletInit", RpcTarget.All);
                 }
                 // Lock the weapon after this discharge
                 CanFire = false;

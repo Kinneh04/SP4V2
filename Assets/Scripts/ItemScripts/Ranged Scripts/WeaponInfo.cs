@@ -37,7 +37,7 @@ public abstract class WeaponInfo : ItemInfo
 	//Weapon Damage
 	protected float Damage;
 	protected GUNNAME GunName;
-	protected GameObject BarrelTip;
+	public GameObject BarrelTip;
 	protected ItemID AmmoType;
 	// The time between shots in milliseconds
 	protected double TimeBetweenShots;
@@ -267,12 +267,10 @@ public abstract class WeaponInfo : ItemInfo
 			// If there is still ammo in the magazine, then fire
 			if (MagRounds > 0 || InfiniteAmmo)
 			{
-				GameObject projectile = Instantiate(BulletPrefab, transform.position, Quaternion.identity);
-				projectile.GetComponent<Raycast>().Damage = Damage;
-				projectile.GetComponent<Raycast>().BulletSpawnPoint = transform;
-                projectile.GetComponent<Raycast>().ParentGunTip = BarrelTip;
-                projectile.GetComponent<Raycast>().SetAimCone(AimCone);
-				projectile.GetComponent<Raycast>().Shoot();
+				//Get Player PhotonView
+				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
+				ProjectilephotonView.RPC("DefaultBulletInit", RpcTarget.All);
+
 				// Lock the weapon after this discharge
 				CanFire = false;
 				// Reset the dElapsedTime to dTimeBetweenShots for the next shot
@@ -291,6 +289,7 @@ public abstract class WeaponInfo : ItemInfo
 
 		return false;
 	}
+
 	// Reload this weapon
 	virtual public void Reload() 
 	{

@@ -120,7 +120,7 @@ public class Raycast : MonoBehaviour
     }
     private Vector3 GetDirection()
     {
-        Vector3 direction = BulletSpawnPoint.forward;
+        Vector3 direction = ParentGunTip.transform.forward;
         if (AddBulletSpread)
         {
             direction += new Vector3(

@@ -488,6 +488,18 @@ public class PlayerProperties : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    public void DefaultBulletInit()
+    {
+        WeaponInfo weaponInfo = CurrentlyHoldingItem.GetComponent<WeaponInfo>();
+        GameObject BulletProjectile = Instantiate(weaponInfo.BulletPrefab, transform.position, Quaternion.identity);
+        BulletProjectile.GetComponent<Raycast>().Damage = weaponInfo.GetDamage();
+        BulletProjectile.GetComponent<Raycast>().BulletSpawnPoint = weaponInfo.transform;
+        BulletProjectile.GetComponent<Raycast>().ParentGunTip = weaponInfo.BarrelTip;
+        BulletProjectile.GetComponent<Raycast>().SetAimCone(weaponInfo.GetAimCone());
+        BulletProjectile.GetComponent<Raycast>().Shoot();
+        Debug.Log("GG");
+    }
     public void die()
     {
         if (!isDead)
@@ -530,4 +542,5 @@ public class PlayerProperties : MonoBehaviour
         GameObject GO = Instantiate(DeathBag, transform.position, Quaternion.identity);
         ShoveLootInDeathBag(GO);
     }
+
 }

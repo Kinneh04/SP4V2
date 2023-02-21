@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class C4 : WeaponInfo
 {
 	public GameObject BarrlTip;
@@ -34,18 +34,18 @@ public class C4 : WeaponInfo
 			// If there is still ammo in the magazine, then fire
 			if (ItemCount > 0)
 			{
-				GameObject projectile = Instantiate(BulletPrefab, BarrlTip.transform.position, Quaternion.identity);
-				projectile.GetComponent<Projectile>().Damage = Damage;
-				projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
-				projectile.GetComponent<Projectile>().ParentGunTip = BarrlTip;
-				projectile.GetComponent<Projectile>().SetAimCone(AimCone);
-				projectile.GetComponent<Rigidbody>().isKinematic = false;
-				projectile.transform.parent = null;
-				projectile.transform.rotation = transform.rotation;
-				projectile.GetComponent<Projectile>().JustFired = true;
-				projectile.GetComponent<Projectile>().itemID = AmmoType;
-				projectile.GetComponent<Projectile>().ExplosionTimer = 3;
-				projectile.GetComponent<Projectile>().ShootNonRaycastType();
+				PhotonView projectile = PhotonNetwork.Instantiate("C4_Projectile", transform.position, Quaternion.identity).GetComponent<PhotonView>();
+				projectile.gameObject.GetComponent<Projectile>().Damage = Damage;
+				projectile.gameObject.GetComponent<Projectile>().BulletSpawnPoint = transform;
+				projectile.gameObject.GetComponent<Projectile>().ParentGunTip = BarrlTip;
+				projectile.gameObject.GetComponent<Projectile>().SetAimCone(AimCone);
+				projectile.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+				projectile.gameObject.transform.parent = null;
+				projectile.gameObject.transform.rotation = transform.rotation;
+				projectile.gameObject.GetComponent<Projectile>().JustFired = true;
+				projectile.gameObject.GetComponent<Projectile>().itemID = AmmoType;
+				projectile.gameObject.GetComponent<Projectile>().ExplosionTimer = 3;
+				projectile.gameObject.GetComponent<Projectile>().ShootNonRaycastType();
 
 				// Lock the weapon after this discharge
 				CanFire = false;
