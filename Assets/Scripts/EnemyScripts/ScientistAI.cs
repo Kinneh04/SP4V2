@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 public class ScientistAI : Enemy
 {
@@ -22,10 +23,12 @@ public class ScientistAI : Enemy
     float TimebetweenShots;
     FSM CurrentState;
 
+    PhotonView PV;
+
     public ENEMY_TYPE EnemyType;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         CurrentState = FSM.IDLE;
         if (EnemyType == ENEMY_TYPE.SCIENTIST)
@@ -44,6 +47,7 @@ public class ScientistAI : Enemy
         gun.SetInfiniteAmmo(true);
         gun.SetTimeBetweenShots(0.33f);
         gun.SetCanFire(true);
+        PV = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -241,8 +245,8 @@ public class ScientistAI : Enemy
                         transform.LookAt(direction + transform.position);
                         deadTime -= Time.deltaTime;
                     }
-                    if (deadTime <= 0)
-                        Destroy(gameObject);
+                    if (deadTime <= 0 && PV.IsMine)
+                        PhotonNetwork.Destroy(gameObject);
                     break;
                 }
         }

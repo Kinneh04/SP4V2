@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 public class ChickenAI : Enemy
 {
@@ -20,12 +21,14 @@ public class ChickenAI : Enemy
     Vector3 FromWhere;
     float hitTime;
 
+    PhotonView PV;
+
     public bool change = false;
     public GameObject Predator = null;
 
     FSM CurrentState;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         MaxHealth = 100;
         Health = MaxHealth;
@@ -36,6 +39,7 @@ public class ChickenAI : Enemy
         hitTime = 0;
         deadTime = 1;
         CurrentState = FSM.IDLE;
+        PV = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -240,8 +244,8 @@ public class ChickenAI : Enemy
                         transform.LookAt(direction + transform.position);
                         deadTime -= Time.deltaTime;
                     }
-                    if (deadTime <= 0)
-                        Destroy(gameObject);
+                    if (deadTime <= 0 && PV.IsMine)
+                        PhotonNetwork.Destroy(gameObject);
                     break;
                 }
         }
