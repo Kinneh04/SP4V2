@@ -469,32 +469,36 @@ public class PlayerProperties : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
+    [PunRPC]
     public void TakeDamage(float damage)
     {
-        Health -= damage;
-
-        if (Health < 50)
+        if (pv.IsMine)
         {
-            float q = Health / MaxHealth;
-            StartCoroutine(ShowBlood());
-            isShowingBlood = true;
-            bloodTimer = 5.0f;
-        }
+            Health -= damage;
+
+            if (Health < 50)
+            {
+                float q = Health / MaxHealth;
+                StartCoroutine(ShowBlood());
+                isShowingBlood = true;
+                bloodTimer = 5.0f;
+            }
 
 
 
-        if (Health <= 0)
-        {
-            die();
-        }
+            if (Health <= 0)
+            {
+                die();
+            }
 
-        float f = Random.Range(1, 100);
-        if(bleedChance < f)
-        {
-            isBleeding = true;
-            bleedingIcon.SetActive(true);
-            BTimer = 60f;
+            float f = Random.Range(1, 100);
+            if (bleedChance < f)
+            {
+                isBleeding = true;
+                bleedingIcon.SetActive(true);
+                BTimer = 60f;
 
+            }
         }
     }
 
