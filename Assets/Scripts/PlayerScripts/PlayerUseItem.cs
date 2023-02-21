@@ -133,13 +133,14 @@ public class PlayerUseItem : MonoBehaviour
                             string GOName = GO.name;
                             GO.GetComponent<Rigidbody>().isKinematic = true;
                             GameObject GO_Dupe = Instantiate(GO, transform.position, Quaternion.identity);
+                            GO_Dupe.GetComponent<ItemInfo>().NetworkedReplacement = true;
                             GO_Dupe.name = GOName;
 
                             inventoryManager.AddQuantity(GO_Dupe.GetComponent<ItemInfo>(), 1);
-                            if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)
-                            {
-                                Destroy(GO_Dupe);
-                            }
+                            //if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)
+                            //{
+                            //    Destroy(GO_Dupe);
+                            //}
                            
                             Destroy(playerProperties.PlayerLookingAtItem);
                             if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID == GO_Dupe.GetComponent<ItemInfo>().itemID)
@@ -515,7 +516,7 @@ public class PlayerUseItem : MonoBehaviour
             //Updates Gun Ammo if Gun is done reloading
             if (playerProperties.CurrentlyHoldingItem)
             {
-                Debug.Log(playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>());
+                //Debug.Log(playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>());
                 if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
                 {
                     //Current gun ammo not matching ammo displayed
@@ -562,12 +563,81 @@ public class PlayerUseItem : MonoBehaviour
             {
                 UpdateInventorySlot(5);
             }
+
+
+
             //Stores Equipped Item into CurrentItem
             ItemInfo CurrentItem = null;
             if (inventoryManager.IntGetItem(inventoryManager.EquippedSlot))
             {
                 CurrentItem = inventoryManager.IntGetItem(inventoryManager.EquippedSlot);
             }
+            else if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                inventoryManager.EquippedSlot = 4;
+                isPlacingItem = false;
+                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)
+                {
+                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
+                    {
+                        isPlacingItem = true;
+                    }
+                    else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.BuildPlan)
+                    {
+                        hs.SetIsUsingHammer(false);
+                        bs.SetIsBuilding(true);
+                    }
+                    else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
+                    {
+                        hs.SetIsUsingHammer(true);
+                        bs.SetIsBuilding(false);
+                    }
+                    else
+                    {
+                        hs.SetIsUsingHammer(false);
+                        bs.SetIsBuilding(false);
+                    }
+                }
+                else
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(false);
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                inventoryManager.EquippedSlot = 5;
+                isPlacingItem = false;
+                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)
+                {
+                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
+                    {
+                        isPlacingItem = true;
+                    }
+                    else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.BuildPlan)
+                    {
+                        hs.SetIsUsingHammer(false);
+                        bs.SetIsBuilding(true);
+                    }
+                    else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
+                    {
+                        hs.SetIsUsingHammer(true);
+                        bs.SetIsBuilding(false);
+                    }
+                    else
+                    {
+                        hs.SetIsUsingHammer(false);
+                        bs.SetIsBuilding(false);
+                    }
+                }
+                else
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(false);
+                }
+            }
+            //Stores Equipped Item into CurrentItem
+
             if (CurrentItem && //check if there is a item to equip 
                 (!playerProperties.CurrentlyHoldingItem       //equips player with item in slot if hand empty
                   || (playerProperties.CurrentlyHoldingItem &&  //not null
@@ -621,6 +691,18 @@ public class PlayerUseItem : MonoBehaviour
             hs.SetIsUsingHammer(false);
             bs.SetIsBuilding(false);
         }
+    }
+
+    [PunRPC]
+    void RemoveItemFromHandForOtherClients(string newItem, int ActorNumber)
+    {
+        PhotonView ActorPV = PhotonView.Find(ActorNumber);
+        GameObject Actor = ActorPV.gameObject;
+        //Actor.GetComponent<PlayerProperties>().CurrentlyHoldingItem = null;
+
+        GameObject ItemToPairToHand;
+        ItemToPairToHand = GameObject.Find(newItem);
+        ItemToPairToHand.SetActive(false);
     }
 
     [PunRPC]

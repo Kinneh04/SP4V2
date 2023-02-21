@@ -117,7 +117,7 @@ public class PlayerProperties : MonoBehaviour
     {
         if (pv.IsMine)
         {
-            print("HEY!");
+            //print("HEY!");
             if (!playerMovement.isMovementEnabled)
             {
                 inventoryScreen.SetActive(false);

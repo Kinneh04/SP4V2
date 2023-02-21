@@ -243,17 +243,17 @@ public class InventoryManager : MonoBehaviour
             {
                 InventoryList[SlotNum].ItemCount += QuantityToAdd;
                 Destroy(item);
-                Debug.Log("Path1");
+               // Debug.Log("Path1");
             }
             else //creates a new gameobj and adds quantity
             {
-                Debug.Log("Path2 - 1");
+                //Debug.Log("Path2 - 1");
                 //GameObject newItem = Instantiate(item.gameObject);
                 InventoryList[SlotNum] = item;
                 InventoryList[SlotNum].ItemCount = QuantityToAdd;
                 //InventoryList[SlotNum].SetItemCount(QuantityToAdd + InventoryList[SlotNum].GetItemCount());
                // Destroy(item);
-                Debug.Log("Path2 - 2: " + InventoryList[SlotNum]);
+              // Debug.Log("Path2 - 2: " + InventoryList[SlotNum]);
             }
         }
         UpdateItemCountPerSlot();
@@ -266,7 +266,7 @@ public class InventoryManager : MonoBehaviour
         {
             if( InventoryList[i] != null && InventoryList[i].itemID == ItemToCheckFor.itemID)// && InventoryList[i].MaxItemCount < ItemToCheckFor.MaxItemCount - Quantity)
             {
-                print("SAME SIDE!");
+               // print("SAME SIDE!");
                 return i;
             }
             else if(InventoryList[i] == ItemToCheckFor && InventoryList[i].MaxItemCount < ItemToCheckFor.MaxItemCount)

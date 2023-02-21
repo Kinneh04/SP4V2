@@ -17,7 +17,7 @@ public class Harvestables : MonoBehaviour
         II.AddQuantity(GOpv.GetComponent<ItemInfo>(), (int)(BaseHarvestAmount * multiplier));
         //GOpv.gameObject.SetActive(false);
         GOpv.RPC("ParentToObj", RpcTarget.All, GOpv.ViewID);
-        print("Harvested x" + (int)(BaseHarvestAmount * multiplier));
+        //print("Harvested x" + (int)(BaseHarvestAmount * multiplier));
         if(ItemAmount <= 0)
         {
             Destroy(gameObject);

@@ -89,7 +89,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.Instantiate("Metal axe", position, rotation, 0);
-            PhotonNetwork.Instantiate("campfire", position, rotation, 0);
+            PhotonNetwork.Instantiate("FurnaceBall", position, rotation, 0);
         }
 
     }

@@ -130,6 +130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58bf2f12439aabd41904882ca9ee9ff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  phview: {fileID: 0}
+  NetworkedReplacement: 1
   ReplacementObj: {fileID: 753098874709022720, guid: 6e875eb9ce0bdc7488321365a0b82faa,
     type: 3}
   OwnerActor: {fileID: 0}

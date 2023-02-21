@@ -85,7 +85,7 @@ public class ItemInfo : MonoBehaviour
         NUM_ITEMID  
     };
 
-
+    public bool NetworkedReplacement = false;
     public GameObject ReplacementObj;
     public GameObject OwnerActor;
 
