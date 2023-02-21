@@ -47,7 +47,7 @@ TagManager:
   - Player
   - Buildable
   - BuildPreview
-  - 
+  - BuildableParent
   - 
   - 
   - 

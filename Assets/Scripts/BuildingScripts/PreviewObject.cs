@@ -153,6 +153,10 @@ public class PreviewObject : MonoBehaviour
         {
             foreach (Transform child in transform)
             {
+                if (child.GetComponent<Renderer>() == null)
+                    return;
+
+
                 Material[] mats = child.GetComponent<Renderer>().materials;
                 mats[0] = validMat;
                 child.GetComponent<Renderer>().materials = mats;
@@ -162,6 +166,9 @@ public class PreviewObject : MonoBehaviour
         {
             foreach (Transform child in transform)
             {
+                if (child.GetComponent<Renderer>() == null)
+                    return;
+
                 Material[] mats = child.GetComponent<Renderer>().materials;
                 mats[0] = invalidMat;
                 child.GetComponent<Renderer>().materials = mats;

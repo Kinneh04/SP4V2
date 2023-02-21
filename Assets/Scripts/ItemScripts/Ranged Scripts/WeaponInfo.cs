@@ -278,7 +278,8 @@ public abstract class WeaponInfo : ItemInfo
 				// Reset the dElapsedTime to dTimeBetweenShots for the next shot
 				ElapsedTime = TimeBetweenShots;
 				// Reduce the rounds by 1
-				MagRounds--;
+				if (!InfiniteAmmo)
+					MagRounds--;
             
                 return true;
 			}

@@ -24,7 +24,7 @@ public class CircularMenu : MonoBehaviour
     private void Start()
     {
         menuItemsNo = buttons.Count;
-        foreach(MenuButton button in buttons)
+        foreach (MenuButton button in buttons)
         {
             button.buttonImage.color = button.NormalColor;
         }
@@ -44,7 +44,7 @@ public class CircularMenu : MonoBehaviour
 
         // Calculate angle in menu circle
         float angle = (Mathf.Atan2(fromVector2M.y - centerCirclePos.y, fromVector2M.x - centerCirclePos.x) - Mathf.Atan2(toVector2M.y - centerCirclePos.y, toVector2M.x - centerCirclePos.x)) * Mathf.Rad2Deg;
-        
+
         if (angle < 0) // Angle on left side of screen becomes negative! So add 360 (Eg -90 + 360 = 270deg)
             angle += 360;
 
@@ -57,6 +57,7 @@ public class CircularMenu : MonoBehaviour
             buttons[OldMenuItem].buttonImage.color = buttons[OldMenuItem].NormalColor;
             buttons[OldMenuItem].icon.color = Color.white;
             OldMenuItem = CurrMenuItem;
+
             buttons[CurrMenuItem].buttonImage.color = buttons[CurrMenuItem].HighlightColor;
             buttons[CurrMenuItem].icon.color = Color.black;
 
@@ -64,7 +65,18 @@ public class CircularMenu : MonoBehaviour
             InfoIcon.sprite = buttons[CurrMenuItem].icon.sprite;
             InfoText.text = buttons[CurrMenuItem].name;
             InfoDesc.text = buttons[CurrMenuItem].description;
-            InfoWood.text = buttons[CurrMenuItem].wood + "x Wood";
+            if (buttons[CurrMenuItem].wood == 0)
+            {
+                InfoWood.text = "";
+            }
+            else if (buttons[CurrMenuItem].isStone)
+            {
+                InfoWood.text = buttons[CurrMenuItem].wood + "x Stone";
+            }
+            else
+            {
+                InfoWood.text = buttons[CurrMenuItem].wood + "x Wood";
+            }
         }
     }
 }
@@ -75,6 +87,7 @@ public class MenuButton
     public string name;
     public string description;
     public int wood;
+    public bool isStone = false;
     public Image buttonImage;
     public Image icon;
     public Color NormalColor = Color.white;

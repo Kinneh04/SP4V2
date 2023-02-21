@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 public class TankAI : Enemy
 {
@@ -22,12 +23,16 @@ public class TankAI : Enemy
     int currentWaypoint;
     Vector3 destination;
 
+    RocketLauncher gun;
+
+    PhotonView PV;
+
     FSM CurrentState;
 
     public ENEMY_TYPE EnemyType;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         MaxHealth = 1500;
         float dist = 100;
@@ -70,18 +75,20 @@ public class TankAI : Enemy
         TargetPlayer = null;
         deadTime = 2;
         navMeshAgent.speed = MSpd;
-        //gun = gameObject.GetComponentInChildren<WeaponInfo>();
-        //gun.Init();
-        //gun.SetInfiniteAmmo(true);
-        //gun.SetTimeBetweenShots(0.33f);
-        //gun.SetCanFire(true);
+        PV = GetComponent<PhotonView>();
+        gun = gameObject.GetComponentInChildren<RocketLauncher>();
+        gun.Init();
+        gun.SetInfiniteAmmo(true);
+        gun.SetTimeBetweenShots(0.33f);
+        gun.SetCanFire(true);
+        //Debug.Log("Awake: " + gun.GetInfiniteAmmo());
     }
 
     // Update is called once per frame
     void Update()
     {
 
-       // Debug.Log(CurrentState);
+       //Debug.Log("Update: " + gun.GetInfiniteAmmo());
         
 
         if (CurrentState != FSM.ATTACK && TargetPlayer != null && !GoingMonument)
@@ -154,6 +161,7 @@ public class TankAI : Enemy
                         navMeshAgent.Resume();
                         break;
                     }
+                    Attack();
                     break;
                 }
             case FSM.DEAD: // Dead
@@ -162,8 +170,8 @@ public class TankAI : Enemy
                     {
                         deadTime -= Time.deltaTime;
                     }
-                    if (deadTime <= 0)
-                        Destroy(gameObject);
+                    if (deadTime <= 0 && PV.IsMine)
+                        PhotonNetwork.Destroy(gameObject);
                     break;
                 }
             default:
@@ -254,10 +262,7 @@ public class TankAI : Enemy
 
     void Attack()
     {
-        //if (EnemyType == ENEMY_TYPE.TANK)
-        //    gun.Discharge(gameObject.transform.Find("TurretBody"));
-        //else
-        //    gun.Discharge(gameObject.transform.Find("Capsule"));
+        gun.Discharge(gameObject.transform.Find("TurretBody"));
     }
 
     override public void GetDamaged(int damage)

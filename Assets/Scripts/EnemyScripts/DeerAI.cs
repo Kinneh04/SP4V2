@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 public class DeerAI : Enemy
 {
@@ -24,11 +25,13 @@ public class DeerAI : Enemy
     int enemyType;
     float hitTime;
 
+    PhotonView PV;
+
     public GameObject Predator;
 
     FSM CurrentState;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         MaxHealth = 100;
         Health = MaxHealth;
@@ -40,6 +43,7 @@ public class DeerAI : Enemy
         deadTime = 1;
         CurrentState = FSM.IDLE;
         enemyType = 0;
+        PV = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -277,8 +281,8 @@ public class DeerAI : Enemy
                         transform.LookAt(direction + transform.position);
                         deadTime -= Time.deltaTime;
                     }
-                    if (deadTime <= 0)
-                        Destroy(gameObject);
+                    if (deadTime <= 0 && PV.IsMine)
+                        PhotonNetwork.Destroy(gameObject);
                     break;
                 }
         }
