@@ -259,6 +259,21 @@ public class InventoryManager : MonoBehaviour
         UpdateItemCountPerSlot();
     }
 
+    public void RemoveQuantity(ItemInfo item, int QuantityToRemove = 0)
+    {
+        print("ATTEMPT TO ADD ITEM: " + item.itemID);
+        if (InventoryList.Count > 0)
+        {
+            int SlotNum = CheckForAvailableSlots(item, QuantityToRemove);
+            if (InventoryList[SlotNum] != null) //Removes quantity
+            {
+                InventoryList[SlotNum].ItemCount -= QuantityToRemove;
+                Debug.Log("Path1");
+            }
+        }
+        UpdateItemCountPerSlot();
+    }
+
 
     public int CheckForAvailableSlots(ItemInfo ItemToCheckFor,int Quantity)
     {

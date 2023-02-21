@@ -18,6 +18,11 @@ public class HammerSystem : MonoBehaviour
     public LayerMask layer; // To assign it to exclude BuildPreview in raycast checks
     private RaycastHit hit;
 
+    public InventoryManager im;
+    public GameObject woodObj;
+    public GameObject stoneObj;
+    public CreatePopup cp;
+
     private bool IsUsingHammer = false;
     private bool IsPickingUp = false;
     public float ActionCooldown = 1.0f;
@@ -295,29 +300,70 @@ public class HammerSystem : MonoBehaviour
                     }
                 case 1: // Repair
                     {
-                        // TODO Check for inventory items
-                        currStructure.stability += 25;
+                        if (currStructure.stability != 100)
+                        {
+                            if (selectedObject.costLabel.text.EndsWith("x Wood"))
+                            {
+                                int cost = int.Parse(selectedObject.costLabel.text.Substring(0, selectedObject.costLabel.text.LastIndexOf("x Wood")));
+                                if (im.GetAmmoQuantity(ItemInfo.ItemID.Wood) < cost)
+                                {
+                                    cp.CreateResourcePopup("Not enough wood!", 0);
+                                }
+                                else
+                                {
+                                    cp.CreateResourcePopup("Wood", cost);
+                                    im.RemoveQuantity(woodObj.GetComponent<ItemInfo>(), cost);
+                                    currStructure.stability += 25;
+                                }
+                            }
+                            else if (selectedObject.costLabel.text.EndsWith("x Stone"))
+                            {
+                                int cost = int.Parse(selectedObject.costLabel.text.Substring(0, selectedObject.costLabel.text.LastIndexOf("x Stone")));
+                                if (im.GetAmmoQuantity(ItemInfo.ItemID.Stone) < cost)
+                                {
+                                    cp.CreateResourcePopup("Not enough stone!", 0);
+                                }
+                                else
+                                {
+                                    cp.CreateResourcePopup("Stone", cost);
+                                    im.RemoveQuantity(stoneObj.GetComponent<ItemInfo>(), cost);
+                                    currStructure.stability += 25;
+                                }
+                            }
+                        }
                         break;
                     }
                 case 2: // Upgrade
                     {
-                        // TODO Check for inventory items
                         if (!currStructure.isUpgraded)
                         {
-                            currStructure.stability = 100;
-                            currStructure.isUpgraded = true;
-                            currStructure.gameObject.GetComponent<PhotonView>().RPC("UpgradeStructure", RpcTarget.AllViaServer);
-
-                            // Also update current selected
-                            foreach (Transform child in selectedObject.gameObject.transform) // Change look to stone
+                            if (selectedObject.costLabel.text.EndsWith("x Stone"))
                             {
-                                if (child.GetComponent<MeshRenderer>() == null)
-                                    return;
+                                int cost = int.Parse(selectedObject.costLabel.text.Substring(0, selectedObject.costLabel.text.LastIndexOf("x Stone")));
+                                if (im.GetAmmoQuantity(ItemInfo.ItemID.Stone) < cost)
+                                {
+                                    cp.CreateResourcePopup("Not enough stone!", 0);
+                                }
+                                else
+                                {
+                                    cp.CreateResourcePopup("Stone", cost);
+                                    im.RemoveQuantity(stoneObj.GetComponent<ItemInfo>(), cost);
+                                    currStructure.stability = 100;
+                                    currStructure.isUpgraded = true;
+                                    currStructure.gameObject.GetComponent<PhotonView>().RPC("UpgradeStructure", RpcTarget.AllViaServer);
 
-                                Material[] mats = child.GetComponent<MeshRenderer>().materials;
-                                Material[] newMaterials = new Material[] { stoneMaterial, mats[1] };
-                                Debug.Log(newMaterials.ToString());
-                                child.GetComponent<MeshRenderer>().materials = newMaterials;
+                                    // Also update current selected
+                                    foreach (Transform child in selectedObject.gameObject.transform) // Change look to stone
+                                    {
+                                        if (child.GetComponent<MeshRenderer>() == null)
+                                            return;
+
+                                        Material[] mats = child.GetComponent<MeshRenderer>().materials;
+                                        Material[] newMaterials = new Material[] { stoneMaterial, mats[1] };
+                                        Debug.Log(newMaterials.ToString());
+                                        child.GetComponent<MeshRenderer>().materials = newMaterials;
+                                    }
+                                }
                             }
                         }
                     }

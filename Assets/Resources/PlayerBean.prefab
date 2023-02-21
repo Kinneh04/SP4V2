@@ -12055,6 +12055,7 @@ GameObject:
   - component: {fileID: 3882562080427198219}
   - component: {fileID: 6543789573556941621}
   - component: {fileID: 2344793027337608951}
+  - component: {fileID: 1937501596532756897}
   m_Layer: 0
   m_Name: PlayerBean
   m_TagString: Player
@@ -12311,6 +12312,9 @@ MonoBehaviour:
     prefab: {fileID: 0}
     selectedPrefab: {fileID: 0}
   currentPreview: {fileID: 0}
+  im: {fileID: 7147055233663228080}
+  woodObj: {fileID: 101618360071302301, guid: 43957dbf9b551f442a89be66049f24fb, type: 3}
+  cp: {fileID: 1937501596532756897}
   cam: {fileID: 7109236928769104490}
   layer:
     serializedVersion: 2
@@ -12337,6 +12341,11 @@ MonoBehaviour:
   layer:
     serializedVersion: 2
     m_Bits: 512
+  im: {fileID: 7147055233663228080}
+  woodObj: {fileID: 101618360071302301, guid: 58569baad7dc6004685c9dcbd0867edb, type: 3}
+  stoneObj: {fileID: 2336293236833407366, guid: af9a558de23598847b7d33ffd2982fa3,
+    type: 3}
+  cp: {fileID: 1937501596532756897}
   ActionCooldown: 1
   menuObject: {fileID: 8147175192208698557}
   stoneMaterial: {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
@@ -12419,6 +12428,21 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1937501596532756897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2172646945943345891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e000699fe0630dd4ebc6eef338ba966c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popupPrefab: {fileID: 7795283814499858620, guid: 6c0ada78e2503be41b309ab409a9fdbe,
+    type: 3}
+  canvasParent: {fileID: 5456841045895249987}
 --- !u!1 &2209621124372234927
 GameObject:
   m_ObjectHideFlags: 0
@@ -28006,7 +28030,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -391.43076, y: -261.69623}
-  m_SizeDelta: {x: 1095.6659, y: 532.8125}
+  m_SizeDelta: {x: 1136.5, y: 532.8125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5464879971830992074
 GameObject:

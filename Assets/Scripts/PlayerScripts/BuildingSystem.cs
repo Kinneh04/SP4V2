@@ -11,6 +11,10 @@ public class BuildingSystem : MonoBehaviour
     private Vector3 currentRot = Vector3.zero;
     public Transform currentPreview;
 
+    public InventoryManager im;
+    public GameObject woodObj;
+    public CreatePopup cp;
+
     // Variables for raycast
     public Transform cam;
     public RaycastHit hit;
@@ -138,11 +142,22 @@ public class BuildingSystem : MonoBehaviour
         if (IsChoosingObj)
             return;
 
+        Debug.Log("WOOD: " + im.GetAmmoQuantity(ItemInfo.ItemID.Wood));
+
         PreviewObject po = currentPreview.GetComponent<PreviewObject>();
         if (po.IsBuildable)
         {
-            GameObject newObj = PhotonNetwork.Instantiate(currentObject.name, currentPos, Quaternion.Euler(currentRot));
-            newObj.GetComponent<StructureObject>().pv = GetComponent<PhotonView>();
+            if (im.GetAmmoQuantity(ItemInfo.ItemID.Wood) < currentObject.wood)
+            {
+                cp.CreateResourcePopup("Not enough wood!", 0);
+            }
+            else
+            {
+                cp.CreateResourcePopup("Wood", currentObject.wood);
+                im.RemoveQuantity(woodObj.GetComponent<ItemInfo>(), currentObject.wood);
+                GameObject newObj = PhotonNetwork.Instantiate(currentObject.name, currentPos, Quaternion.Euler(currentRot));
+                newObj.GetComponent<StructureObject>().pv = GetComponent<PhotonView>();
+            }
         }
         BuildCooldown = 1.0f;
     }
