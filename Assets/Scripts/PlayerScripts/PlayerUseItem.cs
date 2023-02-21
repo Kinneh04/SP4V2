@@ -858,8 +858,9 @@ public class PlayerUseItem : MonoBehaviour
         {
             PAnimator.Play("PBeanThrow");
             GameObject GO = playerProperties.CurrentlyHoldingItem;
-            pv.RPC("DetachItemFromParent", RpcTarget.Others,GO.name, pv.ViewID);
+            
             yield return new WaitForSeconds(0.45f);
+            pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
             GO.GetComponent<Rigidbody>().isKinematic = false;
             playerProperties.CurrentlyHoldingItem = null;
             GO.transform.parent = null;
@@ -875,7 +876,7 @@ public class PlayerUseItem : MonoBehaviour
         if (Slot == inventoryManager.EquippedSlot)
         {
             GameObject GO = playerProperties.CurrentlyHoldingItem;
-            pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
+            pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
             GO.transform.position = GO.transform.parent.position;
             yield return new WaitForSeconds(0.15f);
             GO.GetComponent<Rigidbody>().isKinematic = false;
