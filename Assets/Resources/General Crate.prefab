@@ -735,12 +735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2349aded5644d8744991d31fc2eb8514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PossibleItemsPool:
-  - {fileID: 7268146472781844992, guid: 6974d2d2d103f9d4dbfb3cb71df5346c, type: 3}
-  - {fileID: 7107235380967853902, guid: 43957dbf9b551f442a89be66049f24fb, type: 3}
-  - {fileID: 7268146472781844992, guid: efb03dff5d6ebbc4da70555b3e868ff3, type: 3}
-  - {fileID: 7268146472781844992, guid: 54a9cca5eb3df634283ed6016322256e, type: 3}
-  - {fileID: 7268146472781844992, guid: 7957c6f5cc4668e40a5dfd590b729e33, type: 3}
+  PossibleItemsPool: []
   MaxPossibleItems: 4
   MaxQuantityOfEachItem: 5
   ItemsInCrate: []
@@ -783,7 +778,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1869492084923866116}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

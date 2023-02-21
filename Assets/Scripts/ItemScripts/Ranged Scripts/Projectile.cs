@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Photon.Pun;
 public class Projectile : MonoBehaviour
 {
     [SerializeField]
@@ -25,6 +26,7 @@ public class Projectile : MonoBehaviour
     public GameObject Explosion;
     public ItemInfo.ItemID itemID;
     public float ExplosionTimer = 0;
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -140,8 +142,8 @@ public class Projectile : MonoBehaviour
             }
             else
             {
-                GameObject Go = Instantiate(Explosion);
-                Go.transform.position = transform.position;
+                PhotonView Go = PhotonNetwork.Instantiate("Explosion", transform.position, Quaternion.identity).GetComponent<PhotonView>();
+                Go.gameObject.transform.position = transform.position;
                 Go.GetComponent<Explosion>().Damage = Damage;
                 Destroy(this.gameObject);
             }

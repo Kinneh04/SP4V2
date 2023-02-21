@@ -89,7 +89,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.Instantiate("MP5A4", position, rotation, 0);
-            PhotonNetwork.Instantiate("FoodCrate", position, rotation, 0);
+            PhotonNetwork.Instantiate("C4", position, rotation, 0);
         }
 
     }
