@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 public class ItemInfo : MonoBehaviour
 {
-    public PhotonView pv;
+    public PhotonView phview;
     public enum ItemType {
         Axe,
         Pickaxe, 
@@ -97,14 +97,14 @@ public class ItemInfo : MonoBehaviour
 
     private void Awake()
     {
-        pv = GetComponent<PhotonView>();
+        phview = GetComponent<PhotonView>();
     }
     [PunRPC]
     void ParentToObj(int ActorNumber)
     {
-        PhotonView GOPV = PhotonView.Find(ActorNumber);
-        GOPV.gameObject.SetActive(false);
-        GOPV.gameObject.transform.parent = GameObject.FindGameObjectWithTag("LootPool").transform;
+        PhotonView GOphview = PhotonView.Find(ActorNumber);
+        GOphview.gameObject.SetActive(false);
+        GOphview.gameObject.transform.parent = GameObject.FindGameObjectWithTag("LootPool").transform;
     }
     virtual public void Init()
     {
