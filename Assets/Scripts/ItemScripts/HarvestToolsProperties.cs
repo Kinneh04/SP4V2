@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class HarvestToolsProperties : ItemInfo
 {
+    public PhotonView pv;
     public float damage = 1.0f;
     public float WoodHarvestMultiplier = 1.0f;
     public float StoneHarvestMultiplier = 1.0f;
@@ -23,6 +24,7 @@ public class HarvestToolsProperties : ItemInfo
     private void Start()
     {
         II = GetComponent<ItemInfo>();
+        pv = GetComponent<PhotonView>();
     }
     private void OnTriggerEnter(Collider other)
     {

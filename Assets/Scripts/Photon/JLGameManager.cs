@@ -88,8 +88,8 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         RemoveTagsFromOtherPlayers();
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("MP5A4", position, rotation, 0);
-            PhotonNetwork.Instantiate("C4", position, rotation, 0);
+            PhotonNetwork.Instantiate("Metal axe", position, rotation, 0);
+            PhotonNetwork.Instantiate("campfire", position, rotation, 0);
         }
 
     }

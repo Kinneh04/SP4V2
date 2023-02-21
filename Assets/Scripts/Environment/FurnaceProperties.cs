@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class FurnaceProperties : MonoBehaviour
 {
     public List<ItemInfo> ItemsInFurnace = new List<ItemInfo>();
     public List<int> ItemQuantityInFurnace = new List<int>();
+
+    public List<int> PhotonViewIDs = new List<int>();
     public InventoryManager IM;
     public bool isOn = false;
     public GameObject FireParticleSystem;
@@ -24,6 +26,39 @@ public class FurnaceProperties : MonoBehaviour
     public float CookInterval;
     public float Cooktimer;
     public bool isLookingAtIt;
+
+    public PhotonView pv;
+
+    private void Awake()
+    {
+        pv = GetComponent<PhotonView>();
+    }
+    bool ItemExistsInFurnace(ItemInfo I)
+    {
+        for (int i = 0; i < ItemsInFurnace.Count; i++)
+        {
+            if (I == ItemsInFurnace[i])
+                return true;
+        }
+        return false;
+    }
+
+    [PunRPC]
+    void SyncLootAcrossClients(int[] PhotonViewIDs, int[] ItemQuantity)
+    {
+        for (int i = 0; i < PhotonViewIDs.Length; i++)
+        {
+            PhotonView ItemPV = PhotonView.Find(PhotonViewIDs[i]);
+            ItemInfo ItemToAdd = ItemPV.gameObject.GetComponent<ItemInfo>();
+            if (!ItemExistsInFurnace(ItemToAdd))
+            {
+                ItemsInFurnace.Add(ItemToAdd);
+                ItemQuantityInFurnace.Add(ItemQuantity[i]);
+            }
+        }
+    }
+
+
     public void UpdateLoot()
     {
         for (int i = 0; i < 6; i++)
@@ -49,6 +84,16 @@ public class FurnaceProperties : MonoBehaviour
 
             }
 
+        }
+        if (pv.IsMine)
+        {
+            for (int i = 0; i < ItemsInFurnace.Count; i++)
+            {
+                PhotonViewIDs.Add(ItemsInFurnace[i].GetComponent<PhotonView>().ViewID);
+            }
+            int[] PVIDArray = PhotonViewIDs.ToArray();
+            int[] PVQuanArray = ItemQuantityInFurnace.ToArray();
+            pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
         }
     }
 
@@ -189,7 +234,7 @@ public class FurnaceProperties : MonoBehaviour
                 DecrementItemInFurnace(ItemRequiredToStartFurnace, 1);
                 if(!CheckForItemInFurnace(ItemRequiredToStartFurnace))
                 {
-                    TurnOn();
+                    pv.RPC("TurnOn", RpcTarget.All);
                 }
             }
 
@@ -223,6 +268,7 @@ public class FurnaceProperties : MonoBehaviour
         }
     }
 
+    [PunRPC]
     public void TurnOn()
     {
 
@@ -244,6 +290,17 @@ public class FurnaceProperties : MonoBehaviour
                 SparksParticleSystem.GetComponent<ParticleSystem>().Play();
                 lightsource.intensity = 6;
             }
+        }
+
+        if(pv.IsMine)
+        {
+            for (int i = 0; i < ItemsInFurnace.Count; i++)
+            {
+                PhotonViewIDs.Add(ItemsInFurnace[i].GetComponent<PhotonView>().ViewID);
+            }
+            int[] PVIDArray = PhotonViewIDs.ToArray();
+            int[] PVQuanArray = ItemQuantityInFurnace.ToArray();
+            pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
         }
     }
 }

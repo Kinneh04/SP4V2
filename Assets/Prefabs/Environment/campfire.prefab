@@ -10925,6 +10925,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemsInFurnace: []
   ItemQuantityInFurnace: 
+  PhotonViewIDs: 
   IM: {fileID: 0}
   isOn: 0
   FireParticleSystem: {fileID: 6042763323807181141}
@@ -10935,16 +10936,22 @@ MonoBehaviour:
   RawMeat: {fileID: 2271224497016088212, guid: 2daebe74ee369a74786bfcc30b5d05a8, type: 3}
   CookedMeat: {fileID: 4930957203899973414, guid: 6907a159a3a06fd4193122b655a9fb52,
     type: 3}
-  Weaponparts: {fileID: 0}
+  Weaponparts: {fileID: 7268146472781844992, guid: 8dec6d3383d68714cb6b5e801ca543a1,
+    type: 3}
+  RawSulfur: {fileID: 7268146472781844992, guid: efb03dff5d6ebbc4da70555b3e868ff3,
+    type: 3}
+  CookedSulfur: {fileID: 7268146472781844992, guid: b7fb1b01abd71694dbe13fcf99f73e15,
+    type: 3}
   RawMetal: {fileID: 7268146472781844992, guid: 54a9cca5eb3df634283ed6016322256e,
     type: 3}
-  ScrapMetal: {fileID: 7268146472781844992, guid: 54a9cca5eb3df634283ed6016322256e,
+  ScrapMetal: {fileID: 7268146472781844992, guid: 644f46eec640375429da7cda2f1262e9,
     type: 3}
   WoodRemovalInterval: 1
   woodTimer: 0
   CookInterval: 1
   Cooktimer: 0
   isLookingAtIt: 0
+  pv: {fileID: 0}
 --- !u!65 &6541962848619157968
 BoxCollider:
   m_ObjectHideFlags: 0

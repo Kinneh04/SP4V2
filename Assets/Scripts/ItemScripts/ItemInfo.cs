@@ -103,6 +103,7 @@ public class ItemInfo : MonoBehaviour
     void ParentToObj(int ActorNumber)
     {
         PhotonView GOPV = PhotonView.Find(ActorNumber);
+        GOPV.gameObject.SetActive(false);
         GOPV.gameObject.transform.parent = GameObject.FindGameObjectWithTag("LootPool").transform;
     }
     virtual public void Init()

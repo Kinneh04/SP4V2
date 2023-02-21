@@ -161,7 +161,7 @@ public class PlayerUseItem : MonoBehaviour
                                     hs.SetIsUsingHammer(false);
                                 }
                             }
-                            inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), 1);
+                            inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().ItemCount);
                             playerProperties.PlayerLookingAtItem.SetActive(false);
                             inventoryManager.UpdateItemCountPerSlot();
                             if (GO_Type == ItemInfo.ItemType.BuildPlan)
