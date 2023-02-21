@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2413833571169087240}
   - component: {fileID: 8416430172667625159}
   - component: {fileID: 4917478896311621748}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cda92c6046f174c4aaa97c73aab2a6e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 0
+  Damage: 50
 --- !u!135 &2413833571169087240
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -74,7 +74,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2738436938548131024}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.74
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 2797874120622394602}
   - component: {fileID: 1711787804361206744}
   - component: {fileID: 6361960348911400981}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5000,7 +5000,7 @@ GameObject:
   - component: {fileID: 3101471776899741795}
   - component: {fileID: 4434280872732684378}
   - component: {fileID: 4854836801259975025}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9885,7 +9885,7 @@ GameObject:
   - component: {fileID: 8006548599593223553}
   - component: {fileID: 6897376684239658228}
   - component: {fileID: 7129920551680002789}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Fire (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seconds: 4
+  NetworkedDestruct: 0
 --- !u!114 &5687957192559055081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,7 +72,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2738436938548131024}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.74
@@ -9831,6 +9832,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seconds: 0.5
+  NetworkedDestruct: 0
 --- !u!1 &6470755555829417928
 GameObject:
   m_ObjectHideFlags: 0

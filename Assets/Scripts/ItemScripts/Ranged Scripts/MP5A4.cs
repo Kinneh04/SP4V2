@@ -13,7 +13,7 @@ public class MP5A4 : WeaponInfo
         FiringType = FIRINGTYPE.FULL_AUTO;
         GunName = GUNNAME.MP5A4;
         AmmoType = ItemID.PistolAmmo;
-        Damage = 35;
+        Damage = 15;
         TimeBetweenShots = 0.04f;
         ElapsedTime = ReloadTime = 0;
         MaxReloadTime = 2.2;

@@ -37,6 +37,7 @@ TagManager:
   - Workbench
   - ResearchTable
   - EnemyPlayer
+  - Helicopter
   layers:
   - Default
   - TransparentFX

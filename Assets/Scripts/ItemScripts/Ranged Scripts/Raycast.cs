@@ -79,6 +79,11 @@ public class Raycast : MonoBehaviour
                 hit.transform.GetComponent<PlayerProperties>().TakeDamage(Damage);
                 GO = Instantiate(BloodParticleSystem, hit.point, Quaternion.identity);
             }
+            else if (hit.transform.gameObject.CompareTag("Helicopter"))
+            {
+                hit.transform.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, Damage);
+                GO = Instantiate(ImpactParticleSystem, hit.point, Quaternion.identity);
+            }
             else
             {
 
