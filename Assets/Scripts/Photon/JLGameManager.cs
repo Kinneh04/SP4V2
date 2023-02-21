@@ -94,6 +94,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
     void RemoveTagsFromOtherPlayers()
     {
         GameObject[] PlayerList = GameObject.FindGameObjectsWithTag("Player");
+        
         foreach (GameObject Player in PlayerList)
         {
             if (!Player.GetComponent<PhotonView>().IsMine)
@@ -110,7 +111,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
 
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         GameObject[] PlayerList = GameObject.FindGameObjectsWithTag("Player");
         if (PlayerList.Length > 1)

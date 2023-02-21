@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 
 public class PlayerUseItem : MonoBehaviour
 {
@@ -642,7 +643,7 @@ public class PlayerUseItem : MonoBehaviour
                 if (pv.IsMine)
                 {
                     ForceGiveItem(CurrentItem);
-                    pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.Others, CurrentItem.name, PhotonNetwork.LocalPlayer.ActorNumber);
+                    pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, CurrentItem.name, pv.ViewID);
                 }
 
             }
@@ -655,18 +656,37 @@ public class PlayerUseItem : MonoBehaviour
     }
 
     [PunRPC]
+    void DetachItemFromParent(string newItem, int ActorNumber)
+    {
+        GameObject ItemToPairToHand;
+
+        //Player player = PhotonNetwork.CurrentRoom.GetPlayer(ActorNumber);
+        // Get the PhotonView component for the player object
+        PhotonView ActorPV = PhotonView.Find(ActorNumber);
+        GameObject Actor = ActorPV.gameObject;
+
+        //GameObject Actor = ActorView.TagObject as GameObject;
+        GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
+        ItemToPairToHand = GameObject.Find(newItem);
+        ItemToPairToHand.transform.SetParent(null);
+        ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = false;
+    }
+
+    [PunRPC]
     void UpdateOtherClientsAboutYourNewHandItem(string newItem, int ActorNumber)
     {
-        //get RHand from actor number
-        //Instantiate item from newItem string
-        // parent newItem to Rhand
-        Player ActorView = PhotonNetwork.CurrentRoom.GetPlayer(ActorNumber);
-        GameObject Actor = ActorView.TagObject as GameObject;
-        //PhotonView ActorView = PhotonView.Find(ActorNumber);
-        //GameObject Actor = ActorView.gameObject;
+        GameObject ItemToPairToHand;
+
+        //Player player = PhotonNetwork.CurrentRoom.GetPlayer(ActorNumber);
+        // Get the PhotonView component for the player object
+        PhotonView ActorPV = PhotonView.Find(ActorNumber);
+        GameObject Actor = ActorPV.gameObject;
+
+        //GameObject Actor = ActorView.TagObject as GameObject;
+
         GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
 
-        GameObject ItemToPairToHand = GameObject.Find("newItem");
+        ItemToPairToHand = GameObject.Find(newItem);
         ItemToPairToHand.transform.position = RHand.transform.position;
         ItemToPairToHand.transform.rotation = RHand.transform.rotation;
         ItemToPairToHand.transform.SetParent(RHand.transform);
@@ -730,12 +750,15 @@ public class PlayerUseItem : MonoBehaviour
         StartCoroutine(IEDropItem(Slot));
     }
 
+ 
+
     public IEnumerator ThrowItem()
     {
         if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().itemType != ItemInfo.ItemType.unshowable)
         {
             PAnimator.Play("PBeanThrow");
             GameObject GO = playerProperties.CurrentlyHoldingItem;
+            pv.RPC("DetachItemFromParent", RpcTarget.Others,GO.name, pv.ViewID);
             yield return new WaitForSeconds(0.45f);
             GO.GetComponent<Rigidbody>().isKinematic = false;
             playerProperties.CurrentlyHoldingItem = null;
@@ -752,6 +775,7 @@ public class PlayerUseItem : MonoBehaviour
         if (Slot == inventoryManager.EquippedSlot)
         {
             GameObject GO = playerProperties.CurrentlyHoldingItem;
+            pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
             GO.transform.position = GO.transform.parent.position;
             yield return new WaitForSeconds(0.15f);
             GO.GetComponent<Rigidbody>().isKinematic = false;
