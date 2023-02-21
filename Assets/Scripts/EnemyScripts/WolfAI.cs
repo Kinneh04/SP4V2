@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 public class WolfAI : Enemy
 {
@@ -19,6 +20,8 @@ public class WolfAI : Enemy
 
     public GameObject Prey;
 
+    PhotonView PV;
+
     float BiteCD = 0;
 
     float PounceCD = 0;
@@ -29,7 +32,7 @@ public class WolfAI : Enemy
     FSM CurrentState;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         MaxHealth = 100;
         Health = MaxHealth;
@@ -39,6 +42,7 @@ public class WolfAI : Enemy
         MoveTime = 2;
         deadTime = 1;
         CurrentState = FSM.IDLE;
+        PV = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -210,8 +214,8 @@ public class WolfAI : Enemy
                         transform.LookAt(direction + transform.position);
                         deadTime -= Time.deltaTime;
                     }
-                    if (deadTime <= 0)
-                        Destroy(gameObject);
+                    if (deadTime <= 0 && PV.IsMine)
+                        PhotonNetwork.Destroy(gameObject);
                     break;
                 }
         }

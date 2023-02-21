@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 409420611589463290}
   - component: {fileID: 6876406110406234097}
   - component: {fileID: 2346701971950476716}
+  - component: {fileID: 6793601059426010848}
   m_Layer: 0
   m_Name: Large flat rock
   m_TagString: Stone
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 7127570811281232415}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.1048192, y: 1.1048192, z: 1.1048192}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -115,3 +116,19 @@ MonoBehaviour:
   BaseHarvestAmount: 15
   ItemToGivePlayerOnHarvest: {fileID: 2336293236833407366, guid: 7957c6f5cc4668e40a5dfd590b729e33,
     type: 3}
+--- !u!208 &6793601059426010848
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7127570811281232415}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.9580001, y: 0.79800004, z: 1.9290001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.069000006, y: -0.008, z: 0.279}
+  m_TimeToStationary: 0.5

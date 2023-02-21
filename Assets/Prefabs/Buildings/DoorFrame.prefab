@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5430860834106483455}
   - component: {fileID: 6127081960635564519}
-  m_Layer: 7
+  - component: {fileID: 6157607120582662827}
+  - component: {fileID: 4876153073203600451}
+  m_Layer: 9
   m_Name: DoorFrame
   m_TagString: NormalStructure
   m_Icon: {fileID: 0}
@@ -51,6 +53,38 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &6157607120582662827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2849478933915083144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60cd20857e4cea54ca7cef2dc97704e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 4
+  selectedPrefab: {fileID: 2849478933915083144, guid: dc16d88f303e7ed4a8b9a4879b882b07,
+    type: 3}
+  stoneMaterial: {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
+  isUpgraded: 0
+  stability: 100
+  pickupCooldown: 15
+--- !u!65 &4876153073203600451
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2849478933915083144}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.993341, y: 3.1082208, z: 0.4893613}
+  m_Center: {x: 0.010122776, y: 1.0541102, z: 1.3025999}
 --- !u!1 &2964469752845246087
 GameObject:
   m_ObjectHideFlags: 0

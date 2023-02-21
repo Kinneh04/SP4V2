@@ -241,6 +241,7 @@ GameObject:
   - component: {fileID: 409420611589463290}
   - component: {fileID: 6876406110406234097}
   - component: {fileID: 2346701971950476716}
+  - component: {fileID: 1922841160}
   m_Layer: 0
   m_Name: Iron Node Flat
   m_TagString: Metal
@@ -257,7 +258,7 @@ Transform:
   m_GameObject: {fileID: 7127570811281232415}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1.548, y: 1.548, z: 1.548}
+  m_LocalScale: {x: 0.8817035, y: 0.8817035, z: 0.8817035}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6874009932656335638}
@@ -345,3 +346,19 @@ MonoBehaviour:
   BaseHarvestAmount: 15
   ItemToGivePlayerOnHarvest: {fileID: 2336293236833407366, guid: 54a9cca5eb3df634283ed6016322256e,
     type: 3}
+--- !u!208 &1922841160
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7127570811281232415}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.6890001, y: 0.47200003, z: 0.84900004}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.026, y: -0.032, z: 0.001}
+  m_TimeToStationary: 0.5
