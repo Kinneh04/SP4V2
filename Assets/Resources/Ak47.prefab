@@ -196,6 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aba574d29fa348649add0fadce954ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pv: {fileID: 0}
   ReplacementObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 3

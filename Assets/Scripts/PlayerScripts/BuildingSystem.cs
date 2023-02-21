@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class BuildingSystem : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class BuildingSystem : MonoBehaviour
         if (BuildCooldown > 0.0f)
             BuildCooldown -= Time.deltaTime;
 
-        if (!IsBuilding)
+        if (!IsBuilding || !GetComponent<PhotonView>().IsMine)
             return;
 
         if (!IsChoosingObj)
@@ -134,7 +135,8 @@ public class BuildingSystem : MonoBehaviour
         PreviewObject po = currentPreview.GetComponent<PreviewObject>();
         if (po.IsBuildable)
         {
-            Instantiate(currentObject.prefab, currentPos, Quaternion.Euler(currentRot));
+            GameObject newObj = PhotonNetwork.Instantiate(currentObject.name, currentPos, Quaternion.Euler(currentRot));
+            newObj.GetComponent<StructureObject>().pv = GetComponent<PhotonView>();
         }
         BuildCooldown = 1.0f;
     }

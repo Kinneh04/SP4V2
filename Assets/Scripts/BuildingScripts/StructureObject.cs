@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class StructureObject : MonoBehaviour
 {
     public StructureTypes type;
+    public PhotonView pv;
     public GameObject selectedPrefab;
     public Material stoneMaterial;
     public bool isUpgraded = false;
@@ -23,6 +25,7 @@ public class StructureObject : MonoBehaviour
             pickupCooldown -= Time.deltaTime;
     }
 
+    [PunRPC]
     public void UpgradeStructure()
     {
         stability = 100; // Reset stability

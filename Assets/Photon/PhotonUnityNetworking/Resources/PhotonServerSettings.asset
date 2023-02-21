@@ -46,6 +46,9 @@ MonoBehaviour:
   - TakeDamage
   - SyncLootAcrossClients
   - ParentToObj
+  - UpgradeStructure
+  - PlaceStructure
+  - DestroyStructure
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
