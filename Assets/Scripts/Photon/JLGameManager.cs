@@ -70,12 +70,6 @@ public class JLGameManager : MonoBehaviourPunCallbacks
 
         return true;
     }
-
-    public void SpawnTestItems()
-    {
-        PhotonNetwork.Instantiate("Ak47", transform.position, transform.rotation, 0);
-    }
-
     private void StartGame()
     {
         Debug.Log("StartGame!");
@@ -84,20 +78,14 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         GameObject player = null;
 
         player = PhotonNetwork.Instantiate("PlayerBean", position, rotation, 0);
-        PhotonNetwork.LocalPlayer.TagObject = player;
+
         RemoveTagsFromOtherPlayers();
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.Instantiate("Ak47", position, rotation, 0);
-            PhotonNetwork.Instantiate("FoodCrate", position, rotation, 0);
-        }
 
     }
 
     void RemoveTagsFromOtherPlayers()
     {
         GameObject[] PlayerList = GameObject.FindGameObjectsWithTag("Player");
-        
         foreach (GameObject Player in PlayerList)
         {
             if (!Player.GetComponent<PhotonView>().IsMine)
@@ -106,15 +94,14 @@ public class JLGameManager : MonoBehaviourPunCallbacks
                 Destroy(Player.transform.Find("Capsule").Find("Eyes").GetComponentInChildren<Camera>().gameObject);
                 //Destroy(Player.GetComponent<PlayerProperties>());
                 Destroy(Player.GetComponent<PlayerMovement>());
-                //Destroy(Player.GetComponent<PlayerUseItem>());
+                Destroy(Player.GetComponent<PlayerUseItem>());
                 Destroy(Player.GetComponent<BuildingSystem>());
-                Destroy(Player.transform.Find("Canvas").gameObject);
             }
         }
 
     }
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         GameObject[] PlayerList = GameObject.FindGameObjectsWithTag("Player");
         if (PlayerList.Length > 1)

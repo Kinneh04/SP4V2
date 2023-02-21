@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Photon.Pun;
-using Photon.Realtime;
-using System;
+using Photon.Pun.Demo.Cockpit;
 
 public class PlayerUseItem : MonoBehaviour
 {
@@ -18,8 +16,6 @@ public class PlayerUseItem : MonoBehaviour
     public GameObject sniperScopeImage;
     public float fadeDuration = 0.2f;
     public float scopeDelay = 0.2f;
-
-    public PhotonView pv;
 
     public Animator PAnimator;
     bool LeftMouseButtonPressed = false;   //click once only
@@ -39,7 +35,6 @@ public class PlayerUseItem : MonoBehaviour
     private void Awake()
     {
         inventoryManager = Inventory.GetComponent<InventoryManager>();
-        pv = GetComponent<PhotonView>();
     }
 
 
@@ -692,12 +687,7 @@ public class PlayerUseItem : MonoBehaviour
                 )
             )
             {
-                if (pv.IsMine)
-                {
-                    ForceGiveItem(CurrentItem);
-                    pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, CurrentItem.name, pv.ViewID);
-                }
-
+                ForceGiveItem(CurrentItem);
             }
             else if(!CurrentItem && playerProperties.CurrentlyHoldingItem) // if player holding something but current slot supposed to have nothing held
             {
@@ -707,43 +697,6 @@ public class PlayerUseItem : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    void DetachItemFromParent(string newItem, int ActorNumber)
-    {
-        GameObject ItemToPairToHand;
-
-        //Player player = PhotonNetwork.CurrentRoom.GetPlayer(ActorNumber);
-        // Get the PhotonView component for the player object
-        PhotonView ActorPV = PhotonView.Find(ActorNumber);
-        GameObject Actor = ActorPV.gameObject;
-
-        //GameObject Actor = ActorView.TagObject as GameObject;
-        GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
-        ItemToPairToHand = GameObject.Find(newItem);
-        ItemToPairToHand.transform.SetParent(null);
-        ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = false;
-    }
-
-    [PunRPC]
-    void UpdateOtherClientsAboutYourNewHandItem(string newItem, int ActorNumber)
-    {
-        GameObject ItemToPairToHand;
-
-        //Player player = PhotonNetwork.CurrentRoom.GetPlayer(ActorNumber);
-        // Get the PhotonView component for the player object
-        PhotonView ActorPV = PhotonView.Find(ActorNumber);
-        GameObject Actor = ActorPV.gameObject;
-
-        //GameObject Actor = ActorView.TagObject as GameObject;
-
-        GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
-
-        ItemToPairToHand = GameObject.Find(newItem);
-        ItemToPairToHand.transform.position = RHand.transform.position;
-        ItemToPairToHand.transform.rotation = RHand.transform.rotation;
-        ItemToPairToHand.transform.SetParent(RHand.transform);
-        ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = true;
-    }
     
 
    public void ForceGiveItem(ItemInfo itemInfo)
@@ -802,15 +755,12 @@ public class PlayerUseItem : MonoBehaviour
         StartCoroutine(IEDropItem(Slot));
     }
 
- 
-
     public IEnumerator ThrowItem()
     {
         if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().itemType != ItemInfo.ItemType.unshowable)
         {
             PAnimator.Play("PBeanThrow");
             GameObject GO = playerProperties.CurrentlyHoldingItem;
-            pv.RPC("DetachItemFromParent", RpcTarget.Others,GO.name, pv.ViewID);
             yield return new WaitForSeconds(0.45f);
             GO.GetComponent<Rigidbody>().isKinematic = false;
             playerProperties.CurrentlyHoldingItem = null;
@@ -827,7 +777,6 @@ public class PlayerUseItem : MonoBehaviour
         if (Slot == inventoryManager.EquippedSlot)
         {
             GameObject GO = playerProperties.CurrentlyHoldingItem;
-            pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
             GO.transform.position = GO.transform.parent.position;
             yield return new WaitForSeconds(0.15f);
             GO.GetComponent<Rigidbody>().isKinematic = false;

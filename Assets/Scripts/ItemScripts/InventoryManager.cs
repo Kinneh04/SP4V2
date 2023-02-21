@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;using UnityEngine.UI;
 using TMPro;
 using System;
-using Photon.Pun;
 public class InventoryManager : MonoBehaviour
 {
     public const int MaxInventorySize = 48;
@@ -248,11 +247,12 @@ public class InventoryManager : MonoBehaviour
             else //creates a new gameobj and adds quantity
             {
                 Debug.Log("Path2 - 1");
-                //GameObject newItem = Instantiate(item.gameObject);
-                InventoryList[SlotNum] = item;
+                GameObject newItem = Instantiate(item.gameObject);
+                InventoryList[SlotNum] = newItem.GetComponent<ItemInfo>();
                 InventoryList[SlotNum].ItemCount = QuantityToAdd;
                 //InventoryList[SlotNum].SetItemCount(QuantityToAdd + InventoryList[SlotNum].GetItemCount());
-               // Destroy(item);
+                newItem.SetActive(false);
+                Destroy(item);
                 Debug.Log("Path2 - 2: " + InventoryList[SlotNum]);
             }
         }

@@ -11928,7 +11928,6 @@ MonoBehaviour:
   sniperScopeImage: {fileID: 4720311246255320314}
   fadeDuration: 0.2
   scopeDelay: 0.2
-  pv: {fileID: 0}
   PAnimator: {fileID: 724124074}
   timer: 0
   bs: {fileID: 8634082567029168113}

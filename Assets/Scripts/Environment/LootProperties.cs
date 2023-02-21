@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
 public class LootProperties : MonoBehaviour
 {
@@ -9,30 +8,15 @@ public class LootProperties : MonoBehaviour
     public int MaxPossibleItems;
     public int MaxQuantityOfEachItem;
     public List<ItemInfo> ItemsInCrate = new List<ItemInfo>();
-    public List<int> PhotonViewIDs = new List<int>();
     public List<int> ItemQuantityInCrate = new List<int>();
     public InventoryManager IM;
-
-    public PhotonView pv;
 
     public bool forceLoot = false;
 
     private void Start()
     {
-        pv = GetComponent<PhotonView>();
+       
         ChooseRandomLoot();
-    }
-
-    [PunRPC]
-    void SyncLootAcrossClients(int[] PhotonViewIDs, int[] ItemQuantity)
-    {
-        for(int i = 0; i < PhotonViewIDs.Length; i++)
-        {
-            PhotonView ItemPV = PhotonView.Find(PhotonViewIDs[i]);
-            ItemInfo ItemToAdd = ItemPV.gameObject.GetComponent<ItemInfo>();
-            ItemsInCrate.Add(ItemToAdd);
-            ItemQuantityInCrate.Add(ItemQuantity[i]);
-        }
     }
 
     public void UpdateLoot()
@@ -80,29 +64,21 @@ public class LootProperties : MonoBehaviour
     {
         int o = Random.Range(1, MaxPossibleItems);
 
-        if (!forceLoot && pv.IsMine)
+        if (!forceLoot)
         {
             for (int i = 0; i < o; i++)
             {
                 int y = Random.Range(0, PossibleItemsPool.Count);
-                PhotonView GOPV = PhotonNetwork.Instantiate(PossibleItemsPool[y].gameObject.name, transform.position, Quaternion.identity).GetComponent<PhotonView>();
-                GOPV.gameObject.SetActive(false);
-                GOPV.RPC("ParentToObj", RpcTarget.Others, GOPV.ViewID);
-                GOPV.gameObject.transform.parent = GameObject.FindGameObjectWithTag("LootPool").transform;
-                ItemsInCrate.Add(GOPV.gameObject.GetComponent<ItemInfo>());
-                PhotonViewIDs.Add(GOPV.ViewID);
+                GameObject GO = Instantiate(PossibleItemsPool[y].gameObject);
+                GO.SetActive(false);
+                GO.transform.parent = GameObject.FindGameObjectWithTag("LootPool").transform;
+                ItemsInCrate.Add(GO.GetComponent<ItemInfo>());
                 int q = Random.Range(1, MaxQuantityOfEachItem);
                 ItemQuantityInCrate.Add(q);
 
             }
-
-            int[] PVIDArray = PhotonViewIDs.ToArray();
-            int[] PVQuanArray = ItemQuantityInCrate.ToArray();
-            pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
         }
     }
-
-   
 
     public void DisplayLoot()
     {
