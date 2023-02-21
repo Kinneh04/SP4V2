@@ -33,7 +33,7 @@ public class RocketLauncher : WeaponInfo
 		if (CanFire)
 		{
 			// If there is still ammo in the magazine, then fire
-			if (MagRounds > 0)
+			if (MagRounds > 0 || InfiniteAmmo)
 			{
 				GameObject projectile = Instantiate(BulletPrefab, BarrlTip.transform.position, Quaternion.identity);
 				projectile.GetComponent<Projectile>().Damage = Damage;
@@ -51,7 +51,8 @@ public class RocketLauncher : WeaponInfo
 				// Reset the dElapsedTime to dTimeBetweenShots for the next shot
 				ElapsedTime = TimeBetweenShots;
 				// Reduce the rounds by 1
-				MagRounds--;
+				if (!InfiniteAmmo)
+					MagRounds--;
 
 				return true;
 			}

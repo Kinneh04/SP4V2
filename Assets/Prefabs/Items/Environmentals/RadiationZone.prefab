@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4139958329071021452}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.43003863, y: 0.43003863, z: 0.43003863}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -41,10 +41,10 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4139958329071021452}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 7.42
+  m_Radius: 97.53
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3370766299467550895
 MonoBehaviour:
@@ -58,3 +58,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c2faf685811bd64ca1cfb989737774a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RadiationExpireTimer: 15
+  radiationDamageMultiplier: 1
+  playersInZone: []
