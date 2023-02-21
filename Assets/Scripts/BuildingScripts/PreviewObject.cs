@@ -63,9 +63,6 @@ public class PreviewObject : MonoBehaviour
                 }
             }
         }
-        /*if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && (type == ObjectTypes.foundation || type == ObjectTypes.floor)) {
-            col.Add(other);
-        }*/
     }
 
     private void OnTriggerExit(Collider other)
@@ -89,10 +86,6 @@ public class PreviewObject : MonoBehaviour
                 col.Remove(other);
             }
         }
-
-        /*if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && (type == ObjectTypes.foundation || type == ObjectTypes.floor)) {
-            col.Remove(other);
-        }*/
     }
 
     public void ChangeColor()
@@ -131,23 +124,6 @@ public class PreviewObject : MonoBehaviour
                 IsBuildable = false;
             }
         }
-
-        /* if (type == ObjectTypes.floor)
-         {
-             // Cannot stack floors on each other
-
-         }
-         else
-         {
-             if (col.Count == 0)
-             {
-                 IsBuildable = true;
-             }
-             else
-             {
-                 IsBuildable = false;
-             }
-         }*/
 
         if (IsBuildable)
         {

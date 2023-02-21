@@ -117,9 +117,15 @@ public class BuildingSystem : MonoBehaviour
     public void SetIsBuilding(bool building)
     {
         if (building)
-            currentPreview.gameObject.SetActive(true);
+        {
+            GameObject curPrev = Instantiate(currentObject.preview, currentPos, Quaternion.Euler(currentRot));
+            currentPreview = curPrev.transform;
+        }
         else
-            currentPreview.gameObject.SetActive(false);
+        {
+            if (currentPreview != null)
+                Destroy(currentPreview.gameObject);
+        }
 
         IsBuilding = building;
     }

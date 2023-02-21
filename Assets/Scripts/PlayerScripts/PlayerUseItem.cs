@@ -152,26 +152,29 @@ public class PlayerUseItem : MonoBehaviour
                         {
                             if (playerProperties.CurrentlyHoldingItem != null)
                             {
-                                if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.BuildPlan)
+/*                                if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.BuildPlan)
                                 {
                                     bs.SetIsBuilding(false);
                                 }
                                 else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Hammer)
                                 {
                                     hs.SetIsUsingHammer(false);
+                                }*/
+                            }
+                            else
+                            {
+                                if (GO_Type == ItemInfo.ItemType.BuildPlan)
+                                {
+                                    bs.SetIsBuilding(true);
+                                }
+                                else if (GO_Type == ItemInfo.ItemType.Hammer)
+                                {
+                                    hs.SetIsUsingHammer(true);
                                 }
                             }
                             inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().ItemCount);
                             playerProperties.PlayerLookingAtItem.SetActive(false);
                             inventoryManager.UpdateItemCountPerSlot();
-                            if (GO_Type == ItemInfo.ItemType.BuildPlan)
-                            {
-                                bs.SetIsBuilding(true);
-                            }
-                            else if (GO_Type == ItemInfo.ItemType.Hammer)
-                            {
-                                hs.SetIsUsingHammer(true);
-                            }
                         }
                     }
 

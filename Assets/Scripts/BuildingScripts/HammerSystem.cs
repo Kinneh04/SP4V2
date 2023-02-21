@@ -193,6 +193,17 @@ public class HammerSystem : MonoBehaviour
             if (hit.transform != transform)
                 ShowSelected(hit);
         }
+        else if (Physics.Raycast(cam.position, cam.forward, out hit, LayerMask.NameToLayer("BuildPreview"))) // If looking at something that's not buildable
+        {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("BuildPreview")) // Do not count selectable
+                return;
+
+            ResetPointers();
+        }
+        else // If not looking at anything at all
+        {
+            ResetPointers();
+        }
     }
 
     public void ShowSelected(RaycastHit hit2)
@@ -237,13 +248,26 @@ public class HammerSystem : MonoBehaviour
         // Also delete selection if no longer using
         if (!isUsing)
         {
-            if (currentObject != null)
-                currentObject.SetActive(true);
-            if (selectedObject != null)
-                Destroy(selectedObject.gameObject);
+            ResetPointers();
         }
 
         IsUsingHammer = isUsing;
+    }
+
+    private void ResetPointers()
+    {
+        if (currentObject != null)
+        {
+            currentObject.SetActive(true);
+            currentObject = null;
+        }
+        if (selectedObject != null)
+        {
+            Destroy(selectedObject.gameObject);
+            selectedObject = null;
+        }
+        prevObject = null;
+        currStructure = null;
     }
 
     public void PerformAction()
@@ -254,10 +278,6 @@ public class HammerSystem : MonoBehaviour
         if (IsPickingUp)
         {
             PlaceStructure();
-            //pv.RPC("PlaceStructure", RpcTarget.AllViaServer, currentObject.GetComponent<PhotonView>().ViewID);
-/*            IsPickingUp = false;
-            selectedObject.gameObject.GetComponentInChildren<CanvasGroup>().alpha = 1;
-            Destroy(selectedObject.gameObject);*/
         }
         else
         {
@@ -324,21 +344,14 @@ public class HammerSystem : MonoBehaviour
         Destroy(selectedObject.gameObject);
     }
 
-    /*    [PunRPC]
-        public void PlaceStructure(int targetObj)
-        {
-            GameObject currObj = PhotonView.Find(targetObj).gameObject;
-            currObj.transform.SetPositionAndRotation(selectedObject.transform.position, selectedObject.transform.rotation);
-            currObj.SetActive(true);
-        }*/
-
     [PunRPC]
     public void DestroyStructure()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (pv.IsMine)
         {
             PhotonNetwork.Destroy(currentObject);
         }
-        Destroy(selectedObject.gameObject);
+        if (selectedObject != null)
+            Destroy(selectedObject.gameObject);
     }
 }
