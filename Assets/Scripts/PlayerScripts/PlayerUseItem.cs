@@ -24,6 +24,7 @@ public class PlayerUseItem : MonoBehaviour
     bool canuse = true;
     float animtimer = 0.0f;
     public BuildingSystem bs;
+    public HammerSystem hs;
     public bool isPlacingItem;
     public bool isADS;
     public float zoomFactor = 2f;
@@ -150,6 +151,10 @@ public class PlayerUseItem : MonoBehaviour
                                 {
                                     bs.SetIsBuilding(false);
                                 }
+                                else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Hammer)
+                                {
+                                    hs.SetIsUsingHammer(false);
+                                }
                             }
                             inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), 1);
                             playerProperties.PlayerLookingAtItem.SetActive(false);
@@ -157,6 +162,10 @@ public class PlayerUseItem : MonoBehaviour
                             if (GO_Type == ItemInfo.ItemType.BuildPlan)
                             {
                                 bs.SetIsBuilding(true);
+                            }
+                            else if (GO_Type == ItemInfo.ItemType.Hammer)
+                            {
+                                hs.SetIsUsingHammer(true);
                             }
                         }
                     }
@@ -376,6 +385,10 @@ public class PlayerUseItem : MonoBehaviour
                         bs.Build();
                         //cooldowntimer = ItemGO.GetComponent<HarvestToolsProperties>().usecooldown;
                     }
+                    else if (GO_Type == ItemInfo.ItemType.Hammer)
+                    {
+                        hs.PerformAction();
+                    }
                     else if (GO_Type == ItemInfo.ItemType.Axe)
                     {
                         SwingItem();
@@ -422,7 +435,7 @@ public class PlayerUseItem : MonoBehaviour
                     PAnimator.Play("PBowShoot");
                 }
             }
-            else if (Input.GetMouseButton(1) && playerProperties.CurrentlyHoldingItem && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() != ItemInfo.ItemType.BuildPlan)
+            else if (Input.GetMouseButton(1) && playerProperties.CurrentlyHoldingItem && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() != ItemInfo.ItemType.BuildPlan && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() != ItemInfo.ItemType.Hammer)
             {
                 GameObject ItemGO = playerProperties.CurrentlyHoldingItem;
                 if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged )
@@ -521,105 +534,144 @@ public class PlayerUseItem : MonoBehaviour
             {
                 inventoryManager.EquippedSlot = 0;
                 isPlacingItem = false;
-                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot])
+                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
                 {
-                    if(inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
-                    {
-                        isPlacingItem = true;
-                    }
-                    else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() != ItemInfo.ItemType.BuildPlan)
-                    {
-                        bs.SetIsBuilding(false);
-                    }
-                    else bs.SetIsBuilding(true);
+                    isPlacingItem = true;
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.BuildPlan)
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(true);
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
+                {
+                    hs.SetIsUsingHammer(true);
+                    bs.SetIsBuilding(false);
+                }
+                else
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(false);
                 }
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 inventoryManager.EquippedSlot = 1;
                 isPlacingItem = false;
-                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] )
+                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
                 {
-                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
-                    {
-                        isPlacingItem = true;
-                    }
-                    else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() != ItemInfo.ItemType.BuildPlan)
-                    {
-                        bs.SetIsBuilding(false);
-                    }
-                    else bs.SetIsBuilding(true);
+                    isPlacingItem = true;
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.BuildPlan)
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(true);
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
+                {
+                    hs.SetIsUsingHammer(true);
+                    bs.SetIsBuilding(false);
+                }
+                else
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(false);
                 }
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 inventoryManager.EquippedSlot = 2;
                 isPlacingItem = false;
-                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] )
+                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
                 {
-                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
-                    {
-                        isPlacingItem = true;
-                    }
-                    else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() != ItemInfo.ItemType.BuildPlan)
-                    {
-                        bs.SetIsBuilding(false);
-                    }
-                    else bs.SetIsBuilding(true);
+                    isPlacingItem = true;
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.BuildPlan)
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(true);
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
+                {
+                    hs.SetIsUsingHammer(true);
+                    bs.SetIsBuilding(false);
+                }
+                else
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(false);
                 }
             }
             else if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 inventoryManager.EquippedSlot = 3;
                 isPlacingItem = false;
-                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] )
+                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
                 {
-                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
-                    {
-                        isPlacingItem = true;
-                    }
-                    else
-                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() != ItemInfo.ItemType.BuildPlan)
-                    {
-                        bs.SetIsBuilding(false);
-                    }
-                    else bs.SetIsBuilding(true);
+                    isPlacingItem = true;
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.BuildPlan)
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(true);
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
+                {
+                    hs.SetIsUsingHammer(true);
+                    bs.SetIsBuilding(false);
+                }
+                else
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(false);
                 }
             }
             else if (Input.GetKeyDown(KeyCode.Alpha5))
             {
                 inventoryManager.EquippedSlot = 4;
                 isPlacingItem = false;
-                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] )
+                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
                 {
-                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
-                    {
-                        isPlacingItem = true;
-                    }
-                    else
-                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() != ItemInfo.ItemType.BuildPlan)
-                    {
-                        bs.SetIsBuilding(false);
-                    }
-                    else bs.SetIsBuilding(true);
+                    isPlacingItem = true;
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.BuildPlan)
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(true);
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
+                {
+                    hs.SetIsUsingHammer(true);
+                    bs.SetIsBuilding(false);
+                }
+                else
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(false);
                 }
             }
             else if (Input.GetKeyDown(KeyCode.Alpha6))
             {
                 inventoryManager.EquippedSlot = 5;
                 isPlacingItem = false;
-                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] )
+                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
                 {
-                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
-                    {
-                        isPlacingItem = true;
-                    }
-                    else
-                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() != ItemInfo.ItemType.BuildPlan)
-                    {
-                        bs.SetIsBuilding(false);
-                    }
-                    else bs.SetIsBuilding(true);
+                    isPlacingItem = true;
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.BuildPlan)
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(true);
+                }
+                else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
+                {
+                    hs.SetIsUsingHammer(true);
+                    bs.SetIsBuilding(false);
+                }
+                else
+                {
+                    hs.SetIsUsingHammer(false);
+                    bs.SetIsBuilding(false);
                 }
             }
             //Stores Equipped Item into CurrentItem

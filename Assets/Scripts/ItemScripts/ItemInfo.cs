@@ -15,6 +15,7 @@ public class ItemInfo : MonoBehaviour
         Heals,
         BuildPlan,
         unshowable,
+        Hammer,
         NUM_ITEMTYPE
     };
 
@@ -78,6 +79,7 @@ public class ItemInfo : MonoBehaviour
         Workbench_3_Ghost,
         ResearchTable,
         ResearchTable_Ghost,
+        Hammer,
         NUM_ITEMID  
     };
 

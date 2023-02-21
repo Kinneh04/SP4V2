@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5430860834106483455}
   - component: {fileID: 6127081960635564519}
-  m_Layer: 7
+  - component: {fileID: 1441318943180261293}
+  - component: {fileID: 3072363939716927634}
+  m_Layer: 9
   m_Name: Walls
   m_TagString: NormalStructure
   m_Icon: {fileID: 0}
@@ -49,6 +51,38 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1441318943180261293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2849478933915083144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60cd20857e4cea54ca7cef2dc97704e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  selectedPrefab: {fileID: 2849478933915083144, guid: 07da7389cce3b86448d3bd5fd14ac5b8,
+    type: 3}
+  stoneMaterial: {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
+  isUpgraded: 0
+  stability: 100
+  pickupCooldown: 15
+--- !u!65 &3072363939716927634
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2849478933915083144}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.993341, y: 3.1082208, z: 0.4893613}
+  m_Center: {x: 0.010122776, y: 1.0541102, z: 1.3025999}
 --- !u!1 &7670580299703721666
 GameObject:
   m_ObjectHideFlags: 0

@@ -84,14 +84,20 @@ public class BuildingSystem : MonoBehaviour
 
     public void StartPreview()
     {
+        StartPreview(currentPreview);
+    }
+
+    // Overrides for HammerSystem
+    public void StartPreview(Transform currPreview)
+    {
         if (Physics.Raycast(cam.position, cam.forward, out hit, LayerMask.NameToLayer("BuildPreview"), layer))
         {
             if (hit.transform != transform)
-                ShowPreview(hit);
+                ShowPreview(hit, currPreview);
         }
     }
 
-    public void ShowPreview(RaycastHit hit2)
+    public void ShowPreview(RaycastHit hit2, Transform currPreview)
     {
         currentPos = hit2.point;
         currentPos -= Vector3.one * offset;
@@ -99,12 +105,12 @@ public class BuildingSystem : MonoBehaviour
         currentPos = new Vector3(Mathf.Round(currentPos.x), Mathf.Round(currentPos.y), Mathf.Round(currentPos.z));
         currentPos *= gridSize;
         currentPos += Vector3.one * offset;
-        currentPos.y += currentPreview.localScale.y * 0.5f;
-        currentPreview.position = currentPos; // snap preview to current position
+        currentPos.y += currPreview.localScale.y * 0.5f;
+        currPreview.position = currentPos; // snap preview to current position
 
         if (Input.GetKeyDown(KeyCode.R))
             currentRot += new Vector3(0, 90, 0);
-        currentPreview.localEulerAngles = currentRot;
+        currPreview.localEulerAngles = currentRot;
     }
 
     public void SetIsBuilding(bool building)
@@ -141,4 +147,5 @@ public class BuildObjects
     public int wood;
     public GameObject preview;
     public GameObject prefab;
+    public GameObject selectedPrefab;
 }
