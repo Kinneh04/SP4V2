@@ -473,8 +473,10 @@ MonoBehaviour:
   MaxPossibleItems: 0
   MaxQuantityOfEachItem: 0
   ItemsInCrate: []
+  PhotonViewIDs: 
   ItemQuantityInCrate: 
   IM: {fileID: 0}
+  pv: {fileID: 0}
   forceLoot: 1
 --- !u!114 &-3508974376230072005
 MonoBehaviour:

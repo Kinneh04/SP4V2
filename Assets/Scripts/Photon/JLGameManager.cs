@@ -88,7 +88,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         RemoveTagsFromOtherPlayers();
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("Ak47", position, rotation, 0);
+            PhotonNetwork.Instantiate("MP5A4", position, rotation, 0);
             PhotonNetwork.Instantiate("FoodCrate", position, rotation, 0);
         }
 
