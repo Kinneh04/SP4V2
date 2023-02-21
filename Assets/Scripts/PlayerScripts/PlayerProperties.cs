@@ -86,9 +86,16 @@ public class PlayerProperties : MonoBehaviour
     public PlayerMovement PM;
     public GameObject DeathBag;
 
+    public GameObject PauseMenu;
+
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
+    }
+
+    public void DisconnectFromServer()
+    {
+        PhotonNetwork.Disconnect();
     }
 
     public void TurnOnFurnace()
@@ -459,6 +466,20 @@ public class PlayerProperties : MonoBehaviour
                 RespawnAfterDeath();
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (PauseMenu.activeSelf)
+            {
+                PauseMenu.SetActive(false);
+                playerMovement.LockCursor();
+            }
+            else
+            {
+                PauseMenu.SetActive(true);
+                playerMovement.UnlockCursor();
+            }
+        }
+
     }
 
     public IEnumerator ShowBlood()
