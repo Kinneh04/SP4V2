@@ -519,12 +519,12 @@ MonoBehaviour:
   burstCooldown: 0.5
   spawnPoint: {fileID: 1151438817770336834}
   pv: {fileID: 0}
-  HeliHealth: 2500
+  HeliHealth: 500
   ExplosionParticles: {fileID: 2738436938548131024, guid: a497e0fa0ab5d5543ade591fe4d1c2d3,
     type: 3}
   DeathParticles: {fileID: 2738436938548131024, guid: 7bfe9250d0264264c8e6eb67ff7cf665,
     type: 3}
-  LootBox: {fileID: 0}
+  LootBox: {fileID: 8507658223578317652, guid: 936e49d39797ca24eb3ffc903540b84d, type: 3}
   burstAmount: 5
 --- !u!95 &6518388483095514855
 Animator:

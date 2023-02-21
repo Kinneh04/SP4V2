@@ -42,7 +42,7 @@ public class HeliAI : MonoBehaviour
             {
                
                 PhotonNetwork.Instantiate(DeathParticles.name, transform.position, Quaternion.identity);
-                //PhotonNetwork.Instantiate(LootBox.name, transform.position, Quaternion.identity);
+                PhotonNetwork.Instantiate(LootBox.name, transform.position, Quaternion.identity);
                 PhotonNetwork.Destroy(gameObject);
             }
         }
@@ -55,7 +55,7 @@ public class HeliAI : MonoBehaviour
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
         if (Target!=null && Vector3.Distance(gameObject.transform.position, Target.transform.position) < 500)
         {
-            print(Vector3.Distance(gameObject.transform.position, Target.transform.position));
+            //print(Vector3.Distance(gameObject.transform.position, Target.transform.position));
             ShootCooldown -= Time.deltaTime;
             if(ShootCooldown <= 0)
             {
