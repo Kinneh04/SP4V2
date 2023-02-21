@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 public class ItemInfo : MonoBehaviour
 {
+    public PhotonView pv;
     public enum ItemType {
         Axe,
         Pickaxe, 
@@ -92,7 +94,17 @@ public class ItemInfo : MonoBehaviour
 
     public int ItemCount;
     public int MaxItemCount;
-    
+
+    private void Awake()
+    {
+        pv = GetComponent<PhotonView>();
+    }
+    [PunRPC]
+    void ParentToObj(int ActorNumber)
+    {
+        PhotonView GOPV = PhotonView.Find(ActorNumber);
+        GOPV.gameObject.transform.parent = GameObject.FindGameObjectWithTag("LootPool").transform;
+    }
     virtual public void Init()
     {
 
