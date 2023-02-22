@@ -25,7 +25,7 @@ public class LootProperties : MonoBehaviour
 
     bool ItemExistsInCrate(ItemInfo I)
     {
-        for(int i =0; i < ItemsInCrate.Count;i++)
+        for (int i = 0; i < ItemsInCrate.Count; i++)
         {
             if (I == ItemsInCrate[i])
                 return true;
@@ -37,7 +37,7 @@ public class LootProperties : MonoBehaviour
     [PunRPC]
     void SyncLootAcrossClients(int[] PhotonViewIDs, int[] ItemQuantity)
     {
-        for(int i = 0; i < PhotonViewIDs.Length; i++)
+        for (int i = 0; i < PhotonViewIDs.Length; i++)
         {
             PhotonView ItemPV = PhotonView.Find(PhotonViewIDs[i]);
             ItemInfo ItemToAdd = ItemPV.gameObject.GetComponent<ItemInfo>();
@@ -47,13 +47,14 @@ public class LootProperties : MonoBehaviour
                 ItemQuantityInCrate.Add(ItemQuantity[i]);
             }
         }
+
     }
 
     public void UpdateLoot()
     {
-        for(int i = 0; i < ItemQuantityInCrate.Count;i++)
+        for (int i = 0; i < ItemQuantityInCrate.Count; i++)
         {
-            if(IM.InventoryList[i+30] == null)
+            if (IM.InventoryList[i + 30] == null)
             {
 
                 ItemsInCrate.RemoveAt(i);
@@ -74,7 +75,7 @@ public class LootProperties : MonoBehaviour
 
 
 
-        if (ItemsInCrate.Count <= 0) Destroy(gameObject);
+        if (ItemsInCrate.Count <= 0) pv.RPC("DestroyOnAllClients", RpcTarget.All);
 
         //else
         //{
@@ -87,6 +88,12 @@ public class LootProperties : MonoBehaviour
         //    int[] PVQuanArray = ItemQuantityInCrate.ToArray();
         //    pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
         //}
+    }
+
+    [PunRPC]
+    void DestroyOnAllClients()
+    {
+        if(pv.IsMine) PhotonNetwork.Destroy(gameObject);
     }
 
     public void ClearLastLootPool()
@@ -126,9 +133,9 @@ public class LootProperties : MonoBehaviour
             int[] PVQuanArray = ItemQuantityInCrate.ToArray();
             pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
         }
-        else if(pv.IsMine)
+        else if (pv.IsMine)
         {
-            for(int i = 0; i < ItemsInCrate.Count; i++)
+            for (int i = 0; i < ItemsInCrate.Count; i++)
             {
                 PhotonViewIDs.Add(ItemsInCrate[i].gameObject.GetComponent<PhotonView>().ViewID);
             }
@@ -138,7 +145,18 @@ public class LootProperties : MonoBehaviour
         }
     }
 
-   
+    public void PrepareToSyncLoot()
+    {
+        PhotonViewIDs.Clear();
+        UpdateLoot();
+        for (int i = 0; i < ItemsInCrate.Count; i++)
+        {
+            PhotonViewIDs.Add(ItemsInCrate[i].gameObject.GetComponent<PhotonView>().ViewID);
+        }
+        int[] PVIDArray = PhotonViewIDs.ToArray();
+        int[] PVQuanArray = ItemQuantityInCrate.ToArray();
+        pv.RPC("SyncLootAcrossClients", RpcTarget.All, PVIDArray, PVQuanArray);
+    }
 
     public void DisplayLoot()
     {

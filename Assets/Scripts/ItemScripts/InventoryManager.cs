@@ -130,6 +130,10 @@ public class InventoryManager : MonoBehaviour
             {
                 pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
             }
+            else if(pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Crate")
+            {
+                pp.PlayerLookingAtItem.GetComponent<LootProperties>().PrepareToSyncLoot();
+            }
            
             return;
         }
@@ -146,7 +150,11 @@ public class InventoryManager : MonoBehaviour
             {
                 pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
             }
+            else if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Crate")
+            {
 
+                pp.PlayerLookingAtItem.GetComponent<LootProperties>().PrepareToSyncLoot();
+            }
             return;
         }
         int Slot1Quantity = InventoryList[Slot1ID].GetItemCount();
@@ -229,7 +237,7 @@ public class InventoryManager : MonoBehaviour
         if (InventoryList.Count <= MaxInventorySize)
         {
             InventoryList[SlotNum] = item;
-            InventoryList[SlotNum].SetItemCount(QuantityToAdd+ InventoryList[SlotNum].GetItemCount());
+            InventoryList[SlotNum].SetItemCount(QuantityToAdd);
         }
         UpdateItemCountPerSlot();
     } 

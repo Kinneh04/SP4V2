@@ -133,10 +133,13 @@ public class PlayerProperties : MonoBehaviour
 
 
                 LootScreen.SetActive(false);
-                if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Crate")
+                if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Crate" && LootScreen.activeSelf)
                 {
                     print("UpdatingCrate!");
-                    PlayerLookingAtItem.GetComponent<LootProperties>().UpdateLoot();
+                    PlayerLookingAtItem.GetComponent<LootProperties>().PrepareToSyncLoot();
+
+
+
                     PlayerLookingAtItem.GetComponent<LootProperties>().ClearLastLootPool();
                 }
                 else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
