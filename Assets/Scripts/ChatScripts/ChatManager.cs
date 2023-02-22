@@ -128,25 +128,26 @@ public class ChatManager : MonoBehaviour
         string ChatText = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
 
         // Gets the 10 Most Recent Messages
-        List<string> Messages = new List<string>();
-        int MessageCount = 0;
-        int MessageStart = 0;
-        for (int i = 0; i < ChatText.Length - 1; i++)
-        {
-            if (ChatText[i] == '\n' )
-            {
-                string Message = ChatText.Substring(MessageStart, i);
-                Messages.Add(Message);
-                MessageStart = i + 1;
-                MessageCount++;
-            }
-        }
-        if (MessageCount > 10)
-            Messages.RemoveRange(0, MessageCount - 10);
+        //List<string> Messages = new List<string>();
+        //int MessageCount = 0;
+        //int MessageStart = 0;
+        //for (int i = 0; i < ChatText.Length - 1; i++)
+        //{
+        //    if (ChatText[i] == '\n' )
+        //    {
+        //        string Message = ChatText.Substring(MessageStart, i);
+        //        Messages.Add(Message);
+        //        MessageStart = i + 1;
+        //        MessageCount++;
+        //    }
+        //}
+        //if (MessageCount > 10)
+        //    Messages.RemoveRange(0, MessageCount - 10);
 
-        Content.text = "";
-        for (int i = 0; i < Messages.Count; i++)
-            Content.text += Messages[i];
+        //Content.text = "";
+        //for (int i = 0; i < Messages.Count; i++)
+        //    Content.text += Messages[i];
+        Content.text = ChatText;
     }
 
     [PunRPC]
