@@ -75,7 +75,7 @@ public class PlayerUseItem : MonoBehaviour
     }
 
     [PunRPC]
-    void ShoveNewItemInRHandOfActor(string ItemName, int ActorNumber)
+    void ShoveNewItemInRHandOfActor(int ItemView, int ActorNumber)
     {
         GameObject ItemToPairToHand;
 
@@ -88,7 +88,7 @@ public class PlayerUseItem : MonoBehaviour
 
         GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
 
-        ItemToPairToHand = GameObject.Find(ItemName);
+        ItemToPairToHand = PhotonView.Find(ItemView).gameObject;
 
         if (ItemToPairToHand != null)
         {
@@ -121,8 +121,9 @@ public class PlayerUseItem : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                PAnimator.Play("PBeanIdle");
-              
+                //PAnimator.Play("PBeanIdle");
+                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanIdle");
+
                 isPlacingItem = false;
                 if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "Crate")
                 {
@@ -204,8 +205,9 @@ public class PlayerUseItem : MonoBehaviour
                                 }
                             }
                            
-                           
-                            pv.RPC("ShoveNewItemInRHandOfActor", RpcTarget.All, playerProperties.PlayerLookingAtItem.name, pv.ViewID);
+                            if(playerProperties.PlayerLookingAtItem.GetComponent<PhotonView>() != null && pv.IsMine)
+                                pv.RPC("ShoveNewItemInRHandOfActor", RpcTarget.All, playerProperties.PlayerLookingAtItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
+                            else Debug.LogError("Current Item has no PhotonView component");
                             inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().ItemCount);
                             inventoryManager.UpdateItemCountPerSlot();
                         }
@@ -238,32 +240,40 @@ public class PlayerUseItem : MonoBehaviour
                         ItemGO.GetComponent<WeaponInfo>().Reload();
                         if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.M1911_PISTOL && !LeftMouseButtonPressed)
                         {
-                            PAnimator.Play("PBeanReloadM1911");
+                            //PAnimator.Play("PBeanReloadM1911");
+                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadM1911");
                         }
                         else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REVOLVER && !LeftMouseButtonPressed)
                         {
-                            PAnimator.Play("PBeanRevolverReload");
+                            //PAnimator.Play("PBeanRevolverReload");
+                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanRevolverReload");
                         }
                         else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.AK47 && !LeftMouseButtonPressed)
                         {
-                            PAnimator.Play("PBeanReloadAK");
+                           // PAnimator.Play("PBeanReloadAK");
+                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadAK");
                         }
                         else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.HOMEMADE_SHOTGUN && !LeftMouseButtonPressed)
                         {
-                            PAnimator.Play("PBeanReloadShotgun");
+                            //PAnimator.Play("PBeanReloadShotgun");
+                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadShotgun");
                         }
                         else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.MP5A4 && !LeftMouseButtonPressed)
                         {
-                            PAnimator.Play("PBeanSMGReload");
+                           // PAnimator.Play("PBeanSMGReload");
+                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSMGReload");
                         }
                         else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REMINGTON870 && !LeftMouseButtonPressed)
                         {
-                            PAnimator.Play("PBeanShotgunReload");
+                            //PAnimator.Play("PBeanShotgunReload");
+                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanShotgunReload");
                         }
                         else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.BOLT_ACTION_RIFLE && !LeftMouseButtonPressed)
                         {
-                            PAnimator.Play("PBeanSniperReload");
+                            //PAnimator.Play("PBeanSniperReload");
+                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSniperReload");
                         }
+                    
                     }
                 }
             }
@@ -411,11 +421,13 @@ public class PlayerUseItem : MonoBehaviour
                     if (ItemGO.GetComponent<HealProperties>().NameOfHeal == "Toilet Paper" || ItemGO.GetComponent<HealProperties>().NameOfHeal == "Bandage")
                     {
                         // Add animation for bandaging;
-                        PAnimator.Play("PBeanBandage");
+                        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanBandage");
+                       // PAnimator.Play("PBeanBandage");
                     }
                     else if (ItemGO.GetComponent<HealProperties>().NameOfHeal == "Ibuprofen")
                     {
-                        PAnimator.Play("PBeanIbuprofen");
+                        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanIbuprofen");
+                        //  PAnimator.Play("PBeanIbuprofen");
                     }
                 }
                 else if (canuse)
@@ -473,7 +485,8 @@ public class PlayerUseItem : MonoBehaviour
                         ItemGO.GetComponent<Bow>().charged = false;
                     }
                     StopCoroutine(ItemGO.GetComponent<Bow>().StartCharge());
-                    PAnimator.Play("PBowShoot");
+                    pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBowShoot");
+                    //PAnimator.Play("PBowShoot");
                 }
             }
             else if (Input.GetMouseButton(1) && playerProperties.CurrentlyHoldingItem && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() != ItemInfo.ItemType.BuildPlan && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() != ItemInfo.ItemType.Hammer)
@@ -512,7 +525,8 @@ public class PlayerUseItem : MonoBehaviour
                     playerLookAt.showDot = true;
                     sniperScopeImage.SetActive(false);
                     playerLookAt.dot.SetActive(true);
-                    PAnimator.Play("PBeanIdle");
+                    pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanIdle");
+                    //PAnimator.Play("PBeanIdle");
                     if (playerProperties.CurrentlyHoldingItem && playerProperties.CurrentlyHoldingItem.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.BOLT_ACTION_RIFLE)
                     {
                         sniperScopeImage.SetActive(false);
@@ -682,7 +696,7 @@ public class PlayerUseItem : MonoBehaviour
                     pv.RPC("ClearChildrenInActorRightHand", RpcTarget.Others, pv.ViewID);
                     
                     ForceGiveItem(CurrentItem);
-                    pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, CurrentItem.name, pv.ViewID);
+                    pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, CurrentItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
                 }
 
             }
@@ -777,7 +791,7 @@ public class PlayerUseItem : MonoBehaviour
     }
 
     [PunRPC]
-    void UpdateOtherClientsAboutYourNewHandItem(string newItem, int ActorNumber)
+    void UpdateOtherClientsAboutYourNewHandItem(int ItemPVID, int ActorNumber)
     {
         GameObject ItemToPairToHand;
 
@@ -790,7 +804,7 @@ public class PlayerUseItem : MonoBehaviour
 
         GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
 
-        ItemToPairToHand = RHand.transform.Find(newItem).gameObject;
+        ItemToPairToHand = PhotonView.Find(ItemPVID).gameObject;
 
         if (ItemToPairToHand != null)
         {
@@ -867,7 +881,8 @@ public class PlayerUseItem : MonoBehaviour
     {
         if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().itemType != ItemInfo.ItemType.unshowable)
         {
-            PAnimator.Play("PBeanThrow");
+            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanThrow");
+           // PAnimator.Play("PBeanThrow");
             GameObject GO = playerProperties.CurrentlyHoldingItem;
             yield return new WaitForSeconds(0.45f);
             pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
@@ -882,7 +897,8 @@ public class PlayerUseItem : MonoBehaviour
     
     public IEnumerator IEDropItem(int Slot)
     {
-        PAnimator.Play("PBeanThrow");
+        //PAnimator.Play("PBeanThrow");
+        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanThrow");
 
         if (Slot == inventoryManager.EquippedSlot)
         {
@@ -951,7 +967,8 @@ public class PlayerUseItem : MonoBehaviour
     public void StabItem()
     {
         print("Stab");
-        PAnimator.Play("PBeanStab");
+        //PAnimator.Play("PBeanStab");
+        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanStab");
         StartCoroutine(triggerCooldown());
     }
 
@@ -959,7 +976,8 @@ public class PlayerUseItem : MonoBehaviour
     {
         print("Chop");
         playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = true;
-        PAnimator.Play("PBeanChop");
+        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanChop");
+        //PAnimator.Play("PBeanChop");
         StartCoroutine(triggerCooldown());
     }
 
@@ -967,6 +985,7 @@ public class PlayerUseItem : MonoBehaviour
     {
         print("Swing");
         playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = true;
+        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSwing");
         PAnimator.Play("PBeanSwing");
         StartCoroutine(triggerCooldown());
     }

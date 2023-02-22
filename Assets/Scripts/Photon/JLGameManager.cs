@@ -127,7 +127,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
                 Destroy(Player.transform.Find("Capsule").Find("Eyes").GetComponentInChildren<Camera>().gameObject);
                 //Destroy(Player.GetComponent<PlayerProperties>());
                 Destroy(Player.GetComponent<PlayerMovement>());
-                Destroy(Player.GetComponent<PlayerUseItem>());
+                //Destroy(Player.GetComponent<PlayerUseItem>());
                 Destroy(Player.GetComponent<BuildingSystem>());
                 Destroy(Player.GetComponent<AudioListener>());
                 Destroy(Player.transform.Find("Canvas").gameObject);

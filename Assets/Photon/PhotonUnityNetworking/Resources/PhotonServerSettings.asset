@@ -78,6 +78,7 @@ MonoBehaviour:
   - RepairStructure
   - ReadyTobePickedAgin
   - SomeoneJustPickedIt
+  - PlayServerSideAnimation
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

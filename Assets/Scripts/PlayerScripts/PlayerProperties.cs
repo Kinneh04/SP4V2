@@ -196,6 +196,14 @@ public class PlayerProperties : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    void PlayServerSideAnimation(int viewID, string animationName)
+    {
+        GameObject obj = PhotonView.Find(viewID).gameObject;
+        Animator remoteAnimator = obj.GetComponent<Animator>();
+        remoteAnimator.Play(animationName);
+    }
+
     public void OpenResearch()
     {
         if (craftingIsOpen)
@@ -248,7 +256,8 @@ public class PlayerProperties : MonoBehaviour
         deathscreen.SetActive(false);
         awokenMenu.SetActive(true);
         isDead = false;
-        panim.Play("PBeanIdle");
+        //panim.Play("PBeanIdle");
+        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanIdle");
 
         PM.canLookAround = true;
         PM.isMovementEnabled = true;
@@ -574,7 +583,8 @@ public class PlayerProperties : MonoBehaviour
             PM.isMovementEnabled = false;
             PM.canLookAround = false;
             panim.StopPlayback();
-            panim.Play("PBeanDeath");
+            //panim.Play("PBeanDeath");
+            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanDeath");
             StartCoroutine(DeathSequence());
             
             awokenMenu.SetActive(false);
