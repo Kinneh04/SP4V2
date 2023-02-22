@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Photon.Pun;
 public class Raycast : MonoBehaviour
 {
     [SerializeField]
@@ -80,11 +79,6 @@ public class Raycast : MonoBehaviour
                 hit.transform.GetComponent<PlayerProperties>().TakeDamage(Damage);
                 GO = Instantiate(BloodParticleSystem, hit.point, Quaternion.identity);
             }
-            else if (hit.transform.gameObject.CompareTag("Helicopter"))
-            {
-                hit.transform.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, Damage);
-                GO = Instantiate(ImpactParticleSystem, hit.point, Quaternion.identity);
-            }
             else
             {
 
@@ -126,7 +120,7 @@ public class Raycast : MonoBehaviour
     }
     private Vector3 GetDirection()
     {
-        Vector3 direction = BulletSpawnPoint.forward;
+        Vector3 direction = BulletSpawnPoint.transform.forward;
         if (AddBulletSpread)
         {
             direction += new Vector3(

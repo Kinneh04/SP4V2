@@ -62,6 +62,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ac00a66b7b70240a2aec10c18dc221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 3
@@ -69,6 +71,7 @@ MonoBehaviour:
   ItemCount: 1
   MaxItemCount: 1
   MagRounds: 0
+  BarrelTip: {fileID: 7271804169606490546}
   BulletPrefab: {fileID: 4347079924148518773, guid: a15b541c2f94e7d488f8a47bee0f784a,
     type: 3}
   BarrlTip: {fileID: 7271804169606490546}

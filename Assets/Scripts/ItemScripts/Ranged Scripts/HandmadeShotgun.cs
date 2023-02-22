@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class HandmadeShotgun : WeaponInfo
 {
 	public int PelletCount = 16;
-	public GameObject BarrlTip;
-	
-	//This is REQUIRED for muzzle flare;
-	// Dont change it or it will NOT shoot;
+
 	public override void Init()
     {
         MagRounds = MaxMagRounds = 1;
@@ -17,7 +15,7 @@ public class HandmadeShotgun : WeaponInfo
 		AmmoType = ItemID.ShotgunAmmo;
 		Damage = 7;
         TimeBetweenShots = 1.5f;
-		BarrelTip = BarrlTip;
+		
         ElapsedTime = ReloadTime = 0;
         MaxReloadTime = 1.4f;
         CanFire = false;
@@ -39,12 +37,8 @@ public class HandmadeShotgun : WeaponInfo
 			{
 				for (int i = 0; i < PelletCount; i++)
 				{
-					GameObject projectile = Instantiate(BulletPrefab, transform.position, Quaternion.identity);
-					projectile.GetComponent<Raycast>().Damage = Damage;
-					projectile.GetComponent<Raycast>().BulletSpawnPoint = transform;
-					projectile.GetComponent<Raycast>().ParentGunTip = BarrelTip;
-					projectile.GetComponent<Raycast>().SetAimCone(AimCone);
-					projectile.GetComponent<Raycast>().Shoot();
+					PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
+					ProjectilephotonView.RPC("DefaultRaycastInit", RpcTarget.All);
 				}
 				// Lock the weapon after this discharge
 				CanFire = false;

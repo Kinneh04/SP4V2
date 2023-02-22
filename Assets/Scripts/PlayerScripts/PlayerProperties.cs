@@ -529,31 +529,41 @@ public class PlayerProperties : MonoBehaviour
         {
             Health -= damage;
 
-
-            if (Health <= 0)
-            {
-                die();
-            }
-
             if (Health < 50)
             {
                 float q = Health / MaxHealth;
                 StartCoroutine(ShowBlood());
                 isShowingBlood = true;
                 bloodTimer = 5.0f;
+                if (Health <= 0)
+                {
+                    die();
+                }
             }
 
         }
-
-           
-
+    }
+    //Its TakeDamage but without punrpc
+    public void TakeDamageV2(float damage)
+    {
+        Health -= damage;
+        if (Health < 50)
+        {
+            float q = Health / MaxHealth;
+            StartCoroutine(ShowBlood());
+            isShowingBlood = true;
+            bloodTimer = 5.0f;
+            if (Health <= 0)
+            {
+                die();
+            }
+        }
         float f = Random.Range(1, 100);
-        if(bleedChance < f)
+        if (bleedChance < f)
         {
             isBleeding = true;
             bleedingIcon.SetActive(true);
             BTimer = 60f;
-
         }
     }
 
@@ -590,7 +600,33 @@ public class PlayerProperties : MonoBehaviour
         }
         
     }
-
+    [PunRPC]
+    public void DefaultRaycastInit()
+    {
+        WeaponInfo weaponInfo = gameObject.GetComponentInChildren<WeaponInfo>();
+        GameObject Raycast = Instantiate(weaponInfo.BulletPrefab, transform.position, Quaternion.identity);
+        Raycast.GetComponent<Raycast>().Damage = weaponInfo.GetDamage();
+        Raycast.GetComponent<Raycast>().BulletSpawnPoint = gameObject.transform;
+        Raycast.GetComponent<Raycast>().ParentGunTip = weaponInfo.BarrelTip;
+        Raycast.GetComponent<Raycast>().SetAimCone(weaponInfo.GetAimCone());
+        Raycast.GetComponent<Raycast>().Shoot();
+    }
+    [PunRPC]
+    public void DefaultProjectileInit()
+    {
+         WeaponInfo weaponInfo = gameObject.GetComponentInChildren<WeaponInfo>();
+        GameObject Projectile = Instantiate(weaponInfo.BulletPrefab, weaponInfo.BarrelTip.transform.position, Quaternion.identity);
+        Projectile.GetComponent<Projectile>().Damage = weaponInfo.GetDamage();
+        Projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
+        Projectile.GetComponent<Projectile>().ParentGunTip = weaponInfo.BarrelTip;
+        Projectile.GetComponent<Projectile>().SetAimCone(weaponInfo.GetAimCone());
+        Projectile.transform.parent = null;
+        Projectile.transform.rotation = weaponInfo.transform.rotation;
+        Projectile.GetComponent<Projectile>().JustFired = true;
+        Projectile.GetComponent<Projectile>().itemID = weaponInfo.GetAmmoType();
+        Projectile.GetComponent<Projectile>().ExplosionTimer = 3;
+        Projectile.GetComponent<Projectile>().ShootNonRaycastType();
+    }
     public IEnumerator DeathSequence()
     {
         yield return new WaitForSeconds(1.6f);

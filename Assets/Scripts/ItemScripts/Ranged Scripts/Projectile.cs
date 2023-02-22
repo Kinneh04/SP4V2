@@ -27,7 +27,6 @@ public class Projectile : MonoBehaviour
     public ItemInfo.ItemID itemID;
     public float ExplosionTimer = 0;
 
-
     private void OnCollisionEnter(Collision collision)
     {
         if (JustFired)
@@ -71,8 +70,10 @@ public class Projectile : MonoBehaviour
                     collision.transform.GetComponent<ChickenAI>().GetDamaged((int)Damage);
                     Instantiate(ImpactParticleSystem, collision.transform.position, Quaternion.identity);
                 }
-                else if (collision.transform.gameObject.CompareTag("Player"))
+                else if (collision.transform.gameObject.CompareTag("Player") && collision.transform.gameObject.CompareTag("EnemyPlayer"))
                 {
+                    collision.transform.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, Damage);
+                    collision.transform.GetComponent<PlayerProperties>().TakeDamage(Damage);
                     Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
                 }
                 Vector3 PushPreviousDirection; // so the arrow is doesnt go through the wall
@@ -81,9 +82,11 @@ public class Projectile : MonoBehaviour
                 this.transform.position -= PushPreviousDirection;
                 this.GetComponent<Rigidbody>().isKinematic = true;
                 this.transform.parent = collision.transform.parent;
+
             }
             JustFired = false;
         }
+        Debug.Log("GGGGG");
     }
     // Start is called before the first frame update
     void Awake()
@@ -98,11 +101,11 @@ public class Projectile : MonoBehaviour
         if (rb != null)
         {
             if (itemID == ItemInfo.ItemID.Arrow)
-                rb.velocity = transform.forward * 50;
+                rb.velocity = BulletSpawnPoint.transform.forward * 50;
             else if (itemID == ItemInfo.ItemID.Rocket)
-                rb.velocity = transform.forward * 100;
+                rb.velocity = BulletSpawnPoint.transform.forward * 100;
             else if (itemID == ItemInfo.ItemID.C4)
-                rb.velocity = transform.forward * 10;
+                rb.velocity = BulletSpawnPoint.transform.forward * 10;
         }
     }
     public void Shoot()
@@ -142,8 +145,7 @@ public class Projectile : MonoBehaviour
             }
             else
             {
-                PhotonView Go = PhotonNetwork.Instantiate("Explosion", transform.position, Quaternion.identity).GetComponent<PhotonView>();
-                Go.gameObject.transform.position = transform.position;
+                GameObject Go = Instantiate(Explosion, transform.position, Quaternion.identity);
                 Go.GetComponent<Explosion>().Damage = Damage;
                 Destroy(this.gameObject);
             }

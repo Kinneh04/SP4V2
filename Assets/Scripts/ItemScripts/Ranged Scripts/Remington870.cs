@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class Remington870 : WeaponInfo
 {
     public int PelletCount = 8;
-    public GameObject BarrlTip;
-    //This is REQUIRED for muzzle flare;
-    // Dont change it or it will NOT shoot;
+
     public override void Init()
     {
         MagRounds = MaxMagRounds = 6;
@@ -18,7 +17,7 @@ public class Remington870 : WeaponInfo
         TimeBetweenShots = 0.25f;
         ElapsedTime = ReloadTime = 0;
         MaxReloadTime = 2.2;
-        BarrelTip = BarrlTip;
+        
         CanFire = false;
         AimCone = 0.7f;
         InfiniteAmmo = false;
@@ -38,12 +37,8 @@ public class Remington870 : WeaponInfo
             {
                 for (int i = 0; i < PelletCount; i++)
                 {
-                    GameObject projectile = Instantiate(BulletPrefab, transform.position, Quaternion.identity);
-                    projectile.GetComponent<Raycast>().Damage = Damage;
-                    projectile.GetComponent<Raycast>().BulletSpawnPoint = transform;
-                    projectile.GetComponent<Raycast>().ParentGunTip = BarrelTip;
-                    projectile.GetComponent<Raycast>().SetAimCone(AimCone);
-                    projectile.GetComponent<Raycast>().Shoot();
+                    PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
+                    ProjectilephotonView.RPC("DefaultRaycastInit", RpcTarget.All);
                 }
                 // Lock the weapon after this discharge
                 CanFire = false;

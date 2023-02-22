@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class C4 : WeaponInfo
 {
-	public GameObject BarrlTip;
 
 	public override void Init()
     {
@@ -34,18 +33,9 @@ public class C4 : WeaponInfo
 			// If there is still ammo in the magazine, then fire
 			if (ItemCount > 0)
 			{
-				GameObject projectile = Instantiate(BulletPrefab, BarrlTip.transform.position, Quaternion.identity);
-				projectile.GetComponent<Projectile>().Damage = Damage;
-				projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
-				projectile.GetComponent<Projectile>().ParentGunTip = BarrlTip;
-				projectile.GetComponent<Projectile>().SetAimCone(AimCone);
-				projectile.GetComponent<Rigidbody>().isKinematic = false;
-				projectile.transform.parent = null;
-				projectile.transform.rotation = transform.rotation;
-				projectile.GetComponent<Projectile>().JustFired = true;
-				projectile.GetComponent<Projectile>().itemID = AmmoType;
-				projectile.GetComponent<Projectile>().ExplosionTimer = 3;
-				projectile.GetComponent<Projectile>().ShootNonRaycastType();
+				//Get Player PhotonView
+				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
+				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All);
 
 				// Lock the weapon after this discharge
 				CanFire = false;
