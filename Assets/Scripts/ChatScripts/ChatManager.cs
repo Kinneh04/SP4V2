@@ -35,6 +35,7 @@ public class ChatManager : MonoBehaviour
         isConnected = true;
         PV = GetComponent<PhotonView>();
         Content.fontSize = 24;
+        PV.RPC("sendEveryoneMessage", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName + " has joined.");
     }
 
     // Update is called once per frame
@@ -47,6 +48,7 @@ public class ChatManager : MonoBehaviour
         else
         {
             //Disconnect and dont back
+            PV.RPC("sendEveryoneMessage", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName + " has left.");
         }
         Background.SetActive(isTyping);
         if (isTyping)
@@ -113,8 +115,9 @@ public class ChatManager : MonoBehaviour
 
     void UpdateOwnChat(string message)
     {
-        Debug.Log(PhotonNetwork.LocalPlayer.NickName + "Update Chat: " + Content.text);
+        Debug.Log(PhotonNetwork.LocalPlayer.NickName + "PreUpdate Chat: " + Content.text);
         Content.text += "\n " + message;
+        Debug.Log(PhotonNetwork.LocalPlayer.NickName + "PostUpdate Chat: " + Content.text);
     }
 
     [PunRPC]
