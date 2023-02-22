@@ -73,6 +73,8 @@ public class PlayerUseItem : MonoBehaviour
 
     private void Update()
     {
+        if (GetComponent<ChatManager>().isTyping)
+            return;
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             playerProperties.OpenInventory();
