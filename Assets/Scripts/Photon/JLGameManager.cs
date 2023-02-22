@@ -10,7 +10,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class JLGameManager : MonoBehaviourPunCallbacks
 {
     public static JLGameManager Instance = null;
-
+    public GameObject SpawnPointMin, SpawnPointMax;
 
     public void Awake()
     {
@@ -79,7 +79,10 @@ public class JLGameManager : MonoBehaviourPunCallbacks
     private void StartGame()
     {
         Debug.Log("StartGame!");
-        Vector3 position = new Vector3(-9.8f, 4.0f, -3.2f);
+        float xPosition = Random.Range(SpawnPointMin.transform.position.x, SpawnPointMax.transform.position.x);
+        float zPosition = Random.Range(SpawnPointMin.transform.position.z, SpawnPointMax.transform.position.z);
+
+        Vector3 position = new Vector3(xPosition, SpawnPointMax.transform.position.y, zPosition);
         Quaternion rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         GameObject player = null;
 
