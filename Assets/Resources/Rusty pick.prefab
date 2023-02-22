@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 2563237449647826515}
   m_Layer: 0
   m_Name: Rusty pick
-  m_TagString: Untagged
+  m_TagString: Weaponry
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,6 +154,7 @@ MonoBehaviour:
   phview: {fileID: 0}
   NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 1
   itemID: 13

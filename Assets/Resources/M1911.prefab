@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -3589878634300774061}
   m_Layer: 0
   m_Name: M1911
-  m_TagString: Untagged
+  m_TagString: Weaponry
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,8 +64,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 339582d261e874c4b93ccbd4cec75378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pv: {fileID: 0}
+  phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 3
   itemID: 16

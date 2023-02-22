@@ -118,6 +118,7 @@ MonoBehaviour:
   phview: {fileID: 0}
   NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 5
   itemID: 9
@@ -174,7 +175,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 9140364042024971422}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

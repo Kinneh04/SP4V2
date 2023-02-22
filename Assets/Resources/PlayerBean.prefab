@@ -12241,8 +12241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb7a456983cf8141837c4fabca4af35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 15
-  sprintSpeed: 25
+  moveSpeed: 5
+  sprintSpeed: 10
   playerProperties: {fileID: 2444950040306206}
   jumpHeight: 3
   swayAmount: 2
@@ -30283,6 +30283,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 247
   dot: {fileID: 5487432605073463155}
+  BannedWordsFromLookAt:
+  - Floor
+  - Unmarked
+  - Untagged
+  - Terrain
+  - Monument
+  - Tree
+  - Stone
 --- !u!20 &6249247382354149294
 Camera:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7488253731117529343}
   m_Layer: 0
   m_Name: HandmadeShotgun
-  m_TagString: Untagged
+  m_TagString: Weaponry
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65,8 +65,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ab7e79e721344f48adf66d3e3e7925e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pv: {fileID: 0}
+  phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 3
   itemID: 18
@@ -95,7 +97,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 7488253731117529343}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

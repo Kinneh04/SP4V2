@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class BushProperties : MonoBehaviour
 {
@@ -20,10 +21,10 @@ public class BushProperties : MonoBehaviour
         PickedState.SetActive(false);
 
         int PickAmount = Random.Range(minAmount, maxAmount);
-        GameObject GO = Instantiate(GameObjectToGive);
+        PhotonView GO = PhotonNetwork.Instantiate(GameObjectToGive.name, transform.position, Quaternion.identity).GetComponent<PhotonView>();
         ItemInfo GOIF = GO.GetComponent<ItemInfo>();
         IM.AddQuantity(GOIF, PickAmount);
-        Destroy(GO);
+        GO.gameObject.SetActive(false);
 
         StartCoroutine(Refresh());
     }

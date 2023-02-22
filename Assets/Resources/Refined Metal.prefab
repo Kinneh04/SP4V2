@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: -1135112578065106168}
   m_Layer: 0
   m_Name: Refined Metal
-  m_TagString: Untagged
+  m_TagString: Consumables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164,7 +164,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 6
   itemID: 37
@@ -188,7 +190,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -1135112578065106168}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

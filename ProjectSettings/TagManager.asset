@@ -38,6 +38,8 @@ TagManager:
   - ResearchTable
   - EnemyPlayer
   - Helicopter
+  - Weaponry
+  - Consumables
   layers:
   - Default
   - TransparentFX

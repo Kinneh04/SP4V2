@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5636424286078364795}
   m_Layer: 0
   m_Name: Red mushroom
-  m_TagString: Untagged
+  m_TagString: Consumables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70,6 +70,7 @@ MonoBehaviour:
   phview: {fileID: 0}
   NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 5
   itemID: 7

@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: -4184344938132645618}
   m_Layer: 0
   m_Name: Remington_870
-  m_TagString: Untagged
+  m_TagString: Weaponry
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,8 +95,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe948f07698a8744fb83adbd29072f7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pv: {fileID: 0}
+  phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 3
   itemID: 45
@@ -125,7 +127,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -4184344938132645618}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

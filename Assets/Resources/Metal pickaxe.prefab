@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: -2969841080972948676}
   m_Layer: 0
   m_Name: Metal pickaxe
-  m_TagString: Untagged
+  m_TagString: Weaponry
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,7 +152,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 1
   itemID: 12
@@ -226,7 +228,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 2768257013643953894}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

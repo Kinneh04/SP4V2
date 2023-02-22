@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: -8465931320638592272}
   m_Layer: 0
   m_Name: Metal axe
-  m_TagString: Untagged
+  m_TagString: Weaponry
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,6 +140,7 @@ MonoBehaviour:
   phview: {fileID: 0}
   NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 0
   itemID: 14

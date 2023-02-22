@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: -9079198859782734693}
   m_Layer: 0
   m_Name: TODO REPLACE ME Building Plan
-  m_TagString: Untagged
+  m_TagString: Weaponry
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,7 +105,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 8
   itemID: 23
@@ -208,7 +210,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 3629153366373393045}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
