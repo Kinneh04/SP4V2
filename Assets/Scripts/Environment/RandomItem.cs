@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class RandomItem : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class RandomItem : MonoBehaviour
             {
                 int i = Random.Range(0, ItemsInPool.Count);
 
-                GameObject ItemGO = Instantiate(ItemsInPool[i], transform.position, Quaternion.identity);
+                GameObject ItemGO = PhotonNetwork.Instantiate(ItemsInPool[i].name, transform.position, Quaternion.identity);
                 ItemInPlace = ItemGO;
             }
         }

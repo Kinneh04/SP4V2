@@ -735,7 +735,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2349aded5644d8744991d31fc2eb8514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PossibleItemsPool: []
+  PossibleItemsPool:
+  - {fileID: 5117772573126673990, guid: d977abaf021e87c4885bba29bc8b986f, type: 3}
+  - {fileID: -5373603301906084150, guid: 28926c573ceece44bbdcff044f7371d4, type: 3}
+  - {fileID: 1067331602659612361, guid: c0a6b571927bbfe41bc776d1773d72f8, type: 3}
+  - {fileID: 7107235380967853902, guid: 58569baad7dc6004685c9dcbd0867edb, type: 3}
+  - {fileID: 4930957203899973414, guid: 665fa26a95f00cc4680f6d4fa7069c9f, type: 3}
+  - {fileID: 7268146472781844992, guid: 08824ba335a081846ab47bff34cd3d13, type: 3}
+  - {fileID: 7268146472781844992, guid: 42bfd4a5e095e4149bc37d9680f13db6, type: 3}
+  - {fileID: 1982182823583556281, guid: 8979b9a928691824cb6b3c7679d77270, type: 3}
   MaxPossibleItems: 4
   MaxQuantityOfEachItem: 5
   ItemsInCrate: []

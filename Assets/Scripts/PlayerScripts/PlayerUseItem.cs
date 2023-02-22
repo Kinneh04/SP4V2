@@ -207,7 +207,7 @@ public class PlayerUseItem : MonoBehaviour
                            
                             if(playerProperties.PlayerLookingAtItem.GetComponent<PhotonView>() != null && pv.IsMine)
                                 pv.RPC("ShoveNewItemInRHandOfActor", RpcTarget.All, playerProperties.PlayerLookingAtItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
-                            else Debug.LogError("Current Item has no PhotonView component");
+                            else Debug.LogError("Custom error: Current Item has no PhotonView component. Cannot be displayed server side");
                             inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().ItemCount);
                             inventoryManager.UpdateItemCountPerSlot();
                         }
