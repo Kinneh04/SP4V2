@@ -95,7 +95,7 @@ public class ItemInfo : MonoBehaviour
     
     virtual public void Init()
     {
-
+        
     }
     public ItemType GetItemType()
     {

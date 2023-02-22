@@ -989,6 +989,7 @@ namespace Photon.Chat
 
         void IPhotonPeerListener.OnEvent(EventData eventData)
         {
+            UnityEngine.Debug.Log("OnEvent");
             switch (eventData.Code)
             {
                 case ChatEventCode.ChatMessages:
@@ -1272,6 +1273,7 @@ namespace Photon.Chat
 
         private void HandleChatMessagesEvent(EventData eventData)
         {
+            UnityEngine.Debug.Log("I was here");
             object[] messages = (object[])eventData.Parameters[(byte)ChatParameterCode.Messages];
             string[] senders = (string[])eventData.Parameters[(byte)ChatParameterCode.Senders];
             string channelName = (string)eventData.Parameters[(byte)ChatParameterCode.Channel];
