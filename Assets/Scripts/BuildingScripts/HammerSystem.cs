@@ -103,7 +103,7 @@ public class HammerSystem : MonoBehaviour
     {
         selectedObject.actionImage.sprite = actionIcons[currentAction];
         selectedObject.slider.value = currStructure.stability;
-        selectedObject.stabilityLabel.text = currStructure.stability + "%";
+        selectedObject.stabilityLabel.text = Math.Round(currStructure.stability, 2) + "%";
         switch (currentAction)
         {
             case 0: // Pickup, write whether object is pickable
@@ -217,7 +217,7 @@ public class HammerSystem : MonoBehaviour
         prevObject = currentObject;
         currentObject = hit2.collider.gameObject;
 
-        if (currentObject != prevObject && currentObject.GetComponent<StructureObject>().pv.IsMine)
+        if (currentObject != prevObject && currentObject.GetComponent<StructureObject>().PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
         {
             if (prevObject != null)
                 prevObject.SetActive(true);
