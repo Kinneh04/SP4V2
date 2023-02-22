@@ -99,11 +99,26 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         RemoveTagsFromOtherPlayers();
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("Metal axe", position, rotation, 0);
-            PhotonNetwork.Instantiate("FoodCrate", position, rotation, 0);
-            PhotonNetwork.Instantiate("Homemade Hatchet", position, rotation, 0);
+            PhotonNetwork.Instantiate("Rock", position, rotation, 0);
+            PhotonNetwork.Instantiate("Torch", position, rotation, 0);
         }
 
+        if(player.GetComponent<PhotonView>().IsMine)
+        {
+            SpawnItems();
+        }
+
+    }
+
+    void SpawnItems()
+    {
+        GameObject Player = GameObject.FindGameObjectWithTag("Player");
+        PhotonView Rockpv = PhotonNetwork.Instantiate("Rock", transform.position, Quaternion.identity, 0).GetComponent<PhotonView>();
+        PhotonView TorchPV = PhotonNetwork.Instantiate("Torch", transform.position, Quaternion.identity, 0).GetComponent<PhotonView>();
+        Rockpv.gameObject.SetActive(false);
+        TorchPV.gameObject.SetActive(false);
+        Player.GetComponentInChildren<InventoryManager>().AddQuantity(Rockpv.gameObject.GetComponent<HarvestToolsProperties>(), 1);
+        Player.GetComponentInChildren<InventoryManager>().AddQuantity(TorchPV.gameObject.GetComponent<HarvestToolsProperties>(), 1);
     }
 
     void RemoveTagsFromOtherPlayers()
@@ -120,8 +135,10 @@ public class JLGameManager : MonoBehaviourPunCallbacks
                 Destroy(Player.GetComponent<PlayerMovement>());
                 //Destroy(Player.GetComponent<PlayerUseItem>());
                 Destroy(Player.GetComponent<BuildingSystem>());
+                Destroy(Player.GetComponent<AudioListener>());
                 Destroy(Player.transform.Find("Canvas").gameObject);
             }
+     
         }
 
     }

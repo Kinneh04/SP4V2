@@ -75,6 +75,8 @@ public class PlayerProperties : MonoBehaviour
     public float bleedingInterval, poisonInterval, fullinterval, sickInterval, HealInterval;
     public bool isDead;
     public GameObject deathscreen, awokenMenu;
+    public GameObject SleepingMenu;
+    public bool isSleeping;
     public bool inventoryIsOpen;
     public Image TurnOnButton;
     public TMP_Text TurnOnText;
@@ -91,6 +93,14 @@ public class PlayerProperties : MonoBehaviour
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
+
+        Sleep();
+    }
+
+    public void Sleep()
+    {
+        SleepingMenu.SetActive(true);
+        isSleeping = true;
     }
 
     public void DisconnectFromServer()
@@ -292,7 +302,7 @@ public class PlayerProperties : MonoBehaviour
 
     private void Update()
     {
-        if(!isDead && pv.IsMine)
+        if(!isDead && pv.IsMine && !isSleeping)
         { 
             Htimer += Time.deltaTime;
             Ttimer += Time.deltaTime;
@@ -463,6 +473,14 @@ public class PlayerProperties : MonoBehaviour
                     isBleeding = false;
                     bleedingIcon.SetActive(false);
                 }
+            }
+        }
+        else if(isSleeping)
+        {
+            if (Input.GetKey(KeyCode.E) && pv.IsMine)
+            {
+                SleepingMenu.SetActive(false);
+                isSleeping = false;
             }
         }
         else
