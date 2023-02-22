@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public abstract class WeaponInfo : ItemInfo
 {
 	public enum FIRINGTYPE
@@ -267,12 +267,8 @@ public abstract class WeaponInfo : ItemInfo
 			// If there is still ammo in the magazine, then fire
 			if (MagRounds > 0 || InfiniteAmmo)
 			{
-				GameObject projectile = Instantiate(BulletPrefab, transform.position, Quaternion.identity);
-				projectile.GetComponent<Raycast>().Damage = Damage;
-				projectile.GetComponent<Raycast>().BulletSpawnPoint = transform;
-                projectile.GetComponent<Raycast>().ParentGunTip = BarrelTip;
-                projectile.GetComponent<Raycast>().SetAimCone(AimCone);
-				projectile.GetComponent<Raycast>().Shoot();
+				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
+				ProjectilephotonView.RPC("DefaultRaycastInit", RpcTarget.All);
 				// Lock the weapon after this discharge
 				CanFire = false;
 				// Reset the dElapsedTime to dTimeBetweenShots for the next shot
