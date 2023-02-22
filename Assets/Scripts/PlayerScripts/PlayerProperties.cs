@@ -491,7 +491,7 @@ public class PlayerProperties : MonoBehaviour
     [PunRPC]
     public void DefaultBulletInit()
     {
-        WeaponInfo weaponInfo = CurrentlyHoldingItem.GetComponent<WeaponInfo>();
+        WeaponInfo weaponInfo = gameObject.GetComponentInChildren<WeaponInfo>();
         GameObject BulletProjectile = Instantiate(weaponInfo.BulletPrefab, transform.position, Quaternion.identity);
         BulletProjectile.GetComponent<Raycast>().Damage = weaponInfo.GetDamage();
         BulletProjectile.GetComponent<Raycast>().BulletSpawnPoint = weaponInfo.transform;
