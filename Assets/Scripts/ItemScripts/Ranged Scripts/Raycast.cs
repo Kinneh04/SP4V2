@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Photon.Pun;
 public class Raycast : MonoBehaviour
 {
     [SerializeField]

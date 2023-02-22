@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Photon.Pun.Demo.Cockpit;
+using Photon.Pun;
 
 public class PlayerUseItem : MonoBehaviour
 {
@@ -32,9 +32,12 @@ public class PlayerUseItem : MonoBehaviour
 
     public PlayerLookAt playerLookAt;
     public bool isReleased = true;
+
+    PhotonView pv;
     private void Awake()
     {
         inventoryManager = Inventory.GetComponent<InventoryManager>();
+        pv = GetComponent<PhotonView>();
     }
 
 

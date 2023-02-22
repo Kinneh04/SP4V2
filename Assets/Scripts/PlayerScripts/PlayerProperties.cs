@@ -89,6 +89,8 @@ public class PlayerProperties : MonoBehaviour
 
     public GameObject PauseMenu;
 
+    PhotonView pv;
+
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -541,7 +543,7 @@ public class PlayerProperties : MonoBehaviour
                 bloodTimer = 5.0f;
             }
 
-
+        }
 
            
 
