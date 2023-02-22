@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class Bow : WeaponInfo
 {
@@ -42,15 +43,15 @@ public class Bow : WeaponInfo
 			if (MagRounds > 0)
 			{
 				Debug.Log(BarrlTip);
-				GameObject projectile = Instantiate(BulletPrefab, BarrlTip.transform.position, Quaternion.identity);
-				projectile.GetComponent<Projectile>().Damage = Damage;
-				projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
-				projectile.GetComponent<Projectile>().ParentGunTip = BarrlTip;
-				projectile.GetComponent<Projectile>().SetAimCone(AimCone);
-                projectile.transform.parent = null;
-				projectile.transform.rotation = transform.rotation;
-				projectile.GetComponent<Projectile>().ShootNonRaycastType();
-				projectile.GetComponent<Projectile>().JustFired = true;
+				PhotonView projectile = PhotonNetwork.Instantiate("Arrow", BarrlTip.transform.position, Quaternion.identity).GetComponent<PhotonView>();
+				projectile.gameObject.GetComponent<Projectile>().Damage = Damage;
+				projectile.gameObject.GetComponent<Projectile>().BulletSpawnPoint = transform;
+				projectile.gameObject.GetComponent<Projectile>().ParentGunTip = BarrlTip;
+				projectile.gameObject.GetComponent<Projectile>().SetAimCone(AimCone);
+                projectile.gameObject.transform.parent = null;
+				projectile.gameObject.transform.rotation = transform.rotation;
+				projectile.gameObject.GetComponent<Projectile>().JustFired = true;
+				projectile.gameObject.GetComponent<Projectile>().ShootNonRaycastType();
 
 				// Lock the weapon after this discharge
 				CanFire = false;

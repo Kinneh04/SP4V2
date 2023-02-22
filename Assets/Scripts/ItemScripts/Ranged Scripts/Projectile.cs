@@ -27,7 +27,6 @@ public class Projectile : MonoBehaviour
     public ItemInfo.ItemID itemID;
     public float ExplosionTimer = 0;
 
-
     private void OnCollisionEnter(Collision collision)
     {
         if (JustFired)
@@ -71,8 +70,10 @@ public class Projectile : MonoBehaviour
                     collision.transform.GetComponent<ChickenAI>().GetDamaged((int)Damage);
                     Instantiate(ImpactParticleSystem, collision.transform.position, Quaternion.identity);
                 }
-                else if (collision.transform.gameObject.CompareTag("Player"))
+                else if (collision.transform.gameObject.CompareTag("Player") && collision.transform.gameObject.CompareTag("EnemyPlayer"))
                 {
+                    collision.transform.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, Damage);
+                    collision.transform.GetComponent<PlayerProperties>().TakeDamage(Damage);
                     Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
                 }
                 Vector3 PushPreviousDirection; // so the arrow is doesnt go through the wall
@@ -81,6 +82,7 @@ public class Projectile : MonoBehaviour
                 this.transform.position -= PushPreviousDirection;
                 this.GetComponent<Rigidbody>().isKinematic = true;
                 this.transform.parent = collision.transform.parent;
+
             }
             JustFired = false;
         }
@@ -142,8 +144,7 @@ public class Projectile : MonoBehaviour
             }
             else
             {
-                PhotonView Go = PhotonNetwork.Instantiate("Explosion", transform.position, Quaternion.identity).GetComponent<PhotonView>();
-                Go.gameObject.transform.position = transform.position;
+                GameObject Go = Instantiate(Explosion, transform.position, Quaternion.identity);
                 Go.GetComponent<Explosion>().Damage = Damage;
                 Destroy(this.gameObject);
             }

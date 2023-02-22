@@ -502,30 +502,47 @@ public class PlayerProperties : MonoBehaviour
         if (pv.IsMine)
         {
             Health -= damage;
-
             if (Health < 50)
             {
                 float q = Health / MaxHealth;
                 StartCoroutine(ShowBlood());
                 isShowingBlood = true;
                 bloodTimer = 5.0f;
+                if (Health <= 0)
+                {
+                    die();
+                }
             }
-
-
-
-            if (Health <= 0)
-            {
-                die();
-            }
-
             float f = Random.Range(1, 100);
             if (bleedChance < f)
             {
                 isBleeding = true;
                 bleedingIcon.SetActive(true);
                 BTimer = 60f;
-
             }
+        }
+    }
+    //Its TakeDamage but without punrpc
+    public void TakeDamageV2(float damage)
+    {
+        Health -= damage;
+        if (Health < 50)
+        {
+            float q = Health / MaxHealth;
+            StartCoroutine(ShowBlood());
+            isShowingBlood = true;
+            bloodTimer = 5.0f;
+            if (Health <= 0)
+            {
+                die();
+            }
+        }
+        float f = Random.Range(1, 100);
+        if (bleedChance < f)
+        {
+            isBleeding = true;
+            bleedingIcon.SetActive(true);
+            BTimer = 60f;
         }
     }
 
@@ -568,7 +585,18 @@ public class PlayerProperties : MonoBehaviour
             }
         }
     }
-
+    [PunRPC]
+    public void DefaultBulletInit()
+    {
+        WeaponInfo weaponInfo = gameObject.GetComponentInChildren<WeaponInfo>();
+        GameObject BulletProjectile = Instantiate(weaponInfo.BulletPrefab, transform.position, Quaternion.identity);
+        BulletProjectile.GetComponent<Raycast>().Damage = weaponInfo.GetDamage();
+        BulletProjectile.GetComponent<Raycast>().BulletSpawnPoint = gameObject.transform;
+        BulletProjectile.GetComponent<Raycast>().ParentGunTip = weaponInfo.BarrelTip;
+        BulletProjectile.GetComponent<Raycast>().SetAimCone(weaponInfo.GetAimCone());
+        BulletProjectile.GetComponent<Raycast>().Shoot();
+        Debug.Log("GG");
+    }
     public IEnumerator DeathSequence()
     {
         yield return new WaitForSeconds(1.6f);

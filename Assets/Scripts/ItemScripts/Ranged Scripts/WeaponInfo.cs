@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+
 public abstract class WeaponInfo : ItemInfo
 {
 	public enum FIRINGTYPE
@@ -37,7 +38,7 @@ public abstract class WeaponInfo : ItemInfo
 	//Weapon Damage
 	protected float Damage;
 	protected GUNNAME GunName;
-	protected GameObject BarrelTip;
+	public GameObject BarrelTip;
 	protected ItemID AmmoType;
 	// The time between shots in milliseconds
 	protected double TimeBetweenShots;
@@ -267,12 +268,10 @@ public abstract class WeaponInfo : ItemInfo
 			// If there is still ammo in the magazine, then fire
 			if (MagRounds > 0 || InfiniteAmmo)
 			{
-				PhotonView ProjectilephotonView = PhotonNetwork.Instantiate("BulletProjectile", transform.position, Quaternion.identity).GetComponent<PhotonView>();
-				ProjectilephotonView.gameObject.GetComponent<Raycast>().Damage = Damage;
-				ProjectilephotonView.gameObject.GetComponent<Raycast>().BulletSpawnPoint = transform;
-				ProjectilephotonView.gameObject.GetComponent<Raycast>().ParentGunTip = BarrelTip;
-				ProjectilephotonView.gameObject.GetComponent<Raycast>().SetAimCone(AimCone);
-				ProjectilephotonView.gameObject.GetComponent<Raycast>().Shoot();
+				//Get Player PhotonView
+				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
+				ProjectilephotonView.RPC("DefaultBulletInit", RpcTarget.All);
+
 				// Lock the weapon after this discharge
 				CanFire = false;
 				// Reset the dElapsedTime to dTimeBetweenShots for the next shot
@@ -291,6 +290,7 @@ public abstract class WeaponInfo : ItemInfo
 
 		return false;
 	}
+
 	// Reload this weapon
 	virtual public void Reload() 
 	{
