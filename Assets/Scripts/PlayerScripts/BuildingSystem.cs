@@ -142,8 +142,6 @@ public class BuildingSystem : MonoBehaviour
         if (IsChoosingObj)
             return;
 
-        Debug.Log("WOOD: " + im.GetAmmoQuantity(ItemInfo.ItemID.Wood));
-
         PreviewObject po = currentPreview.GetComponent<PreviewObject>();
         if (po.IsBuildable)
         {
@@ -156,7 +154,7 @@ public class BuildingSystem : MonoBehaviour
                 cp.CreateResourcePopup("Wood", currentObject.wood);
                 im.RemoveQuantity(woodObj.GetComponent<ItemInfo>(), currentObject.wood);
                 GameObject newObj = PhotonNetwork.Instantiate(currentObject.name, currentPos, Quaternion.Euler(currentRot));
-                newObj.GetComponent<StructureObject>().pv = GetComponent<PhotonView>();
+                newObj.GetComponent<StructureObject>().PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
             }
         }
         BuildCooldown = 1.0f;

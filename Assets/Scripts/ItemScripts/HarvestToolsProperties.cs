@@ -28,7 +28,7 @@ public class HarvestToolsProperties : ItemInfo
     }
     private void OnTriggerEnter(Collider other)
     {
-        
+        Debug.Log("HIT: " + other.name);
         if(other.CompareTag("Tree") || other.CompareTag("Stone") || other.CompareTag("Metal") || other.CompareTag("Sulfur"))
         {
             if (TriggerEnabled)
@@ -67,6 +67,32 @@ public class HarvestToolsProperties : ItemInfo
         {
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
             enemy.GetDamaged((int)damage);
+        }
+        else if (other.CompareTag("NormalStructure") || other.CompareTag("FoundationStructure") || other.CompareTag("FloorStructure"))
+        {
+            StructureObject structure = null;
+            if (other.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
+            {
+                structure = other.GetComponent<StructureObject>();
+            }
+            else if (other.gameObject.layer == LayerMask.NameToLayer("Buildable"))
+            {
+                structure = other.GetComponentInParent<StructureObject>();
+            }
+            if (!structure)
+                return;
+            
+            if (structure.PlayerID != PhotonNetwork.LocalPlayer.ActorNumber) // Cannot damage own structures!
+            {
+                if (structure.isUpgraded)
+                {
+                    structure.gameObject.GetComponent<PhotonView>().RPC("DamageStructure", RpcTarget.AllViaServer, StoneHarvestMultiplier * 0.8);
+                }
+                else
+                {
+                    structure.gameObject.GetComponent<PhotonView>().RPC("DamageStructure", RpcTarget.AllViaServer, WoodHarvestMultiplier);
+                }
+            }
         }
     }
 }
