@@ -75,10 +75,10 @@ MonoBehaviour:
   ItemCount: 1
   MaxItemCount: 1
   MagRounds: 0
+  BarrelTip: {fileID: 930565068124537939}
   BulletPrefab: {fileID: 4347079924148518773, guid: a15b541c2f94e7d488f8a47bee0f784a,
     type: 3}
   PelletCount: 11
-  BarrlTip: {fileID: 930565068124537939}
 --- !u!114 &449241631239788709
 MonoBehaviour:
   m_ObjectHideFlags: 0

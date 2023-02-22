@@ -73,6 +73,11 @@ MonoBehaviour:
   - WolfLostPlayer
   - WolfLostPrey
   - UpdateOwnChat
+  - DefaultProjectileInit
+  - DefaultRaycastInit
+  - RepairStructure
+  - ReadyTobePickedAgin
+  - SomeoneJustPickedIt
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

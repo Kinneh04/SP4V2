@@ -110,6 +110,8 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         PhotonView TorchPV = PhotonNetwork.Instantiate("Torch", transform.position, Quaternion.identity, 0).GetComponent<PhotonView>();
         Rockpv.gameObject.SetActive(false);
         TorchPV.gameObject.SetActive(false);
+        Rockpv.transform.SetParent(Player.transform.Find("Capsule").Find("RHand"));
+        TorchPV.transform.SetParent(Player.transform.Find("Capsule").Find("RHand"));
         Player.GetComponentInChildren<InventoryManager>().AddQuantity(Rockpv.gameObject.GetComponent<HarvestToolsProperties>(), 1);
         Player.GetComponentInChildren<InventoryManager>().AddQuantity(TorchPV.gameObject.GetComponent<HarvestToolsProperties>(), 1);
     }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8557885015984982348}
   m_Layer: 0
   m_Name: Workbench 1 ball
-  m_TagString: Untagged
+  m_TagString: Consumables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,8 +50,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 6770227586949615429, guid: 50132b641ba7fc14b8c77bc7151c0e7c,
     type: 3}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 9
   itemID: 50

@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 public class RocketLauncher : WeaponInfo
 {
-
+	public GameObject Miniexplosion;
 	public override void Init()
     {
         MagRounds = MaxMagRounds = 1;
@@ -38,7 +38,7 @@ public class RocketLauncher : WeaponInfo
 				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
 				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All);
 
-
+				Instantiate(Miniexplosion, BarrelTip.transform.position, Quaternion.identity);
 				// Lock the weapon after this discharge
 				CanFire = false;
 				// Reset the dElapsedTime to dTimeBetweenShots for the next shot

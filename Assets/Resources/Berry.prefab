@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: -2706564498978018527}
   m_Layer: 0
   m_Name: Berry
-  m_TagString: Untagged
+  m_TagString: Consumables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -175,7 +175,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -2706564498978018527}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

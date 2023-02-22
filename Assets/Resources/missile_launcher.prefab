@@ -208,9 +208,11 @@ MonoBehaviour:
   ItemCount: 1
   MaxItemCount: 1
   MagRounds: 1
+  BarrelTip: {fileID: 6499927726818411299}
   BulletPrefab: {fileID: 670831172828349674, guid: 2056f1b6e1e1a3949bd13fe5657ec193,
     type: 3}
-  BarrlTip: {fileID: 6499927726818411299}
+  Miniexplosion: {fileID: 2738436938548131024, guid: 6bac5daad0eaf2f4399ca9b6f2401aff,
+    type: 3}
 --- !u!114 &-1306619684849056911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,7 +231,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -7462422147334266586}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

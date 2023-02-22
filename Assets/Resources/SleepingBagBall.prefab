@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4621698010063170942}
   m_Layer: 0
   m_Name: SleepingBagBall
-  m_TagString: Untagged
+  m_TagString: Consumables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

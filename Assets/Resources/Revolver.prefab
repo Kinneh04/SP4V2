@@ -74,9 +74,9 @@ MonoBehaviour:
   ItemCount: 1
   MaxItemCount: 1
   MagRounds: 0
+  BarrelTip: {fileID: 7271804169606490546}
   BulletPrefab: {fileID: 4347079924148518773, guid: a15b541c2f94e7d488f8a47bee0f784a,
     type: 3}
-  BarrlTip: {fileID: 7271804169606490546}
 --- !u!114 &2412135766675267036
 MonoBehaviour:
   m_ObjectHideFlags: 0

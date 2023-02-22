@@ -751,10 +751,14 @@ public class PlayerUseItem : MonoBehaviour
         // Get the PhotonView component for the player object
         PhotonView ActorPV = PhotonView.Find(ActorNumber);
         GameObject Actor = ActorPV.gameObject;
-
+        
         //GameObject Actor = ActorView.TagObject as GameObject;
         GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
         ItemToPairToHand = RHand.transform.Find(newItem).gameObject;
+
+        if (ItemToPairToHand.GetComponent<MeshCollider>() != null) ItemToPairToHand.GetComponent<MeshCollider>().isTrigger = false;
+        else if(ItemToPairToHand.GetComponent<BoxCollider>() != null) ItemToPairToHand.GetComponent<BoxCollider>().isTrigger = false;
+
         ItemToPairToHand.transform.SetParent(null);
         ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = false;
     }
@@ -866,9 +870,9 @@ public class PlayerUseItem : MonoBehaviour
             PAnimator.Play("PBeanThrow");
             GameObject GO = playerProperties.CurrentlyHoldingItem;
             yield return new WaitForSeconds(0.45f);
-            pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
+            pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
             GO.GetComponent<Rigidbody>().isKinematic = false;
-            GO.GetComponent<MeshCollider>().isTrigger = false;
+            //GO.GetComponent<MeshCollider>().isTrigger = false;
             playerProperties.CurrentlyHoldingItem = null;
             GO.transform.parent = null;
             GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 10;
@@ -885,7 +889,10 @@ public class PlayerUseItem : MonoBehaviour
 
 
             GameObject GO = playerProperties.CurrentlyHoldingItem;
-            GO.GetComponent<MeshCollider>().isTrigger = false;
+
+            if (GO.GetComponent<MeshCollider>() != null) GO.GetComponent<MeshCollider>().isTrigger = false;
+            else if (GO.GetComponent<BoxCollider>() != null) GO.GetComponent<BoxCollider>().isTrigger = false;
+
             if (GO.GetComponent<ItemInfo>().itemType == ItemInfo.ItemType.unshowable)
             {
                 GameObject GO_REPLACEMENT = GO.GetComponent<ItemInfo>().ReplacementDropObj;
@@ -903,7 +910,7 @@ public class PlayerUseItem : MonoBehaviour
             {
                 GO.transform.position = GO.transform.parent.position;
                 yield return new WaitForSeconds(0.15f);
-                pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
+                pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
                 GO.GetComponent<Rigidbody>().isKinematic = false;
                 playerProperties.CurrentlyHoldingItem = null;
                 GO.transform.parent = null;
@@ -932,7 +939,7 @@ public class PlayerUseItem : MonoBehaviour
              
                 GO.SetActive(true);
                 yield return new WaitForSeconds(0.15f);
-                pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
+                pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
                 GO.GetComponent<Rigidbody>().isKinematic = false;
                 GO.transform.parent = null;
                 GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;

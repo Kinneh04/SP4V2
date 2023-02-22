@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 6115254699546687706}
   m_Layer: 0
   m_Name: FurnaceBall
-  m_TagString: Untagged
+  m_TagString: Consumables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -247,6 +247,7 @@ MonoBehaviour:
   NetworkedReplacement: 0
   ReplacementObj: {fileID: 6770227586949615429, guid: 15932a1032f7fe447a6594a1fe45004c,
     type: 3}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 9
   itemID: 48
