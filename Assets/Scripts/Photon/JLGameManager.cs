@@ -11,6 +11,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
 {
     public static JLGameManager Instance = null;
     public GameObject SpawnPointMin, SpawnPointMax;
+    public bool EnableRandomSpawn = false;
 
     public void Awake()
     {
@@ -79,10 +80,17 @@ public class JLGameManager : MonoBehaviourPunCallbacks
     private void StartGame()
     {
         Debug.Log("StartGame!");
-        float xPosition = Random.Range(SpawnPointMin.transform.position.x, SpawnPointMax.transform.position.x);
-        float zPosition = Random.Range(SpawnPointMin.transform.position.z, SpawnPointMax.transform.position.z);
-
-        Vector3 position = new Vector3(xPosition, SpawnPointMax.transform.position.y, zPosition);
+        Vector3 position;
+        if (EnableRandomSpawn)
+        {
+            float xPosition = Random.Range(SpawnPointMin.transform.position.x, SpawnPointMax.transform.position.x);
+            float zPosition = Random.Range(SpawnPointMin.transform.position.z, SpawnPointMax.transform.position.z);
+            position = new Vector3(xPosition, SpawnPointMax.transform.position.y, zPosition);
+        }
+        else
+        {
+            position = new Vector3(-9.8f, 4.0f, -3.2f);
+        }
         Quaternion rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         GameObject player = null;
 
