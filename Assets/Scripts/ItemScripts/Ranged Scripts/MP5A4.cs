@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class MP5A4 : WeaponInfo
 {
-    public GameObject BarrlTip;
-    //This is REQUIRED for muzzle flare;
-    // Dont change it or it will NOT shoot;
+
     public override void Init()
     {
         MagRounds = MaxMagRounds = 30;
@@ -17,7 +15,7 @@ public class MP5A4 : WeaponInfo
         TimeBetweenShots = 0.04f;
         ElapsedTime = ReloadTime = 0;
         MaxReloadTime = 2.2;
-        BarrelTip = BarrlTip;
+        
         CanFire = false;
         AimCone = 0.3f;
         InfiniteAmmo = false;

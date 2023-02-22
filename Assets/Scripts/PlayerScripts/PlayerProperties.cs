@@ -586,16 +586,31 @@ public class PlayerProperties : MonoBehaviour
         }
     }
     [PunRPC]
-    public void DefaultBulletInit()
+    public void DefaultRaycastInit()
     {
         WeaponInfo weaponInfo = gameObject.GetComponentInChildren<WeaponInfo>();
-        GameObject BulletProjectile = Instantiate(weaponInfo.BulletPrefab, transform.position, Quaternion.identity);
-        BulletProjectile.GetComponent<Raycast>().Damage = weaponInfo.GetDamage();
-        BulletProjectile.GetComponent<Raycast>().BulletSpawnPoint = gameObject.transform;
-        BulletProjectile.GetComponent<Raycast>().ParentGunTip = weaponInfo.BarrelTip;
-        BulletProjectile.GetComponent<Raycast>().SetAimCone(weaponInfo.GetAimCone());
-        BulletProjectile.GetComponent<Raycast>().Shoot();
-        Debug.Log("GG");
+        GameObject Raycast = Instantiate(weaponInfo.BulletPrefab, transform.position, Quaternion.identity);
+        Raycast.GetComponent<Raycast>().Damage = weaponInfo.GetDamage();
+        Raycast.GetComponent<Raycast>().BulletSpawnPoint = gameObject.transform;
+        Raycast.GetComponent<Raycast>().ParentGunTip = weaponInfo.BarrelTip;
+        Raycast.GetComponent<Raycast>().SetAimCone(weaponInfo.GetAimCone());
+        Raycast.GetComponent<Raycast>().Shoot();
+    }
+    [PunRPC]
+    public void DefaultProjectileInit()
+    {
+         WeaponInfo weaponInfo = gameObject.GetComponentInChildren<WeaponInfo>();
+        GameObject Projectile = Instantiate(weaponInfo.BulletPrefab, weaponInfo.BarrelTip.transform.position, Quaternion.identity);
+        Projectile.GetComponent<Projectile>().Damage = weaponInfo.GetDamage();
+        Projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
+        Projectile.GetComponent<Projectile>().ParentGunTip = weaponInfo.BarrelTip;
+        Projectile.GetComponent<Projectile>().SetAimCone(weaponInfo.GetAimCone());
+        Projectile.transform.parent = null;
+        Projectile.transform.rotation = weaponInfo.transform.rotation;
+        Projectile.GetComponent<Projectile>().JustFired = true;
+        Projectile.GetComponent<Projectile>().itemID = weaponInfo.GetAmmoType();
+        Projectile.GetComponent<Projectile>().ExplosionTimer = 3;
+        Projectile.GetComponent<Projectile>().ShootNonRaycastType();
     }
     public IEnumerator DeathSequence()
     {

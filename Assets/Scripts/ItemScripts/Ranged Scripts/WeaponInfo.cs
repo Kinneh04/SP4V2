@@ -270,7 +270,7 @@ public abstract class WeaponInfo : ItemInfo
 			{
 				//Get Player PhotonView
 				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
-				ProjectilephotonView.RPC("DefaultBulletInit", RpcTarget.All);
+				ProjectilephotonView.RPC("DefaultRaycastInit", RpcTarget.All);
 
 				// Lock the weapon after this discharge
 				CanFire = false;

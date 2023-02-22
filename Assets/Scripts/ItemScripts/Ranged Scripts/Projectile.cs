@@ -86,6 +86,7 @@ public class Projectile : MonoBehaviour
             }
             JustFired = false;
         }
+        Debug.Log("GGGGG");
     }
     // Start is called before the first frame update
     void Awake()
@@ -100,11 +101,11 @@ public class Projectile : MonoBehaviour
         if (rb != null)
         {
             if (itemID == ItemInfo.ItemID.Arrow)
-                rb.velocity = transform.forward * 50;
+                rb.velocity = BulletSpawnPoint.transform.forward * 50;
             else if (itemID == ItemInfo.ItemID.Rocket)
-                rb.velocity = transform.forward * 100;
+                rb.velocity = BulletSpawnPoint.transform.forward * 100;
             else if (itemID == ItemInfo.ItemID.C4)
-                rb.velocity = transform.forward * 10;
+                rb.velocity = BulletSpawnPoint.transform.forward * 10;
         }
     }
     public void Shoot()

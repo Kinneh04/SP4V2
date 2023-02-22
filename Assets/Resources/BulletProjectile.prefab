@@ -56,12 +56,14 @@ MonoBehaviour:
     type: 3}
   BloodParticleSystem: {fileID: 793474979535644494, guid: 58826b2961d385246a877d1cfe4a1acc,
     type: 3}
+  BulletTrail: {fileID: 0}
   ShootDelay: 0.5
   Mask:
     serializedVersion: 2
     m_Bits: 0
   Damage: 0
   ParentGunTip: {fileID: 0}
+  MuzzleFlash: {fileID: 0}
   BulletImpact: {fileID: 8877573329606703238, guid: 919fb7c796709294b9c85abbf892cee8,
     type: 3}
 --- !u!114 &-4642069436642832322
