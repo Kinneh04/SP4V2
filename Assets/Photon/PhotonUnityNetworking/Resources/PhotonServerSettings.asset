@@ -15,7 +15,7 @@ MonoBehaviour:
   AppSettings:
     AppIdRealtime: 613f1624-80a7-43e7-b9c8-07f66064cb11
     AppIdFusion: 
-    AppIdChat: 
+    AppIdChat: f1cd6856-1aee-4bbd-89c0-8b20ddf481d4
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
@@ -55,6 +55,24 @@ MonoBehaviour:
   - ShoveNewItemInRHandOfActor
   - DestroyOnAllClients
   - DamageStructure
+  - sendEveryoneMessage
+  - sendWhisperMessage
+  - FoundPlayer
+  - LostPlayer
+  - DeerFoundPlayer
+  - DeerFoundWolf
+  - DeerLostPlayer
+  - DeerLostWolf
+  - FoundMonument
+  - ChickenFoundPlayer
+  - ChickenFoundWolf
+  - ChickenLostPlayer
+  - ChickenLostWolf
+  - WolfFoundPlayer
+  - WolfFoundPrey
+  - WolfLostPlayer
+  - WolfLostPrey
+  - UpdateOwnChat
   DisableAutoOpenWizard: 1
-  ShowSettings: 0
+  ShowSettings: 1
   DevRegionSetOnce: 1

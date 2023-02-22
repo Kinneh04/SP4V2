@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Photon.Pun;
 public class Raycast : MonoBehaviour
 {
     [SerializeField]
@@ -19,12 +18,15 @@ public class Raycast : MonoBehaviour
     [SerializeField]
     private GameObject BloodParticleSystem;
     [SerializeField]
+    private TrailRenderer BulletTrail;
+    [SerializeField]
     private float ShootDelay = 0.5f;
     [SerializeField]
     private LayerMask Mask;
     public float Damage;
     public GameObject ParentGunTip;
     private float LastShootTime;
+    public ParticleSystem MuzzleFlash;
     public GameObject BulletImpact;
 
 
@@ -39,12 +41,11 @@ public class Raycast : MonoBehaviour
         Vector3 direction = GetDirection();
         Ray ray = new Ray(ParentGunTip.transform.position, direction);
         RaycastHit hit;
-        PhotonNetwork.Instantiate("MuzzleFlash", ParentGunTip.transform.position, Quaternion.identity);
+        Instantiate(MuzzleFlash, ParentGunTip.transform.position, Quaternion.identity);
         if (Physics.Raycast(ray, out hit, float.MaxValue))
         {
-            PhotonView TrailPV = PhotonNetwork.Instantiate("BulletTrail", ParentGunTip.transform.position, Quaternion.identity).GetComponent<PhotonView>();
-            //TrailRenderer trail = Instantiate(BulletTrail, ParentGunTip.transform.position, Quaternion.identity);
-            StartCoroutine(SpawnTrail(TrailPV.gameObject.GetComponent<TrailRenderer>(), hit));
+            TrailRenderer trail = Instantiate(BulletTrail, ParentGunTip.transform.position, Quaternion.identity);
+            StartCoroutine(SpawnTrail(trail, hit));
             GameObject GO;
             if (hit.transform.gameObject.CompareTag("Enemy"))
             {
@@ -73,9 +74,8 @@ public class Raycast : MonoBehaviour
                 hit.transform.GetComponent<ChickenAI>().DamagedDirection(direction);
                 GO = Instantiate(ImpactParticleSystem, hit.point, Quaternion.identity);
             }
-            else if (hit.transform.gameObject.CompareTag("EnemyPlayer") || hit.transform.gameObject.CompareTag("Player"))
+            else if (hit.transform.gameObject.CompareTag("Player"))
             {
-                hit.transform.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, Damage);
                 hit.transform.GetComponent<PlayerProperties>().TakeDamage(Damage);
                 GO = Instantiate(BloodParticleSystem, hit.point, Quaternion.identity);
             }

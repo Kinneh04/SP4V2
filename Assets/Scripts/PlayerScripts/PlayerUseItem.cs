@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Photon.Pun;
-using Photon.Realtime;
-using System;
+using Photon.Pun.Demo.Cockpit;
 
 public class PlayerUseItem : MonoBehaviour
 {
@@ -18,8 +16,6 @@ public class PlayerUseItem : MonoBehaviour
     public GameObject sniperScopeImage;
     public float fadeDuration = 0.2f;
     public float scopeDelay = 0.2f;
-
-    public PhotonView pv;
 
     public Animator PAnimator;
     bool LeftMouseButtonPressed = false;   //click once only
@@ -39,7 +35,6 @@ public class PlayerUseItem : MonoBehaviour
     private void Awake()
     {
         inventoryManager = Inventory.GetComponent<InventoryManager>();
-        pv = GetComponent<PhotonView>();
     }
 
 
@@ -108,6 +103,8 @@ public class PlayerUseItem : MonoBehaviour
 
     private void Update()
     {
+        if (GetComponent<ChatManager>().isTyping)
+            return;
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             playerProperties.OpenInventory();
@@ -856,15 +853,12 @@ public class PlayerUseItem : MonoBehaviour
         StartCoroutine(IEDropItem(Slot));
     }
 
- 
-
     public IEnumerator ThrowItem()
     {
         if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().itemType != ItemInfo.ItemType.unshowable)
         {
             PAnimator.Play("PBeanThrow");
             GameObject GO = playerProperties.CurrentlyHoldingItem;
-            
             yield return new WaitForSeconds(0.45f);
             pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
             GO.GetComponent<Rigidbody>().isKinematic = false;
@@ -882,7 +876,6 @@ public class PlayerUseItem : MonoBehaviour
         if (Slot == inventoryManager.EquippedSlot)
         {
             GameObject GO = playerProperties.CurrentlyHoldingItem;
-           
             GO.transform.position = GO.transform.parent.position;
             yield return new WaitForSeconds(0.15f);
             pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);

@@ -71,7 +71,7 @@ public class TankAI : Enemy
 
         Health       = MaxHealth;
         IdleTime     = 0;
-        navMeshAgent = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
         TargetPlayer = null;
         deadTime = 2;
         navMeshAgent.speed = MSpd;
@@ -87,7 +87,7 @@ public class TankAI : Enemy
     // Update is called once per frame
     void Update()
     {
-
+        gun.SetInfiniteAmmo(true);
        //Debug.Log("Update: " + gun.GetInfiniteAmmo());
         
 

@@ -15,8 +15,6 @@ public class PlayerProperties : MonoBehaviour
     public GameObject PlayerLookingAtItem;
     public GameObject CurrentlyHoldingItem;
 
-    private PhotonView pv;
-
     public Image BloodImage;
 
     public Slider HealthSlider;
@@ -83,6 +81,7 @@ public class PlayerProperties : MonoBehaviour
 
     public bool craftingIsOpen = false;
     public GameObject craftingScreen;
+    public CraftingManager CM;
 
     public GameObject LootScreen, inventoryScreen, furnaceScreen;
     public PlayerMovement PM;
@@ -132,7 +131,8 @@ public class PlayerProperties : MonoBehaviour
     }
     public void OpenInventory()
     {
-        if (pv.IsMine)
+        print("HEY!");
+        if (!playerMovement.isMovementEnabled)
         {
             //print("HEY!");
             if (!playerMovement.isMovementEnabled)
@@ -160,12 +160,19 @@ public class PlayerProperties : MonoBehaviour
                 }
                 playerMovement.LockCursor();
             }
-            else
+            else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
             {
-                inventoryScreen.SetActive(true);
-                inventoryIsOpen = true;
-                playerMovement.UnlockCursor();
+                PlayerLookingAtItem.GetComponent<FurnaceProperties>().isLookingAtIt = false;
+                PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
+                PlayerLookingAtItem.GetComponent<FurnaceProperties>().ClearLastLootPool();
             }
+            playerMovement.LockCursor();
+        }
+        else
+        {
+            inventoryScreen.SetActive(true);
+            inventoryIsOpen = true;
+            playerMovement.UnlockCursor();
         }
     }
 
@@ -180,7 +187,6 @@ public class PlayerProperties : MonoBehaviour
         else
         {
             craftingScreen.SetActive(true);
-            CraftingManager CM = FindObjectOfType<CraftingManager>();
             Debug.Log("Loading Crafts");
             CM.LoadCrafts(WorkbenchLv, true);
             craftingIsOpen = true;
@@ -199,7 +205,6 @@ public class PlayerProperties : MonoBehaviour
         else
         {
             craftingScreen.SetActive(true);
-            CraftingManager CM = FindObjectOfType<CraftingManager>();
             Debug.Log("Loading Research");
             CM.LoadCrafts(0, false);
             craftingIsOpen = true;
@@ -485,7 +490,7 @@ public class PlayerProperties : MonoBehaviour
         }
         else
         {
-            if (Input.GetKey(KeyCode.E) && pv.IsMine)
+            if (Input.GetKey(KeyCode.E))
             {
                 RespawnAfterDeath();
             }
@@ -514,10 +519,11 @@ public class PlayerProperties : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
-    [PunRPC]
     public void TakeDamage(float damage)
     {
-        if (pv.IsMine)
+        Health -= damage;
+
+        if (Health < 50)
         {
             Health -= damage;
 
@@ -539,14 +545,13 @@ public class PlayerProperties : MonoBehaviour
 
            
 
-            float f = Random.Range(1, 100);
-            if (bleedChance < f)
-            {
-                isBleeding = true;
-                bleedingIcon.SetActive(true);
-                BTimer = 60f;
+        float f = Random.Range(1, 100);
+        if(bleedChance < f)
+        {
+            isBleeding = true;
+            bleedingIcon.SetActive(true);
+            BTimer = 60f;
 
-            }
         }
     }
 
@@ -565,29 +570,23 @@ public class PlayerProperties : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    public void ShoveLootInDeathBag(int DB)
+    public void ShoveLootInDeathBag(GameObject DB)
     {
-        if (pv.IsMine)
+        IM.UpdateItemCountPerSlot();
+        if(IM.InventoryList[IM.EquippedSlot] != null)
         {
-
-            GameObject DeathBag = PhotonView.Find(DB).gameObject;
-
-            IM.UpdateItemCountPerSlot();
-            if (IM.InventoryList[IM.EquippedSlot] != null)
+            DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[IM.EquippedSlot]));
+            DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[IM.EquippedSlot].GetItemCount()));
+        }
+        for(int i = 0; i < 30; i++)
+        {
+            if(IM.InventoryList[i] != null)
             {
-                DeathBag.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[IM.EquippedSlot]));
-                DeathBag.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[IM.EquippedSlot].GetItemCount()));
-            }
-            for (int i = 0; i < 30; i++)
-            {
-                if (IM.InventoryList[i] != null)
-                {
-                    DeathBag.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[i]));
-                    DeathBag.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[i].GetItemCount()));
-                }
+                DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[i]));
+                DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[i].GetItemCount()));
             }
         }
+        
     }
 
     public IEnumerator DeathSequence()
@@ -595,7 +594,7 @@ public class PlayerProperties : MonoBehaviour
         yield return new WaitForSeconds(1.6f);
         isDead = true;
         deathscreen.SetActive(true);
-        GameObject GO = PhotonNetwork.Instantiate("PlayerDeathBag", transform.position, Quaternion.identity);
-        pv.RPC("ShoveLootInDeathBag", RpcTarget.All, GO.GetPhotonView().ViewID);
+        GameObject GO = Instantiate(DeathBag, transform.position, Quaternion.identity);
+        ShoveLootInDeathBag(GO);
     }
 }

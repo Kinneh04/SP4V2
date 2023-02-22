@@ -66,7 +66,7 @@ public class CraftingManager : MonoBehaviour
         CraftableList.Add(prefab27);
         CraftableList.Add(prefab28);
 
-        IM = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryManager>();
+        // IM = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryManager>();
         //description = FindObjectOfType<CraftDescription>();
 
         CraftAmount = 0;
