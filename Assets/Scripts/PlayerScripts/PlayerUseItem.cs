@@ -76,6 +76,36 @@ public class PlayerUseItem : MonoBehaviour
       
     }
 
+    [PunRPC]
+    void ShoveNewItemInRHandOfActor(string ItemName, int ActorNumber)
+    {
+        GameObject ItemToPairToHand;
+
+        //Player player = PhotonNetwork.CurrentRoom.GetPlayer(ActorNumber);
+        // Get the PhotonView component for the player object
+        PhotonView ActorPV = PhotonView.Find(ActorNumber);
+        GameObject Actor = ActorPV.gameObject;
+
+        //GameObject Actor = ActorView.TagObject as GameObject;
+
+        GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
+
+        ItemToPairToHand = GameObject.Find(ItemName);
+
+        if (ItemToPairToHand != null)
+        {
+            ItemToPairToHand.transform.position = RHand.transform.position;
+            ItemToPairToHand.transform.rotation = RHand.transform.rotation;
+            ItemToPairToHand.SetActive(false);
+            ItemToPairToHand.transform.SetParent(RHand.transform);
+            ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = true;
+        }
+        else
+        {
+            print("IT GONE MN!");
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -173,8 +203,10 @@ public class PlayerUseItem : MonoBehaviour
                                     hs.SetIsUsingHammer(true);
                                 }
                             }
+                           
+                           
+                            pv.RPC("ShoveNewItemInRHandOfActor", RpcTarget.All, playerProperties.PlayerLookingAtItem.name, pv.ViewID);
                             inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().ItemCount);
-                            playerProperties.PlayerLookingAtItem.SetActive(false);
                             inventoryManager.UpdateItemCountPerSlot();
                         }
                     }
@@ -647,6 +679,8 @@ public class PlayerUseItem : MonoBehaviour
             {
                 if (pv.IsMine)
                 {
+                    pv.RPC("ClearChildrenInActorRightHand", RpcTarget.Others, pv.ViewID);
+                    
                     ForceGiveItem(CurrentItem);
                     pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, CurrentItem.name, pv.ViewID);
                 }
@@ -717,9 +751,22 @@ public class PlayerUseItem : MonoBehaviour
 
         //GameObject Actor = ActorView.TagObject as GameObject;
         GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
-        ItemToPairToHand = GameObject.Find(newItem);
+        ItemToPairToHand = RHand.transform.Find(newItem).gameObject;
         ItemToPairToHand.transform.SetParent(null);
         ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = false;
+    }
+
+    [PunRPC]
+    void ClearChildrenInActorRightHand(int ActorNumber)
+    {
+        PhotonView ActorPV = PhotonView.Find(ActorNumber);
+        GameObject Actor = ActorPV.gameObject;
+        GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
+        foreach (Transform child in RHand.transform)
+        {
+            //LocalDestroy
+            child.gameObject.SetActive(false);
+        }
     }
 
     [PunRPC]
@@ -736,11 +783,20 @@ public class PlayerUseItem : MonoBehaviour
 
         GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
 
-        ItemToPairToHand = GameObject.Find(newItem);
-        ItemToPairToHand.transform.position = RHand.transform.position;
-        ItemToPairToHand.transform.rotation = RHand.transform.rotation;
-        ItemToPairToHand.transform.SetParent(RHand.transform);
-        ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = true;
+        ItemToPairToHand = RHand.transform.Find(newItem).gameObject;
+
+        if (ItemToPairToHand != null)
+        {
+            ItemToPairToHand.transform.position = RHand.transform.position;
+            ItemToPairToHand.transform.rotation = RHand.transform.rotation;
+            ItemToPairToHand.SetActive(true);
+            ItemToPairToHand.transform.SetParent(RHand.transform);
+            ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = true;
+        }
+        else
+        {
+            print("IT GONE MN!");
+        }
     }
     
 
@@ -826,13 +882,14 @@ public class PlayerUseItem : MonoBehaviour
         if (Slot == inventoryManager.EquippedSlot)
         {
             GameObject GO = playerProperties.CurrentlyHoldingItem;
-            pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
+           
             GO.transform.position = GO.transform.parent.position;
             yield return new WaitForSeconds(0.15f);
+            pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
             GO.GetComponent<Rigidbody>().isKinematic = false;
             playerProperties.CurrentlyHoldingItem = null;
             GO.transform.parent = null;
-            GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 5;
+            GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;
             inventoryManager.Remove(inventoryManager.EquippedSlot, false);
         }
         else
@@ -840,9 +897,10 @@ public class PlayerUseItem : MonoBehaviour
             GameObject GO = inventoryManager.InventoryList[Slot].gameObject;
             GO.SetActive(true);
             yield return new WaitForSeconds(0.15f);
+            pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
             GO.GetComponent<Rigidbody>().isKinematic = false;
             GO.transform.parent = null;
-            GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 20;
+            GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;
             inventoryManager.Remove(Slot, false);
         }
     }

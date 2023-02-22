@@ -232,6 +232,9 @@ public class PlayerProperties : MonoBehaviour
 
         PM.canLookAround = true;
         PM.isMovementEnabled = true;
+
+        craftingIsOpen = false;
+        craftingScreen.SetActive(false);
     }
 
     public void HealHealth(int HealthAmt, bool HealsBleed, bool HealsPoison, float poisonChance)
