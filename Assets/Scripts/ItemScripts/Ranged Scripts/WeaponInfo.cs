@@ -37,7 +37,7 @@ public abstract class WeaponInfo : ItemInfo
 	//Weapon Damage
 	protected float Damage;
 	protected GUNNAME GunName;
-	protected GameObject BarrelTip;
+	public GameObject BarrelTip;
 	protected ItemID AmmoType;
 	// The time between shots in milliseconds
 	protected double TimeBetweenShots;
