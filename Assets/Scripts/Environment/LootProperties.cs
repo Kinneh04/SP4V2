@@ -112,7 +112,6 @@ public class LootProperties : MonoBehaviour
     public void ChooseRandomLoot()
     {
         int o = Random.Range(1, MaxPossibleItems);
-
         if (!forceLoot && pv.IsMine)
         {
             for (int i = 0; i < o; i++)
