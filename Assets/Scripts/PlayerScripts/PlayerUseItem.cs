@@ -860,8 +860,9 @@ public class PlayerUseItem : MonoBehaviour
             PAnimator.Play("PBeanThrow");
             GameObject GO = playerProperties.CurrentlyHoldingItem;
             yield return new WaitForSeconds(0.45f);
-            pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
+            pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
             GO.GetComponent<Rigidbody>().isKinematic = false;
+            GO.GetComponent<MeshCollider>().isTrigger = false;
             playerProperties.CurrentlyHoldingItem = null;
             GO.transform.parent = null;
             GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 10;
@@ -875,26 +876,62 @@ public class PlayerUseItem : MonoBehaviour
 
         if (Slot == inventoryManager.EquippedSlot)
         {
+
+
             GameObject GO = playerProperties.CurrentlyHoldingItem;
-            GO.transform.position = GO.transform.parent.position;
-            yield return new WaitForSeconds(0.15f);
-            pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
-            GO.GetComponent<Rigidbody>().isKinematic = false;
-            playerProperties.CurrentlyHoldingItem = null;
-            GO.transform.parent = null;
-            GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;
-            inventoryManager.Remove(inventoryManager.EquippedSlot, false);
+            GO.GetComponent<MeshCollider>().isTrigger = false;
+            if (GO.GetComponent<ItemInfo>().itemType == ItemInfo.ItemType.unshowable)
+            {
+                GameObject GO_REPLACEMENT = GO.GetComponent<ItemInfo>().ReplacementDropObj;
+                GameObject GO_Dupe = PhotonNetwork.Instantiate(GO_REPLACEMENT.name, transform.position, Quaternion.identity);
+                GO_Dupe.GetComponent<Rigidbody>().isKinematic = false;
+                GO_Dupe.name = GO.name;
+                GO_Dupe.transform.parent = null;
+                Destroy(GO);
+                playerProperties.CurrentlyHoldingItem = null;
+                isPlacingItem = false;
+                GO_Dupe.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;
+                inventoryManager.Remove(inventoryManager.EquippedSlot, false);
+            }
+            else
+            {
+                GO.transform.position = GO.transform.parent.position;
+                yield return new WaitForSeconds(0.15f);
+                pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
+                GO.GetComponent<Rigidbody>().isKinematic = false;
+                playerProperties.CurrentlyHoldingItem = null;
+                GO.transform.parent = null;
+                GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;
+                inventoryManager.Remove(inventoryManager.EquippedSlot, false);
+            }
         }
         else
         {
             GameObject GO = inventoryManager.InventoryList[Slot].gameObject;
-            GO.SetActive(true);
-            yield return new WaitForSeconds(0.15f);
-            pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
-            GO.GetComponent<Rigidbody>().isKinematic = false;
-            GO.transform.parent = null;
-            GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;
-            inventoryManager.Remove(Slot, false);
+            if (GO.GetComponent<ItemInfo>().itemType == ItemInfo.ItemType.unshowable)
+            {
+                GameObject GO_REPLACEMENT = GO.GetComponent<ItemInfo>().ReplacementDropObj;
+                GameObject GO_Dupe = PhotonNetwork.Instantiate(GO_REPLACEMENT.name, transform.position, Quaternion.identity);
+                GO_Dupe.GetComponent<Rigidbody>().isKinematic = false;
+                GO_Dupe.name = GO.name;
+                GO_Dupe.transform.parent = null;
+                playerProperties.CurrentlyHoldingItem = null;
+                isPlacingItem = false;
+                GO_Dupe.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;
+                inventoryManager.Remove(inventoryManager.EquippedSlot, false);
+                Destroy(GO);
+            }
+            else
+            {
+             
+                GO.SetActive(true);
+                yield return new WaitForSeconds(0.15f);
+                pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
+                GO.GetComponent<Rigidbody>().isKinematic = false;
+                GO.transform.parent = null;
+                GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;
+                inventoryManager.Remove(Slot, false);
+            }
         }
     }
 

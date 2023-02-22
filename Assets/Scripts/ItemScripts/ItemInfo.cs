@@ -86,6 +86,7 @@ public class ItemInfo : MonoBehaviour
 
     public bool NetworkedReplacement = false;
     public GameObject ReplacementObj;
+    public GameObject ReplacementDropObj;
     public GameObject OwnerActor;
 
 	public ItemType itemType;

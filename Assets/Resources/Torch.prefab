@@ -610,6 +610,7 @@ MonoBehaviour:
   phview: {fileID: 0}
   NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 1
   itemID: 22

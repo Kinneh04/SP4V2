@@ -50,10 +50,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 6770227586949615429, guid: 3caf72498aeb53740a6c406920599768,
     type: 3}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
-  itemType: 8
+  itemType: 9
   itemID: 49
   ItemCount: 1
   MaxItemCount: 0
