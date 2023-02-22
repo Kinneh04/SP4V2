@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class CraftSelection : MonoBehaviour
 {
-    CraftingManager CM;
+    [SerializeField] CraftingManager CM;
     bool craftable = false;
     public bool researched = false;
     int slot;
 
     private void Awake()
     {
-        CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
+        // CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
         slot = GetComponentInChildren<ReadCrafts>().SlotNumber;
     }
 

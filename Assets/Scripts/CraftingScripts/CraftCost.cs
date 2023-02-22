@@ -5,7 +5,7 @@ using TMPro;
 
 public class CraftCost : MonoBehaviour
 {
-    CraftingManager CM;
+    [SerializeField] CraftingManager CM;
 
     [SerializeField]
     protected TMP_Text
@@ -19,7 +19,7 @@ public class CraftCost : MonoBehaviour
 
     void Awake()
     {
-        CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
+        // CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
         materialCounts = new int[3];
         materials = new ItemInfo[3];
     }
@@ -317,7 +317,7 @@ public class CraftCost : MonoBehaviour
                     materials[1] = null;
                     materials[2] = null;
                     break;
-                case ItemInfo.ItemID.Workbench_1:
+                case ItemInfo.ItemID.Workbench_1_Ghost:
                     CM.WorkbenchNeeded = 0;
                     materialCounts[0] = 50;
                     materialCounts[1] = 50;
@@ -326,7 +326,7 @@ public class CraftCost : MonoBehaviour
                     materials[1] = CM.Stone;
                     materials[2] = CM.Metal;
                     break;
-                case ItemInfo.ItemID.Workbench_2:
+                case ItemInfo.ItemID.Workbench_2_Ghost:
                     CM.WorkbenchNeeded = 1;
                     materialCounts[0] = 300;
                     materialCounts[1] = 300;
@@ -335,7 +335,7 @@ public class CraftCost : MonoBehaviour
                     materials[1] = CM.Sulfur;
                     materials[2] = CM.Stone;
                     break;
-                case ItemInfo.ItemID.Workbench_3:
+                case ItemInfo.ItemID.Workbench_3_Ghost:
                     CM.WorkbenchNeeded = 2;
                     materialCounts[0] = 1000;
                     materialCounts[1] = 1000;

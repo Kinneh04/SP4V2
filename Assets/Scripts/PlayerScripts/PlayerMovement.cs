@@ -34,6 +34,11 @@ public class PlayerMovement : MonoBehaviour
         canLookAround = false;
         Cursor.lockState = CursorLockMode.None;
         isMovementEnabled = false;
+
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        rb.Sleep();
     }
 
     public void LockCursor()
@@ -45,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (pv.IsMine)
+        if (pv.IsMine && !playerProperties.isSleeping)
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
@@ -74,6 +79,8 @@ public class PlayerMovement : MonoBehaviour
                 Vector3 movement = transform.forward * vertical + transform.right * horizontal;
                 movement.y = 0;
                 rb.MovePosition(transform.position + movement.normalized * moveSpeed * Time.deltaTime);
+                float sway = Mathf.Sin(Time.time * moveSpeed / 5) * swayAmount;
+                transform.rotation *= Quaternion.Euler(0f, sway, 0f);
             }
             isGrounded = Physics.Raycast(Torso.transform.position, Vector3.down, 0.4f);
 
@@ -97,8 +104,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-            float sway = Mathf.Sin(Time.time * moveSpeed / 5) * swayAmount;
-            transform.rotation *= Quaternion.Euler(0f, sway, 0f);
+          
         }
     }
 }

@@ -71,12 +71,6 @@ public class JLGameManager : MonoBehaviourPunCallbacks
 
         return true;
     }
-
-    public void SpawnTestItems()
-    {
-        PhotonNetwork.Instantiate("Ak47", transform.position, transform.rotation, 0);
-    }
-
     private void StartGame()
     {
         Debug.Log("StartGame!");
@@ -95,21 +89,34 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         GameObject player = null;
 
         player = PhotonNetwork.Instantiate("PlayerBean", position, rotation, 0);
-        PhotonNetwork.LocalPlayer.TagObject = player;
+
         RemoveTagsFromOtherPlayers();
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("Metal axe", position, rotation, 0);
-            PhotonNetwork.Instantiate("FoodCrate", position, rotation, 0);
-            PhotonNetwork.Instantiate("Homemade Hatchet", position, rotation, 0);
+            PhotonNetwork.Instantiate("SleepingBagBall", position, rotation, 0);
         }
 
+        if(player.GetComponent<PhotonView>().IsMine)
+        {
+            SpawnItems();
+        }
+
+    }
+
+    void SpawnItems()
+    {
+        GameObject Player = GameObject.FindGameObjectWithTag("Player");
+        PhotonView Rockpv = PhotonNetwork.Instantiate("Rock", transform.position, Quaternion.identity, 0).GetComponent<PhotonView>();
+        PhotonView TorchPV = PhotonNetwork.Instantiate("Torch", transform.position, Quaternion.identity, 0).GetComponent<PhotonView>();
+        Rockpv.gameObject.SetActive(false);
+        TorchPV.gameObject.SetActive(false);
+        Player.GetComponentInChildren<InventoryManager>().AddQuantity(Rockpv.gameObject.GetComponent<HarvestToolsProperties>(), 1);
+        Player.GetComponentInChildren<InventoryManager>().AddQuantity(TorchPV.gameObject.GetComponent<HarvestToolsProperties>(), 1);
     }
 
     void RemoveTagsFromOtherPlayers()
     {
         GameObject[] PlayerList = GameObject.FindGameObjectsWithTag("Player");
-        
         foreach (GameObject Player in PlayerList)
         {
             if (!Player.GetComponent<PhotonView>().IsMine)
@@ -118,15 +125,19 @@ public class JLGameManager : MonoBehaviourPunCallbacks
                 Destroy(Player.transform.Find("Capsule").Find("Eyes").GetComponentInChildren<Camera>().gameObject);
                 //Destroy(Player.GetComponent<PlayerProperties>());
                 Destroy(Player.GetComponent<PlayerMovement>());
-                //Destroy(Player.GetComponent<PlayerUseItem>());
+                Destroy(Player.GetComponent<PlayerUseItem>());
                 Destroy(Player.GetComponent<BuildingSystem>());
+                Destroy(Player.GetComponent<AudioListener>());
                 Destroy(Player.transform.Find("Canvas").gameObject);
+                Destroy(Player.GetComponent<CraftingManager>());
+                Player.GetComponentInChildren<Canvas>().gameObject.SetActive(false);
             }
+     
         }
 
     }
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         GameObject[] PlayerList = GameObject.FindGameObjectsWithTag("Player");
         if (PlayerList.Length > 1)

@@ -20,6 +20,9 @@ public class InventoryManager : MonoBehaviour
     public PlayerProperties pp;
     public PlayerUseItem pui;
 
+    public ItemInfo Rock;
+    public ItemInfo Torch;
+
     private void Start()
     {
         UpdateItemCountPerSlot();

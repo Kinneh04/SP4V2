@@ -9,11 +9,7 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject ServerRooms;
     public GameObject SettingsPage;
-    public GameObject UsernamePage;
     public GameObject HostPage;
-
-    public bool UsernameEntered = false;
-    public string usernameString;
 
     public TMP_InputField UsernameInputField;
 
@@ -81,27 +77,18 @@ public class MainMenu : MonoBehaviour
 
     public void OpenUsername()
     {
-        if (!UsernameEntered)
-        {
-            UsernamePage.SetActive(true);
             ServerRooms.SetActive(false);
             SettingsPage.SetActive(false);
-        }
-        else OpenServerRooms();
     }
 
     public void OpenSettings()
     {
         ServerRooms.SetActive(false);
-        UsernamePage.SetActive(false);
         SettingsPage.SetActive(true);
     }
 
     public void OpenServerRooms()
     {
-        usernameString = UsernameInputField.text;
-        UsernameEntered = true;
-        UsernamePage.SetActive(false);
         ServerRooms.SetActive(true);
         SettingsPage.SetActive(false);
     }

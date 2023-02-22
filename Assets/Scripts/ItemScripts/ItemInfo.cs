@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
+using UnityEngine.UI;
 public class ItemInfo : MonoBehaviour
 {
     public PhotonView phview;
@@ -87,6 +87,7 @@ public class ItemInfo : MonoBehaviour
 
     public bool NetworkedReplacement = false;
     public GameObject ReplacementObj;
+    public GameObject ReplacementDropObj;
     public GameObject OwnerActor;
 
 	public ItemType itemType;
@@ -108,7 +109,7 @@ public class ItemInfo : MonoBehaviour
     }
     virtual public void Init()
     {
-
+        
     }
     public ItemType GetItemType()
     {

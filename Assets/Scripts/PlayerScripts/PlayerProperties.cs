@@ -15,8 +15,6 @@ public class PlayerProperties : MonoBehaviour
     public GameObject PlayerLookingAtItem;
     public GameObject CurrentlyHoldingItem;
 
-    private PhotonView pv;
-
     public Image BloodImage;
 
     public Slider HealthSlider;
@@ -75,12 +73,15 @@ public class PlayerProperties : MonoBehaviour
     public float bleedingInterval, poisonInterval, fullinterval, sickInterval, HealInterval;
     public bool isDead;
     public GameObject deathscreen, awokenMenu;
+    public GameObject SleepingMenu;
+    public bool isSleeping;
     public bool inventoryIsOpen;
     public Image TurnOnButton;
     public TMP_Text TurnOnText;
 
     public bool craftingIsOpen = false;
     public GameObject craftingScreen;
+    public CraftingManager CM;
 
     public GameObject LootScreen, inventoryScreen, furnaceScreen;
     public PlayerMovement PM;
@@ -88,9 +89,19 @@ public class PlayerProperties : MonoBehaviour
 
     public GameObject PauseMenu;
 
+    PhotonView pv;
+
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
+
+        Sleep();
+    }
+
+    public void Sleep()
+    {
+        SleepingMenu.SetActive(true);
+        isSleeping = true;
     }
 
     public void DisconnectFromServer()
@@ -122,7 +133,8 @@ public class PlayerProperties : MonoBehaviour
     }
     public void OpenInventory()
     {
-        if (pv.IsMine)
+        print("HEY!");
+        if (!playerMovement.isMovementEnabled)
         {
             //print("HEY!");
             if (!playerMovement.isMovementEnabled)
@@ -150,12 +162,19 @@ public class PlayerProperties : MonoBehaviour
                 }
                 playerMovement.LockCursor();
             }
-            else
+            else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
             {
-                inventoryScreen.SetActive(true);
-                inventoryIsOpen = true;
-                playerMovement.UnlockCursor();
+                PlayerLookingAtItem.GetComponent<FurnaceProperties>().isLookingAtIt = false;
+                PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
+                PlayerLookingAtItem.GetComponent<FurnaceProperties>().ClearLastLootPool();
             }
+            playerMovement.LockCursor();
+        }
+        else
+        {
+            inventoryScreen.SetActive(true);
+            inventoryIsOpen = true;
+            playerMovement.UnlockCursor();
         }
     }
 
@@ -170,7 +189,6 @@ public class PlayerProperties : MonoBehaviour
         else
         {
             craftingScreen.SetActive(true);
-            CraftingManager CM = FindObjectOfType<CraftingManager>();
             Debug.Log("Loading Crafts");
             CM.LoadCrafts(WorkbenchLv, true);
             craftingIsOpen = true;
@@ -189,7 +207,6 @@ public class PlayerProperties : MonoBehaviour
         else
         {
             craftingScreen.SetActive(true);
-            CraftingManager CM = FindObjectOfType<CraftingManager>();
             Debug.Log("Loading Research");
             CM.LoadCrafts(0, false);
             craftingIsOpen = true;
@@ -292,7 +309,7 @@ public class PlayerProperties : MonoBehaviour
 
     private void Update()
     {
-        if(!isDead && pv.IsMine)
+        if(!isDead && pv.IsMine && !isSleeping)
         { 
             Htimer += Time.deltaTime;
             Ttimer += Time.deltaTime;
@@ -465,9 +482,17 @@ public class PlayerProperties : MonoBehaviour
                 }
             }
         }
-        else
+        else if(isSleeping)
         {
             if (Input.GetKey(KeyCode.E) && pv.IsMine)
+            {
+                SleepingMenu.SetActive(false);
+                isSleeping = false;
+            }
+        }
+        else
+        {
+            if (Input.GetKey(KeyCode.E))
             {
                 RespawnAfterDeath();
             }
@@ -496,12 +521,14 @@ public class PlayerProperties : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
-    [PunRPC]
     public void TakeDamage(float damage)
     {
-        if (pv.IsMine)
+        Health -= damage;
+
+        if (Health < 50)
         {
             Health -= damage;
+
             if (Health < 50)
             {
                 float q = Health / MaxHealth;
@@ -513,13 +540,7 @@ public class PlayerProperties : MonoBehaviour
                     die();
                 }
             }
-            float f = Random.Range(1, 100);
-            if (bleedChance < f)
-            {
-                isBleeding = true;
-                bleedingIcon.SetActive(true);
-                BTimer = 60f;
-            }
+
         }
     }
     //Its TakeDamage but without punrpc
@@ -561,29 +582,23 @@ public class PlayerProperties : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    public void ShoveLootInDeathBag(int DB)
+    public void ShoveLootInDeathBag(GameObject DB)
     {
-        if (pv.IsMine)
+        IM.UpdateItemCountPerSlot();
+        if(IM.InventoryList[IM.EquippedSlot] != null)
         {
-
-            GameObject DeathBag = PhotonView.Find(DB).gameObject;
-
-            IM.UpdateItemCountPerSlot();
-            if (IM.InventoryList[IM.EquippedSlot] != null)
+            DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[IM.EquippedSlot]));
+            DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[IM.EquippedSlot].GetItemCount()));
+        }
+        for(int i = 0; i < 30; i++)
+        {
+            if(IM.InventoryList[i] != null)
             {
-                DeathBag.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[IM.EquippedSlot]));
-                DeathBag.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[IM.EquippedSlot].GetItemCount()));
-            }
-            for (int i = 0; i < 30; i++)
-            {
-                if (IM.InventoryList[i] != null)
-                {
-                    DeathBag.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[i]));
-                    DeathBag.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[i].GetItemCount()));
-                }
+                DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[i]));
+                DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[i].GetItemCount()));
             }
         }
+        
     }
     [PunRPC]
     public void DefaultRaycastInit()
@@ -617,7 +632,7 @@ public class PlayerProperties : MonoBehaviour
         yield return new WaitForSeconds(1.6f);
         isDead = true;
         deathscreen.SetActive(true);
-        GameObject GO = PhotonNetwork.Instantiate("PlayerDeathBag", transform.position, Quaternion.identity);
-        pv.RPC("ShoveLootInDeathBag", RpcTarget.All, GO.GetPhotonView().ViewID);
+        GameObject GO = Instantiate(DeathBag, transform.position, Quaternion.identity);
+        ShoveLootInDeathBag(GO);
     }
 }
