@@ -521,6 +521,12 @@ public class PlayerProperties : MonoBehaviour
         {
             Health -= damage;
 
+
+            if (Health <= 0)
+            {
+                die();
+            }
+
             if (Health < 50)
             {
                 float q = Health / MaxHealth;
@@ -531,10 +537,7 @@ public class PlayerProperties : MonoBehaviour
 
 
 
-            if (Health <= 0)
-            {
-                die();
-            }
+           
 
             float f = Random.Range(1, 100);
             if (bleedChance < f)
