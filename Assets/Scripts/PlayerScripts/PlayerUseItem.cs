@@ -696,6 +696,9 @@ public class PlayerUseItem : MonoBehaviour
 
     private void UpdateInventorySlot(int slotNo)
     {
+        if (inventoryManager.EquippedSlot == slotNo) // Do not do anything as player is already in slot (double tap same slot)
+            return;
+
         inventoryManager.EquippedSlot = slotNo;
         isPlacingItem = false;
         if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)

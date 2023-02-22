@@ -18,11 +18,12 @@ public class StructureObject : MonoBehaviour
     public float pickupCooldown = 15.0f;
     public float damageCooldown = 0.5f;
 
-    private bool isDamaged;
+    public bool isDamaged;
 
     private void Start()
     {
         isDamaged = false;
+        isUpgraded = false;
         stability = 100;
         pickupCooldown = 15.0f;
 
@@ -48,6 +49,7 @@ public class StructureObject : MonoBehaviour
     [PunRPC]
     public void UpgradeStructure()
     {
+        isUpgraded = true;
         stability = 100; // Reset stability
         foreach (Transform child in transform) // Change look to stone
         {
@@ -58,7 +60,14 @@ public class StructureObject : MonoBehaviour
             mats[0] = stoneMaterial;
             child.GetComponent<Renderer>().materials = mats;
         }
-        isUpgraded = true;
+    }
+
+    [PunRPC]
+    public void RepairStructure(float amt)
+    {
+        stability += amt;
+        if (stability > 100)
+            stability = 100;
     }
 
     [PunRPC]
@@ -67,6 +76,7 @@ public class StructureObject : MonoBehaviour
         if (damageCooldown > 0.0f)
             return;
 
+        Debug.Log("MULTIPLIER: " + multiplier);
         stability -= 3 * multiplier;
         damageCooldown = 0.5f;
         if (stability <= 0)

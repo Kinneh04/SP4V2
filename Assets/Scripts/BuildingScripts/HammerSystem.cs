@@ -54,6 +54,12 @@ public class HammerSystem : MonoBehaviour
         if (!IsUsingHammer || !pv.IsMine)
             return;
 
+        if (selectedObject != null && currStructure != null && currStructure.isDamaged)
+        {
+            selectedObject.slider.value = currStructure.stability;
+            selectedObject.stabilityLabel.text = Math.Round(currStructure.stability, 2) + "%";
+        }
+
         if (IsPickingUp)
         {
             bs.StartPreview(selectedObject.gameObject.transform);
@@ -102,8 +108,6 @@ public class HammerSystem : MonoBehaviour
     private void UpdateSelectedUI()
     {
         selectedObject.actionImage.sprite = actionIcons[currentAction];
-        selectedObject.slider.value = currStructure.stability;
-        selectedObject.stabilityLabel.text = Math.Round(currStructure.stability, 2) + "%";
         switch (currentAction)
         {
             case 0: // Pickup, write whether object is pickable
@@ -313,7 +317,7 @@ public class HammerSystem : MonoBehaviour
                                 {
                                     cp.CreateResourcePopup("Wood", cost);
                                     im.RemoveQuantity(woodObj.GetComponent<ItemInfo>(), cost);
-                                    currStructure.stability += 25;
+                                    currStructure.gameObject.GetComponent<PhotonView>().RPC("RepairStructure", RpcTarget.AllViaServer, 25.0f);
                                 }
                             }
                             else if (selectedObject.costLabel.text.EndsWith("x Stone"))
@@ -327,7 +331,7 @@ public class HammerSystem : MonoBehaviour
                                 {
                                     cp.CreateResourcePopup("Stone", cost);
                                     im.RemoveQuantity(stoneObj.GetComponent<ItemInfo>(), cost);
-                                    currStructure.stability += 25;
+                                    currStructure.gameObject.GetComponent<PhotonView>().RPC("RepairStructure", RpcTarget.AllViaServer, 25.0f);
                                 }
                             }
                         }
@@ -348,8 +352,6 @@ public class HammerSystem : MonoBehaviour
                                 {
                                     cp.CreateResourcePopup("Stone", cost);
                                     im.RemoveQuantity(stoneObj.GetComponent<ItemInfo>(), cost);
-                                    currStructure.stability = 100;
-                                    currStructure.isUpgraded = true;
                                     currStructure.gameObject.GetComponent<PhotonView>().RPC("UpgradeStructure", RpcTarget.AllViaServer);
 
                                     // Also update current selected

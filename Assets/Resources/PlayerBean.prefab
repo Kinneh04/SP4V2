@@ -12467,7 +12467,7 @@ MonoBehaviour:
   cam: {fileID: 7109236928769104490}
   layer:
     serializedVersion: 2
-    m_Bits: 247
+    m_Bits: 231
   offset: 1
   gridSize: 1
   IsBuilding: 0

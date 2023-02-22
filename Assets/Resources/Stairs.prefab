@@ -324,6 +324,8 @@ MonoBehaviour:
   isUpgraded: 0
   stability: 100
   pickupCooldown: 15
+  damageCooldown: 0.5
+  isDamaged: 0
 --- !u!65 &5298919147225146108
 BoxCollider:
   m_ObjectHideFlags: 0
