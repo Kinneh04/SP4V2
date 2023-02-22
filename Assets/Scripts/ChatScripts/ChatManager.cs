@@ -5,6 +5,7 @@ using Photon.Chat;
 using Photon.Pun;
 using ExitGames.Client.Photon;
 using TMPro;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class ChatManager : MonoBehaviour
 {
@@ -23,7 +24,6 @@ public class ChatManager : MonoBehaviour
 
     PhotonView PV;
 
-
     ChatClient chatClient;
     bool isConnected = false;
     public bool isTyping = false;
@@ -35,12 +35,17 @@ public class ChatManager : MonoBehaviour
         isConnected = true;
         PV = GetComponent<PhotonView>();
         Content.fontSize = 24;
-        PV.RPC("sendEveryoneMessage", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName + " has joined.");
+        if (PV != null)
+            PV.RPC("sendEveryoneMessage", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.NickName + " has joined.");
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        PV.RPC("UpdateOwnChat", RpcTarget.All);
+
         if (isConnected)
         {
             UI.SetActive(true);
@@ -48,7 +53,7 @@ public class ChatManager : MonoBehaviour
         else
         {
             //Disconnect and dont back
-            PV.RPC("sendEveryoneMessage", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName + " has left.");
+            PV.RPC("sendEveryoneMessage", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.NickName + " has left.");
         }
         Background.SetActive(isTyping);
         if (isTyping)
@@ -81,7 +86,7 @@ public class ChatManager : MonoBehaviour
                         if (PV.IsMine)
                         {
                             Debug.Log("Sending");
-                            PV.RPC("sendEveryoneMessage", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName + ": " + input.text);
+                            PV.RPC("sendEveryoneMessage", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.NickName + ": " + input.text);
                         }
                     }
                     input.text = "";
@@ -107,17 +112,21 @@ public class ChatManager : MonoBehaviour
     }
 
     [PunRPC]
-    void sendEveryoneMessage(string message)
+    public void sendEveryoneMessage(string message)
     {
-        Debug.Log(message);
-        UpdateOwnChat(message);
+        string ChatText = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
+        ChatText += "\n " + message;
+
+        Hashtable hash = new Hashtable();
+        hash.Add("ChatText", ChatText);
+        PhotonNetwork.MasterClient.SetCustomProperties(hash);
     }
 
-    void UpdateOwnChat(string message)
+    [PunRPC]
+    public void UpdateOwnChat()
     {
-        Debug.Log(PhotonNetwork.LocalPlayer.NickName + "PreUpdate Chat: " + Content.text);
-        Content.text += "\n " + message;
-        Debug.Log(PhotonNetwork.LocalPlayer.NickName + "PostUpdate Chat: " + Content.text);
+        string ChatText = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
+        Content.text = ChatText;
     }
 
     [PunRPC]
