@@ -41,6 +41,21 @@ MonoBehaviour:
   - RespawnSpaceship
   - sendEveryoneMessage
   - sendWhisperMessage
+  - FoundPlayer
+  - LostPlayer
+  - DeerFoundPlayer
+  - DeerFoundWolf
+  - DeerLostPlayer
+  - DeerLostWolf
+  - FoundMonument
+  - ChickenFoundPlayer
+  - ChickenFoundWolf
+  - ChickenLostPlayer
+  - ChickenLostWolf
+  - WolfFoundPlayer
+  - WolfFoundPrey
+  - WolfLostPlayer
+  - WolfLostPrey
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

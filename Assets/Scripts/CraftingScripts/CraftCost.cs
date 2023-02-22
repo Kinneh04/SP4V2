@@ -5,7 +5,7 @@ using TMPro;
 
 public class CraftCost : MonoBehaviour
 {
-    CraftingManager CM;
+    [SerializeField] CraftingManager CM;
 
     [SerializeField]
     protected TMP_Text
@@ -19,7 +19,7 @@ public class CraftCost : MonoBehaviour
 
     void Awake()
     {
-        CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
+        // CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
         materialCounts = new int[3];
         materials = new ItemInfo[3];
     }

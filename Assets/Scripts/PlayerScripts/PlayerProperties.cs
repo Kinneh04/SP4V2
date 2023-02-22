@@ -79,6 +79,7 @@ public class PlayerProperties : MonoBehaviour
 
     public bool craftingIsOpen = false;
     public GameObject craftingScreen;
+    public CraftingManager CM;
 
     public GameObject LootScreen, inventoryScreen, furnaceScreen;
     public PlayerMovement PM;
@@ -150,7 +151,6 @@ public class PlayerProperties : MonoBehaviour
         else
         {
             craftingScreen.SetActive(true);
-            CraftingManager CM = FindObjectOfType<CraftingManager>();
             Debug.Log("Loading Crafts");
             CM.LoadCrafts(WorkbenchLv, true);
             craftingIsOpen = true;
@@ -169,7 +169,6 @@ public class PlayerProperties : MonoBehaviour
         else
         {
             craftingScreen.SetActive(true);
-            CraftingManager CM = FindObjectOfType<CraftingManager>();
             Debug.Log("Loading Research");
             CM.LoadCrafts(0, false);
             craftingIsOpen = true;

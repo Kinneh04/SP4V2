@@ -7,12 +7,12 @@ using TMPro;
 
 public class CraftButton : MonoBehaviour
 {
-    CraftingManager CM;
+    [SerializeField] CraftingManager CM;
     public Button button;
 
     private void Awake()
     {
-        CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
+        // CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
     }
     public void Craft()
     {

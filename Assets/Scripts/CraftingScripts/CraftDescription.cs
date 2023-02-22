@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CraftDescription : MonoBehaviour
 {
-    CraftingManager CM;
+    public CraftingManager CM;
 
     [SerializeField]
     protected TMP_Text Name, Amount, Time, Info, Workbench;
@@ -14,7 +14,7 @@ public class CraftDescription : MonoBehaviour
 
     private void Awake()
     {
-        CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
+        //CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
     }
 
     void Update()

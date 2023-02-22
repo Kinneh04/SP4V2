@@ -7,7 +7,7 @@ using TMPro;
 
 public class CraftQuantity : MonoBehaviour
 {
-    CraftingManager CM;
+    [SerializeField] CraftingManager CM;
 
     [SerializeField]
     protected TMP_Text AmountText;
@@ -15,7 +15,7 @@ public class CraftQuantity : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
+        // CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
     }
 
     public void ChangeAmount()
