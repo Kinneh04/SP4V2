@@ -75,21 +75,24 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
+
                 rb.constraints = RigidbodyConstraints.None;
                 Vector3 movement = transform.forward * vertical + transform.right * horizontal;
                 movement.y = 0;
                 rb.MovePosition(transform.position + movement.normalized * moveSpeed * Time.deltaTime);
                 float sway = Mathf.Sin(Time.time * moveSpeed / 5) * swayAmount;
                 transform.rotation *= Quaternion.Euler(0f, sway, 0f);
+
+                if (Input.GetButtonDown("Jump") && isGrounded)
+                {
+                    rb.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
+                    isGrounded = false;
+                }
+
             }
             isGrounded = Physics.Raycast(Torso.transform.position, Vector3.down, 0.4f);
 
-            if (Input.GetButtonDown("Jump") && isGrounded)
-            {
-                rb.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
-                isGrounded = false;
-            }
-
+           
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 moveSpeed = sprintSpeed;

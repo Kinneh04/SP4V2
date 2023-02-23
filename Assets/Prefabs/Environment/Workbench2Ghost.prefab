@@ -134,6 +134,8 @@ MonoBehaviour:
   NetworkedReplacement: 1
   ReplacementObj: {fileID: 8044750630876731693, guid: f7fac84b021177f489f689300e2f09fe,
     type: 3}
+  ReplacementDropObj: {fileID: 5305034907629577160, guid: 1d54af5fec6659c41b416fd791398fcf,
+    type: 3}
   OwnerActor: {fileID: 0}
   itemType: 9
   itemID: 54
