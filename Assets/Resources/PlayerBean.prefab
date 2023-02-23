@@ -12276,6 +12276,7 @@ MonoBehaviour:
   HungerSlider: {fileID: 4544724133599871150}
   ThirstSlider: {fileID: 1892742622648227602}
   Spawnpoint: {x: 0, y: 0, z: 0}
+  OGSpawnPoint: {x: 0, y: 0, z: 0}
   isPoisoned: 0
   PoisonTimer: 0
   sickChance: 0
