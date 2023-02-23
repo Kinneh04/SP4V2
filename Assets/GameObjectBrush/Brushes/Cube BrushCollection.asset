@@ -167,8 +167,7 @@ MonoBehaviour:
       m_Bits: 4294967295
     isTagFilteringEnabled: 0
     tagFilter: 
-  primarySelectedBrush:
-    brushObject: {fileID: 3746723927142588197, guid: daa7d6634855bf7469a7669606cfd646,
+  - brushObject: {fileID: 8016660404058817039, guid: 09c0038139f480948b1841721902f69b,
       type: 3}
     usePrefabs: 1
     allowIntercollision: 0
@@ -190,8 +189,7 @@ MonoBehaviour:
       m_Bits: 4294967295
     isTagFilteringEnabled: 0
     tagFilter: 
-  selectedBrushes:
-  - brushObject: {fileID: 3746723927142588197, guid: daa7d6634855bf7469a7669606cfd646,
+  - brushObject: {fileID: 8016660404058817039, guid: ff728bbb428d77d4eb2b877debe61e9b,
       type: 3}
     usePrefabs: 1
     allowIntercollision: 0
@@ -205,6 +203,52 @@ MonoBehaviour:
     minScale: 0.5
     maxScale: 1.5
     offsetFromPivot: {x: 0, y: 0, z: 0}
+    rotOffsetFromPivot: {x: 0, y: 0, z: 0}
+    minSlope: 0
+    maxSlope: 360
+    layerFilter:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    isTagFilteringEnabled: 0
+    tagFilter: 
+  primarySelectedBrush:
+    brushObject: {fileID: 8507658223578317652, guid: 08fc09f8c65bd6b4eb93208a95ea255c,
+      type: 3}
+    usePrefabs: 1
+    allowIntercollision: 0
+    alignToSurface: 0
+    randomizeXRotation: 0
+    randomizeYRotation: 1
+    randomizeZRotation: 0
+    parentContainer: {fileID: 0}
+    density: 1
+    brushSize: 1
+    minScale: 0.5
+    maxScale: 1.5
+    offsetFromPivot: {x: 0, y: -1, z: 0}
+    rotOffsetFromPivot: {x: 0, y: 0, z: 0}
+    minSlope: 0
+    maxSlope: 360
+    layerFilter:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    isTagFilteringEnabled: 0
+    tagFilter: 
+  selectedBrushes:
+  - brushObject: {fileID: 8507658223578317652, guid: 08fc09f8c65bd6b4eb93208a95ea255c,
+      type: 3}
+    usePrefabs: 1
+    allowIntercollision: 0
+    alignToSurface: 0
+    randomizeXRotation: 0
+    randomizeYRotation: 1
+    randomizeZRotation: 0
+    parentContainer: {fileID: 0}
+    density: 1
+    brushSize: 1
+    minScale: 0.5
+    maxScale: 1.5
+    offsetFromPivot: {x: 0, y: -1, z: 0}
     rotOffsetFromPivot: {x: 0, y: 0, z: 0}
     minSlope: 0
     maxSlope: 360

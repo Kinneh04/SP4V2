@@ -26,9 +26,15 @@ public class HeliRocket : MonoBehaviour
             transform.Translate(Vector3.forward * (speed + deviation) * Time.deltaTime);
         }
     }
-
     private void OnCollisionEnter(Collision collision)
     {
+        print(collision.gameObject.name);
+        print("OW!");
+        Explode();
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        print(collision.gameObject.name);
         print("OW!");
         Explode();
     }

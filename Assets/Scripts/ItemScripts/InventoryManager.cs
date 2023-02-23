@@ -133,11 +133,11 @@ public class InventoryManager : MonoBehaviour
             {
                 pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
             }
-            else if(pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Crate")
+            else if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Crate")
             {
-                pp.PlayerLookingAtItem.GetComponent<LootProperties>().PrepareToSyncLoot();
+                pp.PlayerLookingAtItem.GetComponent<LootProperties>().UpdateLoot();
             }
-           
+
             return;
         }
         else if ( InventoryList[Slot1ID] && InventoryList[Slot2ID] == null)
@@ -146,7 +146,7 @@ public class InventoryManager : MonoBehaviour
             InventoryList[Slot2ID] = InventoryList[Slot1ID];
             InventoryList[Slot1ID] = null;
 
-            UpdateItemCountPerSlot();
+            
             pui.ForceGiveItem(InventoryList[EquippedSlot]);
 
             if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Campfire")
@@ -155,9 +155,9 @@ public class InventoryManager : MonoBehaviour
             }
             else if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Crate")
             {
-
-                pp.PlayerLookingAtItem.GetComponent<LootProperties>().PrepareToSyncLoot();
+                pp.PlayerLookingAtItem.GetComponent<LootProperties>().UpdateLoot();
             }
+            UpdateItemCountPerSlot();
             return;
         }
         int Slot1Quantity = InventoryList[Slot1ID].GetItemCount();

@@ -19,21 +19,24 @@ public class RandomItem : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (ItemInPlace == null)
+        if (PhotonNetwork.IsMasterClient)
         {
-            timer -= Time.deltaTime;
-
-            if(timer <= 0)
+            if (ItemInPlace == null)
             {
-                int i = Random.Range(0, ItemsInPool.Count);
+                timer -= Time.deltaTime;
 
-                GameObject ItemGO = PhotonNetwork.Instantiate(ItemsInPool[i].name, transform.position, Quaternion.identity);
-                ItemInPlace = ItemGO;
+                if (timer <= 0)
+                {
+                    int i = Random.Range(0, ItemsInPool.Count);
+
+                    GameObject ItemGO = PhotonNetwork.Instantiate(ItemsInPool[i].name, transform.position, Quaternion.identity);
+                    ItemInPlace = ItemGO;
+                }
             }
-        }
-        else if(timer <= 0)
-        {
-            timer = Random.Range(minSpawnTimer, maxSpawnTimer);
+            else if (timer <= 0)
+            {
+                timer = Random.Range(minSpawnTimer, maxSpawnTimer);
+            }
         }
     }
 }

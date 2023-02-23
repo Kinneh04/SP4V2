@@ -93,7 +93,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         RemoveTagsFromOtherPlayers();
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("SleepingBagBall", position, rotation, 0);
+            PhotonNetwork.Instantiate("Food Crate", position, rotation, 0);
         }
 
         if(player.GetComponent<PhotonView>().IsMine)
@@ -127,6 +127,8 @@ public class JLGameManager : MonoBehaviourPunCallbacks
                 Destroy(Player.transform.Find("Capsule").Find("Eyes").GetComponentInChildren<Camera>().gameObject);
                 //Destroy(Player.GetComponent<PlayerProperties>());
                 Destroy(Player.GetComponent<PlayerMovement>());
+                Destroy(Player.GetComponent<PlayerLookAt>());
+                Destroy(Player.GetComponent<PlayerUseItem>());
                 //Destroy(Player.GetComponent<PlayerUseItem>());
                 Destroy(Player.GetComponent<BuildingSystem>());
                 //Destroy(Player.GetComponent<ChatManager>());
