@@ -9,10 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7520873250201478144}
-  - component: {fileID: 2680378919822490119}
-  - component: {fileID: 3589141131399424936}
+  - component: {fileID: 6416841142034690766}
   m_Layer: 8
-  m_Name: DoorPreview
+  m_Name: OLDDoorPreview
   m_TagString: DoorStructure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +34,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2680378919822490119
+--- !u!114 &6416841142034690766
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,19 +53,6 @@ MonoBehaviour:
   validMat: {fileID: 2100000, guid: 5f95ec27a9cfdc6418fa1292745edb1a, type: 2}
   invalidMat: {fileID: 2100000, guid: 9a66057a2a183e34db931abf800ba507, type: 2}
   IsBuildable: 0
---- !u!65 &3589141131399424936
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1840936222228874752}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.4110131, y: 2.022734, z: 0.17294371}
-  m_Center: {x: 0.559903, y: -0.014349699, z: -0.12050715}
 --- !u!1 &3478162607347422412
 GameObject:
   m_ObjectHideFlags: 0

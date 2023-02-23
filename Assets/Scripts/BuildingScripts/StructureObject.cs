@@ -27,8 +27,11 @@ public class StructureObject : MonoBehaviour
         stability = 100;
         pickupCooldown = 15.0f;
 
-        slider.gameObject.SetActive(false);
-        stabilityLabel.gameObject.SetActive(false);
+        if (slider != null)
+        {
+            slider.gameObject.SetActive(false);
+            stabilityLabel.gameObject.SetActive(false);
+        }
     }
 
     private void Update()
@@ -76,7 +79,6 @@ public class StructureObject : MonoBehaviour
         if (damageCooldown > 0.0f)
             return;
 
-        Debug.Log("MULTIPLIER: " + multiplier);
         stability -= 3 * multiplier;
         damageCooldown = 0.5f;
         if (stability <= 0)

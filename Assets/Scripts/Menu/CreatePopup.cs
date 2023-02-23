@@ -9,7 +9,7 @@ public class CreatePopup : MonoBehaviour
 
     public void CreateResourcePopup(string resource, int amt)
     {
-        GameObject popup = Instantiate(popupPrefab, new Vector3(214, -37, 0), Quaternion.identity);
+        GameObject popup = Instantiate(popupPrefab, new Vector3(562, 43.8f, 0), Quaternion.identity);
         popup.GetComponent<ResourceUsagePopup>().resourceText.text = resource;
         if (amt == 0)
         {

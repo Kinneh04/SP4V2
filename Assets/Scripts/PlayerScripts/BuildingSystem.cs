@@ -9,6 +9,7 @@ public class BuildingSystem : MonoBehaviour
     public BuildObjects currentObject;
     private Vector3 currentPos;
     private Vector3 currentRot = Vector3.zero;
+    private bool isTranslated = false;
     public Transform currentPreview;
 
     public InventoryManager im;
@@ -124,25 +125,31 @@ public class BuildingSystem : MonoBehaviour
                     StructureObject structure = hit.collider.GetComponent<StructureObject>();
                     if (structure && structure.type == StructureTypes.doorway)
                     {
-                        currPreview.position = new Vector3(hit.collider.gameObject.transform.position.x - 0.632f, hit.collider.gameObject.transform.position.y + 0.57f, hit.collider.gameObject.transform.position.z + 1.433f);
+                        currPreview.position = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y, hit.collider.gameObject.transform.position.z);
+                        currPreview.Translate(new Vector3(-0.64f, 0.569f, 1.5f));
                         currPreview.rotation = hit.collider.gameObject.transform.rotation;
                         currentPos = currPreview.position;
-                        currentRot = currPreview.rotation.ToEulerAngles();
+                        currentRot = currPreview.localEulerAngles;
                         currentPreview.GetComponent<PreviewObject>().IsBuildable = true;
                         return;
                     }
                 }
             }
             currentPreview.GetComponent<PreviewObject>().IsBuildable = false;
+            isTranslated = true;
         }
         else if (currentObject.name == "Floor")
         {
             // Snap to top of walls when looking at them, and next to other floors
         }
 
+        isTranslated = false;
+
         if (Input.GetKeyDown(KeyCode.R))
+        {
             currentRot += new Vector3(0, 90, 0);
-        currPreview.localEulerAngles = currentRot;
+            currPreview.localEulerAngles = currentRot;
+        }
     }
 
     public void SetIsBuilding(bool building)
@@ -181,6 +188,11 @@ public class BuildingSystem : MonoBehaviour
                 cp.CreateResourcePopup("Wood", currentObject.wood);
                 im.RemoveQuantity(woodObj.GetComponent<ItemInfo>(), currentObject.wood);
                 GameObject newObj = PhotonNetwork.Instantiate(currentObject.name, currentPos, Quaternion.Euler(currentRot));
+                if (isTranslated)
+                {
+                    newObj.transform.localPosition = currentPreview.transform.localPosition;
+                    newObj.transform.localEulerAngles = currentPreview.transform.localEulerAngles;
+                }
                 newObj.GetComponent<StructureObject>().PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
             }
         }

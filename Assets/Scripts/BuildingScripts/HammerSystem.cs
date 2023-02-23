@@ -281,7 +281,7 @@ public class HammerSystem : MonoBehaviour
 
     public void PerformAction()
     {
-        if (ActionCooldown > 0.0f)
+        if (ActionCooldown > 0.0f || currStructure == null || selectedObject == null)
             return;
 
         if (IsPickingUp)

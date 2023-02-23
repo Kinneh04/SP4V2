@@ -12360,6 +12360,7 @@ MonoBehaviour:
   isPlacingItem: 0
   isADS: 0
   zoomFactor: 2
+  Map: {fileID: 0}
   playerLookAt: {fileID: 1076643316070719907}
   isReleased: 1
 --- !u!95 &724124074
@@ -12458,11 +12459,11 @@ MonoBehaviour:
       type: 3}
   - name: Door
     wood: 50
-    preview: {fileID: 1840936222228874752, guid: 63f21e6a4c2fc724bafbe55b3c21d795,
+    preview: {fileID: 1840936222228874752, guid: c6e4d2db4163cdc468c93f3f747054e9,
       type: 3}
     prefab: {fileID: 1840936222228874752, guid: 247bfc0cf9a9ebb4ea8a46be276c5a15,
       type: 3}
-    selectedPrefab: {fileID: 1840936222228874752, guid: 63f21e6a4c2fc724bafbe55b3c21d795,
+    selectedPrefab: {fileID: 1840936222228874752, guid: c6e4d2db4163cdc468c93f3f747054e9,
       type: 3}
   currentObject:
     name: 
@@ -26926,7 +26927,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 1119, y: -134.6}
-  m_SizeDelta: {x: 534.0531, y: 342.66458}
+  m_SizeDelta: {x: 534.0531, y: 961.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5075270958330987094
 GameObject:

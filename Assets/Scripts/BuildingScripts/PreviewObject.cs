@@ -46,7 +46,15 @@ public class PreviewObject : MonoBehaviour
                 }
             }
         }
-        else if (type != ObjectTypes.door)
+        else if (type == ObjectTypes.door)
+        {
+            // Invalid if there is already a door placed at doorway
+            if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && other.gameObject.CompareTag("DoorStructure"))
+            {
+                col.Add(other);
+            }
+        }
+        else
         {
             // Normal objects can only be placed on terrain, foundation, or floor
             // Check PreviewChildCheck
@@ -62,7 +70,6 @@ public class PreviewObject : MonoBehaviour
         }
 
         // TODO: Redo stairs collision checks
-        // Door is being set in BuildingSystem when aligned with Doorway
     }
 
     private void OnTriggerExit(Collider other)
@@ -79,7 +86,14 @@ public class PreviewObject : MonoBehaviour
                 col.Remove(other);
             }
         }
-        else if (type != ObjectTypes.door)
+        else if (type == ObjectTypes.door)
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && other.gameObject.CompareTag("DoorStructure"))
+            {
+                col.Remove(other);
+            }
+        }
+        else
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && other.gameObject.CompareTag("NormalStructure"))
             {
@@ -113,7 +127,16 @@ public class PreviewObject : MonoBehaviour
                 IsBuildable = false;
             }
         }
-        else if (type != ObjectTypes.door)
+        else if (type == ObjectTypes.door)
+        {
+            // Disable if any collision
+            if (col.Count != 0)
+            {
+                IsBuildable = false;
+            }
+            // IsBuildable is set in BuildingSystem when aligned with Doorway
+        }
+        else
         {
             if (col.Count == 0 && nextToCol.Count > 0)
             {
@@ -125,6 +148,7 @@ public class PreviewObject : MonoBehaviour
             }
         }
 
+        // Switch colors
         if (IsBuildable)
         {
             foreach (Transform child in transform)

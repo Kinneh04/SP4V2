@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 6
-  selectedPrefab: {fileID: 1840936222228874752, guid: 63f21e6a4c2fc724bafbe55b3c21d795,
+  selectedPrefab: {fileID: 1840936222228874752, guid: c6e4d2db4163cdc468c93f3f747054e9,
     type: 3}
   stoneMaterial: {fileID: -5618006526032565814, guid: c9f904276cd92e842ac087f4fd8924ff,
     type: 3}
