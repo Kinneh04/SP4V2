@@ -250,7 +250,7 @@ public class InventoryManager : MonoBehaviour
         if (InventoryList.Count <= MaxInventorySize)
         {
             int SlotNum = CheckForAvailableSlots(item, QuantityToAdd);
-            if (InventoryList[SlotNum] != null) //Adds quantity
+            if (InventoryList[SlotNum] != null && item.gameObject.tag != "Weaponry") //Adds quantity
             {
                 InventoryList[SlotNum].ItemCount += QuantityToAdd;
                 Destroy(item);
@@ -290,7 +290,7 @@ public class InventoryManager : MonoBehaviour
     {
         for(int i = 0; i < InventoryList.Count; i++)
         {
-            if( InventoryList[i] != null && InventoryList[i].itemID == ItemToCheckFor.itemID)// && InventoryList[i].MaxItemCount < ItemToCheckFor.MaxItemCount - Quantity)
+            if( InventoryList[i] != null && InventoryList[i].itemID == ItemToCheckFor.itemID && ItemToCheckFor.gameObject.tag != "Weaponry")// && InventoryList[i].MaxItemCount < ItemToCheckFor.MaxItemCount - Quantity)
             {
                // print("SAME SIDE!");
                 return i;

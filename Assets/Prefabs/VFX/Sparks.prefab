@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seconds: 1
+  NetworkedDestruct: 0
 --- !u!1 &4186093299663959321
 GameObject:
   m_ObjectHideFlags: 0
@@ -4931,3 +4932,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seconds: 0.5
+  NetworkedDestruct: 0

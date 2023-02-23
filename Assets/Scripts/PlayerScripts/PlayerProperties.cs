@@ -236,7 +236,7 @@ public class PlayerProperties : MonoBehaviour
         BloodImage.color = new Color(1, 0, 0, 0);
         if (Lastbedclaimed != null)
             transform.position = Spawnpoint;
-        else transform.position = new Vector3(-9.11f, 0.15f, 3.24f);
+        else transform.position = new Vector3(-9.11f, 2.15f, 3.24f);
 
         RadiationAmount = 0;
         RadiationIcon.SetActive(false);
@@ -532,24 +532,27 @@ public class PlayerProperties : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        Health -= damage;
-
-        if (Health < 50)
+        if (pv.IsMine)
         {
             Health -= damage;
 
             if (Health < 50)
             {
-                float q = Health / MaxHealth;
-                StartCoroutine(ShowBlood());
-                isShowingBlood = true;
-                bloodTimer = 5.0f;
-                if (Health <= 0)
-                {
-                    die();
-                }
-            }
+                Health -= damage;
 
+                if (Health < 50)
+                {
+                    float q = Health / MaxHealth;
+                    StartCoroutine(ShowBlood());
+                    isShowingBlood = true;
+                    bloodTimer = 5.0f;
+                    if (Health <= 0)
+                    {
+                        die();
+                    }
+                }
+
+            }
         }
     }
     //Its TakeDamage but without punrpc
@@ -592,8 +595,12 @@ public class PlayerProperties : MonoBehaviour
         }
     }
 
-    public void ShoveLootInDeathBag(GameObject DB)
+    [PunRPC]
+    public void ShoveLootInDeathBag(int DBVID)
     {
+
+        GameObject DB = PhotonView.Find(DBVID).gameObject;
+
         IM.UpdateItemCountPerSlot();
         if(IM.InventoryList[IM.EquippedSlot] != null)
         {
@@ -642,7 +649,9 @@ public class PlayerProperties : MonoBehaviour
         yield return new WaitForSeconds(1.6f);
         isDead = true;
         deathscreen.SetActive(true);
-        GameObject GO = Instantiate(DeathBag, transform.position, Quaternion.identity);
-        ShoveLootInDeathBag(GO);
+        PhotonView pvBag = PhotonNetwork.Instantiate(DeathBag.name, transform.position, Quaternion.identity).GetComponent<PhotonView>();
+        
+        pv.RPC("ShoveLootInDeathBag", RpcTarget.All, pvBag.ViewID);
+        ShoveLootInDeathBag(pvBag.ViewID);
     }
 }
