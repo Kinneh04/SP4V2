@@ -30,7 +30,7 @@ public class HeliAI : MonoBehaviour
     public void TakeDamage(float Damage)
     { 
         
-        if(pv.IsMine)
+        if(PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.Instantiate(ExplosionParticles.name, transform.position, Quaternion.identity);
         }
