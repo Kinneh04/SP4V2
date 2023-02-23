@@ -69,6 +69,7 @@ public class ChatManager : MonoBehaviour
                 isTyping = false;
                 input.text = "";
                 input.DeactivateInputField();
+                input.gameObject.SetActive(false);
             }
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -144,6 +145,7 @@ public class ChatManager : MonoBehaviour
                     // Leave Chat Mode
                     isTyping = false;
                     input.DeactivateInputField();
+                    input.gameObject.SetActive(false);
                 }
             }
         }
@@ -153,6 +155,7 @@ public class ChatManager : MonoBehaviour
             {
                 // Enter Chat Mode
                 isTyping = true;
+                input.gameObject.SetActive(true);
                 input.ActivateInputField();
             }
         }
