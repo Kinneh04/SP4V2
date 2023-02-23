@@ -22,6 +22,7 @@ public class PlayerProperties : MonoBehaviour
     public Slider ThirstSlider;
 
     public Vector3 Spawnpoint;
+    public Vector3 OGSpawnPoint;
 
     public bool isPoisoned;
     public float PoisonTimer;
@@ -96,6 +97,7 @@ public class PlayerProperties : MonoBehaviour
         pv = GetComponent<PhotonView>();
 
         Sleep();
+        OGSpawnPoint = transform.position;  
     }
 
     public void Sleep()
@@ -239,7 +241,7 @@ public class PlayerProperties : MonoBehaviour
         BloodImage.color = new Color(1, 0, 0, 0);
         if (Lastbedclaimed != null)
             transform.position = Spawnpoint;
-        else transform.position = new Vector3(-9.11f, 2.15f, 3.24f);
+        else transform.position = OGSpawnPoint;
 
         RadiationAmount = 0;
         RadiationIcon.SetActive(false);

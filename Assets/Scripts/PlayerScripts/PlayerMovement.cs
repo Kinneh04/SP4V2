@@ -19,8 +19,9 @@ public class PlayerMovement : MonoBehaviour
     public bool isMovementEnabled;
     public PhotonView pv;
     public bool canLookAround;
-
+    public InventoryManager IM;
     public GameObject Torso;
+    public bool playingSprintAnim = false;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -88,22 +89,34 @@ public class PlayerMovement : MonoBehaviour
                     rb.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
                     isGrounded = false;
                 }
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    moveSpeed = sprintSpeed;
+                    swayAmount = 0.5f;
+                   if(IM.InventoryList[IM.EquippedSlot].itemType == ItemInfo.ItemType.Ranged && !playingSprintAnim)
+                    {
+                        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSprintWeapon");
+                        playingSprintAnim = true;
+                    }
+                   
+                    // print("SPRINTING!");
+                }
+                else
+                {
+                    moveSpeed = OGmoveSpeed;
+                    swayAmount = 0.0f;
 
+                    if(playingSprintAnim)
+                    {
+                        playingSprintAnim = false;
+                        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanIdle");
+                    }
+                }
             }
             isGrounded = Physics.Raycast(Torso.transform.position, Vector3.down, 0.4f);
 
            
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                moveSpeed = sprintSpeed;
-                swayAmount = 0.5f;
-                // print("SPRINTING!");
-            }
-            else
-            {
-                moveSpeed = OGmoveSpeed;
-                swayAmount = 0.0f;
-            }
+            
 
 
 
