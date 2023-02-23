@@ -30,7 +30,7 @@ public class SpawnChange : MonoBehaviour
                 baseChance += chanceIncrease;
                 chanceTimer = increaseInterval;
 
-                float randomValue = Random.value;
+                float randomValue = Random.Range(0,100);
 
                 // if the random value is less than the spawn chance, spawn the object
                 if (randomValue < baseChance)

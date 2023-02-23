@@ -74,6 +74,11 @@ public class Raycast : MonoBehaviour
                 hit.transform.GetComponent<ChickenAI>().DamagedDirection(direction);
                 GO = Instantiate(ImpactParticleSystem, hit.point, Quaternion.identity);
             }
+            else if (hit.transform.gameObject.CompareTag("Helicopter"))
+            {
+                hit.transform.GetComponent<HeliAI>().TakeDamage((int)Damage);
+                GO = Instantiate(ImpactParticleSystem, hit.point, Quaternion.identity);
+            }
             else if (hit.transform.gameObject.CompareTag("Player") || hit.transform.gameObject.CompareTag("EnemyPlayer"))
             {
                 print("OW!!!!!!!!!!");
