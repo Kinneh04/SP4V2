@@ -12,7 +12,6 @@ public class Explosion : MonoBehaviour
         {
             other.transform.GetComponent<Enemy>().GetDamaged((int)Damage);
         }
-  
         else if (other.CompareTag("EnemyPlayer") || other.CompareTag("Player"))
         {
             other.transform.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, Damage);
