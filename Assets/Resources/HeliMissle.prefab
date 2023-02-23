@@ -4929,6 +4929,7 @@ MonoBehaviour:
   deviance: 0.2
   ExplosionEffect: {fileID: 2738436938548131024, guid: e526920918ff6f2488718212285cb067,
     type: 3}
+  pv: {fileID: 0}
 --- !u!65 &3156982118302233833
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -8,14 +8,23 @@ public class HeliRocket : MonoBehaviour
     public float speed = 10f;
     public float deviance = 0.1f;
     public GameObject ExplosionEffect;
+    public PhotonView pv;
+
+    private void Awake()
+    {
+        pv = GetComponent<PhotonView>();
+    }
 
     void Update()
     {
-        // calculate a random speed deviation
-        float deviation = Random.Range(-deviance, deviance);
+        if (pv.IsMine)
+        {
+            // calculate a random speed deviation
+            float deviation = Random.Range(-deviance, deviance);
 
-        // move the game object forward at the base speed plus the deviation
-        transform.Translate(Vector3.forward * (speed + deviation) * Time.deltaTime);
+            // move the game object forward at the base speed plus the deviation
+            transform.Translate(Vector3.forward * (speed + deviation) * Time.deltaTime);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -15075,6 +15075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: 0
+  CurrentText: 
 --- !u!1 &2782035076531824737
 GameObject:
   m_ObjectHideFlags: 0
@@ -16835,6 +16836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: 0
+  CurrentText: 
 --- !u!1 &3095420702942134080
 GameObject:
   m_ObjectHideFlags: 0
@@ -19919,6 +19921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: 0
+  CurrentText: 
 --- !u!1 &3535759688005722043
 GameObject:
   m_ObjectHideFlags: 0
@@ -20732,6 +20735,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: 0
+  CurrentText: 
 --- !u!1 &3640439439315440894
 GameObject:
   m_ObjectHideFlags: 0
@@ -30227,6 +30231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: 0
+  CurrentText: 
 --- !u!1 &5594186650245039092
 GameObject:
   m_ObjectHideFlags: 0
@@ -34198,6 +34203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: 0
+  CurrentText: 
 --- !u!1 &6059073376163790455
 GameObject:
   m_ObjectHideFlags: 0
@@ -44619,6 +44625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: 0
+  CurrentText: 
 --- !u!1 &7761533959984920056
 GameObject:
   m_ObjectHideFlags: 0
@@ -45605,6 +45612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: 0
+  CurrentText: 
 --- !u!1 &7962548109408207028
 GameObject:
   m_ObjectHideFlags: 0
@@ -47122,6 +47130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: 0
+  CurrentText: 
 --- !u!1 &8266342385198208416
 GameObject:
   m_ObjectHideFlags: 0
@@ -51044,6 +51053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: 0
+  CurrentText: 
 --- !u!1 &8932342495637751170
 GameObject:
   m_ObjectHideFlags: 0

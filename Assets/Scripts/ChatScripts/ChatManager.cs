@@ -172,124 +172,126 @@ public class ChatManager : MonoBehaviour
     [PunRPC]
     public void UpdateOwnChat()
     {
-        string ChatText = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
-
-        // Gets the 10 Most Recent Messages
-        List<string> Messages = new List<string>();
-        int MessageCount = 0;
-        int MessageStart = 0;
-        for (int i = 0; i < ChatText.Length; i++)
+        if (PV.IsMine)
         {
-            if (ChatText[i] == '\n')
+            string ChatText = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
+
+            // Gets the 10 Most Recent Messages
+            List<string> Messages = new List<string>();
+            int MessageCount = 0;
+            int MessageStart = 0;
+            for (int i = 0; i < ChatText.Length; i++)
             {
-                string Message = ChatText.Substring(MessageStart, i - MessageStart + 1);
-
-                if (Message[0] == '/' && Message[1] == 'w')
+                if (ChatText[i] == '\n')
                 {
-                    // Check if Message is for this player
+                    string Message = ChatText.Substring(MessageStart, i - MessageStart + 1);
 
-                    string receiver = "";
-                    string sender = "";
-
-                    for (int player = 0; player < PhotonNetwork.PlayerList.Length; player++)
+                    if (Message[0] == '/' && Message[1] == 'w')
                     {
-                        sender = PhotonNetwork.PlayerList[player].NickName;
+                        // Check if Message is for this player
 
-                        if (Message.Length + 3 < sender.Length)
-                            break;
+                        string receiver = "";
+                        string sender = "";
 
-                        for (int j = 0; j < sender.Length; j++)
+                        for (int player = 0; player < PhotonNetwork.PlayerList.Length; player++)
                         {
-                            if (Message[j + 3] != sender[j])
-                            {
+                            sender = PhotonNetwork.PlayerList[player].NickName;
+
+                            if (Message.Length + 3 < sender.Length)
                                 break;
+
+                            for (int j = 0; j < sender.Length; j++)
+                            {
+                                if (Message[j + 3] != sender[j])
+                                {
+                                    break;
+                                }
                             }
                         }
-                    }
-                    for (int player = 0; player < PhotonNetwork.PlayerList.Length; player++)
-                    {
-                        receiver = PhotonNetwork.PlayerList[player].NickName;
-                        if (receiver == sender)
-                            break;
-
-                        if (Message.Length + 3 + sender.Length < receiver.Length)
-                            break;
-
-                        for (int j = 0; j < receiver.Length; j++)
+                        for (int player = 0; player < PhotonNetwork.PlayerList.Length; player++)
                         {
-                            if (Message[j + sender.Length + 4] != receiver[j])
-                            {
+                            receiver = PhotonNetwork.PlayerList[player].NickName;
+                            if (receiver == sender)
                                 break;
+
+                            if (Message.Length + 3 + sender.Length < receiver.Length)
+                                break;
+
+                            for (int j = 0; j < receiver.Length; j++)
+                            {
+                                if (Message[j + sender.Length + 4] != receiver[j])
+                                {
+                                    break;
+                                }
                             }
                         }
+                        Message = "(Whisper) " + sender + ": " + Message.Substring(sender.Length + receiver.Length + 5);
                     }
-                    Message = "(Whisper) " + sender + ": " + Message.Substring(sender.Length + receiver.Length + 5);
-                }
-                else if (Message[0] == '/' && Message[1] == 'e')
-                {
-                    string username = "";
-                    for (int player = 0; player < PhotonNetwork.PlayerList.Length; player++)
+                    else if (Message[0] == '/' && Message[1] == 'e')
                     {
-                        username = PhotonNetwork.PlayerList[player].NickName;
-
-                        if (Message.Length + 3 < username.Length)
-                            break;
-
-                        for (int j = 0; j < username.Length; j++)
+                        string username = "";
+                        for (int player = 0; player < PhotonNetwork.PlayerList.Length; player++)
                         {
-                            if (Message[j + 3] != username[j])
-                            {
+                            username = PhotonNetwork.PlayerList[player].NickName;
+
+                            if (Message.Length + 3 < username.Length)
                                 break;
+
+                            for (int j = 0; j < username.Length; j++)
+                            {
+                                if (Message[j + 3] != username[j])
+                                {
+                                    break;
+                                }
                             }
                         }
+                        Message = "(Error) " + Message.Substring(username.Length + 7);
                     }
-                    Message = "(Error) " + Message.Substring(username.Length + 7);
+
+                    Messages.Add(Message);
+                    MessageStart = i + 1;
+                    MessageCount++;
                 }
-
-                Messages.Add(Message);
-                MessageStart = i + 1;
-                MessageCount++;
             }
-        }
-        bool over = false;
-        if (MessageCount > 10)
-        {
-            Messages.RemoveRange(0, MessageCount - 10);
-            MessageCount = 10;
-            over = true;
-        }
-
-        if (over)
-        {
-            if (ChatTexts[9].CurrentText != Messages[9])
+            bool over = false;
+            if (MessageCount > 10)
             {
-                for (int i = 0; i < 10; i++)
+                Messages.RemoveRange(0, MessageCount - 10);
+                MessageCount = 10;
+                over = true;
+            }
+
+            if (over)
+            {
+                if (ChatTexts[9].CurrentText != Messages[9])
                 {
-                    if (i < 9)
+                    for (int i = 0; i < 10; i++)
                     {
-                        ChatTexts[i].ReplaceMessage(ChatTexts[i + 1]);
-                        ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
-                    }
-                    else
-                    {
-                        ChatTexts[i].SetMessage(Messages[i]);
-                        ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
+                        if (i < 9)
+                        {
+                            ChatTexts[i].ReplaceMessage(ChatTexts[i + 1]);
+                            ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
+                        }
+                        else
+                        {
+                            ChatTexts[i].SetMessage(Messages[i]);
+                            ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
+                        }
                     }
                 }
             }
-        }
 
-        for (int i = 0; i < 10; i++)
-        {
-            if (i < MessageCount)
+            for (int i = 0; i < 10; i++)
             {
-                ChatTexts[i].SetMessage(Messages[i]);
-                ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
+                if (i < MessageCount)
+                {
+                    ChatTexts[i].SetMessage(Messages[i]);
+                    ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
+                }
+                else
+                    ChatTexts[i].gameObject.SetActive(false);
             }
-            else
-                ChatTexts[i].gameObject.SetActive(false);
         }
-
         //Content.text = ChatText;
     }
 
