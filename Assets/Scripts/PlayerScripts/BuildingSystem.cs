@@ -19,6 +19,7 @@ public class BuildingSystem : MonoBehaviour
     public Transform cam;
     public RaycastHit hit;
     public LayerMask layer; // To assign it to exclude BuildPreview in raycast checks
+    public LayerMask buildableLayer;
 
     public float offset = 1.0f;
     public float gridSize = 1.0f;
@@ -111,7 +112,33 @@ public class BuildingSystem : MonoBehaviour
         currentPos *= gridSize;
         currentPos += Vector3.one * offset;
         currentPos.y += currPreview.localScale.y * 0.5f;
-        currPreview.position = currentPos; // snap preview to current position
+        currPreview.position = currentPos; // snap preview to current grid
+
+        if (currentObject.name == "Door")
+        {
+            if (Physics.Raycast(cam.position, cam.forward, out hit, LayerMask.NameToLayer("BuildPreview"), buildableLayer))
+            {
+                // Snap doors to doorframes when player is looking at them
+                if (hit.collider.gameObject.CompareTag("NormalStructure"))
+                {
+                    StructureObject structure = hit.collider.GetComponent<StructureObject>();
+                    if (structure && structure.type == StructureTypes.doorway)
+                    {
+                        currPreview.position = new Vector3(hit.collider.gameObject.transform.position.x - 0.632f, hit.collider.gameObject.transform.position.y + 0.57f, hit.collider.gameObject.transform.position.z + 1.433f);
+                        currPreview.rotation = hit.collider.gameObject.transform.rotation;
+                        currentPos = currPreview.position;
+                        currentRot = currPreview.rotation.ToEulerAngles();
+                        currentPreview.GetComponent<PreviewObject>().IsBuildable = true;
+                        return;
+                    }
+                }
+            }
+            currentPreview.GetComponent<PreviewObject>().IsBuildable = false;
+        }
+        else if (currentObject.name == "Floor")
+        {
+            // Snap to top of walls when looking at them, and next to other floors
+        }
 
         if (Input.GetKeyDown(KeyCode.R))
             currentRot += new Vector3(0, 90, 0);

@@ -36,10 +36,7 @@ public class PreviewObject : MonoBehaviour
             // Check PreviewChildCheck
             if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && other.gameObject.transform.position.y >= gameObject.transform.position.y - collideLeeway)
             {
-                if (other.gameObject.CompareTag("NormalStructure"))
-                {
-                }
-                else
+                if (!other.gameObject.CompareTag("NormalStructure"))
                 {
                     col.Add(other);
                     if (nextToCol.Contains(other))
@@ -49,7 +46,7 @@ public class PreviewObject : MonoBehaviour
                 }
             }
         }
-        else
+        else if (type != ObjectTypes.door)
         {
             // Normal objects can only be placed on terrain, foundation, or floor
             // Check PreviewChildCheck
@@ -63,6 +60,9 @@ public class PreviewObject : MonoBehaviour
                 }
             }
         }
+
+        // TODO: Redo stairs collision checks
+        // Door is being set in BuildingSystem when aligned with Doorway
     }
 
     private void OnTriggerExit(Collider other)
@@ -79,7 +79,7 @@ public class PreviewObject : MonoBehaviour
                 col.Remove(other);
             }
         }
-        else
+        else if (type != ObjectTypes.door)
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && other.gameObject.CompareTag("NormalStructure"))
             {
@@ -113,7 +113,7 @@ public class PreviewObject : MonoBehaviour
                 IsBuildable = false;
             }
         }
-        else
+        else if (type != ObjectTypes.door)
         {
             if (col.Count == 0 && nextToCol.Count > 0)
             {
@@ -158,5 +158,6 @@ public enum ObjectTypes
     normal,
     foundation,
     floor,
-    stairs
+    stairs,
+    door
 }

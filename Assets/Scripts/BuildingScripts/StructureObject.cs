@@ -110,5 +110,6 @@ public enum StructureTypes
     wall,
     stairs,
     doorway,
-    window
+    window,
+    door
 }

@@ -12440,6 +12440,14 @@ MonoBehaviour:
       type: 3}
     selectedPrefab: {fileID: 2849478933915083144, guid: 64d49bf2562923b4ab438fce0580a09e,
       type: 3}
+  - name: Window
+    wood: 35
+    preview: {fileID: 2849478933915083144, guid: b0a46e8daffcb4643a76fa717d5d3724,
+      type: 3}
+    prefab: {fileID: 2849478933915083144, guid: 11f0c454167913649bd73b5aa1c44261,
+      type: 3}
+    selectedPrefab: {fileID: 2849478933915083144, guid: ca5a483237ee1ca4bbf86fa1a9e6526d,
+      type: 3}
   - name: DoorFrame
     wood: 35
     preview: {fileID: 2849478933915083144, guid: df0dae98f2cc0db4e84e923e8387bc93,
@@ -12448,13 +12456,13 @@ MonoBehaviour:
       type: 3}
     selectedPrefab: {fileID: 2849478933915083144, guid: dc16d88f303e7ed4a8b9a4879b882b07,
       type: 3}
-  - name: Window
-    wood: 35
-    preview: {fileID: 2849478933915083144, guid: b0a46e8daffcb4643a76fa717d5d3724,
+  - name: Door
+    wood: 50
+    preview: {fileID: 1840936222228874752, guid: 63f21e6a4c2fc724bafbe55b3c21d795,
       type: 3}
-    prefab: {fileID: 2849478933915083144, guid: 11f0c454167913649bd73b5aa1c44261,
+    prefab: {fileID: 1840936222228874752, guid: 247bfc0cf9a9ebb4ea8a46be276c5a15,
       type: 3}
-    selectedPrefab: {fileID: 2849478933915083144, guid: ca5a483237ee1ca4bbf86fa1a9e6526d,
+    selectedPrefab: {fileID: 1840936222228874752, guid: 63f21e6a4c2fc724bafbe55b3c21d795,
       type: 3}
   currentObject:
     name: 
@@ -12470,6 +12478,9 @@ MonoBehaviour:
   layer:
     serializedVersion: 2
     m_Bits: 231
+  buildableLayer:
+    serializedVersion: 2
+    m_Bits: 512
   offset: 1
   gridSize: 1
   IsBuilding: 0

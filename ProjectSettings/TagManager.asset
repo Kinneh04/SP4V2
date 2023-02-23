@@ -41,6 +41,8 @@ TagManager:
   - Weaponry
   - Consumables
   - Grass
+  - RHand
+  - DoorStructure
   layers:
   - Default
   - TransparentFX

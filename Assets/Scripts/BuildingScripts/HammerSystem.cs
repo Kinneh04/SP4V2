@@ -221,7 +221,7 @@ public class HammerSystem : MonoBehaviour
         prevObject = currentObject;
         currentObject = hit2.collider.gameObject;
 
-        if (currentObject != prevObject && currentObject.GetComponent<StructureObject>().PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
+        if (currentObject != prevObject && currentObject.GetComponent<StructureObject>().PlayerID == PhotonNetwork.LocalPlayer.ActorNumber && currentObject.GetComponent<StructureObject>().type != StructureTypes.door)
         {
             if (prevObject != null)
                 prevObject.SetActive(true);
