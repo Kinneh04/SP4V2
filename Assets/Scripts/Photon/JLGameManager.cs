@@ -93,7 +93,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         RemoveTagsFromOtherPlayers();
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("SleepingBagBall", position, rotation, 0);
+            PhotonNetwork.Instantiate("Food Crate", position, rotation, 0);
         }
 
         if(player.GetComponent<PhotonView>().IsMine)

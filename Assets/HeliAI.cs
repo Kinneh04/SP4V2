@@ -9,7 +9,7 @@ public class HeliAI : MonoBehaviour
 {
 
     public float speed = 10f;
-    public GameObject Target;
+    public List<GameObject> targets = new List<GameObject>();
     public float ShootCooldown = 5.0f;
     public float burstCooldown = 0.25f;
     public GameObject spawnPoint;
@@ -24,6 +24,29 @@ public class HeliAI : MonoBehaviour
     {
         pv = GetComponent<PhotonView>();
         
+    }
+
+    [PunRPC]
+    void AddPlayerToTargetsList(int ID)
+    {
+        if (pv.IsMine)
+        {
+            GameObject PlayerGO = PhotonView.Find(ID).gameObject;
+            targets.Add(PlayerGO);
+        }
+    }
+
+    [PunRPC]
+    void RemovePlayerFromTargetList(int ID)
+    {
+        if (pv.IsMine)
+        {
+            GameObject PlayerGO = PhotonView.Find(ID).gameObject;
+            if (targets.Contains(PlayerGO))
+            {
+                targets.Remove(PlayerGO);
+            }
+        }
     }
 
     [PunRPC]
@@ -51,37 +74,38 @@ public class HeliAI : MonoBehaviour
 
     private void Update()
     {
-        if (Target == null) Target = GameObject.FindGameObjectWithTag("Player");
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
-        if (Target!=null && Vector3.Distance(gameObject.transform.position, Target.transform.position) < 500)
+        if (pv.IsMine && targets.Count > 0)
         {
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
             //print(Vector3.Distance(gameObject.transform.position, Target.transform.position));
             ShootCooldown -= Time.deltaTime;
-            if(ShootCooldown <= 0)
+            if (ShootCooldown <= 0)
             {
                 burstCooldown -= Time.deltaTime;
-                if(burstCooldown <= 0)
+                if (burstCooldown <= 0)
                 {
+                    int r = Random.Range(0, targets.Count);
                     burstCooldown = 0.35f;
-                    ShootMissleAtTarget();
+                    ShootMissleAtTarget(r);
                     burstAmount--;
+                    if (burstAmount <= 0)
+                    {
+                        burstAmount = 12;
+                        ShootCooldown = 4.0f;
+                        burstCooldown = 0.35f;
+                    }
+
+                    
                 }
-                if(burstAmount <= 0)
-                {
-                    burstAmount = 8;
-                    ShootCooldown = 8.0f;
-                    burstCooldown = 0.35f;
-                }
-                //ShootCooldown = 3.0f;
-                //ShootMissleAtTarget();
+
             }
         }
     }
 
-    public void ShootMissleAtTarget()
+    public void ShootMissleAtTarget(int targetID)
     {
         print("PEW!");
         PhotonView newObject = PhotonNetwork.Instantiate("HeliMissle", spawnPoint.transform.position, Quaternion.identity,0).GetComponent<PhotonView>();
-        newObject.transform.LookAt(Target.transform);
+        newObject.transform.LookAt(targets[targetID].transform);
     }
 }
