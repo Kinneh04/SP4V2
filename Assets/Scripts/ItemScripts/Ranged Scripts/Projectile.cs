@@ -34,7 +34,6 @@ public class Projectile : MonoBehaviour
             if (itemID == ItemInfo.ItemID.Rocket)
             {
                 GameObject Go = PhotonNetwork.Instantiate(Explosion.name, transform.position,Quaternion.identity);
-                Go.transform.position = transform.position;
                 Go.GetComponent<Explosion>().Damage = Damage;
                 Destroy(this.gameObject);
             }
@@ -45,7 +44,6 @@ public class Projectile : MonoBehaviour
             }
             else if (itemID == ItemInfo.ItemID.Arrow)
             {
-                Debug.Log(collision.transform.gameObject.tag.ToString());
                 if (collision.transform.gameObject.CompareTag("Enemy"))
                 {
                     collision.transform.GetComponent<Enemy>().GetDamaged((int)Damage);
@@ -73,7 +71,6 @@ public class Projectile : MonoBehaviour
                 }
                 else if (collision.transform.gameObject.CompareTag("Player") || collision.transform.gameObject.CompareTag("EnemyPlayer"))
                 {
-                    Debug.Log("Damage: "+ Damage);
                     collision.transform.GetComponent<PlayerProperties>().TakeDamageV2(Damage);
                     Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
                 }
@@ -87,7 +84,6 @@ public class Projectile : MonoBehaviour
             }
             JustFired = false;
         }
-        Debug.Log("GGGGG");
     }
     // Start is called before the first frame update
     void Awake()
@@ -146,7 +142,7 @@ public class Projectile : MonoBehaviour
             }
             else
             {
-                GameObject Go = Instantiate(Explosion, transform.position, Quaternion.identity);
+                GameObject Go = PhotonNetwork.Instantiate(Explosion.name, transform.position, Quaternion.identity);
                 Go.GetComponent<Explosion>().Damage = Damage;
                 Destroy(this.gameObject);
             }

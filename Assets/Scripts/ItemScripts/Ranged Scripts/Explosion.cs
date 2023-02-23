@@ -15,8 +15,8 @@ public class Explosion : MonoBehaviour
         }
         else if (other.CompareTag("EnemyPlayer") || other.CompareTag("Player"))
         {
-            other.transform.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, Damage);
-            other.transform.GetComponent<PlayerProperties>().TakeDamage(Damage);
+            Debug.Log(other.tag);
+            other.transform.GetComponent<PlayerProperties>().TakeDamageV2(Damage);
         }
         else if (other.CompareTag("NormalStructure") || other.CompareTag("FoundationStructure") || other.CompareTag("FloorStructure"))
         {
