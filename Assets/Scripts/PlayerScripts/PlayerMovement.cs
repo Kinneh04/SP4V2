@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     moveSpeed = sprintSpeed;
                     swayAmount = 0.5f;
-                   if(IM.InventoryList[IM.EquippedSlot].itemType == ItemInfo.ItemType.Ranged && !playingSprintAnim)
+                    if(IM.InventoryList[IM.EquippedSlot] != null && IM.InventoryList[IM.EquippedSlot].itemType == ItemInfo.ItemType.Ranged && !playingSprintAnim)
                     {
                         pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSprintWeapon");
                         playingSprintAnim = true;

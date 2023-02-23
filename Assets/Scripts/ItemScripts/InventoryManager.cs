@@ -328,7 +328,8 @@ public class InventoryManager : MonoBehaviour
                         //InventoryList[i].ItemCount = 0;
                         //InventoryList[i] = null;
                         InventoryImages[i].color = new Color(1, 1, 1, 1);
-                        InventoryImages[i].sprite = itemImages[(int)InventoryList[i].GetItemID()];
+                        InventoryImages[i].sprite = null;
+                        UpdateItemCountPerSlot();
                     }
                     else
                     {
