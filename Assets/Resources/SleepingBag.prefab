@@ -228,7 +228,7 @@ MonoBehaviour:
   ReplacementObj: {fileID: 0}
   ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
-  itemType: 8
+  itemType: 9
   itemID: 24
   ItemCount: 1
   MaxItemCount: 0

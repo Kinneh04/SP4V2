@@ -25,16 +25,16 @@ public class PlayerLookAt : MonoBehaviour
             name.Replace("(clone)", "");
             if (hit.transform.gameObject.tag == "SleepingPoint")
             {
-                if(!hit.transform.gameObject.GetComponent<SleepingBagProperties>().isUsed)
-                    tmpTextUI.text = "Press E to claim sleeping bag";
+                if (!hit.transform.gameObject.GetComponent<SleepingBagProperties>().isUsed)
+                    tmpTextUI.text = "claim sleeping bag [E]";
                 else tmpTextUI.text = "Sleeping bag already claimed!";
 
                 playerProperties.PlayerLookingAtItem = hit.transform.gameObject;
             }
             else if (hit.transform.gameObject.tag == "Crate")
             {
-               
-                    tmpTextUI.text = "Loot crate [E]";
+
+                tmpTextUI.text = "Loot crate [E]";
 
                 playerProperties.PlayerLookingAtItem = hit.transform.gameObject;
             }
@@ -45,17 +45,19 @@ public class PlayerLookAt : MonoBehaviour
 
                 playerProperties.PlayerLookingAtItem = hit.transform.gameObject;
             }
-            //else if (playerProperties.PlayerLookingAtItem.transform.parent != null && playerProperties.PlayerLookingAtItem.transform.parent.tag == "RHand") return;
-            foreach (string word in BannedWordsFromLookAt)
+            else
             {
-                if(name == word)
+                foreach (string word in BannedWordsFromLookAt)
                 {
-                    tmpTextUI.text = " ";
-                    return;
+                    if (name == word)
+                    {
+                        tmpTextUI.text = " ";
+                        return;
+                    }
                 }
+                tmpTextUI.text = hit.transform.name.Replace("(clone)", "");
+                playerProperties.PlayerLookingAtItem = hit.transform.gameObject;
             }
-            tmpTextUI.text = hit.transform.name.Replace("(clone)", "");
-            playerProperties.PlayerLookingAtItem = hit.transform.gameObject;
             //if (hit.transform.gameObject.tag != "Floor" && hit.transform.gameObject.tag != "Unmarked" && hit.transform.gameObject.tag != "Unmarked")
             //{
             //    if (hit.transform.gameObject.GetComponent<WeaponInfo>() != null)
