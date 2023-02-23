@@ -22,9 +22,9 @@ public class C4 : WeaponInfo
         itemID = ItemID.C4;
         itemType = ItemType.Ranged;
         MaxItemCount = 10;
-    }
-
-
+		MagRounds = ItemCount;
+	}
+    
     // Discharge this weapon
     public override bool Discharge(Transform transform)
 	{
@@ -36,7 +36,7 @@ public class C4 : WeaponInfo
 				//Get Player PhotonView
 				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
 				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All);
-
+				MagRounds = ItemCount - 1;
 				// Lock the weapon after this discharge
 				CanFire = false;
 				//Doesnt need to reload
