@@ -83,11 +83,8 @@ public class HarvestToolsProperties : ItemInfo
             
             if (structure.PlayerID != PhotonNetwork.LocalPlayer.ActorNumber) // Cannot damage own structures!
             {
-                Debug.Log(structure.type);
-                Debug.Log(other.name);
                 if (structure.isUpgraded)
                 {
-                    Debug.Log("UPGRADED");
                     structure.gameObject.GetComponent<PhotonView>().RPC("DamageStructure", RpcTarget.AllViaServer, (float)(StoneHarvestMultiplier * 0.5f));
                 }
                 else
