@@ -288,11 +288,11 @@ public abstract class WeaponInfo : ItemInfo
 		return false;
 	}
 	// Reload this weapon
-	virtual public void Reload() 
+	virtual public bool Reload() 
 	{
 		// If the weapon is already reloading, then don't reload again
 		if (ReloadTime > 0.0f)
-			return;
+			return false;
 
 		
 		if(InfiniteAmmo)
@@ -302,6 +302,7 @@ public abstract class WeaponInfo : ItemInfo
 			ReloadTime = MaxReloadTime;
 			// Disable the weapon's ability to discharge
 			CanFire = false;
+			return true;
 		}
 		else if (MagRounds < MaxMagRounds) // Check if there is enough bullets
 		{
@@ -323,7 +324,9 @@ public abstract class WeaponInfo : ItemInfo
 			ReloadTime = MaxReloadTime;
 			// Disable the weapon's ability to discharge
 			CanFire = false;
+			return true;
 		}
+		return false;
 	}
 
 }
