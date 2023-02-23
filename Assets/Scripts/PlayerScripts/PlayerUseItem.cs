@@ -320,14 +320,14 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            if (OnShoot())
+                            OnShoot();
+                            print("Shooting m1911");
+
+                            if (!isADS)
+                                PAnimator.Play("PBeanShootM1911");
+                            else
                             {
-                                if (!isADS)
-                                    PAnimator.Play("PBeanShootM1911");
-                                else
-                                {
-                                    PAnimator.Play("PBeanADSPistolShoot");
-                                }
+                                PAnimator.Play("PBeanADSPistolShoot");
                             }
                         }
                     }
@@ -335,14 +335,12 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            if(OnShoot())
+                            OnShoot();
+                            if (!isADS)
+                                PAnimator.Play("PBeanShootAK");
+                            else
                             {
-                                if (!isADS)
-                                    PAnimator.Play("PBeanShootAK");
-                                else
-                                {
-                                    PAnimator.Play("PBeanAkADSShoot");
-                                }
+                                PAnimator.Play("PBeanAkADSShoot");
                             }
                         }
                     }
@@ -358,22 +356,20 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            if(OnShoot())
-                                PAnimator.Play("PBeanShootShotgun");
+                            OnShoot();
+                            PAnimator.Play("PBeanShootShotgun");
                         }
                     }
                     else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REVOLVER && !LeftMouseButtonPressed)
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            if (OnShoot())
+                            OnShoot();
+                            if (!isADS)
+                                PAnimator.Play("PBeanShootM1911");
+                            else
                             {
-                                if (!isADS)
-                                    PAnimator.Play("PBeanShootM1911");
-                                else
-                                {
-                                    PAnimator.Play("PBeanADSPistolShoot");
-                                }
+                                PAnimator.Play("PBeanADSPistolShoot");
                             }
                         }
                     }
@@ -381,12 +377,10 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            if (OnShoot())
+                            OnShoot();
+                            if (!isADS)
                             {
-                                if (!isADS)
-                                {
-                                    PAnimator.Play("PBeanSniperShoot");
-                                }
+                                PAnimator.Play("PBeanSniperShoot");
                             }
                         }
                     }
@@ -394,41 +388,38 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            if (OnShoot()) 
-                                PAnimator.Play("PBeanShotgunShoot");
+                            OnShoot();
+                            PAnimator.Play("PBeanShotgunShoot");
                         }
                     }
                     else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.C4 && !LeftMouseButtonPressed)
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().ItemCount > 0)
                         {
-                            if (OnShoot())
-                            {
-                                PAnimator.Play("PBeanThrow");
-                                inventoryManager.RemoveQuantityFromSlot(inventoryManager.EquippedSlot, 1);
-                            }
+                            OnShoot();
+                            PAnimator.Play("PBeanThrow");
+                            inventoryManager.RemoveQuantityFromSlot(inventoryManager.EquippedSlot, 1);
                         }
                     }
                     else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.ROCKETLAUNCHER && !LeftMouseButtonPressed)
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            if (OnShoot())
-                                PAnimator.Play("PBeanShootAK");
+                            OnShoot();
+                            PAnimator.Play("PBeanShootAK");
                         }
                     }
                     else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.MP5A4)
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            if (OnShoot())
+                            OnShoot();
+
+                            if (!isADS)
+                                PAnimator.Play("PBeanSMGHipfire");
+                            else
                             {
-                                if (!isADS)
-                                    PAnimator.Play("PBeanSMGHipfire");
-                                else
-                                {
-                                    PAnimator.Play("PBeanSMGADSShoot");
-                                }
+                                PAnimator.Play("PBeanSMGADSShoot");
                             }
                         }
                     }
@@ -1018,11 +1009,10 @@ public class PlayerUseItem : MonoBehaviour
         StartCoroutine(triggerCooldown());
     }
 
-    bool OnShoot()
+    void OnShoot()
     {
-        bool PlayerShot = playerProperties.CurrentlyHoldingItem.GetComponent<WeaponInfo>().Discharge(gameObject.GetComponentInChildren<Camera>().transform);
+        playerProperties.CurrentlyHoldingItem.GetComponent<WeaponInfo>().Discharge(gameObject.GetComponentInChildren<Camera>().transform);
         inventoryManager.UpdateItemCountPerSlot();
-        return PlayerShot;
     }
 
     IEnumerator triggerCooldown()
