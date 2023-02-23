@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: -5463987633873494975}
   m_Layer: 0
   m_Name: C4
-  m_TagString: Untagged
+  m_TagString: Weaponry
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -201,17 +201,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cee45c9b9a79b8c43a66ad36f11a57a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pv: {fileID: 0}
+  phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 3
   itemID: 46
   ItemCount: 1
   MaxItemCount: 10
   MagRounds: 0
+  BarrelTip: {fileID: 5839877800327695948}
   BulletPrefab: {fileID: 7077969392531500401, guid: c63a75d76d2ebee48b007f37da302d54,
     type: 3}
-  BarrlTip: {fileID: 5839877800327695948}
 --- !u!114 &9181546204636406597
 MonoBehaviour:
   m_ObjectHideFlags: 0
