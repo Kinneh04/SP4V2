@@ -5,6 +5,7 @@ using Photon.Chat;
 using Photon.Pun;
 using ExitGames.Client.Photon;
 using TMPro;
+using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class ChatManager : MonoBehaviour
@@ -42,7 +43,10 @@ public class ChatManager : MonoBehaviour
             ChatTexts.Add(Content.gameObject.transform.GetChild(i).GetComponent<ChatText>());
         }
         if (PV != null)
+        {
             PV.RPC("sendEveryoneMessage", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.NickName + " has joined.");
+            //GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
+        }
 
 
     }
@@ -61,6 +65,7 @@ public class ChatManager : MonoBehaviour
         {
             //Disconnect and dont back
             PV.RPC("sendEveryoneMessage", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.NickName + " has left.");
+            UI.transform.GetChild(0).gameObject.GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
         }
         Background.SetActive(isTyping);
         if (isTyping)
@@ -107,6 +112,7 @@ public class ChatManager : MonoBehaviour
                                                 if (isReceiver)
                                                 {
                                                     PV.RPC("sendWhisperMessage", RpcTarget.MasterClient, input.text.Substring(4 + Username.Length), Username, PhotonNetwork.LocalPlayer.NickName);
+                                                    UI.transform.GetChild(0).gameObject.GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
                                                     break;
                                                 }
                                             }
@@ -114,6 +120,7 @@ public class ChatManager : MonoBehaviour
                                         if (!isReceiver)
                                         {
                                             PV.RPC("sendErrorMessage", RpcTarget.MasterClient, "/e Invalid Target", PhotonNetwork.LocalPlayer.NickName);
+                                            UI.transform.GetChild(0).gameObject.GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
                                         }
 
 
@@ -136,6 +143,7 @@ public class ChatManager : MonoBehaviour
                         {
                             Debug.Log("Sending");
                             PV.RPC("sendEveryoneMessage", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.NickName + ": " + input.text);
+                            UI.transform.GetChild(0).gameObject.GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
                         }
                     }
                     input.text = "";
@@ -178,17 +186,19 @@ public class ChatManager : MonoBehaviour
     {
         if (PV.IsMine)
         {
-            string ChatText = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
+            string text = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
 
             // Gets the 10 Most Recent Messages
             List<string> Messages = new List<string>();
             int MessageCount = 0;
             int MessageStart = 0;
-            for (int i = 0; i < ChatText.Length; i++)
+            if (text == null)
+                return;
+            for (int i = 0; i < text.Length; i++)
             {
-                if (ChatText[i] == '\n')
+                if (text[i] == '\n')
                 {
-                    string Message = ChatText.Substring(MessageStart, i - MessageStart + 1);
+                    string Message = text.Substring(MessageStart, i - MessageStart + 1);
 
                     if (Message[0] == '/' && Message[1] == 'w')
                     {
