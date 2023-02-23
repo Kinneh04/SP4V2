@@ -45,6 +45,7 @@ public class Projectile : MonoBehaviour
             }
             else if (itemID == ItemInfo.ItemID.Arrow)
             {
+                Debug.Log(collision.transform.gameObject.tag.ToString());
                 if (collision.transform.gameObject.CompareTag("Enemy"))
                 {
                     collision.transform.GetComponent<Enemy>().GetDamaged((int)Damage);
@@ -70,10 +71,10 @@ public class Projectile : MonoBehaviour
                     collision.transform.GetComponent<ChickenAI>().GetDamaged((int)Damage);
                     Instantiate(ImpactParticleSystem, collision.transform.position, Quaternion.identity);
                 }
-                else if (collision.transform.gameObject.CompareTag("Player") && collision.transform.gameObject.CompareTag("EnemyPlayer"))
+                else if (collision.transform.gameObject.CompareTag("Player") || collision.transform.gameObject.CompareTag("EnemyPlayer"))
                 {
-                    collision.transform.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, Damage);
-                    collision.transform.GetComponent<PlayerProperties>().TakeDamage(Damage);
+                    Debug.Log("Damage: "+ Damage);
+                    collision.transform.GetComponent<PlayerProperties>().TakeDamageV2(Damage);
                     Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
                 }
                 Vector3 PushPreviousDirection; // so the arrow is doesnt go through the wall
