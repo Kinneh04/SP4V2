@@ -77,7 +77,7 @@ public class Raycast : MonoBehaviour
             else if (hit.transform.gameObject.CompareTag("Player") || hit.transform.gameObject.CompareTag("EnemyPlayer"))
             {
                 print("OW!!!!!!!!!!");
-                hit.transform.GetComponent<PlayerProperties>().TakeDamage((int)Damage);
+                hit.transform.GetComponent<PlayerProperties>().TakeDamageV2((int)Damage);
                 GO = Instantiate(BloodParticleSystem, hit.point, Quaternion.identity);
             }
             else

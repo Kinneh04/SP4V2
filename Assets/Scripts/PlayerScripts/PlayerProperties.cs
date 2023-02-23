@@ -618,7 +618,10 @@ public class PlayerProperties : MonoBehaviour
                 DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[i].GetItemCount()));
             }
         }
-        
+
+        DB.GetComponent<LootProperties>().PrepareToSyncLoot();
+
+
     }
     [PunRPC]
     public void DefaultRaycastInit()

@@ -45,8 +45,8 @@ public class PlayerLookAt : MonoBehaviour
 
                 playerProperties.PlayerLookingAtItem = hit.transform.gameObject;
             }
-
-            foreach(string word in BannedWordsFromLookAt)
+            //else if (playerProperties.PlayerLookingAtItem.transform.parent != null && playerProperties.PlayerLookingAtItem.transform.parent.tag == "RHand") return;
+            foreach (string word in BannedWordsFromLookAt)
             {
                 if(name == word)
                 {

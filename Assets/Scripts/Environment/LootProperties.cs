@@ -146,15 +146,18 @@ public class LootProperties : MonoBehaviour
 
     public void PrepareToSyncLoot()
     {
-        PhotonViewIDs.Clear();
-        UpdateLoot();
-        for (int i = 0; i < ItemsInCrate.Count; i++)
+        if (pv.IsMine)
         {
-            PhotonViewIDs.Add(ItemsInCrate[i].gameObject.GetComponent<PhotonView>().ViewID);
+            PhotonViewIDs.Clear();
+            UpdateLoot();
+            for (int i = 0; i < ItemsInCrate.Count; i++)
+            {
+                PhotonViewIDs.Add(ItemsInCrate[i].gameObject.GetComponent<PhotonView>().ViewID);
+            }
+            int[] PVIDArray = PhotonViewIDs.ToArray();
+            int[] PVQuanArray = ItemQuantityInCrate.ToArray();
+            pv.RPC("SyncLootAcrossClients", RpcTarget.All, PVIDArray, PVQuanArray);
         }
-        int[] PVIDArray = PhotonViewIDs.ToArray();
-        int[] PVQuanArray = ItemQuantityInCrate.ToArray();
-        pv.RPC("SyncLootAcrossClients", RpcTarget.All, PVIDArray, PVQuanArray);
     }
 
     public void DisplayLoot()

@@ -140,79 +140,82 @@ public class PlayerUseItem : MonoBehaviour
 
                 else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>() != null)
                 {
-                    ItemInfo.ItemType GO_Type = playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().GetItemType();
-                    if (GO_Type == ItemInfo.ItemType.Bush)
-                    {
-                        playerProperties.PlayerLookingAtItem.GetComponent<BushProperties>().Pick();
-                    }
-                    else if (playerProperties.PlayerLookingAtItem.tag == "SleepingPoint" && playerProperties.PlayerLookingAtItem.GetComponent<SleepingBagProperties>().isUsed == false)
-                    {
-                        print("SET TO USED BAG!");
-                        playerProperties.Spawnpoint = playerProperties.PlayerLookingAtItem.transform.position;
-                        playerProperties.Lastbedclaimed = playerProperties.PlayerLookingAtItem;
-                        playerProperties.PlayerLookingAtItem.GetComponent<SleepingBagProperties>().isUsed = true;
-                    }
-                    else
-                    {
-                        GameObject GO;
-                        if (GO_Type == ItemInfo.ItemType.unshowable)
+                        if (playerProperties.PlayerLookingAtItem.transform.parent != null && playerProperties.PlayerLookingAtItem.transform.parent.tag == "RHand") return;
+                    
+                        ItemInfo.ItemType GO_Type = playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().GetItemType();
+                        if (GO_Type == ItemInfo.ItemType.Bush)
                         {
-                            print("UNSHOWABLE!");
-                            GO = playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().ReplacementObj;
-
-                         
-                            string GOName = GO.name;
-                            GO.GetComponent<Rigidbody>().isKinematic = true;
-                            GameObject GO_Dupe = Instantiate(GO, transform.position, Quaternion.identity);
-                            GO_Dupe.GetComponent<ItemInfo>().NetworkedReplacement = true;
-                            GO_Dupe.name = GOName;
-
-                            inventoryManager.AddQuantity(GO_Dupe.GetComponent<ItemInfo>(), 1);
-                            //if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)
-                            //{
-                            //    Destroy(GO_Dupe);
-                            //}
-                           
-                            Destroy(playerProperties.PlayerLookingAtItem);
-                            if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID == GO_Dupe.GetComponent<ItemInfo>().itemID)
-                            {
-                                isPlacingItem = true;
-                            }
-                            inventoryManager.UpdateItemCountPerSlot();
+                            playerProperties.PlayerLookingAtItem.GetComponent<BushProperties>().Pick();
+                        }
+                        else if (playerProperties.PlayerLookingAtItem.tag == "SleepingPoint" && playerProperties.PlayerLookingAtItem.GetComponent<SleepingBagProperties>().isUsed == false)
+                        {
+                            print("SET TO USED BAG!");
+                            playerProperties.Spawnpoint = playerProperties.PlayerLookingAtItem.transform.position;
+                            playerProperties.Lastbedclaimed = playerProperties.PlayerLookingAtItem;
+                            playerProperties.PlayerLookingAtItem.GetComponent<SleepingBagProperties>().isUsed = true;
                         }
                         else
                         {
-                            if (playerProperties.CurrentlyHoldingItem != null)
+                            GameObject GO;
+                            if (GO_Type == ItemInfo.ItemType.unshowable)
                             {
-/*                                if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.BuildPlan)
+                                print("UNSHOWABLE!");
+                                GO = playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().ReplacementObj;
+
+
+                                string GOName = GO.name;
+                                GO.GetComponent<Rigidbody>().isKinematic = true;
+                                GameObject GO_Dupe = Instantiate(GO, transform.position, Quaternion.identity);
+                                GO_Dupe.GetComponent<ItemInfo>().NetworkedReplacement = true;
+                                GO_Dupe.name = GOName;
+
+                                inventoryManager.AddQuantity(GO_Dupe.GetComponent<ItemInfo>(), 1);
+                                //if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)
+                                //{
+                                //    Destroy(GO_Dupe);
+                                //}
+
+                                Destroy(playerProperties.PlayerLookingAtItem);
+                                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID == GO_Dupe.GetComponent<ItemInfo>().itemID)
                                 {
-                                    bs.SetIsBuilding(false);
+                                    isPlacingItem = true;
                                 }
-                                else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Hammer)
-                                {
-                                    hs.SetIsUsingHammer(false);
-                                }*/
+                                inventoryManager.UpdateItemCountPerSlot();
                             }
                             else
                             {
-                                if (GO_Type == ItemInfo.ItemType.BuildPlan)
+                                if (playerProperties.CurrentlyHoldingItem != null)
                                 {
-                                    bs.SetIsBuilding(true);
+                                    /*                                if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.BuildPlan)
+                                                                    {
+                                                                        bs.SetIsBuilding(false);
+                                                                    }
+                                                                    else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Hammer)
+                                                                    {
+                                                                        hs.SetIsUsingHammer(false);
+                                                                    }*/
                                 }
-                                else if (GO_Type == ItemInfo.ItemType.Hammer)
+                                else
                                 {
-                                    hs.SetIsUsingHammer(true);
+                                    if (GO_Type == ItemInfo.ItemType.BuildPlan)
+                                    {
+                                        bs.SetIsBuilding(true);
+                                    }
+                                    else if (GO_Type == ItemInfo.ItemType.Hammer)
+                                    {
+                                        hs.SetIsUsingHammer(true);
+                                    }
                                 }
+
+                                if (playerProperties.PlayerLookingAtItem.GetComponent<PhotonView>() != null && pv.IsMine)
+                                    pv.RPC("ShoveNewItemInRHandOfActor", RpcTarget.All, playerProperties.PlayerLookingAtItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
+                                else Debug.LogError("Custom error: Current Item has no PhotonView component. Cannot be displayed server side");
+                                inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().ItemCount);
+                                inventoryManager.UpdateItemCountPerSlot();
+                                playerProperties.PlayerLookingAtItem = null;
                             }
-                            
-                            if(playerProperties.PlayerLookingAtItem.GetComponent<PhotonView>() != null && pv.IsMine)
-                                pv.RPC("ShoveNewItemInRHandOfActor", RpcTarget.All, playerProperties.PlayerLookingAtItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
-                            else Debug.LogError("Custom error: Current Item has no PhotonView component. Cannot be displayed server side");
-                            inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().ItemCount);
-                            inventoryManager.UpdateItemCountPerSlot();
-                            playerProperties.PlayerLookingAtItem = null;
                         }
-                    }
+                    
 
                 }
                 else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "Workbench")

@@ -31175,7 +31175,7 @@ GameObject:
   - component: {fileID: 1186837247008852271}
   m_Layer: 0
   m_Name: RHand
-  m_TagString: Untagged
+  m_TagString: RHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
