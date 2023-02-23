@@ -16,8 +16,11 @@ public class SelfDestruct : MonoBehaviour
         }
         else
         {
-            PV = GetComponent<PhotonView>();
-            StartCoroutine(NetworkedDestroyAfterSeconds(seconds));
+            if (GetComponent<PhotonView>() != null)
+            {
+                PV = GetComponent<PhotonView>();
+                StartCoroutine(NetworkedDestroyAfterSeconds(seconds));
+            }
         }
     }
 

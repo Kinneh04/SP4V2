@@ -133,26 +133,36 @@ public class PlayerProperties : MonoBehaviour
     }
     public void OpenInventory()
     {
-        print("HEY!");
-        if (!playerMovement.isMovementEnabled)
+        if (pv.IsMine)
         {
-            //print("HEY!");
+            print("HEY!");
             if (!playerMovement.isMovementEnabled)
             {
-                inventoryScreen.SetActive(false);
-                inventoryIsOpen = false;
-                furnaceScreen.SetActive(false);
-
-
-                LootScreen.SetActive(false);
-                if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Crate" && LootScreen.activeSelf)
+                //print("HEY!");
+                if (!playerMovement.isMovementEnabled)
                 {
-                    print("UpdatingCrate!");
-                    PlayerLookingAtItem.GetComponent<LootProperties>().PrepareToSyncLoot();
+                    inventoryScreen.SetActive(false);
+                    inventoryIsOpen = false;
+                    furnaceScreen.SetActive(false);
+
+
+                    LootScreen.SetActive(false);
+                    if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Crate" && LootScreen.activeSelf)
+                    {
+                        print("UpdatingCrate!");
+                        PlayerLookingAtItem.GetComponent<LootProperties>().PrepareToSyncLoot();
 
 
 
-                    PlayerLookingAtItem.GetComponent<LootProperties>().ClearLastLootPool();
+                        PlayerLookingAtItem.GetComponent<LootProperties>().ClearLastLootPool();
+                    }
+                    else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
+                    {
+                        PlayerLookingAtItem.GetComponent<FurnaceProperties>().isLookingAtIt = false;
+                        PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
+                        PlayerLookingAtItem.GetComponent<FurnaceProperties>().ClearLastLootPool();
+                    }
+                    playerMovement.LockCursor();
                 }
                 else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
                 {
@@ -162,19 +172,12 @@ public class PlayerProperties : MonoBehaviour
                 }
                 playerMovement.LockCursor();
             }
-            else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
+            else
             {
-                PlayerLookingAtItem.GetComponent<FurnaceProperties>().isLookingAtIt = false;
-                PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
-                PlayerLookingAtItem.GetComponent<FurnaceProperties>().ClearLastLootPool();
+                inventoryScreen.SetActive(true);
+                inventoryIsOpen = true;
+                playerMovement.UnlockCursor();
             }
-            playerMovement.LockCursor();
-        }
-        else
-        {
-            inventoryScreen.SetActive(true);
-            inventoryIsOpen = true;
-            playerMovement.UnlockCursor();
         }
     }
 

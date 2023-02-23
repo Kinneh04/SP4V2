@@ -33,7 +33,7 @@ public class Projectile : MonoBehaviour
         {
             if (itemID == ItemInfo.ItemID.Rocket)
             {
-                GameObject Go = Instantiate(Explosion);
+                GameObject Go = PhotonNetwork.Instantiate(Explosion.name, transform.position,Quaternion.identity);
                 Go.transform.position = transform.position;
                 Go.GetComponent<Explosion>().Damage = Damage;
                 Destroy(this.gameObject);

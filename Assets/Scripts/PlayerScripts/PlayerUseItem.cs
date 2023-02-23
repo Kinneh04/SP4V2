@@ -759,6 +759,7 @@ public class PlayerUseItem : MonoBehaviour
     [PunRPC]
     void DetachItemFromParent(string newItem, int ActorNumber)
     {
+
         GameObject ItemToPairToHand;
 
         //Player player = PhotonNetwork.CurrentRoom.GetPlayer(ActorNumber);
@@ -768,13 +769,16 @@ public class PlayerUseItem : MonoBehaviour
         
         //GameObject Actor = ActorView.TagObject as GameObject;
         GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
-        ItemToPairToHand = RHand.transform.Find(newItem).gameObject;
+        if (RHand.transform.Find(newItem) != null)
+        {
+            ItemToPairToHand = RHand.transform.Find(newItem).gameObject;
 
-        if (ItemToPairToHand.GetComponent<MeshCollider>() != null) ItemToPairToHand.GetComponent<MeshCollider>().isTrigger = false;
-        else if(ItemToPairToHand.GetComponent<BoxCollider>() != null) ItemToPairToHand.GetComponent<BoxCollider>().isTrigger = false;
+            if (ItemToPairToHand.GetComponent<MeshCollider>() != null) ItemToPairToHand.GetComponent<MeshCollider>().isTrigger = false;
+            else if (ItemToPairToHand.GetComponent<BoxCollider>() != null) ItemToPairToHand.GetComponent<BoxCollider>().isTrigger = false;
 
-        ItemToPairToHand.transform.SetParent(null);
-        ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = false;
+            ItemToPairToHand.transform.SetParent(null);
+            ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = false;
+        }
     }
 
     [PunRPC]
@@ -879,7 +883,8 @@ public class PlayerUseItem : MonoBehaviour
 
     public IEnumerator ThrowItem()
     {
-        if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().itemType != ItemInfo.ItemType.unshowable)
+        bool detached = false;
+        if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().itemType != ItemInfo.ItemType.unshowable && !detached)
         {
             pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanThrow");
            // PAnimator.Play("PBeanThrow");
@@ -892,15 +897,17 @@ public class PlayerUseItem : MonoBehaviour
             GO.transform.parent = null;
             GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 10;
             inventoryManager.Remove(inventoryManager.EquippedSlot, false);
+            detached = true;
         }
     }
     
     public IEnumerator IEDropItem(int Slot)
     {
+        bool detached = false;
         //PAnimator.Play("PBeanThrow");
         pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanThrow");
 
-        if (Slot == inventoryManager.EquippedSlot)
+        if (Slot == inventoryManager.EquippedSlot && !detached)
         {
 
 
@@ -922,19 +929,21 @@ public class PlayerUseItem : MonoBehaviour
                 GO_Dupe.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;
                 inventoryManager.Remove(inventoryManager.EquippedSlot, false);
             }
-            else
+            else if(!detached)
             {
                 GO.transform.position = GO.transform.parent.position;
                 yield return new WaitForSeconds(0.15f);
                 pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
+                
                 GO.GetComponent<Rigidbody>().isKinematic = false;
                 playerProperties.CurrentlyHoldingItem = null;
                 GO.transform.parent = null;
                 GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;
                 inventoryManager.Remove(inventoryManager.EquippedSlot, false);
             }
+            detached = true;
         }
-        else
+        else if(!detached)
         {
             GameObject GO = inventoryManager.InventoryList[Slot].gameObject;
             if (GO.GetComponent<ItemInfo>().itemType == ItemInfo.ItemType.unshowable)
@@ -961,6 +970,7 @@ public class PlayerUseItem : MonoBehaviour
                 GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;
                 inventoryManager.Remove(Slot, false);
             }
+            detached = true;
         }
     }
 
