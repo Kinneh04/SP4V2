@@ -734,6 +734,8 @@ public class PlayerUseItem : MonoBehaviour
 
     private void UpdateInventorySlot(int slotNo)
     {
+
+        pv.RPC("ClearChildrenInActorRightHand", RpcTarget.All, pv.ViewID);
         if (inventoryManager.EquippedSlot == slotNo) // Do not do anything as player is already in slot (double tap same slot)
             return;
 
