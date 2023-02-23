@@ -26,6 +26,19 @@ public class HarvestToolsProperties : ItemInfo
         II = GetComponent<ItemInfo>();
         pv = GetComponent<PhotonView>();
     }
+
+    [PunRPC]
+    void SetTriggerToTrue()
+    {
+        TriggerEnabled = true;
+    }
+
+    [PunRPC]
+    void SetTriggerToFalse()
+    {
+        TriggerEnabled = false;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Tree") || other.CompareTag("Stone") || other.CompareTag("Metal") || other.CompareTag("Sulfur"))
@@ -59,7 +72,12 @@ public class HarvestToolsProperties : ItemInfo
                     Instantiate(StoneParticles, transform.position, Quaternion.identity);
                     durability -= MetalDurabilityBurn;
                 }
-               
+                else if (other.CompareTag("Player") || other.CompareTag("EnemyPlayer"))
+                {
+                    other.transform.GetComponent<PlayerProperties>().TakeDamageV2(damage);
+                    Instantiate(BloodParticleSystem, other.transform.position, Quaternion.identity);
+                    durability -= MetalDurabilityBurn;
+                }
             }
         }
         else if (other.CompareTag("Enemy"))

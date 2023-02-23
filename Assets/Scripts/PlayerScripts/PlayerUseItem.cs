@@ -463,14 +463,19 @@ public class PlayerUseItem : MonoBehaviour
                     }
                     else if (GO_Type == ItemInfo.ItemType.Pickaxe)
                     {
-                        ChopItem();
-                        cooldowntimer = ItemGO.GetComponent<HarvestToolsProperties>().usecooldown;
+
+                        if (ItemGO.GetComponent<ItemInfo>().itemID == ItemInfo.ItemID.Spear)
+                        {
+                            StabItem();
+                            cooldowntimer = ItemGO.GetComponent<HarvestToolsProperties>().usecooldown;
+                        }
+                        else
+                        {
+                            ChopItem();
+                            cooldowntimer = ItemGO.GetComponent<HarvestToolsProperties>().usecooldown;
+                        }
                     }
-                    else if (GO_Type == ItemInfo.ItemType.Melee)
-                    {
-                        StabItem();
-                        cooldowntimer = ItemGO.GetComponent<HarvestToolsProperties>().usecooldown;
-                    }
+ 
                     else if (GO_Type == ItemInfo.ItemType.Consumables && isReleased)
                     {
                         isReleased = false;
@@ -999,7 +1004,7 @@ public class PlayerUseItem : MonoBehaviour
     public void ChopItem()
     {
         print("Chop");
-        playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = true;
+        playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().RPC("SetTriggerToTrue", RpcTarget.All);
         pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanChop");
         //PAnimator.Play("PBeanChop");
         StartCoroutine(triggerCooldown());
@@ -1008,7 +1013,7 @@ public class PlayerUseItem : MonoBehaviour
     public void SwingItem()
     {
         print("Swing");
-        playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = true;
+        playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().RPC("SetTriggerToTrue", RpcTarget.All);
         pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSwing");
         PAnimator.Play("PBeanSwing");
         StartCoroutine(triggerCooldown());
@@ -1026,7 +1031,7 @@ public class PlayerUseItem : MonoBehaviour
 
         if (playerProperties.CurrentlyHoldingItem != null)
         {
-            playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = false;
+            playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().RPC("SetTriggerToFalse", RpcTarget.All);
         }
     }
 }

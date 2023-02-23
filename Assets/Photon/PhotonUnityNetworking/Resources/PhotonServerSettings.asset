@@ -81,6 +81,8 @@ MonoBehaviour:
   - PlayServerSideAnimation
   - ArrowProjectileInit
   - sendErrorMessage
+  - SetTriggerToFalse
+  - SetTriggerToTrue
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
