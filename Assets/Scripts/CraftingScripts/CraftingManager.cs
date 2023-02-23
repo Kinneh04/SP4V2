@@ -11,6 +11,7 @@ public class CraftingManager : MonoBehaviour
     public CraftCost cost;
     public CraftQuantity quantity;
     public CraftButton button;
+    public GameObject Items;
 
     public ItemInfo prefab1, prefab2, prefab3, prefab4, prefab5, prefab6, prefab7, prefab8, prefab9, prefab10, prefab11, prefab12, prefab13, prefab14, prefab15, prefab16, prefab17, prefab18, prefab19, prefab20, prefab21, prefab22, prefab23, prefab24, prefab25, prefab26, prefab27, prefab28, prefab29, prefab30;
     public ItemInfo Metal, Sulfur, Wood, Stone, WeaponParts, Cloth, Water;
@@ -51,7 +52,7 @@ public class CraftingManager : MonoBehaviour
         CraftableList.Add(prefab12);
         CraftableList.Add(prefab13);
         CraftableList.Add(prefab14);
-        CraftableList.Add(prefab15);
+        //CraftableList.Add(prefab15);
         CraftableList.Add(prefab16);
         CraftableList.Add(prefab18);
         CraftableList.Add(prefab19);
@@ -191,9 +192,9 @@ public class CraftingManager : MonoBehaviour
             craftColumn.SetActive(true);
             researchColumn.SetActive(false);
             made = true;
-            for (int i = 0; i < FindObjectsOfType<CraftSelection>().Length; i++)
+            for (int i = 0; i < Items.transform.childCount; i++)
             {
-                CraftSelections.Add(FindObjectsOfType<CraftSelection>()[i]);
+                CraftSelections.Add(Items.transform.GetChild(i).GetComponent<CraftSelection>());
                 if (ScreenCraft)
                 {
                     ScreenCraft = false;
