@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
                 Xrotation %= 360;
                 transform.rotation = Quaternion.Euler(-Yrotation, Xrotation, 0f);
             }
-            if (Mathf.Approximately(horizontal, 0f) && Mathf.Approximately(vertical, 0f) && isGrounded || !isMovementEnabled && isGrounded)
+            if (Mathf.Approximately(horizontal, 0f) && Mathf.Approximately(vertical, 0f) && isGrounded || !isMovementEnabled && isGrounded || GetComponent<ChatManager>().isTyping && isGrounded)
             {
                 // If no movement keys are being pressed, set velocity to zero
                 rb.velocity = Vector3.zero;
