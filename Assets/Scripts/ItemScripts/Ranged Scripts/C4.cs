@@ -41,7 +41,7 @@ public class C4 : WeaponInfo
 				CanFire = false;
 				//Doesnt need to reload
 				// Reduce the rounds by 1
-				ItemCount-=1;
+				//ItemCount-=1;
 				if (ItemCount <= 0)
 				{
 					Destroy(this.gameObject);
