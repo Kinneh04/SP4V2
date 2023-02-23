@@ -77,6 +77,37 @@ public class ChatManager : MonoBehaviour
                             switch(input.text[1])
                             {
                                 case 'w': // Whisper
+
+                                    
+                                    bool isReceiver = true;
+                                    string Username;
+                                    for (int player = 0; player < PhotonNetwork.PlayerListOthers.Length; player++)
+                                    {
+                                        Username = PhotonNetwork.PlayerListOthers[player].NickName;
+                                        if (input.text.Length + 5 >= Username.Length) // Check if there is also a message attached in the case where the user's name is really there
+                                        {
+                                            for (int i = 0; i < Username.Length; i++)
+                                            {
+                                                if (input.text[i + 3] != Username[i])
+                                                {
+                                                    isReceiver = false;
+                                                    break;
+                                                }
+                                            }
+                                            if (isReceiver)
+                                            {
+                                                PV.RPC("sendWhisperMessage", RpcTarget.MasterClient, input.text.Substring(4 + Username.Length), Username, PhotonNetwork.LocalPlayer.NickName);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (!isReceiver)
+                                    {
+                                        // Couldnt Send Whisper
+                                    }
+
+                                    
+
                                     break;
                             }
                         }
@@ -115,7 +146,7 @@ public class ChatManager : MonoBehaviour
     public void sendEveryoneMessage(string message)
     {
         string ChatText = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
-        ChatText += "\n " + message;
+        ChatText += message + "\n";
 
         Hashtable hash = new Hashtable();
         hash.Add("ChatText", ChatText);
@@ -128,32 +159,53 @@ public class ChatManager : MonoBehaviour
         string ChatText = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
 
         // Gets the 10 Most Recent Messages
-        //List<string> Messages = new List<string>();
-        //int MessageCount = 0;
-        //int MessageStart = 0;
-        //for (int i = 0; i < ChatText.Length - 1; i++)
-        //{
-        //    if (ChatText[i] == '\n' )
-        //    {
-        //        string Message = ChatText.Substring(MessageStart, i);
-        //        Messages.Add(Message);
-        //        MessageStart = i + 1;
-        //        MessageCount++;
-        //    }
-        //}
-        //if (MessageCount > 10)
-        //    Messages.RemoveRange(0, MessageCount - 10);
+        List<string> Messages = new List<string>();
+        int MessageCount = 0;
+        int MessageStart = 0;
+        for (int i = 0; i < ChatText.Length; i++)
+        {
+            if (ChatText[i] == '\n')
+            {
+                string Message = ChatText.Substring(MessageStart, i - MessageStart + 1);
+                // Check if Message is for this player
+                string Username = PhotonNetwork.LocalPlayer.NickName;
+                bool isReceiver = true;
+                if (Message[0] == '/' && Message[1] == 'w' && Message.Length - 5 >= Username.Length)
+                {
+                    for (int j = 0; j < Username.Length; j++)
+                    {
+                        if (Message[j + 3] != Username[j])
+                        {
+                            isReceiver = false;
+                        }
+                    }
+                    if (!isReceiver)
+                        break;
+                    Message = "(Whisper) " + Username + ": " + Message.Substring(Username.Length + 4, Message.Length - Username.Length - 4);
+                }
+                Messages.Add(Message);
+                MessageStart = i + 1;
+                MessageCount++;
+            }
+        }
+        if (MessageCount > 10)
+            Messages.RemoveRange(0, MessageCount - 10);
 
-        //Content.text = "";
-        //for (int i = 0; i < Messages.Count; i++)
-        //    Content.text += Messages[i];
-        Content.text = ChatText;
+        Content.text = "";
+        for (int i = 0; i < Messages.Count; i++)
+            Content.text += Messages[i];
+
+        //Content.text = ChatText;
     }
 
     [PunRPC]
-    void sendWhisperMessage(string message, string recipient)
+    void sendWhisperMessage(string message, string recipient, string sender)
     {
-        if (PhotonNetwork.LocalPlayer.NickName == recipient)
-            Content.text = "\n " + PhotonNetwork.LocalPlayer.NickName + ": " + message;
+        string ChatText = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
+        ChatText += "/w " + sender + " " + recipient + " " + message + "\n";
+
+        Hashtable hash = new Hashtable();
+        hash.Add("ChatText", ChatText);
+        PhotonNetwork.MasterClient.SetCustomProperties(hash);
     }
 }
