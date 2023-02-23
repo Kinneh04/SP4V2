@@ -167,21 +167,47 @@ public class ChatManager : MonoBehaviour
             if (ChatText[i] == '\n')
             {
                 string Message = ChatText.Substring(MessageStart, i - MessageStart + 1);
-                // Check if Message is for this player
-                string Username = PhotonNetwork.LocalPlayer.NickName;
-                bool isReceiver = true;
-                if (Message[0] == '/' && Message[1] == 'w' && Message.Length - 5 >= Username.Length)
+
+                if (Message[0] == '/' && Message[1] == 'w')
                 {
-                    for (int j = 0; j < Username.Length; j++)
+                    // Check if Message is for this player
+
+                    string receiver = "";
+                    string sender = "";
+
+                    for (int player = 0; player < PhotonNetwork.PlayerList.Length; player++)
                     {
-                        if (Message[j + 3] != Username[j])
+                        sender = PhotonNetwork.PlayerList[player].NickName;
+
+                        if (Message.Length + 3 < sender.Length)
+                            break;
+
+                        for (int j = 0; j < sender.Length; j++)
                         {
-                            isReceiver = false;
+                            if (Message[j + 3] != sender[j])
+                            {
+                                break;
+                            }
                         }
                     }
-                    if (!isReceiver)
-                        break;
-                    Message = "(Whisper) " + Username + ": " + Message.Substring(Username.Length + 4, Message.Length - Username.Length - 4);
+                    for (int player = 0; player < PhotonNetwork.PlayerList.Length; player++)
+                    {
+                        receiver = PhotonNetwork.PlayerList[player].NickName;
+                        if (receiver == sender)
+                            break;
+
+                        if (Message.Length + 3 + sender.Length < receiver.Length)
+                            break;
+
+                        for (int j = 0; j < receiver.Length; j++)
+                        {
+                            if (Message[j + sender.Length + 4] != receiver[j])
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    Message = "(Whisper) " + sender + ": " + Message.Substring(sender.Length + receiver.Length + 5);
                 }
                 Messages.Add(Message);
                 MessageStart = i + 1;
