@@ -45,7 +45,7 @@ public class Bow : WeaponInfo
 				//Get Player PhotonView
 				int PhotonViewID = PhotonNetwork.Instantiate("Arrow", this.BarrelTip.transform.position, Quaternion.identity).GetComponent<PhotonView>().ViewID;
 				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
-				ProjectilephotonView.RPC("ArrowProjectileInit", RpcTarget.All, PhotonViewID);
+				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All, PhotonViewID);
 				// Lock the weapon after this discharge
 				CanFire = false;
 				charged = false;

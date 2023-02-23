@@ -640,23 +640,7 @@ public class PlayerProperties : MonoBehaviour
         Raycast.GetComponent<Raycast>().Shoot();
     }
     [PunRPC]
-    public void DefaultProjectileInit()
-    {
-        WeaponInfo weaponInfo = gameObject.GetComponentInChildren<WeaponInfo>();
-        GameObject Projectile = Instantiate(weaponInfo.BulletPrefab, weaponInfo.BarrelTip.transform.position, Quaternion.identity);
-        Projectile.GetComponent<Projectile>().Damage = weaponInfo.GetDamage();
-        Projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
-        Projectile.GetComponent<Projectile>().ParentGunTip = weaponInfo.BarrelTip;
-        Projectile.GetComponent<Projectile>().SetAimCone(weaponInfo.GetAimCone());
-        Projectile.transform.parent = null;
-        Projectile.transform.rotation = weaponInfo.transform.rotation;
-        Projectile.GetComponent<Projectile>().JustFired = true;
-        Projectile.GetComponent<Projectile>().itemID = weaponInfo.GetAmmoType();
-        Projectile.GetComponent<Projectile>().ExplosionTimer = 3;
-        Projectile.GetComponent<Projectile>().ShootNonRaycastType();
-    }
-    [PunRPC]
-    public void ArrowProjectileInit(int PhotonViewID)
+    public void DefaultProjectileInit(int PhotonViewID)
     {
         WeaponInfo weaponInfo = gameObject.GetComponentInChildren<WeaponInfo>();
         GameObject Projectile = PhotonView.Find(PhotonViewID).gameObject;
@@ -668,8 +652,10 @@ public class PlayerProperties : MonoBehaviour
         Projectile.transform.rotation = weaponInfo.transform.rotation;
         Projectile.GetComponent<Projectile>().JustFired = true;
         Projectile.GetComponent<Projectile>().itemID = weaponInfo.GetAmmoType();
+        Projectile.GetComponent<Projectile>().ExplosionTimer = 3;
         Projectile.GetComponent<Projectile>().ShootNonRaycastType();
     }
+    
     public IEnumerator DeathSequence()
     {
         if (pv.IsMine)

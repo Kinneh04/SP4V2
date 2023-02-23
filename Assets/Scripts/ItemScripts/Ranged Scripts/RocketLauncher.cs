@@ -35,8 +35,9 @@ public class RocketLauncher : WeaponInfo
 			if (MagRounds > 0 || InfiniteAmmo)
 			{
 				//Get Player PhotonView
+				int PhotonViewID = PhotonNetwork.Instantiate("missile", this.BarrelTip.transform.position, Quaternion.identity).GetComponent<PhotonView>().ViewID;
 				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
-				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All);
+				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All, PhotonViewID);
 
 				Instantiate(Miniexplosion, BarrelTip.transform.position, Quaternion.identity);
 				// Lock the weapon after this discharge

@@ -34,8 +34,9 @@ public class C4 : WeaponInfo
 			if (ItemCount > 0)
 			{
 				//Get Player PhotonView
+				int PhotonViewID = PhotonNetwork.Instantiate("C4_Projectile", this.BarrelTip.transform.position, Quaternion.identity).GetComponent<PhotonView>().ViewID;
 				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
-				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All);
+				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All, PhotonViewID);
 				MagRounds = ItemCount - 1;
 				// Lock the weapon after this discharge
 				CanFire = false;
