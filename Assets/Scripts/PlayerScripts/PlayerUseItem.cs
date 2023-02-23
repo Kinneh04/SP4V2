@@ -29,6 +29,7 @@ public class PlayerUseItem : MonoBehaviour
     public bool isADS;
     public float zoomFactor = 2f;
     private bool isZoomedIn = false;
+    public GameObject Map;
 
     public PlayerLookAt playerLookAt;
     public bool isReleased = true;
@@ -116,7 +117,10 @@ public class PlayerUseItem : MonoBehaviour
         {
             playerProperties.OpenCrafting(0);
         }
-
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            Map.SetActive(!Map.activeSelf);
+        }
         if (!playerProperties.isDead && Cursor.lockState == CursorLockMode.Locked)
         {
             if (Input.GetKeyDown(KeyCode.E))
@@ -291,6 +295,7 @@ public class PlayerUseItem : MonoBehaviour
                     }
                 }
             }
+
             if(Input.GetKeyDown(KeyCode.Backspace))
             {
                 if (inventoryManager.InventoryList[inventoryManager.EquippedSlot])
