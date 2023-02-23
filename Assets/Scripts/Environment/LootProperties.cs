@@ -52,42 +52,49 @@ public class LootProperties : MonoBehaviour
 
     public void UpdateLoot()
     {
-        for (int i = 0; i < ItemQuantityInCrate.Count; i++)
+        if (pv.IsMine)
         {
-            if (IM.InventoryList[i + 30] == null)
+            for (int i = 0; i < ItemQuantityInCrate.Count; i++)
+            {
+                if (IM.InventoryList[i + 30] == null)
+                {
+
+                    ItemsInCrate.RemoveAt(i);
+                    ItemQuantityInCrate.RemoveAt(i);
+                    i--;
+
+                }
+            }
+
+            //for (int i = 0; i < 12; i++)
+            //{
+            //    if (ItemsInCrate[i] == null)
+            //    {
+            //        ItemsInCrate.RemoveAt(i);
+            //        ItemQuantityInCrate.RemoveAt(i);
+            //    }
+            //}
+
+
+
+            if (ItemsInCrate.Count <= 0)
             {
 
-                ItemsInCrate.RemoveAt(i);
-                ItemQuantityInCrate.RemoveAt(i);
-                i--;
-
             }
+            pv.RPC("DestroyOnAllClients", RpcTarget.All);
+
+            //else
+            //{
+            //    PhotonViewIDs.Clear();
+            //    for(int i = 0; i < ItemsInCrate.Count;i++)
+            //    {
+            //        PhotonViewIDs.Add(ItemsInCrate[i].GetComponent<PhotonView>().ViewID);
+            //    }
+            //    int[] PVIDArray = PhotonViewIDs.ToArray();
+            //    int[] PVQuanArray = ItemQuantityInCrate.ToArray();
+            //    pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
+            //}
         }
-
-        //for (int i = 0; i < 12; i++)
-        //{
-        //    if (ItemsInCrate[i] == null)
-        //    {
-        //        ItemsInCrate.RemoveAt(i);
-        //        ItemQuantityInCrate.RemoveAt(i);
-        //    }
-        //}
-
-
-
-        if (ItemsInCrate.Count <= 0) pv.RPC("DestroyOnAllClients", RpcTarget.All);
-
-        //else
-        //{
-        //    PhotonViewIDs.Clear();
-        //    for(int i = 0; i < ItemsInCrate.Count;i++)
-        //    {
-        //        PhotonViewIDs.Add(ItemsInCrate[i].GetComponent<PhotonView>().ViewID);
-        //    }
-        //    int[] PVIDArray = PhotonViewIDs.ToArray();
-        //    int[] PVQuanArray = ItemQuantityInCrate.ToArray();
-        //    pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
-        //}
     }
 
     [PunRPC]
@@ -146,6 +153,7 @@ public class LootProperties : MonoBehaviour
 
     public void PrepareToSyncLoot()
     {
+        pv = GetComponent<PhotonView>();
         if (pv.IsMine)
         {
             PhotonViewIDs.Clear();

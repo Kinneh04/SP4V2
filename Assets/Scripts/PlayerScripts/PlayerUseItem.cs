@@ -168,32 +168,27 @@ public class PlayerUseItem : MonoBehaviour
                                 GameObject GO_Dupe = Instantiate(GO, transform.position, Quaternion.identity);
                                 GO_Dupe.GetComponent<ItemInfo>().NetworkedReplacement = true;
                                 GO_Dupe.name = GOName;
-
+                               
                                 inventoryManager.AddQuantity(GO_Dupe.GetComponent<ItemInfo>(), 1);
-                                //if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)
-                                //{
-                                //    Destroy(GO_Dupe);
-                                //}
-
                                 Destroy(playerProperties.PlayerLookingAtItem);
                                 if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID == GO_Dupe.GetComponent<ItemInfo>().itemID)
                                 {
                                     isPlacingItem = true;
                                 }
-                                inventoryManager.UpdateItemCountPerSlot();
+                                  inventoryManager.UpdateItemCountPerSlot();  
                             }
                             else
                             {
                                 if (playerProperties.CurrentlyHoldingItem != null)
                                 {
-                                    /*                                if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.BuildPlan)
-                                                                    {
-                                                                        bs.SetIsBuilding(false);
-                                                                    }
-                                                                    else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Hammer)
-                                                                    {
-                                                                        hs.SetIsUsingHammer(false);
-                                                                    }*/
+                                  /*if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.BuildPlan)
+                                    {
+                                        bs.SetIsBuilding(false);
+                                    }
+                                    else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Hammer)
+                                    {
+                                        hs.SetIsUsingHammer(false);
+                                    }*/
                                 }
                                 else
                                 {
@@ -700,7 +695,7 @@ public class PlayerUseItem : MonoBehaviour
                     pv.RPC("ClearChildrenInActorRightHand", RpcTarget.Others, pv.ViewID);
                     
                     ForceGiveItem(CurrentItem);
-                    pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, CurrentItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
+                    if(CurrentItem.GetComponent<ItemInfo>().itemType != ItemInfo.ItemType.unshowable) pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, CurrentItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
                 }
 
             }

@@ -5303,8 +5303,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1800166496}
+        m_TargetAssemblyTypeName: Photon.Pun.Demo.Asteroids.LobbyMainPanel, PhotonUnityNetworking.Demos
         m_MethodName: OnBackButtonClicked
         m_Mode: 1
         m_Arguments:

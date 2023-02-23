@@ -561,24 +561,27 @@ public class PlayerProperties : MonoBehaviour
     //Its TakeDamage but without punrpc
     public void TakeDamageV2(float damage)
     {
-        Health -= damage;
-        if (Health < 50)
+        if (pv.IsMine)
         {
-            float q = Health / MaxHealth;
-            StartCoroutine(ShowBlood());
-            isShowingBlood = true;
-            bloodTimer = 5.0f;
-            if (Health <= 0)
+            Health -= damage;
+            if (Health < 50)
             {
-                die();
+                float q = Health / MaxHealth;
+                StartCoroutine(ShowBlood());
+                isShowingBlood = true;
+                bloodTimer = 5.0f;
+                if (Health <= 0)
+                {
+                    die();
+                }
             }
-        }
-        float f = Random.Range(1, 100);
-        if (bleedChance < f)
-        {
-            isBleeding = true;
-            bleedingIcon.SetActive(true);
-            BTimer = 60f;
+            float f = Random.Range(1, 100);
+            if (bleedChance < f)
+            {
+                isBleeding = true;
+                bleedingIcon.SetActive(true);
+                BTimer = 60f;
+            }
         }
     }
 
@@ -667,12 +670,15 @@ public class PlayerProperties : MonoBehaviour
     }
     public IEnumerator DeathSequence()
     {
-        yield return new WaitForSeconds(1.6f);
-        isDead = true;
-        deathscreen.SetActive(true);
-        PhotonView pvBag = PhotonNetwork.Instantiate(DeathBag.name, transform.position, Quaternion.identity).GetComponent<PhotonView>();
-        
-        pv.RPC("ShoveLootInDeathBag", RpcTarget.All, pvBag.ViewID);
-        ShoveLootInDeathBag(pvBag.ViewID);
+        if (pv.IsMine)
+        {
+            yield return new WaitForSeconds(1.6f);
+            isDead = true;
+            deathscreen.SetActive(true);
+            PhotonView pvBag = PhotonNetwork.Instantiate(DeathBag.name, transform.position, Quaternion.identity).GetComponent<PhotonView>();
+
+            pv.RPC("ShoveLootInDeathBag", RpcTarget.All, pvBag.ViewID);
+            ShoveLootInDeathBag(pvBag.ViewID);
+        }
     }
 }
