@@ -171,10 +171,20 @@ public class PlayerUseItem : MonoBehaviour
                                
                                 inventoryManager.AddQuantity(GO_Dupe.GetComponent<ItemInfo>(), 1);
                                 Destroy(playerProperties.PlayerLookingAtItem);
+
+                                if (GO_Dupe.GetComponent<PhotonView>() != null && pv.IsMine)
+                                    pv.RPC("ShoveNewItemInRHandOfActor", RpcTarget.All, GO_Dupe.GetComponent<PhotonView>().ViewID, pv.ViewID);
+
                                 if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID == GO_Dupe.GetComponent<ItemInfo>().itemID)
                                 {
                                     isPlacingItem = true;
+                                    GO_Dupe.SetActive(true);
                                 }
+                                else
+                                {
+                                    GO_Dupe.SetActive(false);
+                                }
+                                
                                   inventoryManager.UpdateItemCountPerSlot();  
                             }
                             else

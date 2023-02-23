@@ -50,6 +50,7 @@ public class ChatManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!PV.IsMine) return;
         PV.RPC("UpdateOwnChat", RpcTarget.All);
 
         if (isConnected)

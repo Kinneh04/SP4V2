@@ -511,6 +511,8 @@ public class PlayerProperties : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (GetComponent<ChatManager>().isTyping)
+                return;
             if (PauseMenu.activeSelf)
             {
                 PauseMenu.SetActive(false);
