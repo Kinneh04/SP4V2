@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1067331602659612361}
   - component: {fileID: -2310357022670329092}
   - component: {fileID: 4946847613537287820}
+  - component: {fileID: 4017351366138466893}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Weaponry
@@ -139,6 +140,19 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!65 &4017351366138466893
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2948718413354969655}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.13, y: 0.03, z: 0.03}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5589391318426344966
 GameObject:
   m_ObjectHideFlags: 0
