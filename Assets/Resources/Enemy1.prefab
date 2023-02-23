@@ -160,7 +160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58bf2f12439aabd41904882ca9ee9ff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 3
   itemID: 16
@@ -178,16 +181,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae4fb21c6619b4d42902fb252d24fec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 0
   itemID: 0
   ItemCount: 0
   MaxItemCount: 0
   MagRounds: 0
+  BarrelTip: {fileID: 0}
   BulletPrefab: {fileID: 4347079924148518773, guid: a15b541c2f94e7d488f8a47bee0f784a,
     type: 3}
-  BarrlTip: {fileID: 8429425326233162750}
 --- !u!1 &3110613837763264941
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,7 +333,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3110613837763264941}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 15
