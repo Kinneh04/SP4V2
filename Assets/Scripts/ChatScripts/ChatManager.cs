@@ -24,6 +24,8 @@ public class ChatManager : MonoBehaviour
 
     PhotonView PV;
 
+    public List<ChatText> ChatTexts = new List<ChatText>();
+
     ChatClient chatClient;
     bool isConnected = false;
     public bool isTyping = false;
@@ -35,6 +37,10 @@ public class ChatManager : MonoBehaviour
         isConnected = true;
         PV = GetComponent<PhotonView>();
         Content.fontSize = 24;
+        for (int i = 0; i < 10; i++)
+        {
+            ChatTexts.Add(Content.gameObject.transform.GetChild(i).GetComponent<ChatText>());
+        }
         if (PV != null)
             PV.RPC("sendEveryoneMessage", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.NickName + " has joined.");
 
@@ -77,38 +83,48 @@ public class ChatManager : MonoBehaviour
                             switch(input.text[1])
                             {
                                 case 'w': // Whisper
-
-                                    
-                                    bool isReceiver = true;
-                                    string Username;
-                                    for (int player = 0; player < PhotonNetwork.PlayerListOthers.Length; player++)
                                     {
-                                        Username = PhotonNetwork.PlayerListOthers[player].NickName;
-                                        if (input.text.Length + 5 >= Username.Length) // Check if there is also a message attached in the case where the user's name is really there
+
+
+                                        bool isReceiver = false;
+                                        string Username;
+                                        for (int player = 0; player < PhotonNetwork.PlayerListOthers.Length; player++)
                                         {
-                                            for (int i = 0; i < Username.Length; i++)
+                                            isReceiver = true;
+                                            Username = PhotonNetwork.PlayerListOthers[player].NickName;
+                                            if (input.text.Length + 5 >= Username.Length) // Check if there is also a message attached in the case where the user's name is really there
                                             {
-                                                if (input.text[i + 3] != Username[i])
+                                                for (int i = 0; i < Username.Length; i++)
                                                 {
-                                                    isReceiver = false;
+                                                    if (input.text[i + 3] != Username[i])
+                                                    {
+                                                        isReceiver = false;
+                                                        break;
+                                                    }
+                                                }
+                                                if (isReceiver)
+                                                {
+                                                    PV.RPC("sendWhisperMessage", RpcTarget.MasterClient, input.text.Substring(4 + Username.Length), Username, PhotonNetwork.LocalPlayer.NickName);
                                                     break;
                                                 }
                                             }
-                                            if (isReceiver)
-                                            {
-                                                PV.RPC("sendWhisperMessage", RpcTarget.MasterClient, input.text.Substring(4 + Username.Length), Username, PhotonNetwork.LocalPlayer.NickName);
-                                                break;
-                                            }
                                         }
+                                        if (!isReceiver)
+                                        {
+                                            PV.RPC("sendErrorMessage", RpcTarget.MasterClient, "/e Invalid Target", PhotonNetwork.LocalPlayer.NickName);
+                                        }
+
+
+
+                                        break;
                                     }
-                                    if (!isReceiver)
+                                case 'g': // Give Items
                                     {
-                                        // Couldnt Send Whisper
+
+
+                                        break;
                                     }
-
-                                    
-
-                                    break;
+                                
                             }
                         }
                     }
@@ -209,17 +225,70 @@ public class ChatManager : MonoBehaviour
                     }
                     Message = "(Whisper) " + sender + ": " + Message.Substring(sender.Length + receiver.Length + 5);
                 }
+                else if (Message[0] == '/' && Message[1] == 'e')
+                {
+                    string username = "";
+                    for (int player = 0; player < PhotonNetwork.PlayerList.Length; player++)
+                    {
+                        username = PhotonNetwork.PlayerList[player].NickName;
+
+                        if (Message.Length + 3 < username.Length)
+                            break;
+
+                        for (int j = 0; j < username.Length; j++)
+                        {
+                            if (Message[j + 3] != username[j])
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    Message = "(Error) " + Message.Substring(username.Length + 7);
+                }
+
                 Messages.Add(Message);
                 MessageStart = i + 1;
                 MessageCount++;
             }
         }
+        bool over = false;
         if (MessageCount > 10)
+        {
             Messages.RemoveRange(0, MessageCount - 10);
+            MessageCount = 10;
+            over = true;
+        }
 
-        Content.text = "";
-        for (int i = 0; i < Messages.Count; i++)
-            Content.text += Messages[i];
+        if (over)
+        {
+            if (ChatTexts[9].CurrentText != Messages[9])
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    if (i < 9)
+                    {
+                        ChatTexts[i].ReplaceMessage(ChatTexts[i + 1]);
+                        ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
+                    }
+                    else
+                    {
+                        ChatTexts[i].SetMessage(Messages[i]);
+                        ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            if (i < MessageCount)
+            {
+                ChatTexts[i].SetMessage(Messages[i]);
+                ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
+            }
+            else
+                ChatTexts[i].gameObject.SetActive(false);
+        }
 
         //Content.text = ChatText;
     }
@@ -229,6 +298,17 @@ public class ChatManager : MonoBehaviour
     {
         string ChatText = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
         ChatText += "/w " + sender + " " + recipient + " " + message + "\n";
+
+        Hashtable hash = new Hashtable();
+        hash.Add("ChatText", ChatText);
+        PhotonNetwork.MasterClient.SetCustomProperties(hash);
+    }
+
+    [PunRPC]
+    void sendErrorMessage(string message, string recipient)
+    {
+        string ChatText = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
+        ChatText += "/e " + recipient + " " + message + "\n";
 
         Hashtable hash = new Hashtable();
         hash.Add("ChatText", ChatText);
