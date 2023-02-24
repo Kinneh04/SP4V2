@@ -9,6 +9,8 @@ public class AudioManager : MonoBehaviour
     {
         AK47_Shoot = 0,
         AK47_Reload,
+        SMG_Shoot,
+        Pistol_Shoot,
         NUM_AUDIO,
     }
     public AudioSource audioSource;

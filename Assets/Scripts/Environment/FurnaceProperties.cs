@@ -249,7 +249,8 @@ public class FurnaceProperties : MonoBehaviour
                 DecrementItemInFurnace(ItemRequiredToStartFurnace, 1);
                 if(!CheckForItemInFurnace(ItemRequiredToStartFurnace))
                 {
-                    pv.RPC("TurnOn", RpcTarget.All);
+                    TurnOn();
+                   // pv.RPC("TurnOn", RpcTarget.All);
                 }
             }
 
@@ -279,12 +280,31 @@ public class FurnaceProperties : MonoBehaviour
                     DecrementItemInFurnace(Weaponparts, 1);
                     IncrementItemInFurnace(RawMetal, 50);
                 }
-                PrepareToSyncLoot();
+                //PrepareToSyncLoot();
             }    
         }
     }
 
     [PunRPC]
+
+    public void TurnOnForOtherClients()
+    {
+        if (isOn)
+        {
+            isOn = false;
+            FireParticleSystem.GetComponent<ParticleSystem>().Stop();
+            SparksParticleSystem.GetComponent<ParticleSystem>().Stop();
+            lightsource.intensity = 0;
+
+        }
+        else
+        {
+            isOn = true;
+            FireParticleSystem.GetComponent<ParticleSystem>().Play();
+            SparksParticleSystem.GetComponent<ParticleSystem>().Play();
+            lightsource.intensity = 6;
+        }
+    }
     public void TurnOn()
     {
 
@@ -294,6 +314,8 @@ public class FurnaceProperties : MonoBehaviour
             FireParticleSystem.GetComponent<ParticleSystem>().Stop();
             SparksParticleSystem.GetComponent<ParticleSystem>().Stop();
             lightsource.intensity = 0;
+
+            pv.RPC("TurnOnForOtherClients", RpcTarget.Others);
         }
         else
         {
@@ -306,6 +328,7 @@ public class FurnaceProperties : MonoBehaviour
                 SparksParticleSystem.GetComponent<ParticleSystem>().Play();
                 lightsource.intensity = 6;
             }
+            pv.RPC("TurnOnForOtherClients", RpcTarget.Others);
         }
         
         //for (int i = 0; i < ItemsInFurnace.Count; i++)
@@ -320,16 +343,19 @@ public class FurnaceProperties : MonoBehaviour
 
     public void PrepareToSyncLoot()
     {
-        print("SYNCING LOOT ACROSS CLIENTS!");
-        pv = GetComponent<PhotonView>();
-        PhotonViewIDs.Clear();
-        //UpdateLoot();
-        for (int i = 0; i < ItemsInFurnace.Count; i++)
+        if (pv.IsMine)
         {
-            PhotonViewIDs.Add(ItemsInFurnace[i].gameObject.GetComponent<PhotonView>().ViewID);
+            print("SYNCING LOOT ACROSS CLIENTS!");
+            pv = GetComponent<PhotonView>();
+            PhotonViewIDs.Clear();
+            //UpdateLoot();
+            for (int i = 0; i < ItemsInFurnace.Count; i++)
+            {
+                PhotonViewIDs.Add(ItemsInFurnace[i].gameObject.GetComponent<PhotonView>().ViewID);
+            }
+            int[] PVIDArray = PhotonViewIDs.ToArray();
+            int[] PVQuanArray = ItemQuantityInFurnace.ToArray();
+            pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
         }
-        int[] PVIDArray = PhotonViewIDs.ToArray();
-        int[] PVQuanArray = ItemQuantityInFurnace.ToArray();
-        pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
     }
 }

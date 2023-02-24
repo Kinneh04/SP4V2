@@ -427,7 +427,8 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            OnShoot();
+                            if (OnShoot())
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 3, 1f);
                             print("Shooting m1911");
 
                             if (!isADS)
@@ -473,7 +474,8 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            OnShoot();
+                            if (OnShoot())
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 3, 1f);
                             if (!isADS)
                                 PAnimator.Play("PBeanShootM1911");
                             else
@@ -522,7 +524,8 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            OnShoot();
+                            if (OnShoot())
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 2, 1f);
 
                             if (!isADS)
                                 PAnimator.Play("PBeanSMGHipfire");
