@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5864078124640733201}
   - component: {fileID: 6002990033168089478}
   - component: {fileID: 1723009353179094942}
+  - component: {fileID: 6242400951003050407}
   m_Layer: 0
   m_Name: Chicken
   m_TagString: Chicken
@@ -89,6 +90,7 @@ MonoBehaviour:
   TargetPlayer: {fileID: 0}
   Structure: {fileID: 0}
   dead: 0
+  Harvestable: 0
   MSpd: 3
   change: 0
   Predator: {fileID: 0}
@@ -159,9 +161,27 @@ MonoBehaviour:
   TargetPlayer: {fileID: 0}
   Structure: {fileID: 0}
   dead: 0
+  Harvestable: 0
   MSpd: 2
   change: 0
   Predator: {fileID: 0}
+--- !u!114 &6242400951003050407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3383617430251797244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e211c5d95c4f3b42863fa021d75ec23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemAmount: 100
+  BaseHarvestAmount: 10
+  ItemToGivePlayerOnHarvest: {fileID: 5606821295262822052, guid: 633b857c136443c4889ca89b681a6eb7,
+    type: 3}
+  pv: {fileID: 5053158745995068773}
 --- !u!1001 &3507512185013585180
 PrefabInstance:
   m_ObjectHideFlags: 0

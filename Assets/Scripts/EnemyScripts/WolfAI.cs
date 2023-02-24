@@ -17,7 +17,7 @@ public class WolfAI : Enemy
     NavMeshAgent navMeshAgent;
     Vector3 destination;
 
-    public GameObject Prey;
+    public Enemy Prey;
 
     PhotonView PV;
 
@@ -125,6 +125,7 @@ public class WolfAI : Enemy
                 {
                     if (change)
                     {
+                        change = false;
                         if (TargetPlayer != null && Prey != null)
                         {
                             if (Vector3.Distance(transform.position, TargetPlayer.transform.position) < Vector3.Distance(transform.position, Prey.transform.position))
@@ -133,7 +134,7 @@ public class WolfAI : Enemy
                             }
                             else
                             {
-                                Target = Prey;
+                                Target = Prey.gameObject;
                             }
                         }
                         else if (TargetPlayer != null)
@@ -142,7 +143,7 @@ public class WolfAI : Enemy
                         }
                         else if (Prey != null)
                         {
-                            Target = Prey;
+                            Target = Prey.gameObject;
                         }
                         else
                         {
@@ -241,6 +242,11 @@ public class WolfAI : Enemy
                 Enemy enemy = Prey.GetComponent<Enemy>();
                 enemy.GetDamaged(10);
                 BiteCD = 2;
+                if (enemy.dead)
+                {
+                    Prey = null;
+                    change = true;
+                }
             }
         }
     }

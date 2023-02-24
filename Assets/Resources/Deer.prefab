@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6751109568046699806}
   - component: {fileID: 7146080582820574423}
   - component: {fileID: 3522997450706873141}
+  - component: {fileID: 302999257120220631}
   m_Layer: 0
   m_Name: Deer
   m_TagString: Deer
@@ -174,6 +175,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &302999257120220631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211257656485016726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e211c5d95c4f3b42863fa021d75ec23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemAmount: 100
+  BaseHarvestAmount: 10
+  ItemToGivePlayerOnHarvest: {fileID: 5606821295262822052, guid: 633b857c136443c4889ca89b681a6eb7,
+    type: 3}
+  pv: {fileID: 3345477332280235978}
 --- !u!1001 &5766674950730220773
 PrefabInstance:
   m_ObjectHideFlags: 0
