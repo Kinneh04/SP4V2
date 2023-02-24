@@ -29,7 +29,7 @@ public class PinSystem : MonoBehaviour
     {
         PinDisplay.text = currPin;
         if (Input.GetKey(KeyCode.Escape))
-        {
+		{
             CloseUI();
         }
     }

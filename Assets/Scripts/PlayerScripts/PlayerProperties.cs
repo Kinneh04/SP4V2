@@ -333,6 +333,7 @@ public class PlayerProperties : MonoBehaviour
 
     private void Update()
     {
+
         if(!isDead && pv.IsMine && !isSleeping)
         { 
             Htimer += Time.deltaTime;

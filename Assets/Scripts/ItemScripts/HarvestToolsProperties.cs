@@ -80,34 +80,58 @@ public class HarvestToolsProperties : ItemInfo
                 }
             }
         }
+        else if (other.CompareTag("Chicken") || other.CompareTag("Deer") || other.CompareTag("Wolf"))
+        {
+            if (TriggerEnabled)
+            {
+                if (other.CompareTag("Chicken") && other.GetComponent<ChickenAI>().Harvestable)
+                {
+                    other.GetComponent<Harvestables>().HarvestAmount(WoodHarvestMultiplier);
+                }
+                else if (other.CompareTag("Deer") && other.GetComponent<DeerAI>().Harvestable)
+                {
+                    other.GetComponent<Harvestables>().HarvestAmount(WoodHarvestMultiplier);
+                }
+                else if (other.CompareTag("Wolf") && other.GetComponent<WolfAI>().Harvestable)
+                {
+                    other.GetComponent<Harvestables>().HarvestAmount(WoodHarvestMultiplier);
+                }
+            }
+        }
         else if (other.CompareTag("Enemy"))
         {
-            Enemy enemy = other.gameObject.GetComponent<Enemy>();
-            enemy.GetDamaged((int)damage);
+            if (TriggerEnabled)
+            {
+                Enemy enemy = other.gameObject.GetComponent<Enemy>();
+                enemy.GetDamaged((int)damage);
+            }
         }
         else if (other.CompareTag("NormalStructure") || other.CompareTag("FoundationStructure") || other.CompareTag("FloorStructure"))
         {
-            StructureObject structure = null;
-            if (other.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
+            if (TriggerEnabled)
             {
-                structure = other.GetComponent<StructureObject>();
-            }
-            else if (other.gameObject.layer == LayerMask.NameToLayer("Buildable"))
-            {
-                structure = other.GetComponentInParent<StructureObject>();
-            }
-            if (!structure)
-                return;
-            
-            if (structure.PlayerID != PhotonNetwork.LocalPlayer.ActorNumber) // Cannot damage own structures!
-            {
-                if (structure.isUpgraded)
+                StructureObject structure = null;
+                if (other.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
                 {
-                    structure.gameObject.GetComponent<PhotonView>().RPC("DamageStructure", RpcTarget.AllViaServer, (float)(StoneHarvestMultiplier * 0.5f));
+                    structure = other.GetComponent<StructureObject>();
                 }
-                else
+                else if (other.gameObject.layer == LayerMask.NameToLayer("Buildable"))
                 {
-                    structure.gameObject.GetComponent<PhotonView>().RPC("DamageStructure", RpcTarget.AllViaServer, WoodHarvestMultiplier);
+                    structure = other.GetComponentInParent<StructureObject>();
+                }
+                if (!structure)
+                    return;
+
+                if (structure.PlayerID != PhotonNetwork.LocalPlayer.ActorNumber) // Cannot damage own structures!
+                {
+                    if (structure.isUpgraded)
+                    {
+                        structure.gameObject.GetComponent<PhotonView>().RPC("DamageStructure", RpcTarget.AllViaServer, (float)(StoneHarvestMultiplier * 0.5f));
+                    }
+                    else
+                    {
+                        structure.gameObject.GetComponent<PhotonView>().RPC("DamageStructure", RpcTarget.AllViaServer, WoodHarvestMultiplier);
+                    }
                 }
             }
         }

@@ -188,7 +188,6 @@ GameObject:
   - component: {fileID: 1583276352930632687}
   - component: {fileID: 4001869666906664981}
   - component: {fileID: 2150083996902066626}
-  - component: {fileID: 495412987797180113}
   m_Layer: 0
   m_Name: Iron Node Flat
   m_TagString: Stone
@@ -204,7 +203,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2894156359066288401}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0028239, y: -0.0033846, z: 0.00013244}
+  m_LocalPosition: {x: -0.08, y: -0.0033846, z: 0}
   m_LocalScale: {x: 0.8927489, y: 0.8927489, z: 0.8927489}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -275,22 +274,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2432090755550338912, guid: e888a3f8b74274c4a950115a9c0b81f4, type: 3}
---- !u!114 &495412987797180113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2894156359066288401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e211c5d95c4f3b42863fa021d75ec23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ItemAmount: 250
-  BaseHarvestAmount: 15
-  ItemToGivePlayerOnHarvest: {fileID: 0}
-  pv: {fileID: 0}
 --- !u!1 &7076265690000197732
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,7 +286,6 @@ GameObject:
   - component: {fileID: 914126368302226675}
   - component: {fileID: 3344938328355711583}
   - component: {fileID: 1881102764438942775}
-  - component: {fileID: 887679132019697996}
   m_Layer: 0
   m_Name: Iron Node Flat (1)
   m_TagString: Stone
@@ -319,7 +301,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7076265690000197732}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0063551, y: -0.0076167, z: 0.00029804}
+  m_LocalPosition: {x: -0.07, y: -0.0076167, z: -0}
   m_LocalScale: {x: 0.75860447, y: 0.75860447, z: 0.75860447}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -390,19 +372,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2432090755550338912, guid: e888a3f8b74274c4a950115a9c0b81f4, type: 3}
---- !u!114 &887679132019697996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7076265690000197732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e211c5d95c4f3b42863fa021d75ec23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ItemAmount: 250
-  BaseHarvestAmount: 15
-  ItemToGivePlayerOnHarvest: {fileID: 0}
-  pv: {fileID: 0}

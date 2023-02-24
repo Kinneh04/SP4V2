@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6352285694751927765}
   - component: {fileID: 8855168234508786553}
   - component: {fileID: 5662009649770022161}
-  - component: {fileID: 6402377386889615466}
   m_Layer: 0
   m_Name: Iron Node Flat (1)
   m_TagString: Stone
@@ -99,22 +98,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2432090755550338912, guid: e888a3f8b74274c4a950115a9c0b81f4, type: 3}
---- !u!114 &6402377386889615466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3943896665093323074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e211c5d95c4f3b42863fa021d75ec23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ItemAmount: 250
-  BaseHarvestAmount: 15
-  ItemToGivePlayerOnHarvest: {fileID: 0}
-  pv: {fileID: 0}
 --- !u!1 &4984567000318728727
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,7 +286,6 @@ GameObject:
   - component: {fileID: 4715434063433294537}
   - component: {fileID: 7133988207039004979}
   - component: {fileID: 5286901849899317476}
-  - component: {fileID: 5938123946775232503}
   m_Layer: 0
   m_Name: Iron Node Flat
   m_TagString: Stone
@@ -390,19 +372,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2432090755550338912, guid: e888a3f8b74274c4a950115a9c0b81f4, type: 3}
---- !u!114 &5938123946775232503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8980847154995572791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e211c5d95c4f3b42863fa021d75ec23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ItemAmount: 250
-  BaseHarvestAmount: 15
-  ItemToGivePlayerOnHarvest: {fileID: 0}
-  pv: {fileID: 0}

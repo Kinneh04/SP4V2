@@ -28,20 +28,29 @@ public class HeliRocket : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        print(collision.gameObject.name);
-        print("OW!");
-        Explode();
+        if (pv.IsMine)
+        {
+            print(collision.gameObject.name);
+            print("OW!");
+            Explode();
+        }
     }
     private void OnCollisionStay(Collision collision)
     {
-        print(collision.gameObject.name);
-        print("OW!");
-        Explode();
+        if (pv.IsMine)
+        {
+            print(collision.gameObject.name);
+            print("OW!");
+            Explode();
+        }
     }
     
     void Explode()
     {
-        Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        if (pv.IsMine)
+        {
+            Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
 }

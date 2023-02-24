@@ -33,13 +33,14 @@ public class PlayerMovement : MonoBehaviour
     public void UnlockCursor()
     {
         canLookAround = false;
-        Cursor.lockState = CursorLockMode.None;
+        
         isMovementEnabled = false;
 
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
         rb.Sleep();
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void LockCursor()
