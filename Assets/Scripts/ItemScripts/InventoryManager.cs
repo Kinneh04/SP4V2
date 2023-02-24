@@ -129,7 +129,7 @@ public class InventoryManager : MonoBehaviour
             pui.ForceGiveItem(InventoryList[EquippedSlot]);
             UpdateItemCountPerSlot();
 
-            if(pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Campfire")
+            if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Campfire")
             {
                 pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
             }
@@ -140,13 +140,13 @@ public class InventoryManager : MonoBehaviour
 
             return;
         }
-        else if ( InventoryList[Slot1ID] && InventoryList[Slot2ID] == null)
+        else if (InventoryList[Slot1ID] && InventoryList[Slot2ID] == null)
         {
             InventoryList[Slot1ID].transform.parent = null;
             InventoryList[Slot2ID] = InventoryList[Slot1ID];
             InventoryList[Slot1ID] = null;
 
-            
+
             pui.ForceGiveItem(InventoryList[EquippedSlot]);
 
             if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Campfire")
@@ -160,40 +160,43 @@ public class InventoryManager : MonoBehaviour
             UpdateItemCountPerSlot();
             return;
         }
-        int Slot1Quantity = InventoryList[Slot1ID].GetItemCount();
-        int Slot2Quantity = InventoryList[Slot2ID].GetItemCount();
-
-        ItemInfo Slot1Item = InventoryList[Slot1ID];
-        ItemInfo Slot2Item = InventoryList[Slot2ID];
-        //if same itemID try to add them to same stack
-        if (Slot1Item.itemID == Slot2Item.itemID)
+        else if (InventoryList[Slot2ID].ItemCount < InventoryList[Slot2ID].MaxItemCount || InventoryList[Slot1ID].itemID != InventoryList[Slot2ID].itemID)
         {
-            try
-            {
-                InventoryList[Slot2ID].SetItemCount(Slot1Quantity + Slot2Quantity);
-                Remove(Slot1ID);
-            }
-            catch (Exception e)
-            {
-                InventoryList[Slot1ID].SetItemCount(Slot2Quantity);
-                InventoryList[Slot2ID].SetItemCount(Slot1Quantity);
+            int Slot1Quantity = InventoryList[Slot1ID].GetItemCount();
+            int Slot2Quantity = InventoryList[Slot2ID].GetItemCount();
 
+            ItemInfo Slot1Item = InventoryList[Slot1ID];
+            ItemInfo Slot2Item = InventoryList[Slot2ID];
+            //if same itemID try to add them to same stack
+            if (Slot1Item.itemID == Slot2Item.itemID)
+            {
+                try
+                {
+                    InventoryList[Slot2ID].SetItemCount(Slot1Quantity + Slot2Quantity);
+                    Remove(Slot1ID);
+                }
+                catch (Exception e)
+                {
+                    InventoryList[Slot1ID].SetItemCount(Slot2Quantity);
+                    InventoryList[Slot2ID].SetItemCount(Slot1Quantity);
+
+                    InventoryList[Slot1ID] = Slot2Item;
+                    InventoryList[Slot2ID] = Slot1Item;
+                }
+            }
+            else //if different item ID, swap position
+            {
+                ItemInfo Temp = Slot1Item;
                 InventoryList[Slot1ID] = Slot2Item;
-                InventoryList[Slot2ID] = Slot1Item;
+                InventoryList[Slot2ID] = Temp;
             }
-        }
-        else //if different item ID, swap position
-        {
-            ItemInfo Temp = Slot1Item;
-            InventoryList[Slot1ID] = Slot2Item;
-            InventoryList[Slot2ID] = Temp;
-        }
-        UpdateItemCountPerSlot();
-        IntGetItem(EquippedSlot);
+            UpdateItemCountPerSlot();
+            IntGetItem(EquippedSlot);
 
-        if (pp.PlayerLookingAtItem != null && pp.PlayerLookingAtItem.tag == "Campfire")
-        {
-            pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
+            if (pp.PlayerLookingAtItem != null && pp.PlayerLookingAtItem.tag == "Campfire")
+            {
+                pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
+            }
         }
     }
     void Awake()
