@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class LockStructure : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class LockStructure : MonoBehaviour
         redLight.enabled = false;
     }
 
+    [PunRPC]
     public void SetPin(int inputPin)
     {
         pin = inputPin;
@@ -25,6 +27,7 @@ public class LockStructure : MonoBehaviour
         redLight.enabled = true;
     }
 
+    [PunRPC]
     public void RemovePin()
     {
         pin = 0;

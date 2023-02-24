@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class DoorStructure : MonoBehaviour
 {
@@ -49,7 +50,8 @@ public class DoorStructure : MonoBehaviour
             }
         }
     }
-
+    
+    [PunRPC]
     public void SetIsOpen(bool open)
     {
         isOpen = open;
@@ -66,6 +68,7 @@ public class DoorStructure : MonoBehaviour
         }
     }
 
+    [PunRPC]
     public void SetHasLock(bool locked)
     {
         hasLock = locked;
