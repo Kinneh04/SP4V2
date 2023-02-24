@@ -28,7 +28,7 @@ public class HandmadeShotgun : WeaponInfo
         ItemCount = 1;
     }
     // Discharge this weapon
-    public override bool Discharge(Transform transform)
+    public override bool Discharge()
 	{
 		if (CanFire)
 		{

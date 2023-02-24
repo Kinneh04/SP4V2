@@ -27,7 +27,7 @@ public class RocketLauncher : WeaponInfo
 
 
     // Discharge this weapon
-    public override bool Discharge(Transform transform)
+    public override bool Discharge()
 	{
 		if (CanFire)
 		{
@@ -53,5 +53,25 @@ public class RocketLauncher : WeaponInfo
 		}
 		return false;
 	}
-
+	// ai shoot
+	public override bool NonPlayerDischarge(PhotonView ViewID)
+	{
+		if (CanFire)
+		{
+			// If there is still ammo in the magazine, then fire
+			if (MagRounds > 0 || InfiniteAmmo)
+			{
+				ViewID.RPC("DefaultRaycastInit", RpcTarget.All);
+				// Lock the weapon after this discharge
+				CanFire = false;
+				// Reset the dElapsedTime to dTimeBetweenShots for the next shot
+				ElapsedTime = TimeBetweenShots;
+				// Reduce the rounds by 1
+				if (!InfiniteAmmo)
+					MagRounds--;
+				return true;
+			}
+		}
+		return false;
+	}
 }

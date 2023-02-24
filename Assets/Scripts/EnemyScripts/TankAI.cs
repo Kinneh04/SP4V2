@@ -266,7 +266,7 @@ public class TankAI : Enemy
 
     void Attack()
     {
-        gun.Discharge(gameObject.transform.Find("TurretBody"));
+        gun.Discharge();
     }
 
     [PunRPC]

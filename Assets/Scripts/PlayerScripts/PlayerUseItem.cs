@@ -1094,7 +1094,7 @@ public class PlayerUseItem : MonoBehaviour
 
     void OnShoot()
     {
-        playerProperties.CurrentlyHoldingItem.GetComponent<WeaponInfo>().Discharge(gameObject.GetComponentInChildren<Camera>().transform);
+        playerProperties.CurrentlyHoldingItem.GetComponent<WeaponInfo>().Discharge();
         inventoryManager.UpdateItemCountPerSlot();
     }
 

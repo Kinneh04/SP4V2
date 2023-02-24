@@ -303,7 +303,7 @@ public class ScientistAI : Enemy
 
     void Attack()
     {
-        gun.Discharge(gameObject.transform.Find("Capsule"));
+        gun.Discharge();
     }
 
     [PunRPC]

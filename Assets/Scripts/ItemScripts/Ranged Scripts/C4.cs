@@ -26,7 +26,7 @@ public class C4 : WeaponInfo
 	}
     
     // Discharge this weapon
-    public override bool Discharge(Transform transform)
+    public override bool Discharge()
 	{
 		if (CanFire)
 		{
