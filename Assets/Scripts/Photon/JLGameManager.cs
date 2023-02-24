@@ -32,7 +32,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
     }
     public override void OnDisconnected(DisconnectCause cause)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("DemoAsteroids-LobbyScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuScene");
     }
 
     public override void OnLeftRoom()

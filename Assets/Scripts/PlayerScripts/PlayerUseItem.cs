@@ -14,6 +14,7 @@ public class PlayerUseItem : MonoBehaviour
     public Camera Cam;
     public Image imageToFade;
     public GameObject sniperScopeImage;
+    public AudioManager audioManager;
     public float fadeDuration = 0.2f;
     public float scopeDelay = 0.2f;
 
@@ -43,6 +44,7 @@ public class PlayerUseItem : MonoBehaviour
     {
         inventoryManager = Inventory.GetComponent<InventoryManager>();
         pv = GetComponent<PhotonView>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
 
@@ -352,6 +354,7 @@ public class PlayerUseItem : MonoBehaviour
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.AK47 && !LeftMouseButtonPressed)
                             {
                                 // PAnimator.Play("PBeanReloadAK");
+                                audioManager.PlayAudio(AudioManager.AudioID.AK47_Reload);
                                 pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadAK");
                             }
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.HOMEMADE_SHOTGUN && !LeftMouseButtonPressed)
@@ -440,7 +443,8 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            OnShoot();
+                            if(OnShoot())
+                                audioManager.PlayAudio(AudioManager.AudioID.AK47_Shoot);
                             if (!isADS)
                                 PAnimator.Play("PBeanShootAK");
                             else
@@ -1111,10 +1115,11 @@ public class PlayerUseItem : MonoBehaviour
         currDoor = null;
     }
 
-    void OnShoot()
+    bool OnShoot()
     {
-        playerProperties.CurrentlyHoldingItem.GetComponent<WeaponInfo>().Discharge();
+        bool ShotSuccessfully = playerProperties.CurrentlyHoldingItem.GetComponent<WeaponInfo>().Discharge();
         inventoryManager.UpdateItemCountPerSlot();
+        return ShotSuccessfully;
     }
 
     IEnumerator triggerCooldown()
