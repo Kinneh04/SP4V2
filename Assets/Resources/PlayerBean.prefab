@@ -12402,6 +12402,7 @@ MonoBehaviour:
   isADS: 0
   zoomFactor: 2
   Map: {fileID: 0}
+  pinEntry: {fileID: 0}
   playerLookAt: {fileID: 1076643316070719907}
   isReleased: 1
 --- !u!95 &724124074
