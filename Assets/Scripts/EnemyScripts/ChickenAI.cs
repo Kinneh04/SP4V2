@@ -10,7 +10,6 @@ public class ChickenAI : Enemy
 
     int MaxHealth = 100;
     public float MSpd = 2;
-    int Health;
     float IdleTime;
     float MoveTime;
     float stamina = 100;
@@ -245,15 +244,13 @@ public class ChickenAI : Enemy
                         deadTime -= Time.deltaTime;
                     }
                     if (deadTime <= 0 && PV.IsMine)
-                        PhotonNetwork.Destroy(gameObject);
+                    {
+                        Harvestable = true;
+                        // PhotonNetwork.Destroy(gameObject);
+                    }
                     break;
                 }
         }
-    }
-
-    override public void GetDamaged(int damage)
-    {
-        Health -= damage;
     }
 
     public void DamagedDirection(Vector3 direction)

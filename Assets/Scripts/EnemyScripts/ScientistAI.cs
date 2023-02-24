@@ -12,7 +12,6 @@ public class ScientistAI : Enemy
     int MaxHealth = 100;
     public float MSpd = 2;
     WeaponInfo gun;
-    int Health;
     float IdleTime;
     float MoveTime;
     bool StructureFound = false;
@@ -246,7 +245,10 @@ public class ScientistAI : Enemy
                         deadTime -= Time.deltaTime;
                     }
                     if (deadTime <= 0 && PV.IsMine)
-                        PhotonNetwork.Destroy(gameObject);
+                    {
+                        Harvestable = true;
+                        // PhotonNetwork.Destroy(gameObject);
+                    }
                     break;
                 }
         }
@@ -302,8 +304,4 @@ public class ScientistAI : Enemy
         gun.Discharge(gameObject.transform.Find("Capsule"));
     }
 
-    override public void GetDamaged(int damage)
-    {
-        Health -= damage;
-    }
 }

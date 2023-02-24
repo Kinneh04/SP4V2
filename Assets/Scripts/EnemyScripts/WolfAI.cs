@@ -10,7 +10,6 @@ public class WolfAI : Enemy
 
     int MaxHealth = 100;
     public float MSpd = 2;
-    int Health;
     float IdleTime;
     float MoveTime;
     bool isMoving = false;
@@ -215,7 +214,10 @@ public class WolfAI : Enemy
                         deadTime -= Time.deltaTime;
                     }
                     if (deadTime <= 0 && PV.IsMine)
-                        PhotonNetwork.Destroy(gameObject);
+                    {
+                        Harvestable = true;
+                        // PhotonNetwork.Destroy(gameObject);
+                    }
                     break;
                 }
         }
@@ -241,10 +243,5 @@ public class WolfAI : Enemy
                 BiteCD = 2;
             }
         }
-    }
-
-    override public void GetDamaged(int damage)
-    {
-        Health -= damage;
     }
 }
