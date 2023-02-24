@@ -4890,6 +4890,7 @@ GameObject:
   - component: {fileID: -6837527967893972138}
   - component: {fileID: -1262480985834929306}
   - component: {fileID: -5844466867947357072}
+  - component: {fileID: 3961402418208368874}
   m_Layer: 0
   m_Name: HeliMissle
   m_TagString: Untagged
@@ -4998,3 +4999,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3961402418208368874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9036446660495650087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69e2bbc04ee876d4c9bf25a7985a4a8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seconds: 10
+  NetworkedDestruct: 1

@@ -269,6 +269,16 @@ public class PlayerProperties : MonoBehaviour
 
         craftingIsOpen = false;
         craftingScreen.SetActive(false);
+
+
+        PhotonView Rockpv = PhotonNetwork.Instantiate("Rock", transform.position, Quaternion.identity, 0).GetComponent<PhotonView>();
+        PhotonView TorchPV = PhotonNetwork.Instantiate("Torch", transform.position, Quaternion.identity, 0).GetComponent<PhotonView>();
+        Rockpv.gameObject.SetActive(false);
+        TorchPV.gameObject.SetActive(false);
+        Rockpv.transform.SetParent(gameObject.transform.Find("Capsule").Find("RHand"));
+        TorchPV.transform.SetParent(gameObject.transform.Find("Capsule").Find("RHand"));
+        gameObject.GetComponentInChildren<InventoryManager>().AddQuantity(Rockpv.gameObject.GetComponent<HarvestToolsProperties>(), 1);
+        gameObject.GetComponentInChildren<InventoryManager>().AddQuantity(TorchPV.gameObject.GetComponent<HarvestToolsProperties>(), 1);
     }
 
     public void HealHealth(int HealthAmt, bool HealsBleed, bool HealsPoison, float poisonChance)
