@@ -28,7 +28,7 @@ public class PinSystem : MonoBehaviour
     private void Update()
     {
         PinDisplay.text = currPin;
-        if (Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.Tab))
+        if (Input.GetKey(KeyCode.Escape))
         {
             CloseUI();
         }
@@ -74,7 +74,6 @@ public class PinSystem : MonoBehaviour
                 if (ls.pin == int.Parse(currPin))
                 {
                     ls.gameObject.transform.root.GetComponent<PhotonView>().RPC("SetIsOpen", RpcTarget.AllViaServer, true);
-                    //ls.gameObject.transform.root.GetComponent<DoorStructure>().SetIsOpen(true);
                     cp.CreateResourcePopup("PIN Correct", 0, true);
                     CloseUI();
                 }

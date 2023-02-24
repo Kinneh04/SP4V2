@@ -217,7 +217,6 @@ public class PlayerUseItem : MonoBehaviour
                         else // No pin set, open normally
                         {
                             ds.gameObject.GetComponent<PhotonView>().RPC("SetIsOpen", RpcTarget.AllViaServer, !ds.isOpen);
-                            //ds.SetIsOpen(!ds.isOpen);
                         }
                     }
                     else // No Lock or already open so will close door
