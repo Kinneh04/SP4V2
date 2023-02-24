@@ -26,8 +26,6 @@ public class ScientistAI : Enemy
 
     public WeaponInfo gun;
 
-    protected PhotonView PV;
-
     public ENEMY_TYPE EnemyType;
 
     // Start is called before the first frame update

@@ -22,7 +22,6 @@ public class ChickenAI : Enemy
     Vector3 FromWhere;
     float hitTime;
 
-    protected PhotonView PV;
 
     public bool change = false;
     public GameObject Predator = null;
@@ -49,7 +48,10 @@ public class ChickenAI : Enemy
         if (hitTime > 0)
         {
             if (TargetPlayer == null && Predator == null)
+            {
                 hitTime -= Time.deltaTime;
+                Debug.Log("Chicken is Running");
+            }
             else if (TargetPlayer != null && Predator != null)
             {
                 if (Vector3.Distance(transform.position, TargetPlayer.transform.position) < Vector3.Distance(transform.position, Predator.transform.position))
@@ -264,7 +266,9 @@ public class ChickenAI : Enemy
 
     public override void GetDamaged(int damage)
     {
-        Health -= damage;
+        if (dead)
+            return;
+        PV.RPC("EnemyDamaged", RpcTarget.All, damage);
         hitTime = 2;
     }
 

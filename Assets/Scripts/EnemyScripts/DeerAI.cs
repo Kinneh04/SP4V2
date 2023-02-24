@@ -24,8 +24,6 @@ public class DeerAI : Enemy
     int enemyType;
     float hitTime;
 
-    protected PhotonView PV;
-
     public GameObject Predator;
 
     FSM CurrentState;

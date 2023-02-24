@@ -13,10 +13,13 @@ public class Enemy : MonoBehaviour
     protected float deadTime;
     protected int Health;
     public bool Harvestable = false;
+    protected PhotonView PV;
 
     public virtual void GetDamaged(int damage)
     {
-        Health -= damage;
+        if (dead)
+            return;
+        PV.RPC("EnemyDamaged", RpcTarget.All, damage);
     }
     [PunRPC]
     public void DefaultRaycastInit()
@@ -44,5 +47,11 @@ public class Enemy : MonoBehaviour
         Projectile.GetComponent<Projectile>().itemID = weaponInfo.GetAmmoType();
         Projectile.GetComponent<Projectile>().ExplosionTimer = 3;
         Projectile.GetComponent<Projectile>().ShootNonRaycastType();
+    }
+
+    [PunRPC]
+    public void EnemyDamaged(int damage)
+    {
+        Health -= damage;
     }
 }

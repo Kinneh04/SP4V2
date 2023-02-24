@@ -26,8 +26,6 @@ public class TankAI : Enemy
 
     RocketLauncher gun;
 
-    protected PhotonView PV;
-
     FSM CurrentState;
 
     public ENEMY_TYPE EnemyType;

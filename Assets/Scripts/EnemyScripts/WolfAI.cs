@@ -8,8 +8,8 @@ public class WolfAI : Enemy
 {
     enum FSM { IDLE, WANDER, ATTACK, DEAD };
 
-    protected List<GameObject> DetectedPlayers = new List<GameObject>();
-    protected List<Enemy> DetectedPrey = new List<Enemy>();
+    List<GameObject> DetectedPlayers = new List<GameObject>();
+    List<Enemy> DetectedPrey = new List<Enemy>();
 
     int MaxHealth = 100;
     public float MSpd = 2;
@@ -21,8 +21,6 @@ public class WolfAI : Enemy
     Vector3 destination;
 
     public Enemy Prey;
-
-    protected PhotonView PV;
 
     float BiteCD = 0;
 
