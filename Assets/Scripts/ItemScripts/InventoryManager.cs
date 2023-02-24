@@ -250,7 +250,7 @@ public class InventoryManager : MonoBehaviour
         if (InventoryList.Count <= MaxInventorySize)
         {
             int SlotNum = CheckForAvailableSlots(item, QuantityToAdd);
-            if (InventoryList[SlotNum] != null && item.gameObject.tag != "Weaponry") //Adds quantity
+            if (InventoryList[SlotNum] != null && item.gameObject.tag != "Weaponry" || InventoryList[SlotNum] != null && item.gameObject.tag != "Workbench" || InventoryList[SlotNum] != null && item.gameObject.tag != "Campfire") //Adds quantity
             {
                 InventoryList[SlotNum].ItemCount += QuantityToAdd;
                 Destroy(item);
