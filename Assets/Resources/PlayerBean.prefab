@@ -12304,7 +12304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4ac860ea236f24c83eda47fe0832f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 15
+  Health: 90
   MaxHealth: 100
   XSensitivity: 1
   YSensitivity: 1

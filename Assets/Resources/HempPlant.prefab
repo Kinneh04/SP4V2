@@ -135,8 +135,8 @@ MonoBehaviour:
   PickedState: {fileID: 8545757193643532482}
   GameObjectToGive: {fileID: 2336293236833407366, guid: 6974d2d2d103f9d4dbfb3cb71df5346c,
     type: 3}
-  minAmount: 1
-  maxAmount: 2
+  minAmount: 10
+  maxAmount: 15
   pv: {fileID: 0}
 --- !u!114 &446448056677273491
 MonoBehaviour:

@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e499e2126e071ef49a6cbe0470a30c42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GivesHealthAmount: 5
   GivesFoodAmount: 10
   GivesWaterAmount: 5
   PoisonChance: 0
