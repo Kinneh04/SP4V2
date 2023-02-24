@@ -90,8 +90,8 @@ public class HeliAI : MonoBehaviour
                     burstAmount--;
                     if (burstAmount <= 0)
                     {
-                        burstAmount = 12;
-                        ShootCooldown = 4.0f;
+                        burstAmount = 5;
+                        ShootCooldown = 10.0f;
                         burstCooldown = 0.35f;
                     }
 

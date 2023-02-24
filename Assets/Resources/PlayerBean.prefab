@@ -8298,6 +8298,7 @@ GameObject:
   - component: {fileID: 4592818047275082332}
   - component: {fileID: 3760228164055860268}
   - component: {fileID: 1552524452314515855}
+  - component: {fileID: 3929572238580961362}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -8413,6 +8414,20 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!136 &3929572238580961362
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219467893894784880}
+  m_Material: {fileID: 13400000, guid: 11c32c34e6cfa034f95c2d8adfcfd330, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1240495028094907028
 GameObject:
   m_ObjectHideFlags: 0
@@ -13144,6 +13159,7 @@ MonoBehaviour:
   Cam: {fileID: 6249247382354149294}
   imageToFade: {fileID: 1299932483}
   sniperScopeImage: {fileID: 4720311246255320314}
+  audioManager: {fileID: 0}
   fadeDuration: 0.2
   scopeDelay: 0.2
   PAnimator: {fileID: 724124074}
