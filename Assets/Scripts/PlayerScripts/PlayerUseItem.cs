@@ -749,7 +749,7 @@ public class PlayerUseItem : MonoBehaviour
             {
                 if (pv.IsMine)
                 {
-                    pv.RPC("ClearChildrenInActorRightHand", RpcTarget.Others, pv.ViewID);
+                    pv.RPC("ClearChildrenInActorRightHand", RpcTarget.All, pv.ViewID);
                     
                     ForceGiveItem(CurrentItem);
                     if(CurrentItem.GetComponent<ItemInfo>().itemType != ItemInfo.ItemType.unshowable) pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, CurrentItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
@@ -766,7 +766,10 @@ public class PlayerUseItem : MonoBehaviour
 
     private void UpdateInventorySlot(int slotNo)
     {
-        pv.RPC("ClearChildrenInActorRightHand", RpcTarget.All, pv.ViewID);
+        if (pv.IsMine)
+        {
+            pv.RPC("ClearChildrenInActorRightHand", RpcTarget.All, pv.ViewID);
+        }
         if (inventoryManager.EquippedSlot == slotNo) // Do not do anything as player is already in slot (double tap same slot)
             return;
 
