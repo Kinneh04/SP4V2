@@ -43,6 +43,8 @@ TagManager:
   - Grass
   - RHand
   - DoorStructure
+  - AudioManager
+  - ToolCupboard
   layers:
   - Default
   - TransparentFX

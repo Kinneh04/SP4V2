@@ -39,7 +39,6 @@ public class PinSystem : MonoBehaviour
         OpenUI(ls);
         removePinBtn.onClick.AddListener(delegate {
             ls.GetComponent<PhotonView>().RPC("RemovePin", RpcTarget.All);
-            //ls.RemovePin();
             cp.CreateResourcePopup("Removed old PIN", 0);
             CloseUI();
         });
@@ -65,7 +64,6 @@ public class PinSystem : MonoBehaviour
             if (isSettingPin)
             {
                 ls.GetComponent<PhotonView>().RPC("SetPin", RpcTarget.All, int.Parse(currPin));
-                //ls.SetPin(int.Parse(currPin));
                 cp.CreateResourcePopup("Setting PIN success", 0, true);
                 CloseUI();
             }

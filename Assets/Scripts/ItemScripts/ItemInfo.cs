@@ -19,6 +19,7 @@ public class ItemInfo : MonoBehaviour
         unshowable,
         Hammer,
         CodeLock,
+        ToolCupboard,
         NUM_ITEMTYPE
     };
 
@@ -84,6 +85,8 @@ public class ItemInfo : MonoBehaviour
         ResearchTable_Ghost,
         Hammer,
         CodeLock,
+        ToolCupboard,
+        ToolCupboard_Ghost,
         NUM_ITEMID  
     };
 
