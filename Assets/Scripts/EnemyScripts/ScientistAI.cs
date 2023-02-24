@@ -11,7 +11,6 @@ public class ScientistAI : Enemy
 
     int MaxHealth = 100;
     public float MSpd = 2;
-    WeaponInfo gun;
     float IdleTime;
     float MoveTime;
     bool StructureFound = false;
@@ -21,6 +20,8 @@ public class ScientistAI : Enemy
     Vector3 destination;
     float TimebetweenShots;
     FSM CurrentState;
+
+    public WeaponInfo gun;
 
     PhotonView PV;
 
@@ -41,7 +42,6 @@ public class ScientistAI : Enemy
         navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
         TargetPlayer = null;
         navMeshAgent.speed = MSpd;
-        gun = gameObject.GetComponentInChildren<WeaponInfo>();
         gun.Init();
         gun.SetInfiniteAmmo(true);
         gun.SetTimeBetweenShots(0.33f);
@@ -246,8 +246,7 @@ public class ScientistAI : Enemy
                     }
                     if (deadTime <= 0 && PV.IsMine)
                     {
-                        Harvestable = true;
-                        // PhotonNetwork.Destroy(gameObject);
+                        PhotonNetwork.Destroy(gameObject);
                     }
                     break;
                 }
@@ -301,6 +300,7 @@ public class ScientistAI : Enemy
 
     void Attack()
     {
+        Debug.Log(gameObject.transform.Find("Capsule").name);
         gun.Discharge(gameObject.transform.Find("Capsule"));
     }
 

@@ -62,12 +62,12 @@ public class Projectile : MonoBehaviour
                 else if (collision.transform.gameObject.CompareTag("Deer"))
                 {
                     collision.transform.GetComponent<DeerAI>().GetDamaged((int)Damage);
-                    Instantiate(ImpactParticleSystem, collision.transform.position, Quaternion.identity);
+                    Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
                 }
                 else if (collision.transform.gameObject.CompareTag("Chicken"))
                 {
                     collision.transform.GetComponent<ChickenAI>().GetDamaged((int)Damage);
-                    Instantiate(ImpactParticleSystem, collision.transform.position, Quaternion.identity);
+                    Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
                 }
                 else if (collision.transform.gameObject.CompareTag("Player") || collision.transform.gameObject.CompareTag("EnemyPlayer"))
                 {

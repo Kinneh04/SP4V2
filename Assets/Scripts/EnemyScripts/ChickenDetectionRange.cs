@@ -49,17 +49,19 @@ public class ChickenDetectionRange : MonoBehaviour
     [PunRPC]
     void ChickenFoundWolf(int ID)
     {
-        GameObject other = PhotonView.Find(ID).gameObject;
-        DetectedPredator.Add(other);
+        Enemy other = PhotonView.Find(ID).gameObject.GetComponent<Enemy>();
+        if (other.dead)
+            return;
+        DetectedPredator.Add(other.gameObject);
         ChickenAI chicken = GetComponent<ChickenAI>();
         if (chicken.Predator == null)
         {
-            chicken.Predator = other;
+            chicken.Predator = other.gameObject;
             chicken.change = true;
         }
         else if (Vector3.Distance(chicken.transform.position, chicken.Predator.transform.position) > Vector3.Distance(chicken.transform.position, other.transform.position))
         {
-            chicken.Predator = other;
+            chicken.Predator = other.gameObject;
             chicken.change = true;
         }
     }
@@ -123,9 +125,11 @@ public class ChickenDetectionRange : MonoBehaviour
         {
             for (int i = 0; i < DetectedPredator.Count; i++)
             {
+                if (DetectedPredator[i].GetComponent<Enemy>().dead)
+                    continue;
                 if (chicken.Predator == null)
                 {
-                    chicken.Predator = DetectedPredator[0];
+                    chicken.Predator = DetectedPredator[i];
                 }
                 else if (Vector3.Distance(chicken.transform.position, chicken.Predator.transform.position) > Vector3.Distance(chicken.transform.position, DetectedPredator[i].transform.position))
                 {

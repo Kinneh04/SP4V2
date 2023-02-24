@@ -107,8 +107,9 @@ public class DeerDetectionRange : MonoBehaviour
     }
 
     [PunRPC]
-    void DeerLostWolf(GameObject other)
+    void DeerLostWolf(int ID)
     {
+        GameObject other = PhotonView.Find(ID).gameObject;
         bool PredatorLeft = false;
         DeerAI deer = GetComponent<DeerAI>();
         if (deer.Predator == other)

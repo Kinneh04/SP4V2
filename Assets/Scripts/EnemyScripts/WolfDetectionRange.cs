@@ -8,7 +8,7 @@ public class WolfDetectionRange : MonoBehaviour
     // Start is called before the first frame update
 
     List<GameObject> DetectedPlayers = new List<GameObject>();
-    List<GameObject> DetectedPrey = new List<GameObject>();
+    List<Enemy> DetectedPrey = new List<Enemy>();
     PhotonView PV;
 
     private void Awake()
@@ -54,7 +54,9 @@ public class WolfDetectionRange : MonoBehaviour
     [PunRPC]
     void WolfFoundPrey(int ID)
     {
-        GameObject other = PhotonView.Find(ID).gameObject;
+        Enemy other = PhotonView.Find(ID).gameObject.GetComponent<Enemy>();
+        if (other.dead)
+            return;
         DetectedPrey.Add(other);
         WolfAI wolf = GetComponent<WolfAI>();
         if (wolf.Prey == null)
@@ -114,7 +116,9 @@ public class WolfDetectionRange : MonoBehaviour
     [PunRPC]
     void WolfLostPrey(int ID)
     {
-        GameObject other = PhotonView.Find(ID).gameObject;
+        Enemy other = PhotonView.Find(ID).gameObject.GetComponent<Enemy>();
+        if (other.dead)
+            return;
         bool PreyLeft = false;
         WolfAI wolf = gameObject.GetComponentInParent<WolfAI>();
         if (wolf.Prey == other)

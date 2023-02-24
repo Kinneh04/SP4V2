@@ -70,6 +70,7 @@ public class ChickenAI : Enemy
             if (!isRunning)
             {
                 isRunning = true;
+                isMoving = false;
                 navMeshAgent.speed = MSpd * 1.5f;
             }
         }
@@ -112,9 +113,9 @@ public class ChickenAI : Enemy
                         stamina = 50;
                     if (isRunning)
                     {
-                        if (stamina >= 100)
+                        if (stamina >= 50)
                         {
-                            stamina = 100;
+                            stamina = 50;
                             CurrentState = FSM.RUN;
                             isMoving = false;
                             MoveTime = 2;
@@ -256,6 +257,12 @@ public class ChickenAI : Enemy
     public void DamagedDirection(Vector3 direction)
     {
         FromWhere = transform.position - direction;
+        hitTime = 2;
+    }
+
+    public override void GetDamaged(int damage)
+    {
+        Health -= damage;
         hitTime = 2;
     }
 }

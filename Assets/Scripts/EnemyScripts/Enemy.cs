@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     protected int Health;
     public bool Harvestable = false;
 
-    public void GetDamaged(int damage)
+    public virtual void GetDamaged(int damage)
     {
         Health -= damage;
     }
