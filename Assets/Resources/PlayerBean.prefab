@@ -51029,6 +51029,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a7f3e41e4ea1fb34aa6207c14d6cf617, type: 3}
   - {fileID: 21300000, guid: a7f3e41e4ea1fb34aa6207c14d6cf617, type: 3}
   - {fileID: 21300000, guid: 3034033191cb80f4193ccf0e900ab07d, type: 3}
+  - {fileID: 21300000, guid: b1eb788993d06ab44b4523851c567f67, type: 3}
+  - {fileID: 21300000, guid: 864eb7750a834ff438a31b815aa9f18c, type: 3}
   pp: {fileID: 2444950040306206}
   pui: {fileID: 0}
   Rock: {fileID: 0}
