@@ -5011,5 +5011,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69e2bbc04ee876d4c9bf25a7985a4a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seconds: 10
+  seconds: 7
   NetworkedDestruct: 1

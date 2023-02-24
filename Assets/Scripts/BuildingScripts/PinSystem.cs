@@ -28,7 +28,7 @@ public class PinSystem : MonoBehaviour
     private void Update()
     {
         PinDisplay.text = currPin;
-        if (Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.Tab))
+        if (Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.Escape))
         {
             CloseUI();
         }
