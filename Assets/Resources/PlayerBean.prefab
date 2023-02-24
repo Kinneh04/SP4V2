@@ -13151,6 +13151,7 @@ MonoBehaviour:
   bs: {fileID: 8634082567029168113}
   hs: {fileID: 8141171049426079861}
   ps: {fileID: 8213629809806154621}
+  cp: {fileID: 1937501596532756897}
   isPlacingItem: 0
   isADS: 0
   zoomFactor: 2
@@ -13412,6 +13413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f258679ac1f6a41b953adce9b72b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pm: {fileID: 2215454391473533705}
   cp: {fileID: 1937501596532756897}
   PinUI: {fileID: 7154147581259817069}
   keypadBtns:

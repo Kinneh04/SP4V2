@@ -88,6 +88,10 @@ MonoBehaviour:
   - TankFoundPlayer
   - TankLostPlayer
   - EnemyDamaged
+  - SetHasLock
+  - SetIsOpen
+  - RemovePin
+  - SetPin
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

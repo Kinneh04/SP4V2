@@ -14,6 +14,7 @@ public class PlayerUseItem : MonoBehaviour
     public Camera Cam;
     public Image imageToFade;
     public GameObject sniperScopeImage;
+    public AudioManager audioManager;
     public float fadeDuration = 0.2f;
     public float scopeDelay = 0.2f;
 
@@ -26,6 +27,7 @@ public class PlayerUseItem : MonoBehaviour
     public BuildingSystem bs;
     public HammerSystem hs;
     public PinSystem ps;
+    public CreatePopup cp;
     public bool isPlacingItem;
     public bool isADS;
     public float zoomFactor = 2f;
@@ -43,6 +45,7 @@ public class PlayerUseItem : MonoBehaviour
     {
         inventoryManager = Inventory.GetComponent<InventoryManager>();
         pv = GetComponent<PhotonView>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
 
@@ -204,24 +207,22 @@ public class PlayerUseItem : MonoBehaviour
                     if (!ds)
                         return;
 
-                    if (ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
+                    if (ds.hasLock && !ds.isOpen) // Has lock and is closed
                     {
-                        if (ds.hasLock && !ds.isOpen) // Has lock and is closed
+                        // Open PIN entry
+                        if (ds.lockObject.GetComponent<LockStructure>().hasPin)
                         {
-                            // Open PIN entry
-                            if (ds.lockObject.GetComponent<LockStructure>().hasPin)
-                            {
-                                ps.StartEnteringPIN(ds.lockObject.GetComponent<LockStructure>());
-                            }
-                            else // No pin set, open normally
-                            {
-                                ds.SetIsOpen(!ds.isOpen);
-                            }
+                            ps.StartEnteringPIN(ds.lockObject.GetComponent<LockStructure>());
                         }
-                        else // No Lock or already open so will close door
+                        else // No pin set, open normally
                         {
-                            ds.SetIsOpen(!ds.isOpen);
+                            ds.gameObject.GetComponent<PhotonView>().RPC("SetIsOpen", RpcTarget.AllViaServer, !ds.isOpen);
+                            //ds.SetIsOpen(!ds.isOpen);
                         }
+                    }
+                    else // No Lock or already open so will close door
+                    {
+                        ds.gameObject.GetComponent<PhotonView>().RPC("SetIsOpen", RpcTarget.AllViaServer, !ds.isOpen);
                     }
                 }
 
@@ -352,6 +353,7 @@ public class PlayerUseItem : MonoBehaviour
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.AK47 && !LeftMouseButtonPressed)
                             {
                                 // PAnimator.Play("PBeanReloadAK");
+                                audioManager.PlayAudio(AudioManager.AudioID.AK47_Reload);
                                 pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadAK");
                             }
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.HOMEMADE_SHOTGUN && !LeftMouseButtonPressed)
@@ -440,7 +442,8 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            OnShoot();
+                            if(OnShoot())
+                                audioManager.PlayAudio(AudioManager.AudioID.AK47_Shoot);
                             if (!isADS)
                                 PAnimator.Play("PBeanShootAK");
                             else
@@ -620,9 +623,12 @@ public class PlayerUseItem : MonoBehaviour
                     ds = playerProperties.PlayerLookingAtItem.GetComponentInParent<DoorStructure>();
                 }
 
-                if (ds && ds.hasLock && ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
+                if (ds && ds.hasLock)
                 {
-                    ps.StartCreatingPIN(ds.lockObject.GetComponent<LockStructure>());
+                    if (ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
+                        ps.StartCreatingPIN(ds.lockObject.GetComponent<LockStructure>());
+                    else
+                        cp.CreateResourcePopup("Unauthorized", 0);
                 }
             }
             else if (Input.GetMouseButton(1) && playerProperties.CurrentlyHoldingItem && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() != ItemInfo.ItemType.BuildPlan && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() != ItemInfo.ItemType.Hammer)
@@ -1098,23 +1104,24 @@ public class PlayerUseItem : MonoBehaviour
             cds = currDoor.GetComponentInParent<DoorStructure>();
         }
 
-        cds.lockObject.SetActive(false);
         Material[] prevMats = cds.lockObject.transform.GetComponent<Renderer>().materials;
         Material[] prevNewMats = { prevMats[0] };
         cds.lockObject.transform.GetComponent<Renderer>().materials = prevNewMats;
 
         if (placeLock)
         {
-            cds.SetHasLock(true);
+            cds.gameObject.GetComponent<PhotonView>().RPC("SetHasLock", RpcTarget.AllViaServer, true);
+            //cds.SetHasLock(true);
             inventoryManager.Remove(inventoryManager.EquippedSlot, false);
         }
         currDoor = null;
     }
 
-    void OnShoot()
+    bool OnShoot()
     {
-        playerProperties.CurrentlyHoldingItem.GetComponent<WeaponInfo>().Discharge();
+        bool ShotSuccessfully = playerProperties.CurrentlyHoldingItem.GetComponent<WeaponInfo>().Discharge();
         inventoryManager.UpdateItemCountPerSlot();
+        return ShotSuccessfully;
     }
 
     IEnumerator triggerCooldown()

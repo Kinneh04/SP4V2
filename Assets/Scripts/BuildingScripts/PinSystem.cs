@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class PinSystem : MonoBehaviour
 {
+    public PlayerMovement pm;
     public CreatePopup cp;
     public GameObject PinUI;
     public List<Button> keypadBtns = new List<Button>();
@@ -36,7 +38,8 @@ public class PinSystem : MonoBehaviour
     {
         OpenUI(ls);
         removePinBtn.onClick.AddListener(delegate {
-            ls.RemovePin();
+            ls.GetComponent<PhotonView>().RPC("RemovePin", RpcTarget.All);
+            //ls.RemovePin();
             cp.CreateResourcePopup("Removed old PIN", 0);
             CloseUI();
         });
@@ -61,7 +64,8 @@ public class PinSystem : MonoBehaviour
         {
             if (isSettingPin)
             {
-                ls.SetPin(int.Parse(currPin));
+                ls.GetComponent<PhotonView>().RPC("SetPin", RpcTarget.All, int.Parse(currPin));
+                //ls.SetPin(int.Parse(currPin));
                 cp.CreateResourcePopup("Setting PIN success", 0, true);
                 CloseUI();
             }
@@ -69,7 +73,8 @@ public class PinSystem : MonoBehaviour
             {
                 if (ls.pin == int.Parse(currPin))
                 {
-                    ls.gameObject.transform.root.GetComponent<DoorStructure>().SetIsOpen(true);
+                    ls.gameObject.transform.root.GetComponent<PhotonView>().RPC("SetIsOpen", RpcTarget.AllViaServer, true);
+                    //ls.gameObject.transform.root.GetComponent<DoorStructure>().SetIsOpen(true);
                     cp.CreateResourcePopup("PIN Correct", 0, true);
                     CloseUI();
                 }
@@ -85,6 +90,7 @@ public class PinSystem : MonoBehaviour
 
     private void OpenUI(LockStructure ls)
     {
+        pm.canLookAround = false;
         PinUI.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
 
@@ -103,6 +109,7 @@ public class PinSystem : MonoBehaviour
 
     private void CloseUI()
     {
+        pm.canLookAround = true;
         foreach (Button btn in keypadBtns)
         {
             btn.onClick.RemoveAllListeners();

@@ -15,7 +15,7 @@ public class ResourceUsagePopup : MonoBehaviour
     private void Start()
     {
         GetComponent<CanvasGroup>().alpha = 1;
-        fadeOutTime = 1.5f;
+        fadeOutTime = 2.0f;
     }
 
     private void Update()
@@ -27,8 +27,8 @@ public class ResourceUsagePopup : MonoBehaviour
         }
         else
         {
-            gameObject.GetComponent<CanvasGroup>().alpha = (float)Math.Round(fadeOutTime / 1.5f, 1);
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + Time.deltaTime * 8, gameObject.transform.position.z); ;
+            gameObject.GetComponent<CanvasGroup>().alpha = (float)Math.Round(fadeOutTime / 2.0f, 1);
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + Time.deltaTime * 10, gameObject.transform.position.z); ;
             fadeOutTime -= Time.deltaTime;
         }
     }
