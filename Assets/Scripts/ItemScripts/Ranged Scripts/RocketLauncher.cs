@@ -53,7 +53,7 @@ public class RocketLauncher : WeaponInfo
 		}
 		return false;
 	}
-	// ai shoot
+	// Discharge this weapon
 	public override bool NonPlayerDischarge(PhotonView ViewID)
 	{
 		if (CanFire)
@@ -61,7 +61,11 @@ public class RocketLauncher : WeaponInfo
 			// If there is still ammo in the magazine, then fire
 			if (MagRounds > 0 || InfiniteAmmo)
 			{
-				ViewID.RPC("DefaultRaycastInit", RpcTarget.All);
+				//Get Player PhotonView
+				int PhotonViewID = PhotonNetwork.Instantiate("missile", this.BarrelTip.transform.position, Quaternion.identity).GetComponent<PhotonView>().ViewID;
+				ViewID.RPC("DefaultProjectileInit", RpcTarget.All, PhotonViewID);
+
+				Instantiate(Miniexplosion, BarrelTip.transform.position, Quaternion.identity);
 				// Lock the weapon after this discharge
 				CanFire = false;
 				// Reset the dElapsedTime to dTimeBetweenShots for the next shot
