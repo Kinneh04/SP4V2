@@ -85,6 +85,8 @@ MonoBehaviour:
   - SetTriggerToTrue
   - AddPlayerToTargetsList
   - RemovePlayerFromTargetList
+  - TankFoundPlayer
+  - TankLostPlayer
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

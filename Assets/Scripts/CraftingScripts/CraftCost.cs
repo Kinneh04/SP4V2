@@ -37,7 +37,7 @@ public class CraftCost : MonoBehaviour
             Amount1.text = CM.Quantity_1.ToString();
             Item1.text = CM.Material_1.ToString();
             Total1.text = (CM.Quantity_1 * CM.CraftAmount).ToString();
-            Have1.text = "";
+            Have1.text = CM.IM.ItemGetInt(CM.Material_1).ToString();
         }
         else
         {
@@ -51,7 +51,7 @@ public class CraftCost : MonoBehaviour
             Amount2.text = CM.Quantity_2.ToString();
             Item2.text = CM.Material_2.ToString();
             Total2.text = (CM.Quantity_2 * CM.CraftAmount).ToString();
-            Have2.text = "";
+            Have2.text = CM.IM.ItemGetInt(CM.Material_2).ToString();
         }
         else
         {
@@ -65,7 +65,7 @@ public class CraftCost : MonoBehaviour
             Amount3.text = CM.Quantity_3.ToString();
             Item3.text = CM.Material_3.ToString();
             Total3.text = (CM.Quantity_3 * CM.CraftAmount).ToString();
-            Have3.text = "";
+            Have3.text = CM.IM.ItemGetInt(CM.Material_3).ToString();
         }
         else
         {
@@ -299,7 +299,7 @@ public class CraftCost : MonoBehaviour
                     materials[1] = CM.Water;
                     materials[2] = null;
                     break;
-                case ItemInfo.ItemID.Campfire:
+                case ItemInfo.ItemID.CampfireGhost:
                     CM.WorkbenchNeeded = 0;
                     materialCounts[0] = 10;
                     materialCounts[1] = 0;

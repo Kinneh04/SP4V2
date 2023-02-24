@@ -456,6 +456,22 @@ public class InventoryManager : MonoBehaviour
         }
         return null;
     }
+
+    public int ItemGetInt(ItemInfo wanted)
+    {
+        int total = 0;
+        for (int i = 0; i < InventoryList.Count; i++)
+        {
+            if (InventoryList[i])
+            {
+                if (wanted.itemID == InventoryList[i].itemID)
+                {
+                    total += InventoryList[i].ItemCount;
+                }
+            }
+        }
+        return total;
+    }
     public bool CheckAmmoUpdated()
     {
         if(InventoryList[EquippedSlot].GetComponent<WeaponInfo>().GetMagRound().ToString() ==

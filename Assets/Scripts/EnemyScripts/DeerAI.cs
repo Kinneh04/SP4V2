@@ -6,7 +6,7 @@ using Photon.Pun;
 
 public class DeerAI : Enemy
 {
-
+    List<GameObject> DetectedPredator = new List<GameObject>();
     enum FSM { IDLE, WANDER, RUN, DEAD };
 
     int MaxHealth = 100;
@@ -24,13 +24,13 @@ public class DeerAI : Enemy
     int enemyType;
     float hitTime;
 
-    PhotonView PV;
+    protected PhotonView PV;
 
     public GameObject Predator;
 
     FSM CurrentState;
     // Start is called before the first frame update
-    void Awake()
+    public virtual void Awake()
     {
         MaxHealth = 100;
         Health = MaxHealth;
@@ -46,7 +46,7 @@ public class DeerAI : Enemy
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         if (change)
         {
@@ -294,5 +294,100 @@ public class DeerAI : Enemy
     {
         FromWhere = transform.position - direction;
         hitTime = 2;
+    }
+
+    [PunRPC]
+    void DeerFoundPlayer(int ID)
+    {
+        GameObject other = PhotonView.Find(ID).gameObject;
+        DetectedPredator.Add(other);
+        // Targeting
+        DeerAI deer = GetComponent<DeerAI>();
+        if (deer.TargetPlayer == null)
+        {
+            deer.TargetPlayer = other;
+            deer.change = true;
+        }
+        else if (Vector3.Distance(deer.transform.position, deer.TargetPlayer.transform.position) > Vector3.Distance(deer.transform.position, other.transform.position))
+        {
+            deer.TargetPlayer = other;
+            deer.change = true;
+        }
+    }
+
+    [PunRPC]
+    void DeerFoundWolf(int ID)
+    {
+        GameObject other = PhotonView.Find(ID).gameObject;
+        DetectedPredator.Add(other);
+        DeerAI deer = GetComponent<DeerAI>();
+        if (deer.Predator == null)
+        {
+            deer.Predator = other;
+            deer.change = true;
+        }
+        else if (Vector3.Distance(deer.transform.position, deer.Predator.transform.position) > Vector3.Distance(deer.transform.position, other.transform.position))
+        {
+            deer.Predator = other;
+            deer.change = true;
+        }
+    }
+
+    [PunRPC]
+    void DeerLostPlayer(int ID)
+    {
+        GameObject other = PhotonView.Find(ID).gameObject;
+        bool TargetLeft = false;
+        DeerAI deer = GetComponent<DeerAI>();
+        if (deer.TargetPlayer == other)
+        {
+            TargetLeft = true;
+            deer.TargetPlayer = null;
+            deer.change = true;
+            DetectedPredator.Remove(other);
+        }
+        if (TargetLeft)
+        {
+            for (int i = 0; i < DetectedPredator.Count; i++)
+            {
+                if (deer.TargetPlayer == null)
+                {
+                    deer.TargetPlayer = DetectedPredator[0];
+                }
+                else if (Vector3.Distance(deer.transform.position, deer.TargetPlayer.transform.position) > Vector3.Distance(deer.transform.position, DetectedPredator[i].transform.position))
+                {
+                    deer.TargetPlayer = DetectedPredator[i];
+                }
+            }
+        }
+    }
+
+    [PunRPC]
+    void DeerLostWolf(int ID)
+    {
+        GameObject other = PhotonView.Find(ID).gameObject;
+        bool PredatorLeft = false;
+        DeerAI deer = GetComponent<DeerAI>();
+        if (deer.Predator == other)
+        {
+            PredatorLeft = true;
+            deer.Predator = null;
+            deer.change = true;
+            DetectedPredator.Remove(other);
+        }
+        if (PredatorLeft)
+        {
+            for (int i = 0; i < DetectedPredator.Count; i++)
+            {
+                if (deer.Predator == null)
+                {
+                    deer.Predator = DetectedPredator[0];
+                }
+                else if (Vector3.Distance(deer.transform.position, deer.Predator.transform.position) > Vector3.Distance(deer.transform.position, DetectedPredator[i].transform.position))
+                {
+                    deer.Predator = DetectedPredator[i];
+                }
+            }
+        }
     }
 }

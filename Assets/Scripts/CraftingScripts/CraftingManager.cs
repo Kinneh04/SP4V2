@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class CraftingManager : MonoBehaviour
 {
@@ -218,7 +219,10 @@ public class CraftingManager : MonoBehaviour
         int count = CraftableList.Count;
         for (int i = 0; i < count; i++)
         {
+            if (i == 23)
+                Debug.Log("hi");
             CraftSelection temp = CraftSelections[i];
+            Debug.Log("i: " + i + CraftableList[i].itemID);
             temp.gameObject.SetActive(true);
             temp.load();
             if (ScreenCraft)
@@ -269,7 +273,8 @@ public class CraftingManager : MonoBehaviour
                 }
             }
         }
-        ItemInfo temp = Instantiate<ItemInfo>(CraftableList[SelectedCraft]);
+        ItemInfo temp = PhotonNetwork.Instantiate(CraftableList[SelectedCraft].name, transform.position, transform.rotation).transform.GetComponent<ItemInfo>();
+        temp.gameObject.SetActive(false);
         IM.AddQuantity(temp, CraftAmount);
         CraftAmount = 0;
         //Selected(SelectedCraft, false);
