@@ -414,4 +414,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceText: {fileID: 7164308548914429008}
   amtText: {fileID: 8721309666734930124}
-  fadeOutTime: 2
+  resourceBG: {fileID: 6937966797027535976}
+  greenColor: {r: 0.16862746, g: 0.50980395, b: 0.25490198, a: 1}

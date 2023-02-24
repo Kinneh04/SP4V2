@@ -31,7 +31,6 @@ public class PlayerUseItem : MonoBehaviour
     public float zoomFactor = 2f;
     private bool isZoomedIn = false;
     public GameObject Map;
-    public GameObject pinEntry;
 
     public PlayerLookAt playerLookAt;
     public bool isReleased = true;
@@ -207,19 +206,19 @@ public class PlayerUseItem : MonoBehaviour
 
                     if (ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
                     {
-                        if (ds.hasLock) 
+                        if (ds.hasLock && !ds.isOpen) // Has lock and is closed
                         {
                             // Open PIN entry
                             if (ds.lockObject.GetComponent<LockStructure>().hasPin)
                             {
-
+                                ps.StartEnteringPIN(ds.lockObject.GetComponent<LockStructure>());
                             }
                             else // No pin set, open normally
                             {
                                 ds.SetIsOpen(!ds.isOpen);
                             }
                         }
-                        else
+                        else // No Lock or already open so will close door
                         {
                             ds.SetIsOpen(!ds.isOpen);
                         }
@@ -607,6 +606,23 @@ public class PlayerUseItem : MonoBehaviour
                     StopCoroutine(ItemGO.GetComponent<Bow>().StartCharge());
                     pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBowShoot");
                     //PAnimator.Play("PBowShoot");
+                }
+            }
+            else if (Input.GetMouseButton(1) && playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "DoorStructure") // Right clicking while looking at door sets password
+            {
+                DoorStructure ds = null;
+                if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
+                {
+                    ds = playerProperties.PlayerLookingAtItem.GetComponent<DoorStructure>();
+                }
+                else if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("Buildable"))
+                {
+                    ds = playerProperties.PlayerLookingAtItem.GetComponentInParent<DoorStructure>();
+                }
+
+                if (ds && ds.hasLock && ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
+                {
+                    ps.StartCreatingPIN(ds.lockObject.GetComponent<LockStructure>());
                 }
             }
             else if (Input.GetMouseButton(1) && playerProperties.CurrentlyHoldingItem && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() != ItemInfo.ItemType.BuildPlan && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() != ItemInfo.ItemType.Hammer)

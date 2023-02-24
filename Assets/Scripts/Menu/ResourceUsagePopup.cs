@@ -8,7 +8,9 @@ public class ResourceUsagePopup : MonoBehaviour
 {
     public TMPro.TMP_Text resourceText;
     public TMPro.TMP_Text amtText;
-    public float fadeOutTime;
+    public Image resourceBG;
+    public Color greenColor;
+    private float fadeOutTime;
 
     private void Start()
     {
