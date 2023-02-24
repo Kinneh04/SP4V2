@@ -278,48 +278,49 @@ public class PlayerUseItem : MonoBehaviour
 
                     if (ItemGO.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
                     {
-                        ItemGO.GetComponent<WeaponInfo>().Reload();
-                        if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.M1911_PISTOL && !LeftMouseButtonPressed)
+                        if (ItemGO.GetComponent<WeaponInfo>().Reload())
                         {
-                            //PAnimator.Play("PBeanReloadM1911");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadM1911");
+                            if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.M1911_PISTOL && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanReloadM1911");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadM1911");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REVOLVER && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanRevolverReload");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanRevolverReload");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.AK47 && !LeftMouseButtonPressed)
+                            {
+                                // PAnimator.Play("PBeanReloadAK");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadAK");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.HOMEMADE_SHOTGUN && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanReloadShotgun");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadShotgun");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.MP5A4 && !LeftMouseButtonPressed)
+                            {
+                                // PAnimator.Play("PBeanSMGReload");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSMGReload");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REMINGTON870 && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanShotgunReload");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanShotgunReload");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.BOLT_ACTION_RIFLE && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanSniperReload");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSniperReload");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.ROCKETLAUNCHER && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanSniperReload");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadRocketLauncher");
+                            }
                         }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REVOLVER && !LeftMouseButtonPressed)
-                        {
-                            //PAnimator.Play("PBeanRevolverReload");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanRevolverReload");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.AK47 && !LeftMouseButtonPressed)
-                        {
-                           // PAnimator.Play("PBeanReloadAK");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadAK");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.HOMEMADE_SHOTGUN && !LeftMouseButtonPressed)
-                        {
-                            //PAnimator.Play("PBeanReloadShotgun");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadShotgun");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.MP5A4 && !LeftMouseButtonPressed)
-                        {
-                           // PAnimator.Play("PBeanSMGReload");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSMGReload");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REMINGTON870 && !LeftMouseButtonPressed)
-                        {
-                            //PAnimator.Play("PBeanShotgunReload");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanShotgunReload");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.BOLT_ACTION_RIFLE && !LeftMouseButtonPressed)
-                        {
-                            //PAnimator.Play("PBeanSniperReload");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSniperReload");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.ROCKETLAUNCHER && !LeftMouseButtonPressed)
-                        {
-                            //PAnimator.Play("PBeanSniperReload");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadRocketLauncher");
-                        }
-
                     }
                 }
             }
