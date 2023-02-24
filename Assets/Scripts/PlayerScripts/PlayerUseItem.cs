@@ -766,7 +766,7 @@ public class PlayerUseItem : MonoBehaviour
 
     private void UpdateInventorySlot(int slotNo)
     {
-        if (pv.IsMine)
+        if (pv.IsMine && slotNo != inventoryManager.EquippedSlot)
         {
             pv.RPC("ClearChildrenInActorRightHand", RpcTarget.All, pv.ViewID);
         }
