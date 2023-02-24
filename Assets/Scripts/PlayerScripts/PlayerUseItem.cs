@@ -30,6 +30,7 @@ public class PlayerUseItem : MonoBehaviour
     public float zoomFactor = 2f;
     private bool isZoomedIn = false;
     public GameObject Map;
+    public GameObject pinEntry;
 
     public PlayerLookAt playerLookAt;
     public bool isReleased = true;
@@ -140,6 +141,33 @@ public class PlayerUseItem : MonoBehaviour
                     playerProperties.PlayerLookingAtItem.GetComponent<FurnaceProperties>().IM = inventoryManager;
                     playerProperties.PlayerLookingAtItem.GetComponent<FurnaceProperties>().DisplayLoot();
                     playerProperties.OpenFurnaceInventory();
+                }
+
+                else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "DoorStructure")
+                {
+                    DoorStructure ds = null;
+                    if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
+                    {
+                        ds = playerProperties.PlayerLookingAtItem.GetComponent<DoorStructure>();
+                    }
+                    else if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("Buildable"))
+                    {
+                        ds = playerProperties.PlayerLookingAtItem.GetComponentInParent<DoorStructure>();
+                    }
+                    if (!ds)
+                        return;
+
+                    if (ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
+                    {
+                        if (ds.hasLock) // Open PIN entry
+                        {
+
+                        }
+                        else
+                        {
+                            ds.SetIsOpen(!ds.isOpen);
+                        }
+                    }
                 }
 
                 else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>() != null)

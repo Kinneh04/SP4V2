@@ -27,11 +27,12 @@ public class BuildingSystem : MonoBehaviour
 
     public bool IsBuilding = false;
     private bool IsChoosingObj = false;
-    public float BuildCooldown = 1.0f;
+    public float BuildCooldown;
     public GameObject menuObject;
 
     void Start()
     {
+        BuildCooldown = 0.0f;
         // Start off with a foundation
         currentObject = objects[0];
         ChangeCurrentBuilding(0);
@@ -193,7 +194,15 @@ public class BuildingSystem : MonoBehaviour
                     newObj.transform.localPosition = currentPreview.transform.localPosition;
                     newObj.transform.localEulerAngles = currentPreview.transform.localEulerAngles;
                 }
-                newObj.GetComponent<StructureObject>().PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
+
+                if (currentObject.name == "Door")
+                {
+                    newObj.GetComponent<DoorStructure>().PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
+                }
+                else
+                {
+                    newObj.GetComponent<StructureObject>().PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
+                }
             }
         }
         BuildCooldown = 1.0f;

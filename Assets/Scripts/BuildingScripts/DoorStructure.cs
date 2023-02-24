@@ -1,0 +1,82 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class DoorStructure : MonoBehaviour
+{
+    public int PlayerID;
+    public bool isOpen;
+    public bool hasLock;
+    public GameObject lockObject;
+
+    private float currRotation;
+    private bool isOpening;
+    private bool isClosing;
+
+    private void Start()
+    {
+        isOpen = false;
+        hasLock = false;
+        isOpening = isClosing = false;
+        currRotation = 0;
+        lockObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        Debug.Log(gameObject.transform.rotation.y);
+        if (isOpening)
+        {
+            if (currRotation > -90)
+            {
+                gameObject.transform.Rotate(0, -2, 0); //= Quaternion.Euler(new Vector3(gameObject.transform.rotation.x, gameObject.transform.rotation.y - 0.5f, gameObject.transform.rotation.z));
+                currRotation -= 2;
+            }
+            else
+            {
+                isOpening = false;
+            }
+        }
+        else if (isClosing)
+        {
+            if (currRotation < 0)
+            {
+                gameObject.transform.Rotate(0, 2, 0); //= Quaternion.Euler(new Vector3(gameObject.transform.rotation.x, gameObject.transform.rotation.y + 0.5f, gameObject.transform.rotation.z));
+                currRotation += 2;
+            }
+            else
+            {
+                isClosing = false;
+            }
+        }
+    }
+
+    public void SetIsOpen(bool open)
+    {
+        isOpen = open;
+        // Rotate doors animation
+        if (isOpen)
+        {
+            isClosing = false;
+            isOpening = true;
+        }
+        else
+        {
+            isOpening = false;
+            isClosing = true;
+        }
+    }
+
+    public void SetHasLock(bool locked)
+    {
+        hasLock = locked;
+        if (hasLock)
+        {
+            lockObject.SetActive(true);
+        }
+        else
+        {
+            lockObject.SetActive(false);
+        }
+    }
+}
