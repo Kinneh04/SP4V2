@@ -8,6 +8,7 @@ public class Explosion : MonoBehaviour
     public float Damage;
     private void OnTriggerEnter(Collider other)
     {
+        print("Exploded on: " + other.name);
         Debug.Log(other.name);
         if (other.CompareTag("Enemy"))
         {
