@@ -12435,8 +12435,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.318698, y: 2.039053, z: 1.2556317}
-  m_Center: {x: -0.0072936416, y: 1.6995265, z: 0.007184118}
+  m_Size: {x: 1.318698, y: 2.039053, z: 0.9915998}
+  m_Center: {x: -0.0072936416, y: 1.6995265, z: 0.007758513}
 --- !u!114 &8634082567029168113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21673,7 +21673,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3724305656045912131}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.548, y: 0.16500005, z: 0.845}
+  m_LocalPosition: {x: -0.548, y: 0.025999993, z: 0.845}
   m_LocalScale: {x: 0.2187944, y: 0.2187944, z: 0.21879442}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -31255,7 +31255,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5652993914308850600}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.032987583, y: 0.006158989, z: -0.598}
+  m_LocalPosition: {x: -0.032987583, y: 0.006158989, z: -0.609}
   m_LocalScale: {x: 1.6493793, y: 6.158701, z: 3.3417263}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -31278,6 +31278,7 @@ MonoBehaviour:
   tmpTextUI: {fileID: 8475152779092466795}
   playerProperties: {fileID: 2444950040306206}
   showDot: 1
+  RHand: {fileID: 5824423213444726492}
   layers:
     serializedVersion: 2
     m_Bits: 247
@@ -31290,6 +31291,8 @@ MonoBehaviour:
   - Monument
   - Tree
   - Stone
+  - Player
+  - EnemyPlayer
 --- !u!20 &6249247382354149294
 Camera:
   m_ObjectHideFlags: 0
@@ -32207,7 +32210,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5824423213444726492}
   m_LocalRotation: {x: -0.45451948, y: 0.5416752, z: 0.5416752, w: 0.45451948}
-  m_LocalPosition: {x: 0.517, y: 0.16500005, z: 0.845}
+  m_LocalPosition: {x: 0.517, y: 0.026, z: 0.845}
   m_LocalScale: {x: 0.21879444, y: 0.21879444, z: 0.2187944}
   m_ConstrainProportionsScale: 0
   m_Children: []

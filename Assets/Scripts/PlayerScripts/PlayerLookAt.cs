@@ -9,6 +9,7 @@ public class PlayerLookAt : MonoBehaviour
     public TMP_Text tmpTextUI;
     public PlayerProperties playerProperties;
     public bool showDot = true;
+    public GameObject RHand;
     public LayerMask layers; // Exclude layers like floor and buildpreview
     public GameObject dot;
 
@@ -21,9 +22,16 @@ public class PlayerLookAt : MonoBehaviour
         //Debug.DrawLine(transform.position, forward, Color.green);
         if (Physics.Raycast(ray, out hit, maxDistance, layers))
         {
-            string name = hit.transform.gameObject.tag;
-            name.Replace("(clone)", "");
-            if (hit.transform.gameObject.tag == "SleepingPoint")
+            string name = hit.transform.gameObject.name;
+            string tagname = hit.transform.gameObject.tag;
+            name = name.Replace("(Clone)", "");
+            name = name.Replace("(clone)", "");
+            if (hit.transform.parent == RHand.transform)
+            {
+                tmpTextUI.text = "";
+                print("Supposed to be null");
+            }
+            else if (hit.transform.gameObject.tag == "SleepingPoint")
             {
                 if (!hit.transform.gameObject.GetComponent<SleepingBagProperties>().isUsed)
                     tmpTextUI.text = "claim sleeping bag [E]";
@@ -49,13 +57,13 @@ public class PlayerLookAt : MonoBehaviour
             {
                 foreach (string word in BannedWordsFromLookAt)
                 {
-                    if (name == word)
+                    if (tagname == word)
                     {
                         tmpTextUI.text = " ";
                         return;
                     }
                 }
-                tmpTextUI.text = hit.transform.name.Replace("(clone)", "");
+                tmpTextUI.text = name;
                 playerProperties.PlayerLookingAtItem = hit.transform.gameObject;
             }
             //if (hit.transform.gameObject.tag != "Floor" && hit.transform.gameObject.tag != "Unmarked" && hit.transform.gameObject.tag != "Unmarked")

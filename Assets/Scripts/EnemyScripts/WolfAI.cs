@@ -165,7 +165,7 @@ public class WolfAI : Enemy
                     {
                         if (!Pouncing)
                         {
-                            Debug.Log(destination);
+                            //Debug.Log(destination);
                             destination = Target.transform.position;
                             navMeshAgent.SetDestination(destination);
                             isMoving = true;

@@ -64,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
                 Yrotation = Mathf.Clamp(Yrotation, -60f, 60f);
                 Torso.transform.rotation = Quaternion.Euler(0, 0, 0);
                 Xrotation %= 360;
+
                 transform.rotation = Quaternion.Euler(-Yrotation, Xrotation, 0f);
             }
             if (Mathf.Approximately(horizontal, 0f) && Mathf.Approximately(vertical, 0f) && isGrounded || !isMovementEnabled && isGrounded || GetComponent<ChatManager>().isTyping && isGrounded)
