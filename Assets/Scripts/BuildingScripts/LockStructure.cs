@@ -12,12 +12,25 @@ public class LockStructure : MonoBehaviour
     void Start()
     {
         hasPin = false;
+        greenLight.enabled = true;
+        redLight.enabled = false;
     }
 
     public void SetPin(int inputPin)
     {
         pin = inputPin;
         hasPin = true;
-        // todo activate light
+        
+        greenLight.enabled = false;
+        redLight.enabled = true;
+    }
+
+    public void RemovePin()
+    {
+        pin = 0;
+        hasPin = false;
+
+        greenLight.enabled = true;
+        redLight.enabled = false;
     }
 }

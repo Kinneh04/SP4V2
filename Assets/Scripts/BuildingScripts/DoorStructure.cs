@@ -19,17 +19,16 @@ public class DoorStructure : MonoBehaviour
         hasLock = false;
         isOpening = isClosing = false;
         currRotation = 0;
-        lockObject.SetActive(false);
+        //lockObject.SetActive(false);
     }
 
     private void Update()
     {
-        Debug.Log(gameObject.transform.rotation.y);
         if (isOpening)
         {
             if (currRotation > -90)
             {
-                gameObject.transform.Rotate(0, -2, 0); //= Quaternion.Euler(new Vector3(gameObject.transform.rotation.x, gameObject.transform.rotation.y - 0.5f, gameObject.transform.rotation.z));
+                gameObject.transform.Rotate(0, -2, 0);
                 currRotation -= 2;
             }
             else
@@ -41,7 +40,7 @@ public class DoorStructure : MonoBehaviour
         {
             if (currRotation < 0)
             {
-                gameObject.transform.Rotate(0, 2, 0); //= Quaternion.Euler(new Vector3(gameObject.transform.rotation.x, gameObject.transform.rotation.y + 0.5f, gameObject.transform.rotation.z));
+                gameObject.transform.Rotate(0, 2, 0);
                 currRotation += 2;
             }
             else

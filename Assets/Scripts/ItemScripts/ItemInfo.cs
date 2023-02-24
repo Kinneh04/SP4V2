@@ -18,6 +18,7 @@ public class ItemInfo : MonoBehaviour
         BuildPlan,
         unshowable,
         Hammer,
+        CodeLock,
         NUM_ITEMTYPE
     };
 
@@ -82,6 +83,7 @@ public class ItemInfo : MonoBehaviour
         ResearchTable,
         ResearchTable_Ghost,
         Hammer,
+        CodeLock,
         NUM_ITEMID  
     };
 
