@@ -865,10 +865,11 @@ public class PlayerUseItem : MonoBehaviour
         if (RHand.transform.Find(newItem) != null)
         {
             ItemToPairToHand = RHand.transform.Find(newItem).gameObject;
-
+            ItemToPairToHand.SetActive(true);
             if (ItemToPairToHand.GetComponent<MeshCollider>() != null) ItemToPairToHand.GetComponent<MeshCollider>().isTrigger = false;
             else if (ItemToPairToHand.GetComponent<BoxCollider>() != null) ItemToPairToHand.GetComponent<BoxCollider>().isTrigger = false;
 
+            ItemToPairToHand.transform.position = RHand.transform.position;
             ItemToPairToHand.transform.SetParent(null);
             ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = false;
         }
@@ -1044,6 +1045,7 @@ public class PlayerUseItem : MonoBehaviour
                 GameObject GO_REPLACEMENT = GO.GetComponent<ItemInfo>().ReplacementDropObj;
                 GameObject GO_Dupe = PhotonNetwork.Instantiate(GO_REPLACEMENT.name, transform.position, Quaternion.identity);
                 GO_Dupe.GetComponent<Rigidbody>().isKinematic = false;
+                GO_Dupe.transform.position = RHand.transform.position;
                 GO_Dupe.name = GO.name;
                 GO_Dupe.transform.parent = null;
                 playerProperties.CurrentlyHoldingItem = null;
@@ -1058,6 +1060,8 @@ public class PlayerUseItem : MonoBehaviour
                 GO.SetActive(true);
                 yield return new WaitForSeconds(0.15f);
                 pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
+                GO.SetActive(true);
+                GO.transform.position = RHand.transform.position;
                 GO.GetComponent<Rigidbody>().isKinematic = false;
                 GO.transform.parent = null;
                 GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 2;

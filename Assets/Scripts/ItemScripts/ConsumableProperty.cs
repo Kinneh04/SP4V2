@@ -22,6 +22,7 @@ public class ConsumableProperty : MonoBehaviour
         pp.Health += GivesHealthAmount;
         pp.Thirst += GivesWaterAmount;
 
+        if(pp.Health > 100) pp.Health = 100;
         if (pp.Hunger > 100) pp.Hunger = 100;
         if (pp.Thirst > 100) pp.Thirst = 100;
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System;
 
 public class LootProperties : MonoBehaviour
 {
@@ -37,6 +38,9 @@ public class LootProperties : MonoBehaviour
     [PunRPC]
     void SyncLootAcrossClients(int[] PhotonViewIDs, int[] ItemQuantity)
     {
+        print("CLEARING ITEMS IN CRATE!");
+        ItemsInCrate.Clear();
+        ItemQuantityInCrate.Clear();
         for (int i = 0; i < PhotonViewIDs.Length; i++)
         {
             PhotonView ItemPV = PhotonView.Find(PhotonViewIDs[i]);
@@ -48,7 +52,10 @@ public class LootProperties : MonoBehaviour
             }
         }
 
+        ClearLastLootPool();
+        DisplayLoot();
     }
+
 
     public void UpdateLoot()
     {
@@ -60,7 +67,7 @@ public class LootProperties : MonoBehaviour
 
                 ItemsInCrate.RemoveAt(i);
                 ItemQuantityInCrate.RemoveAt(i);
-                i--;
+                //i--;
 
             }
         }
@@ -79,6 +86,10 @@ public class LootProperties : MonoBehaviour
         if (ItemsInCrate.Count <= 0)
         {
             pv.RPC("DestroyOnAllClients", RpcTarget.All);
+        }
+        else
+        {
+            PrepareToSyncLoot();
         }
            
 
@@ -104,32 +115,32 @@ public class LootProperties : MonoBehaviour
 
     public void ClearLastLootPool()
     {
+
         for (int i = 0; i < 12; i++)
         {
-            if (IM.InventoryList[i + 30] != null)
+            if (IM.InventoryList != null && IM.InventoryList[i + 30] != null)
             {
                 IM.InventoryList[i + 30].ItemCount = 0;
                 IM.InventoryList[i + 30] = null;
-                IM.Remove(i);
             }
         }
         IM.UpdateItemCountPerSlot();
     }
     public void ChooseRandomLoot()
     {
-        int o = Random.Range(1, MaxPossibleItems);
+        int o = UnityEngine.Random.Range(1, MaxPossibleItems);
         if (!forceLoot && pv.IsMine)
         {
             for (int i = 0; i < o; i++)
             {
-                int y = Random.Range(0, PossibleItemsPool.Count);
+                int y = UnityEngine.Random.Range(0, PossibleItemsPool.Count);
                 PhotonView GOPV = PhotonNetwork.Instantiate(PossibleItemsPool[y].gameObject.name, transform.position, Quaternion.identity).GetComponent<PhotonView>();
                 GOPV.gameObject.SetActive(false);
                 GOPV.RPC("ParentToObj", RpcTarget.Others, GOPV.ViewID);
                 GOPV.gameObject.transform.parent = GameObject.FindGameObjectWithTag("LootPool").transform;
                 ItemsInCrate.Add(GOPV.gameObject.GetComponent<ItemInfo>());
                 PhotonViewIDs.Add(GOPV.ViewID);
-                int q = Random.Range(1, MaxQuantityOfEachItem);
+                int q = UnityEngine.Random.Range(1, MaxQuantityOfEachItem);
                 ItemQuantityInCrate.Add(q);
 
             }
@@ -152,24 +163,22 @@ public class LootProperties : MonoBehaviour
 
     public void PrepareToSyncLoot()
     {
+        print("SYNCING LOOT ACROSS CLIENTS!");
         pv = GetComponent<PhotonView>();
-        if (pv.IsMine)
+        PhotonViewIDs.Clear();
+        //UpdateLoot();
+        for (int i = 0; i < ItemsInCrate.Count; i++)
         {
-            PhotonViewIDs.Clear();
-            UpdateLoot();
-            for (int i = 0; i < ItemsInCrate.Count; i++)
-            {
-                PhotonViewIDs.Add(ItemsInCrate[i].gameObject.GetComponent<PhotonView>().ViewID);
-            }
-            int[] PVIDArray = PhotonViewIDs.ToArray();
-            int[] PVQuanArray = ItemQuantityInCrate.ToArray();
-            pv.RPC("SyncLootAcrossClients", RpcTarget.All, PVIDArray, PVQuanArray);
+            PhotonViewIDs.Add(ItemsInCrate[i].gameObject.GetComponent<PhotonView>().ViewID);
         }
+        int[] PVIDArray = PhotonViewIDs.ToArray();
+        int[] PVQuanArray = ItemQuantityInCrate.ToArray();
+        pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
     }
 
     public void DisplayLoot()
     {
-       // ClearLastLootPool();
+        //ClearLastLootPool();
         for(int i = 0; i < ItemsInCrate.Count; i++)
         {
                 IM.AddQuantityInSpecifiedBox(ItemsInCrate[i], ItemQuantityInCrate[i], 30 + i);

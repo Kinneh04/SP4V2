@@ -38,8 +38,12 @@ public class InventoryManager : MonoBehaviour
             }
         }
         UpdateItemCountPerSlot();
-        Destroy(pp.CurrentlyHoldingItem);
-        pp.CurrentlyHoldingItem = null;
+        if (pp.CurrentlyHoldingItem != null)
+        {
+            pp.CurrentlyHoldingItem.SetActive(false);
+            //Destroy(pp.CurrentlyHoldingItem);
+            pp.CurrentlyHoldingItem = null;
+        }
     }
     public bool Checkforcraft(ItemInfo Item1, int Item1Quantity = 1, ItemInfo Item2 = null, int Item2Quantity = 1, ItemInfo Item3 = null, int Item3Quantity = 1)
     {

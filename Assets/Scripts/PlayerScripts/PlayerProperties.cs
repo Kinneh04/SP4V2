@@ -77,8 +77,6 @@ public class PlayerProperties : MonoBehaviour
     public GameObject SleepingMenu;
     public bool isSleeping;
     public bool inventoryIsOpen;
-    public Image TurnOnButton;
-    public TMP_Text TurnOnText;
 
     public bool craftingIsOpen = false;
     public GameObject craftingScreen;
@@ -114,16 +112,6 @@ public class PlayerProperties : MonoBehaviour
     public void TurnOnFurnace()
     {
         PlayerLookingAtItem.GetComponent<FurnaceProperties>().TurnOn();
-        if (PlayerLookingAtItem.GetComponent<FurnaceProperties>().isOn)
-        {
-            TurnOnButton.color = Color.red;
-            TurnOnText.text = "Turn Off";
-        }
-        else
-        {
-            TurnOnButton.color = Color.green;
-            TurnOnText.text = "Turn On";
-        }
     }
     public void OpenFurnaceInventory()
     {
@@ -623,23 +611,24 @@ public class PlayerProperties : MonoBehaviour
         GameObject DB = PhotonView.Find(DBVID).gameObject;
 
         IM.UpdateItemCountPerSlot();
-        if(IM.InventoryList[IM.EquippedSlot] != null)
-        {
-            DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[IM.EquippedSlot]));
-            DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[IM.EquippedSlot].GetItemCount()));
-        }
+        //if(IM.InventoryList[IM.EquippedSlot] != null)
+        //{
+        //    DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[IM.EquippedSlot]));
+        //    DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[IM.EquippedSlot].GetItemCount()));
+        //}
         for(int i = 0; i < 30; i++)
         {
             if(IM.InventoryList[i] != null)
             {
                 DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[i]));
                 DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[i].GetItemCount()));
+                IM.InventoryList[i].gameObject.transform.parent = null;
+                IM.InventoryList[i].gameObject.SetActive(false);
+                //DB.gameObject.transform.parent = null;
             }
         }
 
         DB.GetComponent<LootProperties>().PrepareToSyncLoot();
-
-
     }
     [PunRPC]
     public void DefaultRaycastInit()
@@ -678,7 +667,7 @@ public class PlayerProperties : MonoBehaviour
             deathscreen.SetActive(true);
             PhotonView pvBag = PhotonNetwork.Instantiate(DeathBag.name, transform.position, Quaternion.identity).GetComponent<PhotonView>();
 
-            pv.RPC("ShoveLootInDeathBag", RpcTarget.All, pvBag.ViewID);
+           // pv.RPC("ShoveLootInDeathBag", RpcTarget.All, pvBag.ViewID);
             ShoveLootInDeathBag(pvBag.ViewID);
         }
     }

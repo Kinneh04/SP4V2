@@ -43,19 +43,36 @@ public class FurnaceProperties : MonoBehaviour
         return false;
     }
 
+    bool ItemExistsInCrate(ItemInfo I)
+    {
+        for (int i = 0; i < ItemsInFurnace.Count; i++)
+        {
+            if (I == ItemsInFurnace[i])
+                return true;
+        }
+        return false;
+    }
+
+
     [PunRPC]
     void SyncLootAcrossClients(int[] PhotonViewIDs, int[] ItemQuantity)
     {
+        print("CLEARING ITEMS IN CRATE!");
+        ItemsInFurnace.Clear();
+        ItemQuantityInFurnace.Clear();
         for (int i = 0; i < PhotonViewIDs.Length; i++)
         {
             PhotonView ItemPV = PhotonView.Find(PhotonViewIDs[i]);
             ItemInfo ItemToAdd = ItemPV.gameObject.GetComponent<ItemInfo>();
-            if (!ItemExistsInFurnace(ItemToAdd))
+            if (!ItemExistsInCrate(ItemToAdd))
             {
                 ItemsInFurnace.Add(ItemToAdd);
                 ItemQuantityInFurnace.Add(ItemQuantity[i]);
             }
         }
+
+        ClearLastLootPool();
+        DisplayLoot();
     }
 
 
@@ -80,22 +97,18 @@ public class FurnaceProperties : MonoBehaviour
 
                 ItemsInFurnace.RemoveAt(i);
                 ItemQuantityInFurnace.RemoveAt(i);
-                i--;
-
             }
 
         }
-        if (pv.IsMine)
-        {
-            for (int i = 0; i < ItemsInFurnace.Count; i++)
-            {
-                PhotonViewIDs.Add(ItemsInFurnace[i].GetComponent<PhotonView>().ViewID);
-            }
-            int[] PVIDArray = PhotonViewIDs.ToArray();
-            int[] PVQuanArray = ItemQuantityInFurnace.ToArray();
-            pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
-        }
+        PrepareToSyncLoot();
+        PhotonViewIDs.Clear();
+        ClearLastLootPool();
+        DisplayLoot();
+       
+      
     }
+
+   
 
     public bool CheckForItemAndQuantity(ItemInfo I, int Q)
     {
@@ -137,9 +150,11 @@ public class FurnaceProperties : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
-
-            IM.InventoryList[i + 42] = null;
-
+            if (IM.InventoryList[i + 42] != null)
+            {
+                IM.InventoryList[i + 42].ItemCount = 0;
+                IM.InventoryList[i + 42] = null;
+            }
         }
         IM.UpdateItemCountPerSlot();
     }
@@ -264,6 +279,7 @@ public class FurnaceProperties : MonoBehaviour
                     DecrementItemInFurnace(Weaponparts, 1);
                     IncrementItemInFurnace(RawMetal, 50);
                 }
+                PrepareToSyncLoot();
             }    
         }
     }
@@ -291,16 +307,29 @@ public class FurnaceProperties : MonoBehaviour
                 lightsource.intensity = 6;
             }
         }
+        
+        //for (int i = 0; i < ItemsInFurnace.Count; i++)
+        //{
+        //    if (ItemsInFurnace[i] != null)
+        //        PhotonViewIDs.Add(ItemsInFurnace[i].GetComponent<PhotonView>().ViewID);
+        //}
+        //int[] PVIDArray = PhotonViewIDs.ToArray();
+        //int[] PVQuanArray = ItemQuantityInFurnace.ToArray();
+        //pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
+    }
 
-        if(pv.IsMine)
+    public void PrepareToSyncLoot()
+    {
+        print("SYNCING LOOT ACROSS CLIENTS!");
+        pv = GetComponent<PhotonView>();
+        PhotonViewIDs.Clear();
+        //UpdateLoot();
+        for (int i = 0; i < ItemsInFurnace.Count; i++)
         {
-            for (int i = 0; i < ItemsInFurnace.Count; i++)
-            {
-                PhotonViewIDs.Add(ItemsInFurnace[i].GetComponent<PhotonView>().ViewID);
-            }
-            int[] PVIDArray = PhotonViewIDs.ToArray();
-            int[] PVQuanArray = ItemQuantityInFurnace.ToArray();
-            pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
+            PhotonViewIDs.Add(ItemsInFurnace[i].gameObject.GetComponent<PhotonView>().ViewID);
         }
+        int[] PVIDArray = PhotonViewIDs.ToArray();
+        int[] PVQuanArray = ItemQuantityInFurnace.ToArray();
+        pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
     }
 }

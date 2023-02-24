@@ -871,20 +871,20 @@ MonoBehaviour:
   FireParticleSystem: {fileID: 4456191621275187509}
   SparksParticleSystem: {fileID: 9151883883375927365}
   lightsource: {fileID: 7929615811619990156}
-  ItemRequiredToStartFurnace: {fileID: 7107235380967853902, guid: 43957dbf9b551f442a89be66049f24fb,
+  ItemRequiredToStartFurnace: {fileID: 7107235380967853902, guid: 58569baad7dc6004685c9dcbd0867edb,
     type: 3}
-  RawMeat: {fileID: 2271224497016088212, guid: 2daebe74ee369a74786bfcc30b5d05a8, type: 3}
-  CookedMeat: {fileID: 4930957203899973414, guid: 6907a159a3a06fd4193122b655a9fb52,
+  RawMeat: {fileID: 2271224497016088212, guid: 633b857c136443c4889ca89b681a6eb7, type: 3}
+  CookedMeat: {fileID: 4930957203899973414, guid: 665fa26a95f00cc4680f6d4fa7069c9f,
     type: 3}
-  Weaponparts: {fileID: 7268146472781844992, guid: 8dec6d3383d68714cb6b5e801ca543a1,
+  Weaponparts: {fileID: 7268146472781844992, guid: a38266a9c2b04b543a3683db95a10b3b,
     type: 3}
-  RawSulfur: {fileID: 7268146472781844992, guid: efb03dff5d6ebbc4da70555b3e868ff3,
+  RawSulfur: {fileID: 7268146472781844992, guid: 42bfd4a5e095e4149bc37d9680f13db6,
     type: 3}
-  CookedSulfur: {fileID: 7268146472781844992, guid: b7fb1b01abd71694dbe13fcf99f73e15,
+  CookedSulfur: {fileID: 7268146472781844992, guid: effc5913c2e726a4cb098759ad251233,
     type: 3}
-  RawMetal: {fileID: 7268146472781844992, guid: 54a9cca5eb3df634283ed6016322256e,
+  RawMetal: {fileID: 7268146472781844992, guid: 08824ba335a081846ab47bff34cd3d13,
     type: 3}
-  ScrapMetal: {fileID: 7268146472781844992, guid: 644f46eec640375429da7cda2f1262e9,
+  ScrapMetal: {fileID: 7268146472781844992, guid: 422d461a3ec671741bf5ecc2babd13d5,
     type: 3}
   WoodRemovalInterval: 1
   woodTimer: 0
@@ -923,7 +923,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 3923878226442259481}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

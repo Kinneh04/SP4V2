@@ -4406,8 +4406,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 446, y: -314.8}
-  m_SizeDelta: {x: 120, y: 120}
+  m_AnchoredPosition: {x: 497.92566, y: -314.8}
+  m_SizeDelta: {x: 226.5142, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7020838346685415523
 CanvasRenderer:
@@ -4430,7 +4430,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.745283, b: 0.081834994, a: 0.41960785}
+  m_Color: {r: 0.48131642, g: 0.509434, b: 0.10813459, a: 0.41960785}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13071,7 +13071,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4ac860ea236f24c83eda47fe0832f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 90
+  Health: 2
   MaxHealth: 100
   XSensitivity: 1
   YSensitivity: 1
@@ -13128,8 +13128,6 @@ MonoBehaviour:
   SleepingMenu: {fileID: 4387599412991618420}
   isSleeping: 1
   inventoryIsOpen: 0
-  TurnOnButton: {fileID: 2341948425526739841}
-  TurnOnText: {fileID: 8616299358402068828}
   craftingIsOpen: 0
   craftingScreen: {fileID: 1436266775864098727}
   CM: {fileID: 8860351985583543349}
@@ -30182,7 +30180,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 372.5659, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2128781302254173379
 CanvasRenderer:
@@ -30212,7 +30210,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TURN ON
+  m_text: START / STOP FIRE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
