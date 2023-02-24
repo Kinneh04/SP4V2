@@ -49,6 +49,7 @@ public class PlayerProperties : MonoBehaviour
     public GameObject PoisonIcon;
     public GameObject SickIcon;
     public GameObject HealIcon;
+    public GameObject BuildingDisabledIcon;
     public Animator panim;
     public GameObject bleedingIcon;
 
@@ -66,6 +67,8 @@ public class PlayerProperties : MonoBehaviour
     public int RadiationAmount;
     public float RadiationExpireTimer;
     float RTimer;
+
+    public bool isBuildingDisabled;
 
     bool isShowingBlood = false;
     float bloodTimer = 0f;
@@ -245,6 +248,7 @@ public class PlayerProperties : MonoBehaviour
         FullIcon.SetActive(false);
         PoisonIcon.SetActive(false);
         bleedingIcon.SetActive(false);
+        BuildingDisabledIcon.SetActive(false);
 
         deathscreen.SetActive(false);
         awokenMenu.SetActive(true);
