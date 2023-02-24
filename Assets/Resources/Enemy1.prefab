@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 486828541874513137}
   - component: {fileID: 4539628701490314447}
   - component: {fileID: 5439393827275032370}
-  - component: {fileID: 720109003659572910}
+  - component: {fileID: 2012032473162947155}
   m_Layer: 0
   m_Name: M1911
   m_TagString: Untagged
@@ -169,7 +169,7 @@ MonoBehaviour:
   itemID: 16
   ItemCount: 1
   MaxItemCount: 1
---- !u!114 &720109003659572910
+--- !u!114 &2012032473162947155
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 975697093765365323}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae4fb21c6619b4d42902fb252d24fec7, type: 3}
+  m_Script: {fileID: 11500000, guid: 339582d261e874c4b93ccbd4cec75378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   phview: {fileID: 0}
@@ -186,13 +186,13 @@ MonoBehaviour:
   ReplacementObj: {fileID: 0}
   ReplacementDropObj: {fileID: 0}
   OwnerActor: {fileID: 0}
-  itemType: 0
-  itemID: 0
+  itemType: 3
+  itemID: 16
   ItemCount: 0
   MaxItemCount: 0
   MagRounds: 0
-  BarrelTip: {fileID: 0}
-  BulletPrefab: {fileID: 4347079924148518773, guid: a15b541c2f94e7d488f8a47bee0f784a,
+  BarrelTip: {fileID: 8429425326233162750}
+  BulletPrefab: {fileID: 4347079924148518773, guid: a7e60ce625fd20e4ca13945014fc8604,
     type: 3}
 --- !u!1 &3110613837763264941
 GameObject:
@@ -286,7 +286,7 @@ MonoBehaviour:
   dead: 0
   Harvestable: 0
   MSpd: 3
-  gun: {fileID: 720109003659572910}
+  gun: {fileID: 2012032473162947155}
   EnemyType: 0
 --- !u!114 &1453439375783098899
 MonoBehaviour:
