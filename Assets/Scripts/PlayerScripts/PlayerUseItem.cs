@@ -14,7 +14,7 @@ public class PlayerUseItem : MonoBehaviour
     public Camera Cam;
     public Image imageToFade;
     public GameObject sniperScopeImage;
-    public AudioManager audioManager;
+    public GameObject audioManager;
     public float fadeDuration = 0.2f;
     public float scopeDelay = 0.2f;
 
@@ -45,7 +45,8 @@ public class PlayerUseItem : MonoBehaviour
     {
         inventoryManager = Inventory.GetComponent<InventoryManager>();
         pv = GetComponent<PhotonView>();
-        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
+
     }
 
 
@@ -352,7 +353,7 @@ public class PlayerUseItem : MonoBehaviour
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.AK47 && !LeftMouseButtonPressed)
                             {
                                 // PAnimator.Play("PBeanReloadAK");
-                                audioManager.PlayAudio(AudioManager.AudioID.AK47_Reload);
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 1,1f);
                                 pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadAK");
                             }
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.HOMEMADE_SHOTGUN && !LeftMouseButtonPressed)
@@ -439,10 +440,11 @@ public class PlayerUseItem : MonoBehaviour
                     }
                     else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.AK47)
                     {
+
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
                             if(OnShoot())
-                                audioManager.PlayAudio(AudioManager.AudioID.AK47_Shoot);
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 0, 1f);
                             if (!isADS)
                                 PAnimator.Play("PBeanShootAK");
                             else

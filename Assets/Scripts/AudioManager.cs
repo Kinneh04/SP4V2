@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class AudioManager : MonoBehaviour
 {
@@ -17,19 +18,24 @@ public class AudioManager : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
     }
-    public void SetCurrentAudioSourceClip(AudioID audioID)
+    public void SetCurrentAudioSourceClip(int audioID)
     {
-        if ((int)audioID < Clips.Count)
-            audioSource.clip = Clips[(int)audioID];
+        if (audioID < Clips.Count)
+            audioSource.clip = Clips[audioID];
         else
             audioSource.clip = null;
     }
-    public void PlayAudio(AudioID audioID, float Vol = 1.0f)
+    public void PlayAudio(int audioID, float Vol = 1.0f)
     {
         this.SetCurrentAudioSourceClip(audioID);
         if (audioSource.clip != null)
         {
             audioSource.PlayOneShot(audioSource.clip, Volume * Vol);
         }
+    }
+    [PunRPC]
+    public void MultiplayerPlayAudio(int audioID, float Vol = 1.0f)
+    {
+        PlayAudio(audioID, Vol);
     }
 }

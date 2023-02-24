@@ -88,6 +88,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         Quaternion rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         GameObject player = null;
 
+        PhotonNetwork.Instantiate("AudioManager", new Vector3(0,0,0), new Quaternion(0,0,0,1));
         player = PhotonNetwork.Instantiate("PlayerBean", position, rotation, 0);
 
         RemoveTagsFromOtherPlayers();
