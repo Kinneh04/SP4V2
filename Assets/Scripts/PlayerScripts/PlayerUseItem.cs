@@ -25,14 +25,19 @@ public class PlayerUseItem : MonoBehaviour
     float animtimer = 0.0f;
     public BuildingSystem bs;
     public HammerSystem hs;
+    public PinSystem ps;
     public bool isPlacingItem;
     public bool isADS;
     public float zoomFactor = 2f;
     private bool isZoomedIn = false;
     public GameObject Map;
+    public GameObject pinEntry;
 
     public PlayerLookAt playerLookAt;
     public bool isReleased = true;
+    private bool holdingCodeLock = false;
+    private GameObject currDoor = null;
+    public Material ghostMat;
 
     PhotonView pv;
     private void Awake()
@@ -123,6 +128,50 @@ public class PlayerUseItem : MonoBehaviour
         }
         if (!playerProperties.isDead && Cursor.lockState == CursorLockMode.Locked)
         {
+            if (holdingCodeLock)
+            {
+                // When looking at a door, show ghost of codelock
+                if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "DoorStructure")
+                {
+                    if (playerProperties.PlayerLookingAtItem != currDoor)
+                    {
+                        DoorStructure ds = null;
+                        if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
+                        {
+                            ds = playerProperties.PlayerLookingAtItem.GetComponent<DoorStructure>();
+                        }
+                        else if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("Buildable"))
+                        {
+                            ds = playerProperties.PlayerLookingAtItem.GetComponentInParent<DoorStructure>();
+                        }
+
+                        if (ds && !ds.hasLock && ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
+                        {
+                            // Set inactive for previous door
+                            if (currDoor != null)
+                            {
+                                ResetCodelockGhost();
+                            }
+
+                            ds.lockObject.SetActive(true);
+                            Material[] mats = ds.lockObject.transform.GetComponent<Renderer>().materials;
+                            Material[] newMats = { mats[0], ghostMat };
+                            ds.lockObject.transform.GetComponent<Renderer>().materials = newMats;
+
+                            currDoor = playerProperties.PlayerLookingAtItem;
+                        }
+                        else if (currDoor != null)
+                        {
+                            ResetCodelockGhost();
+                        }
+                    }
+                }
+                else if (currDoor != null)
+                {
+                    ResetCodelockGhost();
+                }
+            }
+
             if (Input.GetKeyDown(KeyCode.E))
             {
                 //PAnimator.Play("PBeanIdle");
@@ -140,6 +189,41 @@ public class PlayerUseItem : MonoBehaviour
                     playerProperties.PlayerLookingAtItem.GetComponent<FurnaceProperties>().IM = inventoryManager;
                     playerProperties.PlayerLookingAtItem.GetComponent<FurnaceProperties>().DisplayLoot();
                     playerProperties.OpenFurnaceInventory();
+                }
+
+                else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "DoorStructure")
+                {
+                    DoorStructure ds = null;
+                    if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
+                    {
+                        ds = playerProperties.PlayerLookingAtItem.GetComponent<DoorStructure>();
+                    }
+                    else if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("Buildable"))
+                    {
+                        ds = playerProperties.PlayerLookingAtItem.GetComponentInParent<DoorStructure>();
+                    }
+                    if (!ds)
+                        return;
+
+                    if (ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
+                    {
+                        if (ds.hasLock) 
+                        {
+                            // Open PIN entry
+                            if (ds.lockObject.GetComponent<LockStructure>().hasPin)
+                            {
+
+                            }
+                            else // No pin set, open normally
+                            {
+                                ds.SetIsOpen(!ds.isOpen);
+                            }
+                        }
+                        else
+                        {
+                            ds.SetIsOpen(!ds.isOpen);
+                        }
+                    }
                 }
 
                 else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>() != null)
@@ -214,6 +298,10 @@ public class PlayerUseItem : MonoBehaviour
                                     {
                                         hs.SetIsUsingHammer(true);
                                     }
+                                    else if (GO_Type == ItemInfo.ItemType.CodeLock)
+                                    {
+                                        holdingCodeLock = true;
+                                    }
                                 }
 
                                 if (playerProperties.PlayerLookingAtItem.GetComponent<PhotonView>() != null && pv.IsMine)
@@ -250,48 +338,49 @@ public class PlayerUseItem : MonoBehaviour
 
                     if (ItemGO.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
                     {
-                        ItemGO.GetComponent<WeaponInfo>().Reload();
-                        if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.M1911_PISTOL && !LeftMouseButtonPressed)
+                        if (ItemGO.GetComponent<WeaponInfo>().Reload())
                         {
-                            //PAnimator.Play("PBeanReloadM1911");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadM1911");
+                            if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.M1911_PISTOL && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanReloadM1911");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadM1911");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REVOLVER && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanRevolverReload");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanRevolverReload");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.AK47 && !LeftMouseButtonPressed)
+                            {
+                                // PAnimator.Play("PBeanReloadAK");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadAK");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.HOMEMADE_SHOTGUN && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanReloadShotgun");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadShotgun");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.MP5A4 && !LeftMouseButtonPressed)
+                            {
+                                // PAnimator.Play("PBeanSMGReload");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSMGReload");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REMINGTON870 && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanShotgunReload");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanShotgunReload");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.BOLT_ACTION_RIFLE && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanSniperReload");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSniperReload");
+                            }
+                            else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.ROCKETLAUNCHER && !LeftMouseButtonPressed)
+                            {
+                                //PAnimator.Play("PBeanSniperReload");
+                                pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadRocketLauncher");
+                            }
                         }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REVOLVER && !LeftMouseButtonPressed)
-                        {
-                            //PAnimator.Play("PBeanRevolverReload");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanRevolverReload");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.AK47 && !LeftMouseButtonPressed)
-                        {
-                           // PAnimator.Play("PBeanReloadAK");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadAK");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.HOMEMADE_SHOTGUN && !LeftMouseButtonPressed)
-                        {
-                            //PAnimator.Play("PBeanReloadShotgun");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadShotgun");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.MP5A4 && !LeftMouseButtonPressed)
-                        {
-                           // PAnimator.Play("PBeanSMGReload");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSMGReload");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REMINGTON870 && !LeftMouseButtonPressed)
-                        {
-                            //PAnimator.Play("PBeanShotgunReload");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanShotgunReload");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.BOLT_ACTION_RIFLE && !LeftMouseButtonPressed)
-                        {
-                            //PAnimator.Play("PBeanSniperReload");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSniperReload");
-                        }
-                        else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.ROCKETLAUNCHER && !LeftMouseButtonPressed)
-                        {
-                            //PAnimator.Play("PBeanSniperReload");
-                            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadRocketLauncher");
-                        }
-
                     }
                 }
             }
@@ -323,6 +412,13 @@ public class PlayerUseItem : MonoBehaviour
                     isPlacingItem = false;
                     inventoryManager.RemoveQuantityFromSlot(inventoryManager.EquippedSlot, 1);
                     inventoryManager.UpdateItemCountPerSlot();
+                }
+                else if (ItemGO.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.CodeLock)
+                {
+                    if (currDoor != null)
+                    {
+                        ResetCodelockGhost(true);
+                    }
                 }
                 else if (ItemGO.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
                 {
@@ -642,72 +738,8 @@ public class PlayerUseItem : MonoBehaviour
             {
                 CurrentItem = inventoryManager.IntGetItem(inventoryManager.EquippedSlot);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                inventoryManager.EquippedSlot = 4;
-                isPlacingItem = false;
-                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)
-                {
-                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
-                    {
-                        isPlacingItem = true;
-                    }
-                    else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.BuildPlan)
-                    {
-                        hs.SetIsUsingHammer(false);
-                        bs.SetIsBuilding(true);
-                    }
-                    else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
-                    {
-                        hs.SetIsUsingHammer(true);
-                        bs.SetIsBuilding(false);
-                    }
-                    else
-                    {
-                        hs.SetIsUsingHammer(false);
-                        bs.SetIsBuilding(false);
-                    }
-                }
-                else
-                {
-                    hs.SetIsUsingHammer(false);
-                    bs.SetIsBuilding(false);
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha6))
-            {
-                inventoryManager.EquippedSlot = 5;
-                isPlacingItem = false;
-                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)
-                {
-                    if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.unshowable)
-                    {
-                        isPlacingItem = true;
-                    }
-                    else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.BuildPlan)
-                    {
-                        hs.SetIsUsingHammer(false);
-                        bs.SetIsBuilding(true);
-                    }
-                    else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
-                    {
-                        hs.SetIsUsingHammer(true);
-                        bs.SetIsBuilding(false);
-                    }
-                    else
-                    {
-                        hs.SetIsUsingHammer(false);
-                        bs.SetIsBuilding(false);
-                    }
-                }
-                else
-                {
-                    hs.SetIsUsingHammer(false);
-                    bs.SetIsBuilding(false);
-                }
-            }
-            //Stores Equipped Item into CurrentItem
 
+            //Stores Equipped Item into CurrentItem
             if (CurrentItem && //check if there is a item to equip 
                 (!playerProperties.CurrentlyHoldingItem       //equips player with item in slot if hand empty
                   || (playerProperties.CurrentlyHoldingItem &&  //not null
@@ -734,7 +766,6 @@ public class PlayerUseItem : MonoBehaviour
 
     private void UpdateInventorySlot(int slotNo)
     {
-
         pv.RPC("ClearChildrenInActorRightHand", RpcTarget.All, pv.ViewID);
         if (inventoryManager.EquippedSlot == slotNo) // Do not do anything as player is already in slot (double tap same slot)
             return;
@@ -751,22 +782,32 @@ public class PlayerUseItem : MonoBehaviour
             {
                 hs.SetIsUsingHammer(false);
                 bs.SetIsBuilding(true);
+                holdingCodeLock = false;
             }
             else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
             {
                 hs.SetIsUsingHammer(true);
                 bs.SetIsBuilding(false);
+                holdingCodeLock = false;
+            }
+            else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.CodeLock)
+            {
+                hs.SetIsUsingHammer(false);
+                bs.SetIsBuilding(false);
+                holdingCodeLock = true;
             }
             else
             {
                 hs.SetIsUsingHammer(false);
                 bs.SetIsBuilding(false);
+                holdingCodeLock = false;
             }
         }
         else
         {
             hs.SetIsUsingHammer(false);
             bs.SetIsBuilding(false);
+            holdingCodeLock = false;
         }
     }
 
@@ -1024,6 +1065,31 @@ public class PlayerUseItem : MonoBehaviour
         pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSwing");
         PAnimator.Play("PBeanSwing");
         StartCoroutine(triggerCooldown());
+    }
+
+    private void ResetCodelockGhost(bool placeLock = false)
+    {
+        DoorStructure cds = null;
+        if (currDoor.layer == LayerMask.NameToLayer("BuildableParent"))
+        {
+            cds = currDoor.GetComponent<DoorStructure>();
+        }
+        else if (currDoor.layer == LayerMask.NameToLayer("Buildable"))
+        {
+            cds = currDoor.GetComponentInParent<DoorStructure>();
+        }
+
+        cds.lockObject.SetActive(false);
+        Material[] prevMats = cds.lockObject.transform.GetComponent<Renderer>().materials;
+        Material[] prevNewMats = { prevMats[0] };
+        cds.lockObject.transform.GetComponent<Renderer>().materials = prevNewMats;
+
+        if (placeLock)
+        {
+            cds.SetHasLock(true);
+            inventoryManager.Remove(inventoryManager.EquippedSlot, false);
+        }
+        currDoor = null;
     }
 
     void OnShoot()

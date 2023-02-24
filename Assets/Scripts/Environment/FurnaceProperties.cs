@@ -251,13 +251,13 @@ public class FurnaceProperties : MonoBehaviour
                 if (CheckForItemInFurnace(RawSulfur) && CheckForItemInFurnace(ItemRequiredToStartFurnace))
                 {
                     DecrementItemInFurnace(RawSulfur, 1);
-                    IncrementItemInFurnace(CookedSulfur, 1);
+                    IncrementItemInFurnace(CookedSulfur, 3);
                 }
 
                 if (CheckForItemInFurnace(RawMetal) && CheckForItemInFurnace(ItemRequiredToStartFurnace))
                 {
                     DecrementItemInFurnace(RawMetal, 1);
-                    IncrementItemInFurnace(ScrapMetal, 1);
+                    IncrementItemInFurnace(ScrapMetal, 3);
                 }
                 if (CheckForItemInFurnace(Weaponparts) && CheckForItemInFurnace(ItemRequiredToStartFurnace))
                 {

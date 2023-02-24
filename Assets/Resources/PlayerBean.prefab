@@ -12388,7 +12388,7 @@ MonoBehaviour:
   playerProperties: {fileID: 2444950040306206}
   RHand: {fileID: 5824423213444726492}
   Inventory: {fileID: 8549093519764932524}
-  inventoryManager: {fileID: 0}
+  inventoryManager: {fileID: 7147055233663228080}
   Cam: {fileID: 6249247382354149294}
   imageToFade: {fileID: 1299932483}
   sniperScopeImage: {fileID: 4720311246255320314}
@@ -12398,12 +12398,15 @@ MonoBehaviour:
   timer: 0
   bs: {fileID: 8634082567029168113}
   hs: {fileID: 8141171049426079861}
+  ps: {fileID: 0}
   isPlacingItem: 0
   isADS: 0
   zoomFactor: 2
   Map: {fileID: 0}
+  pinEntry: {fileID: 0}
   playerLookAt: {fileID: 1076643316070719907}
   isReleased: 1
+  ghostMat: {fileID: 2100000, guid: 5f95ec27a9cfdc6418fa1292745edb1a, type: 2}
 --- !u!95 &724124074
 Animator:
   serializedVersion: 4

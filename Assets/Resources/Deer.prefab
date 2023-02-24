@@ -276,10 +276,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2960168445416636602, guid: 625b5f4fc41fa2443b54bbdbba90fcab,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 625b5f4fc41fa2443b54bbdbba90fcab,
         type: 3}
       propertyPath: m_Name
       value: Cow
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 625b5f4fc41fa2443b54bbdbba90fcab,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437452133130248372, guid: 625b5f4fc41fa2443b54bbdbba90fcab,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 625b5f4fc41fa2443b54bbdbba90fcab, type: 3}
