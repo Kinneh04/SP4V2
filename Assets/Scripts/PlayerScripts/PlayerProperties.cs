@@ -530,6 +530,8 @@ public class PlayerProperties : MonoBehaviour
             }
         }
 
+        // Align icons to right, filling up inactive icons' spaces
+        ShiftIcons();
     }
 
     public IEnumerator ShowBlood()
@@ -673,6 +675,20 @@ public class PlayerProperties : MonoBehaviour
 
            // pv.RPC("ShoveLootInDeathBag", RpcTarget.All, pvBag.ViewID);
             ShoveLootInDeathBag(pvBag.ViewID);
+        }
+    }
+
+    private void ShiftIcons()
+    {
+        List<GameObject> iconList = new List<GameObject> { RadiationIcon, HealIcon, bleedingIcon, SickIcon, FullIcon, PoisonIcon, BuildingDisabledIcon };
+        int currIndex = 0;
+
+        foreach (GameObject icon in iconList) {
+            if (icon.activeSelf)
+            {
+                icon.GetComponent<RectTransform>().anchoredPosition = new Vector2(currIndex * -105.6f + 429.6f, icon.GetComponent<RectTransform>().anchoredPosition.y);
+                currIndex++;
+            }
         }
     }
 }
