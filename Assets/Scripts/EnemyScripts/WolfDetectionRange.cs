@@ -18,7 +18,6 @@ public class WolfDetectionRange : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name + ", " + other.gameObject.tag);
         if (other.gameObject.CompareTag("Player"))
         {
             PV.RPC("WolfFoundPlayer", RpcTarget.All, other.GetComponent<PhotonView>().ViewID);
@@ -72,7 +71,6 @@ public class WolfDetectionRange : MonoBehaviour
 
     public void OnTriggerExit(Collider other)
     {
-
         if (other.gameObject.CompareTag("Player"))
         {
             PV.RPC("WolfLostPlayer", RpcTarget.All, other.GetComponent<PhotonView>().ViewID);

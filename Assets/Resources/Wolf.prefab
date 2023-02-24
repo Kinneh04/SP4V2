@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 711489305874376521}
   - component: {fileID: 1776382934495147242}
   - component: {fileID: 6702759315042109250}
+  - component: {fileID: 5342526465633796220}
+  - component: {fileID: 8706587453787908624}
   m_Layer: 0
   m_Name: Wolf
   m_TagString: Wolf
@@ -54,6 +56,7 @@ MonoBehaviour:
   TargetPlayer: {fileID: 0}
   Structure: {fileID: 0}
   dead: 0
+  Harvestable: 0
   MSpd: 3
   change: 0
   Prey: {fileID: 0}
@@ -156,6 +159,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fd2be175e0a8f540b9f686d99e76289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &5342526465633796220
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6062121161130344991}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &8706587453787908624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6062121161130344991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e211c5d95c4f3b42863fa021d75ec23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemAmount: 100
+  BaseHarvestAmount: 10
+  ItemToGivePlayerOnHarvest: {fileID: 5606821295262822052, guid: 633b857c136443c4889ca89b681a6eb7,
+    type: 3}
+  pv: {fileID: 8868489711535679890}
 --- !u!1001 &5458780935621135279
 PrefabInstance:
   m_ObjectHideFlags: 0
