@@ -10,7 +10,7 @@ public class DropdownHolder : MonoBehaviour
     public TMP_Dropdown dropdown;
     public Slider sfxSlider;
     public Slider musicSlider;
-    public float renderDistance = 200;
+    public float renderDistance = 600;
     public float musicVolume;
     public float sfxVolume;
     GameObject[] grassObjects;
@@ -31,7 +31,7 @@ public class DropdownHolder : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         grassObjects = GameObject.FindGameObjectsWithTag("Grass");
-        renderDistance = 300f;
+        renderDistance = 600f;
         sfxSlider.value = 0.5f;
         musicSlider.value = 0.5f;
         musicVolume = musicSlider.value;
@@ -64,15 +64,15 @@ public class DropdownHolder : MonoBehaviour
         switch (dropdown.value)
         {
             case 0: // High
-                renderDistance = 400f;
+                renderDistance = 600f;
                 ShowGrass(true);
                 break;
             case 1: // Medium
-                renderDistance = 300f;
+                renderDistance = 500f;
                 ShowGrass(true);
                 break;
             case 2: // Low
-                renderDistance = 150f;
+                renderDistance = 400f;
                 ShowGrass(false);
                 break;
         }
