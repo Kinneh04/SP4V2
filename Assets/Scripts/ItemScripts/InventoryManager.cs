@@ -122,6 +122,7 @@ public class InventoryManager : MonoBehaviour
         pui.DropItem(SlotID);
     }
 
+
     public void SwapTwoSlots(int Slot1ID, int Slot2ID)
     {
         //If slots are empty shift item to new slot
