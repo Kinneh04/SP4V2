@@ -172,6 +172,7 @@ public class TankAI : Enemy
                     if (deadTime <= 0 && PV.IsMine)
                     {
                         // Harvestable = true;
+                        PhotonNetwork.Instantiate("Carepackage", transform.position, Quaternion.identity);
                         PhotonNetwork.Destroy(gameObject);
                     }
                     break;

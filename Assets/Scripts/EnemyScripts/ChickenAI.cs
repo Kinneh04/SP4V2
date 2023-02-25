@@ -129,7 +129,7 @@ public class ChickenAI : Enemy
                         {
                             if (Vector3.Distance(transform.position, destination) < 1 || MoveTime <= 0)
                             {
-                                MoveTime = 2;
+                                MoveTime = 0.5f;
                                 isMoving = false;
                             }
                         }
@@ -150,7 +150,7 @@ public class ChickenAI : Enemy
                         if (MoveTime <= 0)
                         {
                             isMoving = false;
-                            MoveTime = 2;
+                            MoveTime = 0.5f;
                             break;
                         }
                         else if (MoveTime > 0)
@@ -210,7 +210,7 @@ public class ChickenAI : Enemy
                         {
                             if (Vector3.Distance(transform.position, destination) < 2 || MoveTime <= 0)
                             {
-                                MoveTime = 2;
+                                MoveTime = 0.5f;
                                 isMoving = false;
                             }
                         }

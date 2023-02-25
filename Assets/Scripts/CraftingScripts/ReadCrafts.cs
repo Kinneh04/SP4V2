@@ -21,10 +21,14 @@ public class ReadCrafts : MonoBehaviour
 
     void Update()
     {
-        if (CM.IntGetItem(SlotNumber) != null)
-            SlotText.text = CM.IntGetItem(SlotNumber).GetItemID().ToString();
-        else
-            SlotText.text = null;
+        //if (CM.IntGetItem(SlotNumber) != null)
+        //    SlotText.text = CM.IntGetItem(SlotNumber).GetItemID().ToString();
+        //else
+        //    SlotText.text = null;
+    }
 
+    public void loadName(string name)
+    {
+        SlotText.text = name;
     }
 }

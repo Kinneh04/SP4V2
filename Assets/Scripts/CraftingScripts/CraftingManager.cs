@@ -34,6 +34,7 @@ public class CraftingManager : MonoBehaviour
     public int WorkbenchNeeded;
 
     public int CraftAmount;
+    public int singleAmount;
     public int CurrentWorkbenchLv;
 
     bool made = false;
@@ -119,6 +120,7 @@ public class CraftingManager : MonoBehaviour
 
                 // Update Description
                 description.ChangeDescription(CraftableList[SelectedCraft]);
+                CraftSelections[SelectedCraft].GetComponentInChildren<ReadCrafts>().loadName(description.Name.text);
 
                 // Reset Quantity based on can craft
 
@@ -296,8 +298,7 @@ public class CraftingManager : MonoBehaviour
         }
         //temp = PhotonNetwork.Instantiate(CraftableList[SelectedCraft].name, transform.position, transform.rotation).transform.GetComponent<ItemInfo>();
         temp.gameObject.SetActive(false);
-        IM.AddQuantity(temp, CraftAmount);
-        CraftAmount = 0;
+        IM.AddQuantity(temp, CraftAmount * singleAmount);
         //Selected(SelectedCraft, false);
         if (ScreenCraft)
             CraftSelections[SelectedCraft].load();
