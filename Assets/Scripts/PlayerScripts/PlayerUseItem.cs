@@ -263,30 +263,32 @@ public class PlayerUseItem : MonoBehaviour
                                 if (GO_Dupe.GetComponent<PhotonView>() != null && pv.IsMine)
                                     pv.RPC("ShoveNewItemInRHandOfActor", RpcTarget.All, GO_Dupe.GetComponent<PhotonView>().ViewID, pv.ViewID);
 
-                                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID == GO_Dupe.GetComponent<ItemInfo>().itemID)
-                                {
-                                    isPlacingItem = true;
-                                    GO_Dupe.SetActive(true);
-                                }
-                                else
-                                {
-                                    GO_Dupe.SetActive(false);
-                                }
-                                
-                                  inventoryManager.UpdateItemCountPerSlot();  
+                            /*                                if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID == GO_Dupe.GetComponent<ItemInfo>().itemID)
+                                                            {
+                                                                isPlacingItem = true;
+                                                                GO_Dupe.SetActive(true);
+                                                            }
+                                                            else
+                                                            {
+                                                                GO_Dupe.SetActive(false);
+                                                            }*/
+                            GO_Dupe.SetActive(false);
+
+                            inventoryManager.UpdateItemCountPerSlot();  
                             }
                             else
                             {
-                                if (playerProperties.CurrentlyHoldingItem != null)
+                                // The below code breaks stuff (Various states being set to true but unable to actually perform their actions)
+/*                                if (playerProperties.CurrentlyHoldingItem != null)
                                 {
-                                  /*if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.BuildPlan)
+                                  if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.BuildPlan)
                                     {
                                         bs.SetIsBuilding(false);
                                     }
                                     else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Hammer)
                                     {
                                         hs.SetIsUsingHammer(false);
-                                    }*/
+                                    }
                                 }
                                 else
                                 {
@@ -302,12 +304,28 @@ public class PlayerUseItem : MonoBehaviour
                                     {
                                         holdingCodeLock = true;
                                     }
-                                }
+                                }*/
 
                                 if (playerProperties.PlayerLookingAtItem.GetComponent<PhotonView>() != null && pv.IsMine)
                                     pv.RPC("ShoveNewItemInRHandOfActor", RpcTarget.All, playerProperties.PlayerLookingAtItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
                                 else Debug.LogError("Custom error: Current Item has no PhotonView component. Cannot be displayed server side");
-                                inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().ItemCount);
+                                if (inventoryManager.AddQuantity(playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>(), playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().ItemCount))
+                                {
+                                    // Returned true, need to set variables
+                                    if (GO_Type == ItemInfo.ItemType.BuildPlan)
+                                    {
+                                        bs.SetIsBuilding(true);
+                                    }
+                                    else if (GO_Type == ItemInfo.ItemType.Hammer)
+                                    {
+                                        hs.SetIsUsingHammer(true);
+                                    }
+                                    else if (GO_Type == ItemInfo.ItemType.CodeLock)
+                                    {
+                                        holdingCodeLock = true;
+                                    }
+
+                                }
                                 inventoryManager.UpdateItemCountPerSlot();
                                 playerProperties.PlayerLookingAtItem = null;
                             }

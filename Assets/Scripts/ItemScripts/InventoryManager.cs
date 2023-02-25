@@ -251,8 +251,9 @@ public class InventoryManager : MonoBehaviour
         }
         UpdateItemCountPerSlot();
     } 
-    public void AddQuantity(ItemInfo item, int QuantityToAdd = 0)
+    public bool AddQuantity(ItemInfo item, int QuantityToAdd = 0)
     {
+        bool needSetVariable = false;
         print("ATTEMPT TO ADD ITEM: " + item.itemID);
         if (InventoryList.Count <= MaxInventorySize)
         {
@@ -261,20 +262,22 @@ public class InventoryManager : MonoBehaviour
             {
                 InventoryList[SlotNum].ItemCount += QuantityToAdd;
                 Destroy(item);
-               // Debug.Log("Path1");
             }
             else //creates a new gameobj and adds quantity
             {
-                //Debug.Log("Path2 - 1");
-                //GameObject newItem = Instantiate(item.gameObject);
                 InventoryList[SlotNum] = item;
                 InventoryList[SlotNum].ItemCount = QuantityToAdd;
-                //InventoryList[SlotNum].SetItemCount(QuantityToAdd + InventoryList[SlotNum].GetItemCount());
-               // Destroy(item);
-              // Debug.Log("Path2 - 2: " + InventoryList[SlotNum]);
+
+                // Check if current holding slot is the newly added item
+                if (pp.CurrentlyHoldingItem == null && EquippedSlot == SlotNum)
+                {
+                    // If yes, for BuildPlan / Hammer / CodeLock, set corresponding variables
+                    needSetVariable = true; // Send true back to PlayerUseItem to perform setting of variables
+                }
             }
         }
         UpdateItemCountPerSlot();
+        return needSetVariable;
     }
 
     public void RemoveQuantity(ItemInfo item, int QuantityToRemove = 0)

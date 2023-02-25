@@ -92,7 +92,7 @@ public class HammerSystem : MonoBehaviour
         {
             // Hide choosing menu the moment right click is no longer held, and select the currently selected action
             menuObject.SetActive(false);
-            //Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 

@@ -12,6 +12,7 @@ public class BuildingSystem : MonoBehaviour
     private bool isTranslated = false;
     public Transform currentPreview;
 
+    public PlayerProperties pp;
     public InventoryManager im;
     public GameObject woodObj;
     public CreatePopup cp;
@@ -176,6 +177,12 @@ public class BuildingSystem : MonoBehaviour
 
         if (IsChoosingObj)
             return;
+
+        if (pp.isBuildingDisabled)
+        {
+            cp.CreateResourcePopup("Building disabled!", 0);
+            return;
+        }
 
         PreviewObject po = currentPreview.GetComponent<PreviewObject>();
         if (po.IsBuildable)

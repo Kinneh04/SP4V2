@@ -13080,12 +13080,12 @@ GameObject:
   - component: {fileID: 5904499463582446762}
   - component: {fileID: 8634082567029168113}
   - component: {fileID: 8141171049426079861}
+  - component: {fileID: 8213629809806154621}
   - component: {fileID: 745410424}
   - component: {fileID: 3882562080427198219}
   - component: {fileID: 2344793027337608951}
   - component: {fileID: 1937501596532756897}
   - component: {fileID: 1053439423479197963}
-  - component: {fileID: 8213629809806154621}
   m_Layer: 0
   m_Name: PlayerBean
   m_TagString: Player
@@ -13360,6 +13360,7 @@ MonoBehaviour:
     prefab: {fileID: 0}
     selectedPrefab: {fileID: 0}
   currentPreview: {fileID: 0}
+  pp: {fileID: 2444950040306206}
   im: {fileID: 7147055233663228080}
   woodObj: {fileID: 101618360071302301, guid: 43957dbf9b551f442a89be66049f24fb, type: 3}
   cp: {fileID: 1937501596532756897}
@@ -13405,6 +13406,36 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6a16f56fea380fd4fa283a9e3bc1a134, type: 3}
   - {fileID: 21300000, guid: 185806e97836da045ad13e85d7ccda6d, type: 3}
   - {fileID: 21300000, guid: 500d9c9cbc976ea40998c9357c92b8f8, type: 3}
+--- !u!114 &8213629809806154621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2172646945943345891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29f258679ac1f6a41b953adce9b72b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pm: {fileID: 2215454391473533705}
+  cp: {fileID: 1937501596532756897}
+  PinUI: {fileID: 7154147581259817069}
+  keypadBtns:
+  - {fileID: 5694552552444031777}
+  - {fileID: 6405466306642908111}
+  - {fileID: 6725851515454486951}
+  - {fileID: 2564404827140840795}
+  - {fileID: 6455861586859288905}
+  - {fileID: 7202812696245275076}
+  - {fileID: 2680865365894356977}
+  - {fileID: 9207436704979077340}
+  - {fileID: 1314450202746070675}
+  - {fileID: 8528872176275647620}
+  - {fileID: 8615340971121627498}
+  removePinBtn: {fileID: 1052280605272169133}
+  title: {fileID: 1710125868101134420}
+  PinDisplay: {fileID: 7135272788265157530}
 --- !u!54 &745410424
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13493,36 +13524,6 @@ MonoBehaviour:
   input: {fileID: 5218249765746457034}
   ChatTexts: []
   isTyping: 0
---- !u!114 &8213629809806154621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2172646945943345891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29f258679ac1f6a41b953adce9b72b8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pm: {fileID: 2215454391473533705}
-  cp: {fileID: 1937501596532756897}
-  PinUI: {fileID: 7154147581259817069}
-  keypadBtns:
-  - {fileID: 5694552552444031777}
-  - {fileID: 6405466306642908111}
-  - {fileID: 6725851515454486951}
-  - {fileID: 2564404827140840795}
-  - {fileID: 6455861586859288905}
-  - {fileID: 7202812696245275076}
-  - {fileID: 2680865365894356977}
-  - {fileID: 9207436704979077340}
-  - {fileID: 1314450202746070675}
-  - {fileID: 8528872176275647620}
-  - {fileID: 8615340971121627498}
-  removePinBtn: {fileID: 1052280605272169133}
-  title: {fileID: 1710125868101134420}
-  PinDisplay: {fileID: 7135272788265157530}
 --- !u!1 &2209621124372234927
 GameObject:
   m_ObjectHideFlags: 0
