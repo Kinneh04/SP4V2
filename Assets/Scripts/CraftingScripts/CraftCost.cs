@@ -16,12 +16,14 @@ public class CraftCost : MonoBehaviour
 
     int[] materialCounts;
     ItemInfo[] materials;
+    int AmountToMake;
 
     void Awake()
     {
         // CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
         materialCounts = new int[3];
         materials = new ItemInfo[3];
+        AmountToMake = 1;
     }
 
 
