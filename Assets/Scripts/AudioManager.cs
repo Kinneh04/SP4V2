@@ -13,6 +13,12 @@ public class AudioManager : MonoBehaviour
         Pistol_Shoot,
         Sniper_Shoot,
         Hitmarker,
+        Pickup,
+        Drop,
+        Looting,
+        Chewing,
+        // lmao audio works even if i dont fill this in
+        // poggers
         NUM_AUDIO,
     }
     public AudioSource audioSource;

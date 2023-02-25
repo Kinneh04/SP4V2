@@ -56,6 +56,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 17f7928c59ee81942ba4de3392e1240c, type: 3}
   - {fileID: 8300000, guid: 0a0a6b5856de5cd468dceb85c291b444, type: 3}
   - {fileID: 8300000, guid: 00f2ead8daf0016479e7f5103a90b644, type: 3}
+  - {fileID: 8300000, guid: 77d07f82ddf6625458ea33f071ffe2eb, type: 3}
+  - {fileID: 8300000, guid: feec0498c6409b3428f6d8576c850d32, type: 3}
+  - {fileID: 8300000, guid: 037b6c1abdd24ee46b92a58a99eb2afb, type: 3}
+  - {fileID: 8300000, guid: a2fd1fbc80c94f64daab0fe04bdedb6a, type: 3}
+  - {fileID: 8300000, guid: 8afbff2620ac6a940903a71128635a14, type: 3}
+  - {fileID: 8300000, guid: f6299a089d247514cbaf3006b1d9f201, type: 3}
+  - {fileID: 8300000, guid: 1b3598373e7cd0e4787c99cd879d532e, type: 3}
+  - {fileID: 8300000, guid: 34634e7475fc0a04b85c937c5a64b1dc, type: 3}
   Volume: 1
 --- !u!82 &2369061369853699106
 AudioSource:

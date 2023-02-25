@@ -186,6 +186,7 @@ public class PlayerUseItem : MonoBehaviour
                     playerProperties.PlayerLookingAtItem.GetComponent<LootProperties>().IM = inventoryManager;
                     playerProperties.PlayerLookingAtItem.GetComponent<LootProperties>().DisplayLoot();
                     playerProperties.OpenLootInventory();
+                    audioManager.GetComponent<AudioManager>().PlayAudio(8);
                 }
                 else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "Campfire")
                 {
@@ -260,6 +261,7 @@ public class PlayerUseItem : MonoBehaviour
                     if (playerProperties.PlayerLookingAtItem.transform.parent != null && playerProperties.PlayerLookingAtItem.transform.parent.tag == "RHand") return;
 
                     ItemInfo.ItemType GO_Type = playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().GetItemType();
+                    ItemInfo.ItemID GO_ID = playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>().itemID;
                     if (GO_Type == ItemInfo.ItemType.Bush)
                     {
                         playerProperties.PlayerLookingAtItem.GetComponent<BushProperties>().Pick();
@@ -302,7 +304,7 @@ public class PlayerUseItem : MonoBehaviour
                                                                 GO_Dupe.SetActive(false);
                                                             }*/
                             GO_Dupe.SetActive(false);
-
+                            audioManager.GetComponent<AudioManager>().PlayAudio(13);
                             inventoryManager.UpdateItemCountPerSlot();
                         }
                         else
@@ -354,6 +356,22 @@ public class PlayerUseItem : MonoBehaviour
                                     holdingCodeLock = true;
                                 }
 
+                            }
+                            if(GO_Type != ItemInfo.ItemType.Ranged)
+                            {
+                                audioManager.GetComponent<AudioManager>().PlayAudio(13);
+                            }
+                            else if(GO_ID == ItemInfo.ItemID.Revolver || GO_ID == ItemInfo.ItemID.M1911_Pistol)
+                            {
+                                audioManager.GetComponent<AudioManager>().PlayAudio(10);
+                            }
+                            else if (GO_ID == ItemInfo.ItemID.Handmade_Shotgun || GO_ID == ItemInfo.ItemID.Remington870)
+                            {
+                                audioManager.GetComponent<AudioManager>().PlayAudio(11);
+                            }
+                            else if (GO_ID == ItemInfo.ItemID.MP5A4 || GO_ID == ItemInfo.ItemID.AK47_Rifle || GO_ID == ItemInfo.ItemID.Bolt_Action_Rifle)
+                            {
+                                audioManager.GetComponent<AudioManager>().PlayAudio(12);
                             }
                             inventoryManager.UpdateItemCountPerSlot();
                             playerProperties.PlayerLookingAtItem = null;
@@ -635,6 +653,7 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         isReleased = false;
                         ItemGO.GetComponent<ConsumableProperty>().Eatfood();
+                        audioManager.GetComponent<AudioManager>().PlayAudio(9);
                         GetRidOfItem();
                     }
                 }

@@ -32,6 +32,11 @@ public class DropdownHolder : MonoBehaviour
         }
         grassObjects = GameObject.FindGameObjectsWithTag("Grass");
         renderDistance = 300f;
+        sfxSlider.value = 0.5f;
+        musicSlider.value = 0.5f;
+        musicVolume = musicSlider.value;
+        sfxVolume = sfxSlider.value;
+
     }
 
     public void LiveUpdateGraphicalSettings()

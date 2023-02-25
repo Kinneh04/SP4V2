@@ -17,7 +17,7 @@ public class ClickAndDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     public GameObject emptySlot;
     InventoryManager IM;
 
-
+    public AudioManager audioManager;
 
 
     private void Awake()
@@ -28,11 +28,12 @@ public class ClickAndDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         slotname = gameObject.name;
         Slot = GetComponentInChildren<ReadInventory>().SlotNumber;
         IM = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryManager>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-
+        audioManager.PlayAudio(6);
         OGPosition = gameObject.transform.position;
         clone = Instantiate(emptySlot, OGPosition, Quaternion.identity);
         clone.transform.parent = transform.parent;
@@ -75,8 +76,8 @@ public class ClickAndDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
                intSlotToSwapWith = raycastResults[i].gameObject.GetComponentInChildren<ReadInventory>().SlotNumber;
 
                     IM.SwapTwoSlots(Slot, intSlotToSwapWith);
+                    audioManager.PlayAudio(7);
 
-                
 
                 return;
             }

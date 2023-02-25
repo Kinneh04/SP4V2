@@ -247,6 +247,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &597737198
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,6 +344,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &699973126
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,6 +441,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &749668849
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,6 +733,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &1282317073
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,6 +1057,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &1757364724
 GameObject:
   m_ObjectHideFlags: 0
@@ -1858,6 +1863,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &94625091895780952
 GameObject:
   m_ObjectHideFlags: 0
@@ -3243,6 +3249,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &375484471171543508
 GameObject:
   m_ObjectHideFlags: 0
@@ -5420,6 +5427,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &671362149440540337
 GameObject:
   m_ObjectHideFlags: 0
@@ -7137,6 +7145,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &979339583253487898
 GameObject:
   m_ObjectHideFlags: 0
@@ -8617,6 +8626,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &1201842278438152973
 GameObject:
   m_ObjectHideFlags: 0
@@ -11148,6 +11158,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &1659087533155413120
 GameObject:
   m_ObjectHideFlags: 0
@@ -12943,6 +12954,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &2025266800450652485
 GameObject:
   m_ObjectHideFlags: 0
@@ -13385,6 +13397,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &2164564308957148917
 GameObject:
   m_ObjectHideFlags: 0
@@ -14892,6 +14905,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &2408381652198056003
 GameObject:
   m_ObjectHideFlags: 0
@@ -15515,6 +15529,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &2500950985653641515
 GameObject:
   m_ObjectHideFlags: 0
@@ -17156,6 +17171,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &2811185359010677516
 GameObject:
   m_ObjectHideFlags: 0
@@ -18856,6 +18872,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &3106944858239165276
 GameObject:
   m_ObjectHideFlags: 0
@@ -18952,6 +18969,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &3112443780858253503
 GameObject:
   m_ObjectHideFlags: 0
@@ -20330,6 +20348,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &3350294450567126601
 GameObject:
   m_ObjectHideFlags: 0
@@ -21452,6 +21471,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &3506837906994342412
 GameObject:
   m_ObjectHideFlags: 0
@@ -22467,6 +22487,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &3591656981900972025
 GameObject:
   m_ObjectHideFlags: 0
@@ -22600,6 +22621,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &3610958084431402354
 GameObject:
   m_ObjectHideFlags: 0
@@ -25328,6 +25350,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &4100357200128619636
 GameObject:
   m_ObjectHideFlags: 0
@@ -26629,6 +26652,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &4210185753997365588
 GameObject:
   m_ObjectHideFlags: 0
@@ -26725,6 +26749,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &4225509430083820006
 GameObject:
   m_ObjectHideFlags: 0
@@ -27617,6 +27642,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &4458076968692063186
 GameObject:
   m_ObjectHideFlags: 0
@@ -27713,6 +27739,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &4483858329028078309
 GameObject:
   m_ObjectHideFlags: 0
@@ -28061,6 +28088,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &4641426317799851655
 GameObject:
   m_ObjectHideFlags: 0
@@ -30085,6 +30113,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &5116981905429591886
 GameObject:
   m_ObjectHideFlags: 0
@@ -30257,6 +30286,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &5148362938074985431
 GameObject:
   m_ObjectHideFlags: 0
@@ -31070,6 +31100,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &5224968701649938979
 GameObject:
   m_ObjectHideFlags: 0
@@ -33627,6 +33658,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &5621813729395831842
 GameObject:
   m_ObjectHideFlags: 0
@@ -34473,6 +34505,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &5685954587465356934
 GameObject:
   m_ObjectHideFlags: 0
@@ -34645,6 +34678,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &5703091581267350532
 GameObject:
   m_ObjectHideFlags: 0
@@ -36935,6 +36969,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &6023874597939290790
 GameObject:
   m_ObjectHideFlags: 0
@@ -39027,6 +39062,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &6292330661444699500
 GameObject:
   m_ObjectHideFlags: 0
@@ -42129,6 +42165,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &6877266619620424835
 GameObject:
   m_ObjectHideFlags: 0
@@ -45198,6 +45235,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &7320774264664502838
 GameObject:
   m_ObjectHideFlags: 0
@@ -45956,6 +45994,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &7430882451881655204
 GameObject:
   m_ObjectHideFlags: 0
@@ -48767,6 +48806,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &7763357974248413737
 GameObject:
   m_ObjectHideFlags: 0
@@ -49300,6 +49340,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &7872917081045034822
 GameObject:
   m_ObjectHideFlags: 0
@@ -52561,6 +52602,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &8373614510636162413
 GameObject:
   m_ObjectHideFlags: 0
@@ -53276,6 +53318,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &8469485577435676284
 GameObject:
   m_ObjectHideFlags: 0
@@ -55254,6 +55297,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &8768975528076191717
 GameObject:
   m_ObjectHideFlags: 0
@@ -55702,6 +55746,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &8805017236066940905
 GameObject:
   m_ObjectHideFlags: 0
@@ -55892,6 +55937,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &8906247071865333567
 GameObject:
   m_ObjectHideFlags: 0
@@ -57441,6 +57487,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &9111017982987260403
 GameObject:
   m_ObjectHideFlags: 0
@@ -57672,6 +57719,7 @@ MonoBehaviour:
   Slot: 0
   intSlotToSwapWith: 0
   emptySlot: {fileID: 1553295804923080399}
+  audioManager: {fileID: 0}
 --- !u!1 &9128101455147883223
 GameObject:
   m_ObjectHideFlags: 0
