@@ -125,6 +125,7 @@ public class JLGameManager : MonoBehaviourPunCallbacks
             if (!Player.GetComponent<PhotonView>().IsMine)
             {
                 Player.tag = "EnemyPlayer";
+                Destroy(Player.transform.Find("GraphicsSettingsInGame").gameObject);
                 Destroy(Player.transform.Find("Capsule").Find("Eyes").GetComponentInChildren<Camera>().gameObject);
                 //Destroy(Player.GetComponent<PlayerProperties>());
                 Destroy(Player.GetComponent<Rigidbody>());

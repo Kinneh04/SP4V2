@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
+
 public class PlayerProperties : MonoBehaviour
 {
     public float Health;
@@ -90,7 +92,8 @@ public class PlayerProperties : MonoBehaviour
     public GameObject DeathBag;
 
     public GameObject PauseMenu;
-
+    public Camera Camera;
+    public GameObject GraphicsLoader;
     PhotonView pv;
 
     private void Awake()
@@ -98,7 +101,14 @@ public class PlayerProperties : MonoBehaviour
         pv = GetComponent<PhotonView>();
 
         Sleep();
-        OGSpawnPoint = transform.position;  
+        OGSpawnPoint = transform.position;
+        Camera = gameObject.transform.Find("Capsule").Find("Eyes").Find("Camera").GetComponent<Camera>();
+        GraphicsLoader = GameObject.Find("GraphicsLoader");
+        float renderDistance = GraphicsLoader.GetComponent<DropdownHolder>().renderDistance;
+        if(renderDistance > 10)
+        {
+            Camera.farClipPlane = renderDistance;
+        }
     }
 
     public void Sleep()
@@ -110,6 +120,7 @@ public class PlayerProperties : MonoBehaviour
     public void DisconnectFromServer()
     {
         PhotonNetwork.Disconnect();
+        SceneManager.LoadScene("MainMenuScene");
     }
 
     public void TurnOnFurnace()
@@ -680,14 +691,18 @@ public class PlayerProperties : MonoBehaviour
 
     private void ShiftIcons()
     {
-        List<GameObject> iconList = new List<GameObject> { RadiationIcon, HealIcon, bleedingIcon, SickIcon, FullIcon, PoisonIcon, BuildingDisabledIcon };
-        int currIndex = 0;
+        if (pv.IsMine)
+        {
+            List<GameObject> iconList = new List<GameObject> { RadiationIcon, HealIcon, bleedingIcon, SickIcon, FullIcon, PoisonIcon, BuildingDisabledIcon };
+            int currIndex = 0;
 
-        foreach (GameObject icon in iconList) {
-            if (icon.activeSelf)
+            foreach (GameObject icon in iconList)
             {
-                icon.GetComponent<RectTransform>().anchoredPosition = new Vector2(currIndex * -105.6f + 429.6f, icon.GetComponent<RectTransform>().anchoredPosition.y);
-                currIndex++;
+                if (icon.activeSelf)
+                {
+                    icon.GetComponent<RectTransform>().anchoredPosition = new Vector2(currIndex * -105.6f + 429.6f, icon.GetComponent<RectTransform>().anchoredPosition.y);
+                    currIndex++;
+                }
             }
         }
     }

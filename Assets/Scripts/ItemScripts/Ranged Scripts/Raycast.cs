@@ -28,12 +28,12 @@ public class Raycast : MonoBehaviour
     private float LastShootTime;
     public ParticleSystem MuzzleFlash;
     public GameObject BulletImpact;
-
+    public AudioManager audioManager;
 
     // Start is called before the first frame update
     void Awake()
     {
-
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
     public void Shoot()
     {
@@ -51,39 +51,46 @@ public class Raycast : MonoBehaviour
             {
                 hit.transform.GetComponent<Enemy>().GetDamaged((int)Damage);
                 GO = Instantiate(BloodParticleSystem, hit.point, Quaternion.identity);
+                audioManager.PlayAudio(5);
+
             }
             else if (hit.transform.gameObject.CompareTag("Wolf"))
             {
                 hit.transform.GetComponent<WolfAI>().GetDamaged((int)Damage);
                 GO = Instantiate(BloodParticleSystem, hit.point, Quaternion.identity);
+                audioManager.PlayAudio(5);
             }
             else if (hit.transform.gameObject.CompareTag("Tank"))
             {
                 hit.transform.GetComponent<TankAI>().GetDamaged((int)Damage);
                 GO = Instantiate(ImpactParticleSystem, hit.point, Quaternion.identity);
+                audioManager.PlayAudio(5);
             }
             else if (hit.transform.gameObject.CompareTag("Deer"))
             {
                 hit.transform.GetComponent<DeerAI>().GetDamaged((int)Damage);
                 hit.transform.GetComponent<DeerAI>().DamagedDirection(direction);
-                GO = Instantiate(ImpactParticleSystem, hit.point, Quaternion.identity);
+                GO = Instantiate(BloodParticleSystem, hit.point, Quaternion.identity);
+                audioManager.PlayAudio(5);
             }
             else if (hit.transform.gameObject.CompareTag("Chicken"))
             {
                 hit.transform.GetComponent<ChickenAI>().GetDamaged((int)Damage);
                 hit.transform.GetComponent<ChickenAI>().DamagedDirection(direction);
-                GO = Instantiate(ImpactParticleSystem, hit.point, Quaternion.identity);
+                GO = Instantiate(BloodParticleSystem, hit.point, Quaternion.identity);
+                audioManager.PlayAudio(5);
             }
             else if (hit.transform.gameObject.CompareTag("Helicopter"))
             {
                 hit.transform.GetComponent<HeliAI>().TakeDamage((int)Damage);
                 GO = Instantiate(ImpactParticleSystem, hit.point, Quaternion.identity);
+                audioManager.PlayAudio(5);
             }
             else if (hit.transform.gameObject.CompareTag("Player") || hit.transform.gameObject.CompareTag("EnemyPlayer"))
             {
-                print("OW!!!!!!!!!!");
                 hit.transform.GetComponent<PlayerProperties>().TakeDamageV2((int)Damage);
                 GO = Instantiate(BloodParticleSystem, hit.point, Quaternion.identity);
+                audioManager.PlayAudio(5);
             }
             else
             {

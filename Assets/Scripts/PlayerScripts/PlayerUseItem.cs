@@ -506,7 +506,8 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            OnShoot();
+                            if (OnShoot())
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 4, 1f);
                             if (!isADS)
                             {
                                 PAnimator.Play("PBeanSniperShoot");

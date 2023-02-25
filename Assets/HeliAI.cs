@@ -74,30 +74,33 @@ public class HeliAI : MonoBehaviour
 
     private void Update()
     {
-        if (pv.IsMine && targets.Count > 0)
+        if (pv.IsMine)
         {
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
             //print(Vector3.Distance(gameObject.transform.position, Target.transform.position));
-            ShootCooldown -= Time.deltaTime;
-            if (ShootCooldown <= 0)
+            if (targets.Count > 0)
             {
-                burstCooldown -= Time.deltaTime;
-                if (burstCooldown <= 0)
+                ShootCooldown -= Time.deltaTime;
+                if (ShootCooldown <= 0)
                 {
-                    int r = Random.Range(0, targets.Count);
-                    burstCooldown = 0.35f;
-                    ShootMissleAtTarget(r);
-                    burstAmount--;
-                    if (burstAmount <= 0)
+                    burstCooldown -= Time.deltaTime;
+                    if (burstCooldown <= 0)
                     {
-                        burstAmount = 5;
-                        ShootCooldown = 10.0f;
+                        int r = Random.Range(0, targets.Count);
                         burstCooldown = 0.35f;
+                        ShootMissleAtTarget(r);
+                        burstAmount--;
+                        if (burstAmount <= 0)
+                        {
+                            burstAmount = 5;
+                            ShootCooldown = 10.0f;
+                            burstCooldown = 0.35f;
+                        }
+
+
                     }
 
-                    
                 }
-
             }
         }
     }
