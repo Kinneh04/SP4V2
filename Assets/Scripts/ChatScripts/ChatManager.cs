@@ -45,7 +45,6 @@ public class ChatManager : MonoBehaviour
         if (PV != null)
         {
             PV.RPC("sendEveryoneMessage", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.NickName + " has joined.");
-            //GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
         }
 
 
@@ -186,6 +185,7 @@ public class ChatManager : MonoBehaviour
     {
         if (PV.IsMine)
         {
+            Content.GetComponentInParent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
             string text = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
 
             // Gets the 10 Most Recent Messages
@@ -284,13 +284,15 @@ public class ChatManager : MonoBehaviour
                         if (i < 9)
                         {
                             ChatTexts[i].ReplaceMessage(ChatTexts[i + 1]);
-                            ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
                         }
                         else
                         {
                             ChatTexts[i].SetMessage(Messages[i]);
-                            ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
                         }
+                        if (!isTyping)
+                            ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
+                        else
+                            ChatTexts[i].gameObject.SetActive(true);
                     }
                 }
             }
@@ -300,7 +302,10 @@ public class ChatManager : MonoBehaviour
                 if (i < MessageCount)
                 {
                     ChatTexts[i].SetMessage(Messages[i]);
-                    ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
+                    if (!isTyping)
+                        ChatTexts[i].gameObject.SetActive(!ChatTexts[i].fade);
+                    else
+                        ChatTexts[i].gameObject.SetActive(true);
                 }
                 else
                     ChatTexts[i].gameObject.SetActive(false);
