@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class CircularMenu : MonoBehaviour
 {
+    public AudioManager audioManager;
     public List<MenuButton> buttons = new List<MenuButton>();
     private Vector2 centerCirclePos = new Vector2(0.5f, 0.5f);
     private Vector2 fromVector2M = new Vector2(0.5f, 1.0f); // Position from middle of screen horizontally
@@ -30,6 +31,8 @@ public class CircularMenu : MonoBehaviour
         }
         CurrMenuItem = 0;
         OldMenuItem = 0;
+
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     private void Update()
@@ -56,6 +59,7 @@ public class CircularMenu : MonoBehaviour
 
         if (CurrMenuItem != OldMenuItem) // Check if user has changed to a new item
         {
+            audioManager.PlayAudio((int)AudioManager.AudioID.Click);
             buttons[OldMenuItem].buttonImage.color = buttons[OldMenuItem].NormalColor;
             buttons[OldMenuItem].icon.color = Color.white;
             OldMenuItem = CurrMenuItem;

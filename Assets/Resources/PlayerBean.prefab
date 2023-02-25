@@ -13999,10 +13999,13 @@ MonoBehaviour:
     prefab: {fileID: 0}
     selectedPrefab: {fileID: 0}
   currentPreview: {fileID: 0}
+  audioManager: {fileID: 0}
   pp: {fileID: 2444950040306206}
   im: {fileID: 7147055233663228080}
   woodObj: {fileID: 101618360071302301, guid: 43957dbf9b551f442a89be66049f24fb, type: 3}
   cp: {fileID: 1937501596532756897}
+  smokeVFX: {fileID: 2738436938548131024, guid: 91318c9c0e1d1c84faa98ecb6f75f888,
+    type: 3}
   cam: {fileID: 7109236928769104490}
   layer:
     serializedVersion: 2
@@ -14038,6 +14041,7 @@ MonoBehaviour:
   stoneObj: {fileID: 2336293236833407366, guid: af9a558de23598847b7d33ffd2982fa3,
     type: 3}
   cp: {fileID: 1937501596532756897}
+  audioManager: {fileID: 0}
   ActionCooldown: 1
   menuObject: {fileID: 8147175192208698557}
   stoneMaterial: {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}

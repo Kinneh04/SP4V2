@@ -18,11 +18,13 @@ public class HammerSystem : MonoBehaviour
     public LayerMask layer; // To assign it to exclude BuildPreview in raycast checks
     private RaycastHit hit;
 
+
     public PlayerProperties pp;
     public InventoryManager im;
     public GameObject woodObj;
     public GameObject stoneObj;
     public CreatePopup cp;
+    public AudioManager audioManager;
 
     private bool IsUsingHammer = false;
     private bool IsPickingUp = false;
@@ -45,6 +47,8 @@ public class HammerSystem : MonoBehaviour
         // Disable objects until using Building Plan
         menuObject.SetActive(false);
         pv = GetComponent<PhotonView>();
+
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     void Update()
@@ -356,7 +360,7 @@ public class HammerSystem : MonoBehaviour
                                     cp.CreateResourcePopup("Stone", cost);
                                     im.RemoveQuantity(stoneObj.GetComponent<ItemInfo>(), cost);
                                     currStructure.gameObject.GetComponent<PhotonView>().RPC("UpgradeStructure", RpcTarget.AllViaServer);
-
+                                    audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.UpgradeStone, 1.0f);
                                     // Also update current selected
                                     foreach (Transform child in selectedObject.gameObject.transform) // Change look to stone
                                     {
@@ -376,6 +380,7 @@ public class HammerSystem : MonoBehaviour
                 case 3: // Destroy
                     {
                         pv.RPC("DestroyStructure", PhotonNetwork.CurrentRoom.GetPlayer(currentObject.GetComponent<StructureObject>().PlayerID), currentObject.GetComponent<PhotonView>().ViewID);
+                        audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DestroyBuilding, 1.0f);
                         Destroy(selectedObject.gameObject);
                         selectedObject = null;
                         prevObject = null;
@@ -398,6 +403,7 @@ public class HammerSystem : MonoBehaviour
         IsPickingUp = false;
         selectedObject.gameObject.GetComponentInChildren<CanvasGroup>().alpha = 1;
         Destroy(selectedObject.gameObject);
+        audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.Building, 1f);
     }
 
     [PunRPC]

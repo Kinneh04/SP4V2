@@ -12,10 +12,12 @@ public class BuildingSystem : MonoBehaviour
     private bool isTranslated = false;
     public Transform currentPreview;
 
+    public AudioManager audioManager;
     public PlayerProperties pp;
     public InventoryManager im;
     public GameObject woodObj;
     public CreatePopup cp;
+    public GameObject smokeVFX;
 
     // Variables for raycast
     public Transform cam;
@@ -40,6 +42,8 @@ public class BuildingSystem : MonoBehaviour
         // Disable objects until using Building Plan
         menuObject.SetActive(false);
         currentPreview.gameObject.SetActive(false);
+
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     void Update()
@@ -60,6 +64,7 @@ public class BuildingSystem : MonoBehaviour
         }
         else if (!Input.GetMouseButton(1) && menuObject.activeSelf)
         {
+            audioManager.PlayAudio((int)AudioManager.AudioID.Select);
             ChangeCurrentBuilding(menuObject.GetComponent<CircularMenu>().CurrMenuItem);
             SetMenuActive(false);
         }
@@ -201,6 +206,8 @@ public class BuildingSystem : MonoBehaviour
                     newObj.transform.localPosition = currentPreview.transform.localPosition;
                     newObj.transform.localEulerAngles = currentPreview.transform.localEulerAngles;
                 }
+                Instantiate(smokeVFX, newObj.transform);
+                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.Building, 1f);
 
                 if (currentObject.name == "Door")
                 {
