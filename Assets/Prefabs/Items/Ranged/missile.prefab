@@ -26,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 670831172828349674}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_ConstrainProportionsScale: 0
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 8611704219529419110}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5158569715687409169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47,6 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58bf2f12439aabd41904882ca9ee9ff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 6
@@ -87,7 +89,6 @@ MonoBehaviour:
   ImpactParticleSystem: {fileID: 0}
   BloodParticleSystem: {fileID: 0}
   BulletTrail: {fileID: 0}
-  ShootDelay: 0.5
   Damage: 0
   ParentGunTip: {fileID: 0}
   MuzzleFlash: {fileID: 0}
@@ -95,6 +96,8 @@ MonoBehaviour:
   JustFired: 0
   Explosion: {fileID: 2738436938548131024, guid: e526920918ff6f2488718212285cb067,
     type: 3}
+  itemID: 0
+  ExplosionTimer: 0
 --- !u!1 &8761530255967939386
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,14 +124,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8761530255967939386}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 145405780013686352}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2573065784212485445
 MeshFilter:
   m_ObjectHideFlags: 0

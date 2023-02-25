@@ -36,10 +36,7 @@ public class PreviewObject : MonoBehaviour
             // Check PreviewChildCheck
             if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && other.gameObject.transform.position.y >= gameObject.transform.position.y - collideLeeway)
             {
-                if (other.gameObject.CompareTag("NormalStructure"))
-                {
-                }
-                else
+                if (!other.gameObject.CompareTag("NormalStructure"))
                 {
                     col.Add(other);
                     if (nextToCol.Contains(other))
@@ -47,6 +44,14 @@ public class PreviewObject : MonoBehaviour
                         nextToCol.Remove(other);
                     }
                 }
+            }
+        }
+        else if (type == ObjectTypes.door)
+        {
+            // Invalid if there is already a door placed at doorway
+            if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && other.gameObject.CompareTag("DoorStructure"))
+            {
+                col.Add(other);
             }
         }
         else
@@ -63,9 +68,8 @@ public class PreviewObject : MonoBehaviour
                 }
             }
         }
-        /*if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && (type == ObjectTypes.foundation || type == ObjectTypes.floor)) {
-            col.Add(other);
-        }*/
+
+        // TODO: Redo stairs collision checks
     }
 
     private void OnTriggerExit(Collider other)
@@ -82,6 +86,13 @@ public class PreviewObject : MonoBehaviour
                 col.Remove(other);
             }
         }
+        else if (type == ObjectTypes.door)
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && other.gameObject.CompareTag("DoorStructure"))
+            {
+                col.Remove(other);
+            }
+        }
         else
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && other.gameObject.CompareTag("NormalStructure"))
@@ -89,10 +100,6 @@ public class PreviewObject : MonoBehaviour
                 col.Remove(other);
             }
         }
-
-        /*if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && (type == ObjectTypes.foundation || type == ObjectTypes.floor)) {
-            col.Remove(other);
-        }*/
     }
 
     public void ChangeColor()
@@ -120,6 +127,15 @@ public class PreviewObject : MonoBehaviour
                 IsBuildable = false;
             }
         }
+        else if (type == ObjectTypes.door)
+        {
+            // Disable if any collision
+            if (col.Count != 0)
+            {
+                IsBuildable = false;
+            }
+            // IsBuildable is set in BuildingSystem when aligned with Doorway
+        }
         else
         {
             if (col.Count == 0 && nextToCol.Count > 0)
@@ -132,23 +148,7 @@ public class PreviewObject : MonoBehaviour
             }
         }
 
-        /* if (type == ObjectTypes.floor)
-         {
-             // Cannot stack floors on each other
-
-         }
-         else
-         {
-             if (col.Count == 0)
-             {
-                 IsBuildable = true;
-             }
-             else
-             {
-                 IsBuildable = false;
-             }
-         }*/
-
+        // Switch colors
         if (IsBuildable)
         {
             foreach (Transform child in transform)
@@ -182,5 +182,6 @@ public enum ObjectTypes
     normal,
     foundation,
     floor,
-    stairs
+    stairs,
+    door
 }

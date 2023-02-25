@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ConsumableProperty : MonoBehaviour
 {
+    public int GivesHealthAmount;
     public int GivesFoodAmount;
     public int GivesWaterAmount;
     public float PoisonChance;
@@ -18,8 +19,10 @@ public class ConsumableProperty : MonoBehaviour
     public void Eatfood()
     {
         pp.Hunger += GivesFoodAmount;
+        pp.Health += GivesHealthAmount;
         pp.Thirst += GivesWaterAmount;
 
+        if(pp.Health > 100) pp.Health = 100;
         if (pp.Hunger > 100) pp.Hunger = 100;
         if (pp.Thirst > 100) pp.Thirst = 100;
 

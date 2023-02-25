@@ -5,7 +5,7 @@ using TMPro;
 
 public class CraftCost : MonoBehaviour
 {
-    CraftingManager CM;
+    [SerializeField] CraftingManager CM;
 
     [SerializeField]
     protected TMP_Text
@@ -19,7 +19,7 @@ public class CraftCost : MonoBehaviour
 
     void Awake()
     {
-        CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
+        // CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
         materialCounts = new int[3];
         materials = new ItemInfo[3];
     }
@@ -37,7 +37,7 @@ public class CraftCost : MonoBehaviour
             Amount1.text = CM.Quantity_1.ToString();
             Item1.text = CM.Material_1.ToString();
             Total1.text = (CM.Quantity_1 * CM.CraftAmount).ToString();
-            Have1.text = "";
+            Have1.text = CM.IM.ItemGetInt(CM.Material_1).ToString();
         }
         else
         {
@@ -51,7 +51,7 @@ public class CraftCost : MonoBehaviour
             Amount2.text = CM.Quantity_2.ToString();
             Item2.text = CM.Material_2.ToString();
             Total2.text = (CM.Quantity_2 * CM.CraftAmount).ToString();
-            Have2.text = "";
+            Have2.text = CM.IM.ItemGetInt(CM.Material_2).ToString();
         }
         else
         {
@@ -65,7 +65,7 @@ public class CraftCost : MonoBehaviour
             Amount3.text = CM.Quantity_3.ToString();
             Item3.text = CM.Material_3.ToString();
             Total3.text = (CM.Quantity_3 * CM.CraftAmount).ToString();
-            Have3.text = "";
+            Have3.text = CM.IM.ItemGetInt(CM.Material_3).ToString();
         }
         else
         {
@@ -299,7 +299,7 @@ public class CraftCost : MonoBehaviour
                     materials[1] = CM.Water;
                     materials[2] = null;
                     break;
-                case ItemInfo.ItemID.Campfire:
+                case ItemInfo.ItemID.CampfireGhost:
                     CM.WorkbenchNeeded = 0;
                     materialCounts[0] = 10;
                     materialCounts[1] = 0;
@@ -317,7 +317,7 @@ public class CraftCost : MonoBehaviour
                     materials[1] = null;
                     materials[2] = null;
                     break;
-                case ItemInfo.ItemID.Workbench_1:
+                case ItemInfo.ItemID.Workbench_1_Ghost:
                     CM.WorkbenchNeeded = 0;
                     materialCounts[0] = 50;
                     materialCounts[1] = 50;
@@ -326,7 +326,7 @@ public class CraftCost : MonoBehaviour
                     materials[1] = CM.Stone;
                     materials[2] = CM.Metal;
                     break;
-                case ItemInfo.ItemID.Workbench_2:
+                case ItemInfo.ItemID.Workbench_2_Ghost:
                     CM.WorkbenchNeeded = 1;
                     materialCounts[0] = 300;
                     materialCounts[1] = 300;
@@ -335,7 +335,7 @@ public class CraftCost : MonoBehaviour
                     materials[1] = CM.Sulfur;
                     materials[2] = CM.Stone;
                     break;
-                case ItemInfo.ItemID.Workbench_3:
+                case ItemInfo.ItemID.Workbench_3_Ghost:
                     CM.WorkbenchNeeded = 2;
                     materialCounts[0] = 1000;
                     materialCounts[1] = 1000;
@@ -344,7 +344,7 @@ public class CraftCost : MonoBehaviour
                     materials[1] = CM.Stone;
                     materials[2] = CM.Metal;
                     break;
-                case ItemInfo.ItemID.ResearchTable:
+                case ItemInfo.ItemID.ResearchTable_Ghost:
                     CM.WorkbenchNeeded = 1;
                     materialCounts[0] = 200;
                     materialCounts[1] = 50;
@@ -353,7 +353,33 @@ public class CraftCost : MonoBehaviour
                     materials[1] = CM.Stone;
                     materials[2] = CM.Wood;
                     break;
-
+                case ItemInfo.ItemID.CodeLock:
+                    CM.WorkbenchNeeded = 2;
+                    materialCounts[0] = 25;
+                    materialCounts[1] = 0;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Metal;
+                    materials[1] = null;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Building_Blueprint:
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 50;
+                    materialCounts[1] = 0;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Wood;
+                    materials[1] = null;
+                    materials[2] = null;
+                    break;
+                case ItemInfo.ItemID.Hammer:
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 50;
+                    materialCounts[1] = 0;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Wood;
+                    materials[1] = null;
+                    materials[2] = null;
+                    break;
 
             }
         }

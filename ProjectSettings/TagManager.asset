@@ -37,6 +37,14 @@ TagManager:
   - Workbench
   - ResearchTable
   - EnemyPlayer
+  - Helicopter
+  - Weaponry
+  - Consumables
+  - Grass
+  - RHand
+  - DoorStructure
+  - AudioManager
+  - ToolCupboard
   layers:
   - Default
   - TransparentFX

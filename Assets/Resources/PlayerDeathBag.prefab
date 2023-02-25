@@ -409,6 +409,8 @@ GameObject:
   - component: {fileID: 8784722329080049350}
   - component: {fileID: 6348083370916363770}
   - component: {fileID: 1192071434586564038}
+  - component: {fileID: -8382061824045585976}
+  - component: {fileID: -383155547064007624}
   m_Layer: 0
   m_Name: PlayerDeathBag
   m_TagString: Crate
@@ -471,9 +473,49 @@ MonoBehaviour:
   MaxPossibleItems: 0
   MaxQuantityOfEachItem: 0
   ItemsInCrate: []
+  PhotonViewIDs: 
   ItemQuantityInCrate: 
   IM: {fileID: 0}
+  pv: {fileID: 0}
   forceLoot: 1
+--- !u!114 &-8382061824045585976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3387990963007645889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &-383155547064007624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3387990963007645889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &3988957475757327991
 GameObject:
   m_ObjectHideFlags: 0

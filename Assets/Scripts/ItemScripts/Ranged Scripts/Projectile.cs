@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Photon.Pun;
 public class Projectile : MonoBehaviour
 {
     [SerializeField]
@@ -32,8 +33,7 @@ public class Projectile : MonoBehaviour
         {
             if (itemID == ItemInfo.ItemID.Rocket)
             {
-                GameObject Go = Instantiate(Explosion);
-                Go.transform.position = transform.position;
+                GameObject Go = PhotonNetwork.Instantiate(Explosion.name, transform.position,Quaternion.identity);
                 Go.GetComponent<Explosion>().Damage = Damage;
                 Destroy(this.gameObject);
             }
@@ -62,15 +62,16 @@ public class Projectile : MonoBehaviour
                 else if (collision.transform.gameObject.CompareTag("Deer"))
                 {
                     collision.transform.GetComponent<DeerAI>().GetDamaged((int)Damage);
-                    Instantiate(ImpactParticleSystem, collision.transform.position, Quaternion.identity);
+                    Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
                 }
                 else if (collision.transform.gameObject.CompareTag("Chicken"))
                 {
                     collision.transform.GetComponent<ChickenAI>().GetDamaged((int)Damage);
-                    Instantiate(ImpactParticleSystem, collision.transform.position, Quaternion.identity);
+                    Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
                 }
-                else if (collision.transform.gameObject.CompareTag("Player"))
+                else if (collision.transform.gameObject.CompareTag("Player") || collision.transform.gameObject.CompareTag("EnemyPlayer"))
                 {
+                    collision.transform.GetComponent<PlayerProperties>().TakeDamageV2(Damage);
                     Instantiate(BloodParticleSystem, collision.transform.position, Quaternion.identity);
                 }
                 Vector3 PushPreviousDirection; // so the arrow is doesnt go through the wall
@@ -79,6 +80,7 @@ public class Projectile : MonoBehaviour
                 this.transform.position -= PushPreviousDirection;
                 this.GetComponent<Rigidbody>().isKinematic = true;
                 this.transform.parent = collision.transform.parent;
+
             }
             JustFired = false;
         }
@@ -96,11 +98,11 @@ public class Projectile : MonoBehaviour
         if (rb != null)
         {
             if (itemID == ItemInfo.ItemID.Arrow)
-                rb.velocity = transform.forward * 50;
+                rb.velocity = BulletSpawnPoint.transform.forward * 50;
             else if (itemID == ItemInfo.ItemID.Rocket)
-                rb.velocity = transform.forward * 100;
+                rb.velocity = BulletSpawnPoint.transform.forward * 100;
             else if (itemID == ItemInfo.ItemID.C4)
-                rb.velocity = transform.forward * 10;
+                rb.velocity = BulletSpawnPoint.transform.forward * 10;
         }
     }
     public void Shoot()
@@ -140,8 +142,7 @@ public class Projectile : MonoBehaviour
             }
             else
             {
-                GameObject Go = Instantiate(Explosion);
-                Go.transform.position = transform.position;
+                GameObject Go = PhotonNetwork.Instantiate(Explosion.name, transform.position, Quaternion.identity);
                 Go.GetComponent<Explosion>().Damage = Damage;
                 Destroy(this.gameObject);
             }

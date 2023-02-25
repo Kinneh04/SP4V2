@@ -9,26 +9,27 @@ public class ScientistAI : Enemy
     enum FSM { IDLE, PATROL, WANDER, ATTACK, DEAD };
     public enum ENEMY_TYPE { SCIENTIST, ARMOURED_SCIENTIST, TANK };
 
+
+    protected List<GameObject> DetectedPlayers = new List<GameObject>();
+
     int MaxHealth = 100;
     public float MSpd = 2;
-    WeaponInfo gun;
-    int Health;
     float IdleTime;
     float MoveTime;
     bool StructureFound = false;
     bool isMoving = false;
     bool GoingMonument = false;
-    NavMeshAgent navMeshAgent;
+    private NavMeshAgent navMeshAgent;
     Vector3 destination;
     float TimebetweenShots;
     FSM CurrentState;
 
-    PhotonView PV;
+    public WeaponInfo gun;
 
     public ENEMY_TYPE EnemyType;
 
     // Start is called before the first frame update
-    void Awake()
+    public virtual void Awake()
     {
         CurrentState = FSM.IDLE;
         if (EnemyType == ENEMY_TYPE.SCIENTIST)
@@ -42,7 +43,6 @@ public class ScientistAI : Enemy
         navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
         TargetPlayer = null;
         navMeshAgent.speed = MSpd;
-        gun = gameObject.GetComponentInChildren<WeaponInfo>();
         gun.Init();
         gun.SetInfiniteAmmo(true);
         gun.SetTimeBetweenShots(0.33f);
@@ -51,9 +51,9 @@ public class ScientistAI : Enemy
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
-        
+        gun.SetInfiniteAmmo(true);
 
         if (Structure != null && !StructureFound)
         {
@@ -246,7 +246,9 @@ public class ScientistAI : Enemy
                         deadTime -= Time.deltaTime;
                     }
                     if (deadTime <= 0 && PV.IsMine)
+                    {
                         PhotonNetwork.Destroy(gameObject);
+                    }
                     break;
                 }
         }
@@ -299,11 +301,60 @@ public class ScientistAI : Enemy
 
     void Attack()
     {
-        gun.Discharge(gameObject.transform.Find("Capsule"));
+        gun.NonPlayerDischarge(PV);
     }
 
-    override public void GetDamaged(int damage)
+    [PunRPC]
+    void FoundPlayer(int ID)
     {
-        Health -= damage;
+        GameObject other = PhotonView.Find(ID).gameObject;
+        DetectedPlayers.Add(other);
+        // Targeting
+        Enemy enemy = GetComponent<Enemy>();
+        if (enemy.TargetPlayer == null)
+        {
+            enemy.TargetPlayer = other;
+        }
+        else if (Vector3.Distance(enemy.transform.position, enemy.TargetPlayer.transform.position) > Vector3.Distance(enemy.transform.position, other.transform.position))
+        {
+            enemy.TargetPlayer = other;
+        }
     }
+
+    [PunRPC]
+    void FoundMonument(int ID)
+    {
+        GameObject other = PhotonView.Find(ID).gameObject;
+        Enemy enemy = GetComponent<Enemy>();
+        enemy.Structure = other;
+    }
+
+    [PunRPC]
+    void LostPlayer(int ID)
+    {
+        GameObject other = PhotonView.Find(ID).gameObject;
+        bool TargetLeft = false;
+        Enemy enemy = GetComponent<Enemy>();
+        if (enemy.TargetPlayer == other)
+        {
+            TargetLeft = true;
+            enemy.TargetPlayer = null;
+            DetectedPlayers.Remove(other);
+        }
+        if (TargetLeft)
+        {
+            for (int i = 0; i < DetectedPlayers.Count; i++)
+            {
+                if (enemy.TargetPlayer == null)
+                {
+                    enemy.TargetPlayer = DetectedPlayers[0];
+                }
+                else if (Vector3.Distance(enemy.transform.position, enemy.TargetPlayer.transform.position) > Vector3.Distance(enemy.transform.position, DetectedPlayers[i].transform.position))
+                {
+                    enemy.TargetPlayer = DetectedPlayers[i];
+                }
+            }
+        }
+    }
+
 }

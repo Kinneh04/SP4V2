@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class BuildingSystem : MonoBehaviour
 {
@@ -8,23 +9,31 @@ public class BuildingSystem : MonoBehaviour
     public BuildObjects currentObject;
     private Vector3 currentPos;
     private Vector3 currentRot = Vector3.zero;
+    private bool isTranslated = false;
     public Transform currentPreview;
+
+    public PlayerProperties pp;
+    public InventoryManager im;
+    public GameObject woodObj;
+    public CreatePopup cp;
 
     // Variables for raycast
     public Transform cam;
     public RaycastHit hit;
     public LayerMask layer; // To assign it to exclude BuildPreview in raycast checks
+    public LayerMask buildableLayer;
 
     public float offset = 1.0f;
     public float gridSize = 1.0f;
 
     public bool IsBuilding = false;
     private bool IsChoosingObj = false;
-    public float BuildCooldown = 1.0f;
+    public float BuildCooldown;
     public GameObject menuObject;
 
     void Start()
     {
+        BuildCooldown = 0.0f;
         // Start off with a foundation
         currentObject = objects[0];
         ChangeCurrentBuilding(0);
@@ -38,7 +47,7 @@ public class BuildingSystem : MonoBehaviour
         if (BuildCooldown > 0.0f)
             BuildCooldown -= Time.deltaTime;
 
-        if (!IsBuilding)
+        if (!IsBuilding || !GetComponent<PhotonView>().IsMine)
             return;
 
         if (!IsChoosingObj)
@@ -106,19 +115,57 @@ public class BuildingSystem : MonoBehaviour
         currentPos *= gridSize;
         currentPos += Vector3.one * offset;
         currentPos.y += currPreview.localScale.y * 0.5f;
-        currPreview.position = currentPos; // snap preview to current position
+        currPreview.position = currentPos; // snap preview to current grid
+
+        if (currentObject.name == "Door")
+        {
+            if (Physics.Raycast(cam.position, cam.forward, out hit, LayerMask.NameToLayer("BuildPreview"), buildableLayer))
+            {
+                // Snap doors to doorframes when player is looking at them
+                if (hit.collider.gameObject.CompareTag("NormalStructure"))
+                {
+                    StructureObject structure = hit.collider.GetComponent<StructureObject>();
+                    if (structure && structure.type == StructureTypes.doorway)
+                    {
+                        currPreview.position = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y, hit.collider.gameObject.transform.position.z);
+                        currPreview.Translate(new Vector3(-0.64f, 0.569f, 1.5f));
+                        currPreview.rotation = hit.collider.gameObject.transform.rotation;
+                        currentPos = currPreview.position;
+                        currentRot = currPreview.localEulerAngles;
+                        currentPreview.GetComponent<PreviewObject>().IsBuildable = true;
+                        return;
+                    }
+                }
+            }
+            currentPreview.GetComponent<PreviewObject>().IsBuildable = false;
+            isTranslated = true;
+        }
+        else if (currentObject.name == "Floor")
+        {
+            // Snap to top of walls when looking at them, and next to other floors
+        }
+
+        isTranslated = false;
 
         if (Input.GetKeyDown(KeyCode.R))
+        {
             currentRot += new Vector3(0, 90, 0);
-        currPreview.localEulerAngles = currentRot;
+            currPreview.localEulerAngles = currentRot;
+        }
     }
 
     public void SetIsBuilding(bool building)
     {
         if (building)
-            currentPreview.gameObject.SetActive(true);
+        {
+            GameObject curPrev = Instantiate(currentObject.preview, currentPos, Quaternion.Euler(currentRot));
+            currentPreview = curPrev.transform;
+        }
         else
-            currentPreview.gameObject.SetActive(false);
+        {
+            if (currentPreview != null)
+                Destroy(currentPreview.gameObject);
+        }
 
         IsBuilding = building;
     }
@@ -131,10 +178,39 @@ public class BuildingSystem : MonoBehaviour
         if (IsChoosingObj)
             return;
 
+        if (pp.isBuildingDisabled)
+        {
+            cp.CreateResourcePopup("Building disabled!", 0);
+            return;
+        }
+
         PreviewObject po = currentPreview.GetComponent<PreviewObject>();
         if (po.IsBuildable)
         {
-            Instantiate(currentObject.prefab, currentPos, Quaternion.Euler(currentRot));
+            if (im.GetAmmoQuantity(ItemInfo.ItemID.Wood) < currentObject.wood)
+            {
+                cp.CreateResourcePopup("Not enough wood!", 0);
+            }
+            else
+            {
+                cp.CreateResourcePopup("Wood", currentObject.wood);
+                im.RemoveQuantity(woodObj.GetComponent<ItemInfo>(), currentObject.wood);
+                GameObject newObj = PhotonNetwork.Instantiate(currentObject.name, currentPos, Quaternion.Euler(currentRot));
+                if (isTranslated)
+                {
+                    newObj.transform.localPosition = currentPreview.transform.localPosition;
+                    newObj.transform.localEulerAngles = currentPreview.transform.localEulerAngles;
+                }
+
+                if (currentObject.name == "Door")
+                {
+                    newObj.GetComponent<DoorStructure>().PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
+                }
+                else
+                {
+                    newObj.GetComponent<StructureObject>().PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
+                }
+            }
         }
         BuildCooldown = 1.0f;
     }

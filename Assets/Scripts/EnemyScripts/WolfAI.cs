@@ -8,9 +8,11 @@ public class WolfAI : Enemy
 {
     enum FSM { IDLE, WANDER, ATTACK, DEAD };
 
+    List<GameObject> DetectedPlayers = new List<GameObject>();
+    List<Enemy> DetectedPrey = new List<Enemy>();
+
     int MaxHealth = 100;
     public float MSpd = 2;
-    int Health;
     float IdleTime;
     float MoveTime;
     bool isMoving = false;
@@ -18,9 +20,7 @@ public class WolfAI : Enemy
     NavMeshAgent navMeshAgent;
     Vector3 destination;
 
-    public GameObject Prey;
-
-    PhotonView PV;
+    public Enemy Prey;
 
     float BiteCD = 0;
 
@@ -32,7 +32,7 @@ public class WolfAI : Enemy
     FSM CurrentState;
 
     // Start is called before the first frame update
-    void Awake()
+    public virtual void Awake()
     {
         MaxHealth = 100;
         Health = MaxHealth;
@@ -46,7 +46,7 @@ public class WolfAI : Enemy
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         PounceCD -= Time.deltaTime;
         if (Pouncing)
@@ -126,6 +126,7 @@ public class WolfAI : Enemy
                 {
                     if (change)
                     {
+                        change = false;
                         if (TargetPlayer != null && Prey != null)
                         {
                             if (Vector3.Distance(transform.position, TargetPlayer.transform.position) < Vector3.Distance(transform.position, Prey.transform.position))
@@ -134,7 +135,7 @@ public class WolfAI : Enemy
                             }
                             else
                             {
-                                Target = Prey;
+                                Target = Prey.gameObject;
                             }
                         }
                         else if (TargetPlayer != null)
@@ -143,7 +144,7 @@ public class WolfAI : Enemy
                         }
                         else if (Prey != null)
                         {
-                            Target = Prey;
+                            Target = Prey.gameObject;
                         }
                         else
                         {
@@ -166,7 +167,7 @@ public class WolfAI : Enemy
                     {
                         if (!Pouncing)
                         {
-                            Debug.Log(destination);
+                            //Debug.Log(destination);
                             destination = Target.transform.position;
                             navMeshAgent.SetDestination(destination);
                             isMoving = true;
@@ -215,7 +216,10 @@ public class WolfAI : Enemy
                         deadTime -= Time.deltaTime;
                     }
                     if (deadTime <= 0 && PV.IsMine)
-                        PhotonNetwork.Destroy(gameObject);
+                    {
+                        Harvestable = true;
+                        // PhotonNetwork.Destroy(gameObject);
+                    }
                     break;
                 }
         }
@@ -232,19 +236,118 @@ public class WolfAI : Enemy
                 BiteCD = 2;
             }
         }
-        else if (Target == Prey)
+        else if (Target == Prey.gameObject)
         {
             if (BiteCD <= 0)
             {
                 Enemy enemy = Prey.GetComponent<Enemy>();
                 enemy.GetDamaged(10);
                 BiteCD = 2;
+                if (enemy.dead)
+                {
+                    Prey = null;
+                    change = true;
+                }
             }
         }
     }
 
-    override public void GetDamaged(int damage)
+    [PunRPC]
+    void WolfFoundPlayer(int ID)
     {
-        Health -= damage;
+        GameObject other = PhotonView.Find(ID).gameObject;
+        DetectedPlayers.Add(other);
+        // Targeting
+        WolfAI wolf = GetComponent<WolfAI>();
+        if (wolf.TargetPlayer == null)
+        {
+            wolf.TargetPlayer = other;
+            wolf.change = true;
+        }
+        else if (Vector3.Distance(wolf.transform.position, wolf.TargetPlayer.transform.position) > Vector3.Distance(wolf.transform.position, other.transform.position))
+        {
+            wolf.TargetPlayer = other;
+            wolf.change = true;
+        }
+    }
+
+    [PunRPC]
+    void WolfFoundPrey(int ID)
+    {
+        Enemy other = PhotonView.Find(ID).gameObject.GetComponent<Enemy>();
+        if (other.dead)
+            return;
+        DetectedPrey.Add(other);
+        WolfAI wolf = GetComponent<WolfAI>();
+        if (wolf.Prey == null)
+        {
+            wolf.Prey = other;
+            wolf.change = true;
+        }
+        else if (Vector3.Distance(wolf.transform.position, wolf.Prey.transform.position) > Vector3.Distance(wolf.transform.position, other.transform.position))
+        {
+            wolf.Prey = other;
+            wolf.change = true;
+        }
+    }
+
+    [PunRPC]
+    void WolfLostPlayer(int ID)
+    {
+        GameObject other = PhotonView.Find(ID).gameObject;
+        bool TargetLeft = false;
+        WolfAI wolf = GetComponent<WolfAI>();
+        if (wolf.TargetPlayer == other)
+        {
+            TargetLeft = true;
+            wolf.TargetPlayer = null;
+            wolf.change = true;
+            DetectedPlayers.Remove(other);
+        }
+        if (TargetLeft)
+        {
+            for (int i = 0; i < DetectedPlayers.Count; i++)
+            {
+                if (wolf.TargetPlayer == null)
+                {
+                    wolf.TargetPlayer = DetectedPlayers[0];
+                }
+                else if (Vector3.Distance(wolf.transform.position, wolf.TargetPlayer.transform.position) > Vector3.Distance(wolf.transform.position, DetectedPlayers[i].transform.position))
+                {
+                    wolf.TargetPlayer = DetectedPlayers[i];
+                }
+            }
+        }
+    }
+
+    [PunRPC]
+    void WolfLostPrey(int ID)
+    {
+        Enemy other = PhotonView.Find(ID).gameObject.GetComponent<Enemy>();
+        if (other.dead)
+            return;
+        bool PreyLeft = false;
+        WolfAI wolf = gameObject.GetComponentInParent<WolfAI>();
+        if (wolf.Prey == other)
+        {
+            PreyLeft = true;
+            wolf.Prey = null;
+            wolf.change = true;
+            DetectedPrey.Remove(other);
+        }
+        if (PreyLeft)
+        {
+            for (int i = 0; i < DetectedPrey.Count; i++)
+            {
+                if (wolf.Prey == null)
+                {
+                    wolf.Prey = DetectedPrey[0];
+                }
+                else if (Vector3.Distance(wolf.transform.position, wolf.Prey.transform.position) > Vector3.Distance(wolf.transform.position, DetectedPrey[i].transform.position))
+                {
+                    wolf.Prey = DetectedPrey[i];
+                }
+            }
+        }
     }
 }

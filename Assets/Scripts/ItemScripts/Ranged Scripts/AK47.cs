@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class AK47 : WeaponInfo
 {
-    public GameObject BarrlTip;
-    //This is REQUIRED for muzzle flare;
-    // Dont change it or it will NOT shoot;
+
     public override void Init()
     {
         MagRounds = MaxMagRounds = 30;
         FiringType = FIRINGTYPE.FULL_AUTO;
         GunName = GUNNAME.AK47;
         AmmoType = ItemID.RifleAmmo;
-        BarrelTip = BarrlTip;
+        
         Damage = 50;
         TimeBetweenShots = 0.1f;
         ElapsedTime = ReloadTime = 0;

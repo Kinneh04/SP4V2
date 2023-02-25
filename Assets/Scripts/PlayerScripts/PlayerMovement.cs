@@ -19,8 +19,9 @@ public class PlayerMovement : MonoBehaviour
     public bool isMovementEnabled;
     public PhotonView pv;
     public bool canLookAround;
-
+    public InventoryManager IM;
     public GameObject Torso;
+    public bool playingSprintAnim = false;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -32,8 +33,14 @@ public class PlayerMovement : MonoBehaviour
     public void UnlockCursor()
     {
         canLookAround = false;
-        Cursor.lockState = CursorLockMode.None;
+        
         isMovementEnabled = false;
+
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        rb.Sleep();
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void LockCursor()
@@ -45,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (pv.IsMine)
+        if (pv.IsMine && !playerProperties.isSleeping)
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
@@ -58,9 +65,10 @@ public class PlayerMovement : MonoBehaviour
                 Yrotation = Mathf.Clamp(Yrotation, -60f, 60f);
                 Torso.transform.rotation = Quaternion.Euler(0, 0, 0);
                 Xrotation %= 360;
+
                 transform.rotation = Quaternion.Euler(-Yrotation, Xrotation, 0f);
             }
-            if (Mathf.Approximately(horizontal, 0f) && Mathf.Approximately(vertical, 0f) && isGrounded || !isMovementEnabled && isGrounded)
+            if (Mathf.Approximately(horizontal, 0f) && Mathf.Approximately(vertical, 0f) && isGrounded || !isMovementEnabled && isGrounded || GetComponent<ChatManager>().isTyping && isGrounded)
             {
                 // If no movement keys are being pressed, set velocity to zero
                 rb.velocity = Vector3.zero;
@@ -70,35 +78,51 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
+
                 rb.constraints = RigidbodyConstraints.None;
                 Vector3 movement = transform.forward * vertical + transform.right * horizontal;
                 movement.y = 0;
                 rb.MovePosition(transform.position + movement.normalized * moveSpeed * Time.deltaTime);
+                float sway = Mathf.Sin(Time.time * moveSpeed / 5) * swayAmount;
+                transform.rotation *= Quaternion.Euler(0f, sway, 0f);
+
+                if (Input.GetButtonDown("Jump") && isGrounded)
+                {
+                    rb.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
+                    isGrounded = false;
+                }
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    moveSpeed = sprintSpeed;
+                    swayAmount = 0.5f;
+                    if(IM.InventoryList[IM.EquippedSlot] != null && IM.InventoryList[IM.EquippedSlot].itemType == ItemInfo.ItemType.Ranged && !playingSprintAnim)
+                    {
+                        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSprintWeapon");
+                        playingSprintAnim = true;
+                    }
+                   
+                    // print("SPRINTING!");
+                }
+                else
+                {
+                    moveSpeed = OGmoveSpeed;
+                    swayAmount = 0.0f;
+
+                    if(playingSprintAnim)
+                    {
+                        playingSprintAnim = false;
+                        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanIdle");
+                    }
+                }
             }
             isGrounded = Physics.Raycast(Torso.transform.position, Vector3.down, 0.4f);
 
-            if (Input.GetButtonDown("Jump") && isGrounded)
-            {
-                rb.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
-                isGrounded = false;
-            }
-
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                moveSpeed = sprintSpeed;
-                swayAmount = 0.5f;
-                // print("SPRINTING!");
-            }
-            else
-            {
-                moveSpeed = OGmoveSpeed;
-                swayAmount = 0.0f;
-            }
+           
+            
 
 
 
-            float sway = Mathf.Sin(Time.time * moveSpeed / 5) * swayAmount;
-            transform.rotation *= Quaternion.Euler(0f, sway, 0f);
+          
         }
     }
 }

@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 using UnityEngine.UI;
 public class ItemInfo : MonoBehaviour
 {
+    public PhotonView phview;
     public enum ItemType {
         Axe,
         Pickaxe, 
@@ -16,6 +18,8 @@ public class ItemInfo : MonoBehaviour
         BuildPlan,
         unshowable,
         Hammer,
+        CodeLock,
+        ToolCupboard,
         NUM_ITEMTYPE
     };
 
@@ -80,11 +84,15 @@ public class ItemInfo : MonoBehaviour
         ResearchTable,
         ResearchTable_Ghost,
         Hammer,
+        CodeLock,
+        ToolCupboard,
+        ToolCupboard_Ghost,
         NUM_ITEMID  
     };
 
-
+    public bool NetworkedReplacement = false;
     public GameObject ReplacementObj;
+    public GameObject ReplacementDropObj;
     public GameObject OwnerActor;
 
 	public ItemType itemType;
@@ -92,7 +100,18 @@ public class ItemInfo : MonoBehaviour
 
     public int ItemCount;
     public int MaxItemCount;
-    
+
+    private void Awake()
+    {
+        phview = GetComponent<PhotonView>();
+    }
+    [PunRPC]
+    void ParentToObj(int ActorNumber)
+    {
+        PhotonView GOphview = PhotonView.Find(ActorNumber);
+        GOphview.gameObject.SetActive(false);
+        GOphview.gameObject.transform.parent = GameObject.FindGameObjectWithTag("LootPool").transform;
+    }
     virtual public void Init()
     {
         

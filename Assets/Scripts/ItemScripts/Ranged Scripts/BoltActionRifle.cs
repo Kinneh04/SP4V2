@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class BoltActionRifle : WeaponInfo
 {
-    public GameObject BarrlTip;
-    //This is REQUIRED for muzzle flare;
-    // Dont change it or it will NOT shoot;
+
     public override void Init()
     {
         MagRounds = MaxMagRounds = 4;
@@ -17,7 +15,6 @@ public class BoltActionRifle : WeaponInfo
         TimeBetweenShots = 1.7f;
         ElapsedTime = ReloadTime = 0;
         MaxReloadTime = 2.2;
-        BarrelTip = BarrlTip;
         CanFire = false;
         AimCone = 0.0f;
         InfiniteAmmo = false;

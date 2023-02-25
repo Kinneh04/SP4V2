@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;using UnityEngine.UI;
 using TMPro;
 using System;
+using Photon.Pun;
 public class InventoryManager : MonoBehaviour
 {
     public const int MaxInventorySize = 48;
@@ -19,6 +20,9 @@ public class InventoryManager : MonoBehaviour
     public PlayerProperties pp;
     public PlayerUseItem pui;
 
+    public ItemInfo Rock;
+    public ItemInfo Torch;
+
     private void Start()
     {
         UpdateItemCountPerSlot();
@@ -34,8 +38,12 @@ public class InventoryManager : MonoBehaviour
             }
         }
         UpdateItemCountPerSlot();
-        Destroy(pp.CurrentlyHoldingItem);
-        pp.CurrentlyHoldingItem = null;
+        if (pp.CurrentlyHoldingItem != null)
+        {
+            pp.CurrentlyHoldingItem.SetActive(false);
+            //Destroy(pp.CurrentlyHoldingItem);
+            pp.CurrentlyHoldingItem = null;
+        }
     }
     public bool Checkforcraft(ItemInfo Item1, int Item1Quantity = 1, ItemInfo Item2 = null, int Item2Quantity = 1, ItemInfo Item3 = null, int Item3Quantity = 1)
     {
@@ -125,63 +133,74 @@ public class InventoryManager : MonoBehaviour
             pui.ForceGiveItem(InventoryList[EquippedSlot]);
             UpdateItemCountPerSlot();
 
-            if(pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Campfire")
+            if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Campfire")
             {
                 pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
             }
-           
+            else if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Crate")
+            {
+                pp.PlayerLookingAtItem.GetComponent<LootProperties>().UpdateLoot();
+            }
+
             return;
         }
-        else if ( InventoryList[Slot1ID] && InventoryList[Slot2ID] == null)
+        else if (InventoryList[Slot1ID] && InventoryList[Slot2ID] == null)
         {
             InventoryList[Slot1ID].transform.parent = null;
             InventoryList[Slot2ID] = InventoryList[Slot1ID];
             InventoryList[Slot1ID] = null;
 
-            UpdateItemCountPerSlot();
+
             pui.ForceGiveItem(InventoryList[EquippedSlot]);
 
             if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Campfire")
             {
                 pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
             }
-
+            else if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Crate")
+            {
+                pp.PlayerLookingAtItem.GetComponent<LootProperties>().UpdateLoot();
+            }
+            UpdateItemCountPerSlot();
             return;
         }
-        int Slot1Quantity = InventoryList[Slot1ID].GetItemCount();
-        int Slot2Quantity = InventoryList[Slot2ID].GetItemCount();
-
-        ItemInfo Slot1Item = InventoryList[Slot1ID];
-        ItemInfo Slot2Item = InventoryList[Slot2ID];
-        //if same itemID try to add them to same stack
-        if (Slot1Item.itemID == Slot2Item.itemID)
+        else if (InventoryList[Slot2ID].ItemCount < InventoryList[Slot2ID].MaxItemCount || InventoryList[Slot1ID].itemID != InventoryList[Slot2ID].itemID)
         {
-            try
-            {
-                InventoryList[Slot2ID].SetItemCount(Slot1Quantity + Slot2Quantity);
-                Remove(Slot1ID);
-            }
-            catch (Exception e)
-            {
-                InventoryList[Slot1ID].SetItemCount(Slot2Quantity);
-                InventoryList[Slot2ID].SetItemCount(Slot1Quantity);
+            int Slot1Quantity = InventoryList[Slot1ID].GetItemCount();
+            int Slot2Quantity = InventoryList[Slot2ID].GetItemCount();
 
+            ItemInfo Slot1Item = InventoryList[Slot1ID];
+            ItemInfo Slot2Item = InventoryList[Slot2ID];
+            //if same itemID try to add them to same stack
+            if (Slot1Item.itemID == Slot2Item.itemID)
+            {
+                try
+                {
+                    InventoryList[Slot2ID].SetItemCount(Slot1Quantity + Slot2Quantity);
+                    Remove(Slot1ID);
+                }
+                catch (Exception e)
+                {
+                    InventoryList[Slot1ID].SetItemCount(Slot2Quantity);
+                    InventoryList[Slot2ID].SetItemCount(Slot1Quantity);
+
+                    InventoryList[Slot1ID] = Slot2Item;
+                    InventoryList[Slot2ID] = Slot1Item;
+                }
+            }
+            else //if different item ID, swap position
+            {
+                ItemInfo Temp = Slot1Item;
                 InventoryList[Slot1ID] = Slot2Item;
-                InventoryList[Slot2ID] = Slot1Item;
+                InventoryList[Slot2ID] = Temp;
             }
-        }
-        else //if different item ID, swap position
-        {
-            ItemInfo Temp = Slot1Item;
-            InventoryList[Slot1ID] = Slot2Item;
-            InventoryList[Slot2ID] = Temp;
-        }
-        UpdateItemCountPerSlot();
-        IntGetItem(EquippedSlot);
+            UpdateItemCountPerSlot();
+            IntGetItem(EquippedSlot);
 
-        if (pp.PlayerLookingAtItem != null && pp.PlayerLookingAtItem.tag == "Campfire")
-        {
-            pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
+            if (pp.PlayerLookingAtItem != null && pp.PlayerLookingAtItem.tag == "Campfire")
+            {
+                pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
+            }
         }
     }
     void Awake()
@@ -228,32 +247,49 @@ public class InventoryManager : MonoBehaviour
         if (InventoryList.Count <= MaxInventorySize)
         {
             InventoryList[SlotNum] = item;
-            InventoryList[SlotNum].SetItemCount(QuantityToAdd+ InventoryList[SlotNum].GetItemCount());
+            InventoryList[SlotNum].SetItemCount(QuantityToAdd);
         }
         UpdateItemCountPerSlot();
     } 
-    public void AddQuantity(ItemInfo item, int QuantityToAdd = 0)
+    public bool AddQuantity(ItemInfo item, int QuantityToAdd = 0)
     {
+        bool needSetVariable = false;
         print("ATTEMPT TO ADD ITEM: " + item.itemID);
         if (InventoryList.Count <= MaxInventorySize)
         {
             int SlotNum = CheckForAvailableSlots(item, QuantityToAdd);
-            if (InventoryList[SlotNum] != null) //Adds quantity
+            if (InventoryList[SlotNum] != null && item.gameObject.tag != "Weaponry" || InventoryList[SlotNum] != null && item.gameObject.tag != "Workbench" || InventoryList[SlotNum] != null && item.gameObject.tag != "Campfire") //Adds quantity
             {
                 InventoryList[SlotNum].ItemCount += QuantityToAdd;
                 Destroy(item);
-                Debug.Log("Path1");
             }
             else //creates a new gameobj and adds quantity
             {
-                Debug.Log("Path2 - 1");
-                GameObject newItem = Instantiate(item.gameObject);
-                InventoryList[SlotNum] = newItem.GetComponent<ItemInfo>();
+                InventoryList[SlotNum] = item;
                 InventoryList[SlotNum].ItemCount = QuantityToAdd;
-                //InventoryList[SlotNum].SetItemCount(QuantityToAdd + InventoryList[SlotNum].GetItemCount());
-                newItem.SetActive(false);
-                Destroy(item);
-                Debug.Log("Path2 - 2: " + InventoryList[SlotNum]);
+
+                // Check if current holding slot is the newly added item
+                if (pp.CurrentlyHoldingItem == null && EquippedSlot == SlotNum)
+                {
+                    // If yes, for BuildPlan / Hammer / CodeLock, set corresponding variables
+                    needSetVariable = true; // Send true back to PlayerUseItem to perform setting of variables
+                }
+            }
+        }
+        UpdateItemCountPerSlot();
+        return needSetVariable;
+    }
+
+    public void RemoveQuantity(ItemInfo item, int QuantityToRemove = 0)
+    {
+        print("ATTEMPT TO ADD ITEM: " + item.itemID);
+        if (InventoryList.Count > 0)
+        {
+            int SlotNum = CheckForAvailableSlots(item, QuantityToRemove);
+            if (InventoryList[SlotNum] != null) //Removes quantity
+            {
+                InventoryList[SlotNum].ItemCount -= QuantityToRemove;
+                Debug.Log("Path1");
             }
         }
         UpdateItemCountPerSlot();
@@ -264,9 +300,9 @@ public class InventoryManager : MonoBehaviour
     {
         for(int i = 0; i < InventoryList.Count; i++)
         {
-            if( InventoryList[i] != null && InventoryList[i].itemID == ItemToCheckFor.itemID)// && InventoryList[i].MaxItemCount < ItemToCheckFor.MaxItemCount - Quantity)
+            if( InventoryList[i] != null && InventoryList[i].itemID == ItemToCheckFor.itemID && ItemToCheckFor.gameObject.tag != "Weaponry")// && InventoryList[i].MaxItemCount < ItemToCheckFor.MaxItemCount - Quantity)
             {
-                print("SAME SIDE!");
+               // print("SAME SIDE!");
                 return i;
             }
             else if(InventoryList[i] == ItemToCheckFor && InventoryList[i].MaxItemCount < ItemToCheckFor.MaxItemCount)
@@ -302,7 +338,8 @@ public class InventoryManager : MonoBehaviour
                         //InventoryList[i].ItemCount = 0;
                         //InventoryList[i] = null;
                         InventoryImages[i].color = new Color(1, 1, 1, 1);
-                        InventoryImages[i].sprite = itemImages[(int)InventoryList[i].GetItemID()];
+                        InventoryImages[i].sprite = null;
+                        UpdateItemCountPerSlot();
                     }
                     else
                     {
@@ -428,6 +465,22 @@ public class InventoryManager : MonoBehaviour
             return InventoryList[ItemSlot];
         }
         return null;
+    }
+
+    public int ItemGetInt(ItemInfo wanted)
+    {
+        int total = 0;
+        for (int i = 0; i < InventoryList.Count; i++)
+        {
+            if (InventoryList[i])
+            {
+                if (wanted.itemID == InventoryList[i].itemID)
+                {
+                    total += InventoryList[i].ItemCount;
+                }
+            }
+        }
+        return total;
     }
     public bool CheckAmmoUpdated()
     {

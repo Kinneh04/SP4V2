@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
     public GameObject ServerRooms;
     public GameObject SettingsPage;
+    public GameObject HostPage;
+
+    public TMP_InputField UsernameInputField;
 
     public float bgmVolume = 1.0f, sfxVolume = 1.0f; // the default volume value
     public Slider BGMslider;
@@ -59,20 +63,33 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    public void OpenHost()
+    {
+        HostPage.SetActive(true);
+        ServerRooms.SetActive(false);
+        SettingsPage.SetActive(false);
+    }
+
     public void EnterGame()
     {
         SceneManager.LoadScene("MainScene");
     }
 
-    public void OpenServerRooms()
+    public void OpenUsername()
     {
-        ServerRooms.SetActive(true);
-        SettingsPage.SetActive(false);
+            ServerRooms.SetActive(false);
+            SettingsPage.SetActive(false);
     }
 
     public void OpenSettings()
     {
         ServerRooms.SetActive(false);
         SettingsPage.SetActive(true);
+    }
+
+    public void OpenServerRooms()
+    {
+        ServerRooms.SetActive(true);
+        SettingsPage.SetActive(false);
     }
 }

@@ -74,9 +74,15 @@ public class Raycast : MonoBehaviour
                 hit.transform.GetComponent<ChickenAI>().DamagedDirection(direction);
                 GO = Instantiate(ImpactParticleSystem, hit.point, Quaternion.identity);
             }
-            else if (hit.transform.gameObject.CompareTag("Player"))
+            else if (hit.transform.gameObject.CompareTag("Helicopter"))
             {
-                hit.transform.GetComponent<PlayerProperties>().TakeDamage(Damage);
+                hit.transform.GetComponent<HeliAI>().TakeDamage((int)Damage);
+                GO = Instantiate(ImpactParticleSystem, hit.point, Quaternion.identity);
+            }
+            else if (hit.transform.gameObject.CompareTag("Player") || hit.transform.gameObject.CompareTag("EnemyPlayer"))
+            {
+                print("OW!!!!!!!!!!");
+                hit.transform.GetComponent<PlayerProperties>().TakeDamageV2((int)Damage);
                 GO = Instantiate(BloodParticleSystem, hit.point, Quaternion.identity);
             }
             else
@@ -120,7 +126,7 @@ public class Raycast : MonoBehaviour
     }
     private Vector3 GetDirection()
     {
-        Vector3 direction = BulletSpawnPoint.forward;
+        Vector3 direction = BulletSpawnPoint.transform.forward;
         if (AddBulletSpread)
         {
             direction += new Vector3(

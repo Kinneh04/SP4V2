@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 4213271354420526392}
   - component: {fileID: 7167763883275508915}
   - component: {fileID: 9077379653578154732}
-  - component: {fileID: 5046498814107456956}
   - component: {fileID: 2452064449674634603}
   - component: {fileID: 1913245557967544015}
   - component: {fileID: 8496867719463284437}
+  - component: {fileID: 3979320529213195191}
+  - component: {fileID: 3768472165784981247}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Tree
@@ -102,19 +103,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5307693, y: 11.741922, z: 1.5036569}
   m_Center: {x: -0.068380356, y: 0.7582178, z: 0.51519513}
---- !u!65 &5046498814107456956
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208095938302798098}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 8.57, y: 5.4, z: 8}
-  m_Center: {x: 0.08, y: 2.87, z: -0.59}
 --- !u!114 &2452064449674634603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,8 +117,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemAmount: 350
   BaseHarvestAmount: 10
-  ItemToGivePlayerOnHarvest: {fileID: 101618360071302301, guid: 43957dbf9b551f442a89be66049f24fb,
+  ItemToGivePlayerOnHarvest: {fileID: 101618360071302301, guid: 58569baad7dc6004685c9dcbd0867edb,
     type: 3}
+  pv: {fileID: 0}
 --- !u!208 &1913245557967544015
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -158,5 +147,44 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 11.335651, y: 0.98, z: 11.107748}
-  m_Center: {x: 0.024708986, y: -5.5, z: 0.447016}
+  m_Size: {x: 2.6, y: -12.69, z: 2.8}
+  m_Center: {x: 0.024708986, y: -0.58, z: 0.447016}
+--- !u!114 &3979320529213195191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208095938302798098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 3768472165784981247}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &3768472165784981247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208095938302798098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1

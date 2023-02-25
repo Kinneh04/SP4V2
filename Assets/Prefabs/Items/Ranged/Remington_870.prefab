@@ -93,6 +93,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe948f07698a8744fb83adbd29072f7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
   OwnerActor: {fileID: 0}
   itemType: 3
@@ -100,6 +102,7 @@ MonoBehaviour:
   ItemCount: 1
   MaxItemCount: 1
   MagRounds: 0
+  BarrelTip: {fileID: 707668077855791573}
   BulletPrefab: {fileID: 4347079924148518773, guid: a15b541c2f94e7d488f8a47bee0f784a,
     type: 3}
   PelletCount: 8

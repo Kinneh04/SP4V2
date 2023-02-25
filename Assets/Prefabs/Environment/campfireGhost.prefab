@@ -47,7 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58bf2f12439aabd41904882ca9ee9ff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  phview: {fileID: 0}
+  NetworkedReplacement: 0
   ReplacementObj: {fileID: 0}
+  ReplacementDropObj: {fileID: 8295381164108655005, guid: 75a8d9da9f11f284f87f94d181123833,
+    type: 3}
   OwnerActor: {fileID: 0}
   itemType: 9
   itemID: 34

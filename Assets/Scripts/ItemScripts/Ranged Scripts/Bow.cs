@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class Bow : WeaponInfo
 {
-	public GameObject BarrlTip;
+
 	public bool charged = false;
 
 	public override void Init()
@@ -34,24 +35,17 @@ public class Bow : WeaponInfo
 	}
 
     // Discharge this weapon
-    public override bool Discharge(Transform transform)
+    public override bool Discharge()
 	{
 		if (CanFire && charged)
 		{
 			// If there is still ammo in the magazine, then fire
 			if (MagRounds > 0)
 			{
-				Debug.Log(BarrlTip);
-				GameObject projectile = Instantiate(BulletPrefab, BarrlTip.transform.position, Quaternion.identity);
-				projectile.GetComponent<Projectile>().Damage = Damage;
-				projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
-				projectile.GetComponent<Projectile>().ParentGunTip = BarrlTip;
-				projectile.GetComponent<Projectile>().SetAimCone(AimCone);
-                projectile.transform.parent = null;
-				projectile.transform.rotation = transform.rotation;
-				projectile.GetComponent<Projectile>().ShootNonRaycastType();
-				projectile.GetComponent<Projectile>().JustFired = true;
-
+				//Get Player PhotonView
+				int PhotonViewID = PhotonNetwork.Instantiate("Arrow", this.BarrelTip.transform.position, Quaternion.identity).GetComponent<PhotonView>().ViewID;
+				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
+				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All, PhotonViewID);
 				// Lock the weapon after this discharge
 				CanFire = false;
 				charged = false;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class CraftingManager : MonoBehaviour
 {
@@ -11,8 +12,9 @@ public class CraftingManager : MonoBehaviour
     public CraftCost cost;
     public CraftQuantity quantity;
     public CraftButton button;
+    public GameObject Items;
 
-    public ItemInfo prefab1, prefab2, prefab3, prefab4, prefab5, prefab6, prefab7, prefab8, prefab9, prefab10, prefab11, prefab12, prefab13, prefab14, prefab15, prefab16, prefab17, prefab18, prefab19, prefab20, prefab21, prefab22, prefab23, prefab24, prefab25, prefab26, prefab27, prefab28, prefab29, prefab30;
+    public ItemInfo prefab1, prefab2, prefab3, prefab4, prefab5, prefab6, prefab7, prefab8, prefab9, prefab10, prefab11, prefab12, prefab13, prefab14, prefab15, prefab16, prefab17, prefab18, prefab19, prefab20, prefab21, prefab22, prefab23, prefab24, prefab25, prefab26, prefab27, prefab28, prefab29, prefab30, prefab31, prefab32, prefab33;
     public ItemInfo Metal, Sulfur, Wood, Stone, WeaponParts, Cloth, Water;
 
     public List<CraftSelection> CraftSelections = new List<CraftSelection>();
@@ -53,6 +55,7 @@ public class CraftingManager : MonoBehaviour
         CraftableList.Add(prefab14);
         CraftableList.Add(prefab15);
         CraftableList.Add(prefab16);
+        CraftableList.Add(prefab17);
         CraftableList.Add(prefab18);
         CraftableList.Add(prefab19);
         CraftableList.Add(prefab20);
@@ -65,8 +68,13 @@ public class CraftingManager : MonoBehaviour
         CraftableList.Add(prefab26);
         CraftableList.Add(prefab27);
         CraftableList.Add(prefab28);
+        CraftableList.Add(prefab29);
+        CraftableList.Add(prefab30);
+        CraftableList.Add(prefab31);
+        CraftableList.Add(prefab32);
+        CraftableList.Add(prefab33);
 
-        IM = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryManager>();
+        // IM = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryManager>();
         //description = FindObjectOfType<CraftDescription>();
 
         CraftAmount = 0;
@@ -191,9 +199,9 @@ public class CraftingManager : MonoBehaviour
             craftColumn.SetActive(true);
             researchColumn.SetActive(false);
             made = true;
-            for (int i = 0; i < FindObjectsOfType<CraftSelection>().Length; i++)
+            for (int i = 0; i < Items.transform.childCount; i++)
             {
-                CraftSelections.Add(FindObjectsOfType<CraftSelection>()[i]);
+                CraftSelections.Add(Items.transform.GetChild(i).GetComponent<CraftSelection>());
                 if (ScreenCraft)
                 {
                     ScreenCraft = false;
@@ -217,7 +225,10 @@ public class CraftingManager : MonoBehaviour
         int count = CraftableList.Count;
         for (int i = 0; i < count; i++)
         {
+            if (i == 23)
+                Debug.Log("hi");
             CraftSelection temp = CraftSelections[i];
+            Debug.Log("i: " + i + CraftableList[i].itemID);
             temp.gameObject.SetActive(true);
             temp.load();
             if (ScreenCraft)
@@ -268,7 +279,23 @@ public class CraftingManager : MonoBehaviour
                 }
             }
         }
-        ItemInfo temp = Instantiate<ItemInfo>(CraftableList[SelectedCraft]);
+        ItemInfo temp;
+        switch (CraftableList[SelectedCraft].itemID)
+        {
+            case ItemInfo.ItemID.CampfireGhost:
+            case ItemInfo.ItemID.ResearchTable_Ghost:
+            case ItemInfo.ItemID.SleepingBagGhost:
+            case ItemInfo.ItemID.Workbench_1_Ghost:
+            case ItemInfo.ItemID.Workbench_2_Ghost:
+            case ItemInfo.ItemID.Workbench_3_Ghost:
+                temp = Instantiate<ItemInfo>(CraftableList[SelectedCraft]);
+                break;
+            default:
+                temp = PhotonNetwork.Instantiate(CraftableList[SelectedCraft].name, transform.position, transform.rotation).transform.GetComponent<ItemInfo>();
+                break;
+        }
+        //temp = PhotonNetwork.Instantiate(CraftableList[SelectedCraft].name, transform.position, transform.rotation).transform.GetComponent<ItemInfo>();
+        temp.gameObject.SetActive(false);
         IM.AddQuantity(temp, CraftAmount);
         CraftAmount = 0;
         //Selected(SelectedCraft, false);

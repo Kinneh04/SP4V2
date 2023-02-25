@@ -11,7 +11,7 @@ public class CircularMenu : MonoBehaviour
     private Vector2 MousePos;
     private Vector2 toVector2M; // Convert mousepos to screen coordinates
 
-    public int menuItemsNo;
+    private int menuItemsNo;
     public int CurrMenuItem;
     private int OldMenuItem;
 
@@ -51,6 +51,8 @@ public class CircularMenu : MonoBehaviour
         // 360 / num of menu items = how many degrees each button takes up in circular menu
         // So angle / button gives the index of which button is currently selected
         CurrMenuItem = (int)(angle / (360 / menuItemsNo));
+        if (CurrMenuItem >= menuItemsNo)
+            CurrMenuItem = menuItemsNo - 1;
 
         if (CurrMenuItem != OldMenuItem) // Check if user has changed to a new item
         {

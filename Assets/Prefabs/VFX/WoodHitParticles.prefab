@@ -4885,3 +4885,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seconds: 0.5
+  NetworkedDestruct: 1

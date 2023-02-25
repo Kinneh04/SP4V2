@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class C4 : WeaponInfo
 {
-	public GameObject BarrlTip;
 
 	public override void Init()
     {
@@ -23,35 +22,27 @@ public class C4 : WeaponInfo
         itemID = ItemID.C4;
         itemType = ItemType.Ranged;
         MaxItemCount = 10;
-    }
-
-
+		MagRounds = ItemCount;
+	}
+    
     // Discharge this weapon
-    public override bool Discharge(Transform transform)
+    public override bool Discharge()
 	{
 		if (CanFire)
 		{
 			// If there is still ammo in the magazine, then fire
 			if (ItemCount > 0)
 			{
-				GameObject projectile = Instantiate(BulletPrefab, BarrlTip.transform.position, Quaternion.identity);
-				projectile.GetComponent<Projectile>().Damage = Damage;
-				projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
-				projectile.GetComponent<Projectile>().ParentGunTip = BarrlTip;
-				projectile.GetComponent<Projectile>().SetAimCone(AimCone);
-				projectile.GetComponent<Rigidbody>().isKinematic = false;
-				projectile.transform.parent = null;
-				projectile.transform.rotation = transform.rotation;
-				projectile.GetComponent<Projectile>().JustFired = true;
-				projectile.GetComponent<Projectile>().itemID = AmmoType;
-				projectile.GetComponent<Projectile>().ExplosionTimer = 3;
-				projectile.GetComponent<Projectile>().ShootNonRaycastType();
-
+				//Get Player PhotonView
+				int PhotonViewID = PhotonNetwork.Instantiate("C4_Projectile", this.BarrelTip.transform.position, Quaternion.identity).GetComponent<PhotonView>().ViewID;
+				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
+				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All, PhotonViewID);
+				MagRounds = ItemCount - 1;
 				// Lock the weapon after this discharge
 				CanFire = false;
 				//Doesnt need to reload
 				// Reduce the rounds by 1
-				ItemCount-=1;
+				//ItemCount-=1;
 				if (ItemCount <= 0)
 				{
 					Destroy(this.gameObject);

@@ -39,8 +39,61 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - ShoveLootInDeathBag
+  - UpdateOtherClientsAboutYourNewHandItem
+  - SetTagObject
+  - DetachItemFromParent
+  - TakeDamage
+  - SyncLootAcrossClients
+  - ParentToObj
+  - UpgradeStructure
+  - PlaceStructure
+  - DestroyStructure
+  - TurnOn
+  - RemoveItemFromHandForOtherClients
+  - ClearChildrenInActorRightHand
+  - ShoveNewItemInRHandOfActor
+  - DestroyOnAllClients
+  - DamageStructure
   - sendEveryoneMessage
   - sendWhisperMessage
+  - FoundPlayer
+  - LostPlayer
+  - DeerFoundPlayer
+  - DeerFoundWolf
+  - DeerLostPlayer
+  - DeerLostWolf
+  - FoundMonument
+  - ChickenFoundPlayer
+  - ChickenFoundWolf
+  - ChickenLostPlayer
+  - ChickenLostWolf
+  - WolfFoundPlayer
+  - WolfFoundPrey
+  - WolfLostPlayer
+  - WolfLostPrey
+  - UpdateOwnChat
+  - DefaultProjectileInit
+  - DefaultRaycastInit
+  - RepairStructure
+  - ReadyTobePickedAgin
+  - SomeoneJustPickedIt
+  - PlayServerSideAnimation
+  - ArrowProjectileInit
+  - sendErrorMessage
+  - SetTriggerToFalse
+  - SetTriggerToTrue
+  - AddPlayerToTargetsList
+  - RemovePlayerFromTargetList
+  - TankFoundPlayer
+  - TankLostPlayer
+  - EnemyDamaged
+  - SetHasLock
+  - SetIsOpen
+  - RemovePin
+  - SetPin
+  - MultiplayerPlayAudio
+  - TurnOnForOtherClients
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

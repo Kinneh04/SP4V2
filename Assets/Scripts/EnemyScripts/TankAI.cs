@@ -6,12 +6,13 @@ using Photon.Pun;
 
 public class TankAI : Enemy
 {
+    protected List<GameObject> DetectedPlayers = new List<GameObject>();
+
     enum FSM { IDLE, PATROL, ATTACK, DEAD };
     public enum ENEMY_TYPE { SCIENTIST, ARMOURED_SCIENTIST, TANK };
 
     int MaxHealth = 100;
     public float MSpd = 2;
-    int Health;
     float IdleTime;
     float MoveTime;
     float RotatingTurret = 0;
@@ -25,14 +26,12 @@ public class TankAI : Enemy
 
     RocketLauncher gun;
 
-    PhotonView PV;
-
     FSM CurrentState;
 
     public ENEMY_TYPE EnemyType;
 
     // Start is called before the first frame update
-    void Awake()
+    public virtual void Awake()
     {
         MaxHealth = 1500;
         float dist = 100;
@@ -85,7 +84,7 @@ public class TankAI : Enemy
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         gun.SetInfiniteAmmo(true);
        //Debug.Log("Update: " + gun.GetInfiniteAmmo());
@@ -171,7 +170,10 @@ public class TankAI : Enemy
                         deadTime -= Time.deltaTime;
                     }
                     if (deadTime <= 0 && PV.IsMine)
+                    {
+                        // Harvestable = true;
                         PhotonNetwork.Destroy(gameObject);
+                    }
                     break;
                 }
             default:
@@ -262,11 +264,51 @@ public class TankAI : Enemy
 
     void Attack()
     {
-        gun.Discharge(gameObject.transform.Find("TurretBody"));
+        gun.NonPlayerDischarge(PV);
     }
 
-    override public void GetDamaged(int damage)
+    [PunRPC]
+    void TankFoundPlayer(int ID)
     {
-        Health -= damage;
+        GameObject other = PhotonView.Find(ID).gameObject;
+        DetectedPlayers.Add(other);
+        // Targeting
+        Enemy enemy = GetComponent<Enemy>();
+        if (enemy.TargetPlayer == null)
+        {
+            enemy.TargetPlayer = other;
+        }
+        else if (Vector3.Distance(enemy.transform.position, enemy.TargetPlayer.transform.position) > Vector3.Distance(enemy.transform.position, other.transform.position))
+        {
+            enemy.TargetPlayer = other;
+        }
+    }
+
+    [PunRPC]
+    void TankLostPlayer(int ID)
+    {
+        GameObject other = PhotonView.Find(ID).gameObject;
+        bool TargetLeft = false;
+        Enemy enemy = GetComponent<Enemy>();
+        if (enemy.TargetPlayer == other)
+        {
+            TargetLeft = true;
+            enemy.TargetPlayer = null;
+            DetectedPlayers.Remove(other);
+        }
+        if (TargetLeft)
+        {
+            for (int i = 0; i < DetectedPlayers.Count; i++)
+            {
+                if (enemy.TargetPlayer == null)
+                {
+                    enemy.TargetPlayer = DetectedPlayers[0];
+                }
+                else if (Vector3.Distance(enemy.transform.position, enemy.TargetPlayer.transform.position) > Vector3.Distance(enemy.transform.position, DetectedPlayers[i].transform.position))
+                {
+                    enemy.TargetPlayer = DetectedPlayers[i];
+                }
+            }
+        }
     }
 }

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class FurnaceProperties : MonoBehaviour
 {
     public List<ItemInfo> ItemsInFurnace = new List<ItemInfo>();
     public List<int> ItemQuantityInFurnace = new List<int>();
+
+    public List<int> PhotonViewIDs = new List<int>();
     public InventoryManager IM;
     public bool isOn = false;
     public GameObject FireParticleSystem;
@@ -24,6 +26,56 @@ public class FurnaceProperties : MonoBehaviour
     public float CookInterval;
     public float Cooktimer;
     public bool isLookingAtIt;
+
+    public PhotonView pv;
+
+    private void Awake()
+    {
+        pv = GetComponent<PhotonView>();
+    }
+    bool ItemExistsInFurnace(ItemInfo I)
+    {
+        for (int i = 0; i < ItemsInFurnace.Count; i++)
+        {
+            if (I == ItemsInFurnace[i])
+                return true;
+        }
+        return false;
+    }
+
+    bool ItemExistsInCrate(ItemInfo I)
+    {
+        for (int i = 0; i < ItemsInFurnace.Count; i++)
+        {
+            if (I == ItemsInFurnace[i])
+                return true;
+        }
+        return false;
+    }
+
+
+    [PunRPC]
+    void SyncLootAcrossClients(int[] PhotonViewIDs, int[] ItemQuantity)
+    {
+        print("CLEARING ITEMS IN CRATE!");
+        ItemsInFurnace.Clear();
+        ItemQuantityInFurnace.Clear();
+        for (int i = 0; i < PhotonViewIDs.Length; i++)
+        {
+            PhotonView ItemPV = PhotonView.Find(PhotonViewIDs[i]);
+            ItemInfo ItemToAdd = ItemPV.gameObject.GetComponent<ItemInfo>();
+            if (!ItemExistsInCrate(ItemToAdd))
+            {
+                ItemsInFurnace.Add(ItemToAdd);
+                ItemQuantityInFurnace.Add(ItemQuantity[i]);
+            }
+        }
+
+        ClearLastLootPool();
+        DisplayLoot();
+    }
+
+
     public void UpdateLoot()
     {
         for (int i = 0; i < 6; i++)
@@ -45,12 +97,18 @@ public class FurnaceProperties : MonoBehaviour
 
                 ItemsInFurnace.RemoveAt(i);
                 ItemQuantityInFurnace.RemoveAt(i);
-                i--;
-
             }
 
         }
+        PrepareToSyncLoot();
+        PhotonViewIDs.Clear();
+        ClearLastLootPool();
+        DisplayLoot();
+       
+      
     }
+
+   
 
     public bool CheckForItemAndQuantity(ItemInfo I, int Q)
     {
@@ -92,9 +150,11 @@ public class FurnaceProperties : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
-
-            IM.InventoryList[i + 42] = null;
-
+            if (IM.InventoryList[i + 42] != null)
+            {
+                IM.InventoryList[i + 42].ItemCount = 0;
+                IM.InventoryList[i + 42] = null;
+            }
         }
         IM.UpdateItemCountPerSlot();
     }
@@ -190,6 +250,7 @@ public class FurnaceProperties : MonoBehaviour
                 if(!CheckForItemInFurnace(ItemRequiredToStartFurnace))
                 {
                     TurnOn();
+                   // pv.RPC("TurnOn", RpcTarget.All);
                 }
             }
 
@@ -206,23 +267,44 @@ public class FurnaceProperties : MonoBehaviour
                 if (CheckForItemInFurnace(RawSulfur) && CheckForItemInFurnace(ItemRequiredToStartFurnace))
                 {
                     DecrementItemInFurnace(RawSulfur, 1);
-                    IncrementItemInFurnace(CookedSulfur, 1);
+                    IncrementItemInFurnace(CookedSulfur, 3);
                 }
 
                 if (CheckForItemInFurnace(RawMetal) && CheckForItemInFurnace(ItemRequiredToStartFurnace))
                 {
                     DecrementItemInFurnace(RawMetal, 1);
-                    IncrementItemInFurnace(ScrapMetal, 1);
+                    IncrementItemInFurnace(ScrapMetal, 3);
                 }
                 if (CheckForItemInFurnace(Weaponparts) && CheckForItemInFurnace(ItemRequiredToStartFurnace))
                 {
                     DecrementItemInFurnace(Weaponparts, 1);
                     IncrementItemInFurnace(RawMetal, 50);
                 }
+                //PrepareToSyncLoot();
             }    
         }
     }
 
+    [PunRPC]
+
+    public void TurnOnForOtherClients()
+    {
+        if (isOn)
+        {
+            isOn = false;
+            FireParticleSystem.GetComponent<ParticleSystem>().Stop();
+            SparksParticleSystem.GetComponent<ParticleSystem>().Stop();
+            lightsource.intensity = 0;
+
+        }
+        else
+        {
+            isOn = true;
+            FireParticleSystem.GetComponent<ParticleSystem>().Play();
+            SparksParticleSystem.GetComponent<ParticleSystem>().Play();
+            lightsource.intensity = 6;
+        }
+    }
     public void TurnOn()
     {
 
@@ -232,6 +314,8 @@ public class FurnaceProperties : MonoBehaviour
             FireParticleSystem.GetComponent<ParticleSystem>().Stop();
             SparksParticleSystem.GetComponent<ParticleSystem>().Stop();
             lightsource.intensity = 0;
+
+            pv.RPC("TurnOnForOtherClients", RpcTarget.Others);
         }
         else
         {
@@ -244,6 +328,34 @@ public class FurnaceProperties : MonoBehaviour
                 SparksParticleSystem.GetComponent<ParticleSystem>().Play();
                 lightsource.intensity = 6;
             }
+            pv.RPC("TurnOnForOtherClients", RpcTarget.Others);
+        }
+        
+        //for (int i = 0; i < ItemsInFurnace.Count; i++)
+        //{
+        //    if (ItemsInFurnace[i] != null)
+        //        PhotonViewIDs.Add(ItemsInFurnace[i].GetComponent<PhotonView>().ViewID);
+        //}
+        //int[] PVIDArray = PhotonViewIDs.ToArray();
+        //int[] PVQuanArray = ItemQuantityInFurnace.ToArray();
+        //pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
+    }
+
+    public void PrepareToSyncLoot()
+    {
+        if (pv.IsMine)
+        {
+            print("SYNCING LOOT ACROSS CLIENTS!");
+            pv = GetComponent<PhotonView>();
+            PhotonViewIDs.Clear();
+            //UpdateLoot();
+            for (int i = 0; i < ItemsInFurnace.Count; i++)
+            {
+                PhotonViewIDs.Add(ItemsInFurnace[i].gameObject.GetComponent<PhotonView>().ViewID);
+            }
+            int[] PVIDArray = PhotonViewIDs.ToArray();
+            int[] PVQuanArray = ItemQuantityInFurnace.ToArray();
+            pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
         }
     }
 }

@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class M1911 : WeaponInfo
 {
-    public GameObject BarrlTip;
-    //This is REQUIRED for muzzle flare;
-    // Dont change it or it will NOT shoot;
+
     public override void Init()
     {
         MagRounds = MaxMagRounds = 11;
@@ -17,7 +15,7 @@ public class M1911 : WeaponInfo
         TimeBetweenShots = 0.15f;
         ElapsedTime = ReloadTime = 0;
         MaxReloadTime = 2.2;
-        BarrelTip = BarrlTip;
+        
         CanFire = false;
         AimCone = 1.0f;
         InfiniteAmmo = false;

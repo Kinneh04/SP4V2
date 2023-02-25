@@ -22,6 +22,7 @@ public class PlayerProperties : MonoBehaviour
     public Slider ThirstSlider;
 
     public Vector3 Spawnpoint;
+    public Vector3 OGSpawnPoint;
 
     public bool isPoisoned;
     public float PoisonTimer;
@@ -48,6 +49,7 @@ public class PlayerProperties : MonoBehaviour
     public GameObject PoisonIcon;
     public GameObject SickIcon;
     public GameObject HealIcon;
+    public GameObject BuildingDisabledIcon;
     public Animator panim;
     public GameObject bleedingIcon;
 
@@ -66,6 +68,8 @@ public class PlayerProperties : MonoBehaviour
     public float RadiationExpireTimer;
     float RTimer;
 
+    public bool isBuildingDisabled;
+
     bool isShowingBlood = false;
     float bloodTimer = 0f;
 
@@ -73,30 +77,44 @@ public class PlayerProperties : MonoBehaviour
     public float bleedingInterval, poisonInterval, fullinterval, sickInterval, HealInterval;
     public bool isDead;
     public GameObject deathscreen, awokenMenu;
+    public GameObject SleepingMenu;
+    public bool isSleeping;
     public bool inventoryIsOpen;
-    public Image TurnOnButton;
-    public TMP_Text TurnOnText;
 
     public bool craftingIsOpen = false;
     public GameObject craftingScreen;
+    public CraftingManager CM;
 
     public GameObject LootScreen, inventoryScreen, furnaceScreen;
     public PlayerMovement PM;
     public GameObject DeathBag;
 
+    public GameObject PauseMenu;
+
+    PhotonView pv;
+
+    private void Awake()
+    {
+        pv = GetComponent<PhotonView>();
+
+        Sleep();
+        OGSpawnPoint = transform.position;  
+    }
+
+    public void Sleep()
+    {
+        SleepingMenu.SetActive(true);
+        isSleeping = true;
+    }
+
+    public void DisconnectFromServer()
+    {
+        PhotonNetwork.Disconnect();
+    }
+
     public void TurnOnFurnace()
     {
         PlayerLookingAtItem.GetComponent<FurnaceProperties>().TurnOn();
-        if (PlayerLookingAtItem.GetComponent<FurnaceProperties>().isOn)
-        {
-            TurnOnButton.color = Color.red;
-            TurnOnText.text = "Turn Off";
-        }
-        else
-        {
-            TurnOnButton.color = Color.green;
-            TurnOnText.text = "Turn On";
-        }
     }
     public void OpenFurnaceInventory()
     {
@@ -108,34 +126,51 @@ public class PlayerProperties : MonoBehaviour
     }
     public void OpenInventory()
     {
-        print("HEY!");
-        if (!playerMovement.isMovementEnabled)
+        if (pv.IsMine)
         {
-            inventoryScreen.SetActive(false);
-            inventoryIsOpen = false;
-            furnaceScreen.SetActive(false);
-            
-            
-            LootScreen.SetActive(false);
-            if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Crate")
+            print("HEY!");
+            if (!playerMovement.isMovementEnabled)
             {
-                print("UpdatingCrate!");
-                PlayerLookingAtItem.GetComponent<LootProperties>().UpdateLoot();
-                PlayerLookingAtItem.GetComponent<LootProperties>().ClearLastLootPool();
+                //print("HEY!");
+                if (!playerMovement.isMovementEnabled)
+                {
+                    inventoryScreen.SetActive(false);
+                    inventoryIsOpen = false;
+                    furnaceScreen.SetActive(false);
+
+
+                    LootScreen.SetActive(false);
+                    if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Crate" && LootScreen.activeSelf)
+                    {
+                        print("UpdatingCrate!");
+                        PlayerLookingAtItem.GetComponent<LootProperties>().PrepareToSyncLoot();
+
+
+
+                        PlayerLookingAtItem.GetComponent<LootProperties>().ClearLastLootPool();
+                    }
+                    else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
+                    {
+                        PlayerLookingAtItem.GetComponent<FurnaceProperties>().isLookingAtIt = false;
+                        PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
+                        PlayerLookingAtItem.GetComponent<FurnaceProperties>().ClearLastLootPool();
+                    }
+                    playerMovement.LockCursor();
+                }
+                else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
+                {
+                    PlayerLookingAtItem.GetComponent<FurnaceProperties>().isLookingAtIt = false;
+                    PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
+                    PlayerLookingAtItem.GetComponent<FurnaceProperties>().ClearLastLootPool();
+                }
+                playerMovement.LockCursor();
             }
-            else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
+            else
             {
-                PlayerLookingAtItem.GetComponent<FurnaceProperties>().isLookingAtIt = false;
-                PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
-                PlayerLookingAtItem.GetComponent<FurnaceProperties>().ClearLastLootPool();
+                inventoryScreen.SetActive(true);
+                inventoryIsOpen = true;
+                playerMovement.UnlockCursor();
             }
-            playerMovement.LockCursor();
-        }
-        else
-        {
-            inventoryScreen.SetActive(true);
-            inventoryIsOpen = true;
-            playerMovement.UnlockCursor();
         }
     }
 
@@ -150,12 +185,19 @@ public class PlayerProperties : MonoBehaviour
         else
         {
             craftingScreen.SetActive(true);
-            CraftingManager CM = FindObjectOfType<CraftingManager>();
             Debug.Log("Loading Crafts");
             CM.LoadCrafts(WorkbenchLv, true);
             craftingIsOpen = true;
             playerMovement.UnlockCursor();
         }
+    }
+
+    [PunRPC]
+    void PlayServerSideAnimation(int viewID, string animationName)
+    {
+        GameObject obj = PhotonView.Find(viewID).gameObject;
+        Animator remoteAnimator = obj.GetComponent<Animator>();
+        remoteAnimator.Play(animationName);
     }
 
     public void OpenResearch()
@@ -169,7 +211,6 @@ public class PlayerProperties : MonoBehaviour
         else
         {
             craftingScreen.SetActive(true);
-            CraftingManager CM = FindObjectOfType<CraftingManager>();
             Debug.Log("Loading Research");
             CM.LoadCrafts(0, false);
             craftingIsOpen = true;
@@ -191,7 +232,7 @@ public class PlayerProperties : MonoBehaviour
         BloodImage.color = new Color(1, 0, 0, 0);
         if (Lastbedclaimed != null)
             transform.position = Spawnpoint;
-        else transform.position = new Vector3(-9.11f, 0.15f, 3.24f);
+        else transform.position = OGSpawnPoint;
 
         RadiationAmount = 0;
         RadiationIcon.SetActive(false);
@@ -207,14 +248,29 @@ public class PlayerProperties : MonoBehaviour
         FullIcon.SetActive(false);
         PoisonIcon.SetActive(false);
         bleedingIcon.SetActive(false);
+        BuildingDisabledIcon.SetActive(false);
 
         deathscreen.SetActive(false);
         awokenMenu.SetActive(true);
         isDead = false;
-        panim.Play("PBeanIdle");
+        //panim.Play("PBeanIdle");
+        pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanIdle");
 
         PM.canLookAround = true;
         PM.isMovementEnabled = true;
+
+        craftingIsOpen = false;
+        craftingScreen.SetActive(false);
+
+
+        PhotonView Rockpv = PhotonNetwork.Instantiate("Rock", transform.position, Quaternion.identity, 0).GetComponent<PhotonView>();
+        PhotonView TorchPV = PhotonNetwork.Instantiate("Torch", transform.position, Quaternion.identity, 0).GetComponent<PhotonView>();
+        Rockpv.gameObject.SetActive(false);
+        TorchPV.gameObject.SetActive(false);
+        Rockpv.transform.SetParent(gameObject.transform.Find("Capsule").Find("RHand"));
+        TorchPV.transform.SetParent(gameObject.transform.Find("Capsule").Find("RHand"));
+        gameObject.GetComponentInChildren<InventoryManager>().AddQuantity(Rockpv.gameObject.GetComponent<HarvestToolsProperties>(), 1);
+        gameObject.GetComponentInChildren<InventoryManager>().AddQuantity(TorchPV.gameObject.GetComponent<HarvestToolsProperties>(), 1);
     }
 
     public void HealHealth(int HealthAmt, bool HealsBleed, bool HealsPoison, float poisonChance)
@@ -269,7 +325,8 @@ public class PlayerProperties : MonoBehaviour
 
     private void Update()
     {
-        if(!isDead)
+
+        if(!isDead && pv.IsMine && !isSleeping)
         { 
             Htimer += Time.deltaTime;
             Ttimer += Time.deltaTime;
@@ -442,6 +499,14 @@ public class PlayerProperties : MonoBehaviour
                 }
             }
         }
+        else if(isSleeping)
+        {
+            if (Input.GetKey(KeyCode.E) && pv.IsMine)
+            {
+                SleepingMenu.SetActive(false);
+                isSleeping = false;
+            }
+        }
         else
         {
             if (Input.GetKey(KeyCode.E))
@@ -449,6 +514,24 @@ public class PlayerProperties : MonoBehaviour
                 RespawnAfterDeath();
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GetComponent<ChatManager>().isTyping)
+                return;
+            if (PauseMenu.activeSelf)
+            {
+                PauseMenu.SetActive(false);
+                playerMovement.LockCursor();
+            }
+            else
+            {
+                PauseMenu.SetActive(true);
+                playerMovement.UnlockCursor();
+            }
+        }
+
+        // Align icons to right, filling up inactive icons' spaces
+        ShiftIcons();
     }
 
     public IEnumerator ShowBlood()
@@ -461,30 +544,53 @@ public class PlayerProperties : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        Health -= damage;
-
-        if (Health < 50)
+        if (pv.IsMine)
         {
-            float q = Health / MaxHealth;
-            StartCoroutine(ShowBlood());
-            isShowingBlood = true;
-            bloodTimer = 5.0f;
+            Health -= damage;
+
+            if (Health < 50)
+            {
+                Health -= damage;
+
+                if (Health < 50)
+                {
+                    float q = Health / MaxHealth;
+                    StartCoroutine(ShowBlood());
+                    isShowingBlood = true;
+                    bloodTimer = 5.0f;
+                    if (Health <= 0)
+                    {
+                        die();
+                    }
+                }
+
+            }
         }
-
-
-
-        if (Health <= 0)
+    }
+    //Its TakeDamage but without punrpc
+    public void TakeDamageV2(float damage)
+    {
+        if (pv.IsMine)
         {
-            die();
-        }
-
-        float f = Random.Range(1, 100);
-        if(bleedChance < f)
-        {
-            isBleeding = true;
-            bleedingIcon.SetActive(true);
-            BTimer = 60f;
-
+            Health -= damage;
+            if (Health < 50)
+            {
+                float q = Health / MaxHealth;
+                StartCoroutine(ShowBlood());
+                isShowingBlood = true;
+                bloodTimer = 5.0f;
+                if (Health <= 0)
+                {
+                    die();
+                }
+            }
+            float f = Random.Range(1, 100);
+            if (bleedChance < f)
+            {
+                isBleeding = true;
+                bleedingIcon.SetActive(true);
+                BTimer = 60f;
+            }
         }
     }
 
@@ -495,7 +601,8 @@ public class PlayerProperties : MonoBehaviour
             PM.isMovementEnabled = false;
             PM.canLookAround = false;
             panim.StopPlayback();
-            panim.Play("PBeanDeath");
+            //panim.Play("PBeanDeath");
+            pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanDeath");
             StartCoroutine(DeathSequence());
             
             awokenMenu.SetActive(false);
@@ -503,31 +610,85 @@ public class PlayerProperties : MonoBehaviour
         }
     }
 
-    public void ShoveLootInDeathBag(GameObject DB)
+    [PunRPC]
+    public void ShoveLootInDeathBag(int DBVID)
     {
+
+        GameObject DB = PhotonView.Find(DBVID).gameObject;
+
         IM.UpdateItemCountPerSlot();
-        if(IM.InventoryList[IM.EquippedSlot] != null)
-        {
-            DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[IM.EquippedSlot]));
-            DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[IM.EquippedSlot].GetItemCount()));
-        }
+        //if(IM.InventoryList[IM.EquippedSlot] != null)
+        //{
+        //    DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[IM.EquippedSlot]));
+        //    DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[IM.EquippedSlot].GetItemCount()));
+        //}
         for(int i = 0; i < 30; i++)
         {
             if(IM.InventoryList[i] != null)
             {
                 DB.GetComponent<LootProperties>().ItemsInCrate.Add((IM.InventoryList[i]));
                 DB.GetComponent<LootProperties>().ItemQuantityInCrate.Add((IM.InventoryList[i].GetItemCount()));
+                IM.InventoryList[i].gameObject.transform.parent = null;
+                IM.InventoryList[i].gameObject.SetActive(false);
+                //DB.gameObject.transform.parent = null;
             }
         }
-        
-    }
 
+        DB.GetComponent<LootProperties>().PrepareToSyncLoot();
+    }
+    [PunRPC]
+    public void DefaultRaycastInit()
+    {
+        WeaponInfo weaponInfo = gameObject.GetComponentInChildren<WeaponInfo>();
+        GameObject Raycast = Instantiate(weaponInfo.BulletPrefab, transform.position, Quaternion.identity);
+        Raycast.GetComponent<Raycast>().Damage = weaponInfo.GetDamage();
+        Raycast.GetComponent<Raycast>().BulletSpawnPoint = gameObject.transform;
+        Raycast.GetComponent<Raycast>().ParentGunTip = weaponInfo.BarrelTip;
+        Raycast.GetComponent<Raycast>().SetAimCone(weaponInfo.GetAimCone());
+        Raycast.GetComponent<Raycast>().Shoot();
+    }
+    [PunRPC]
+    public void DefaultProjectileInit(int PhotonViewID)
+    {
+        WeaponInfo weaponInfo = gameObject.GetComponentInChildren<WeaponInfo>();
+        GameObject Projectile = PhotonView.Find(PhotonViewID).gameObject;
+        Projectile.GetComponent<Projectile>().Damage = weaponInfo.GetDamage();
+        Projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
+        Projectile.GetComponent<Projectile>().ParentGunTip = weaponInfo.BarrelTip;
+        Projectile.GetComponent<Projectile>().SetAimCone(weaponInfo.GetAimCone());
+        Projectile.transform.parent = null;
+        Projectile.transform.rotation = weaponInfo.transform.rotation;
+        Projectile.GetComponent<Projectile>().JustFired = true;
+        Projectile.GetComponent<Projectile>().itemID = weaponInfo.GetAmmoType();
+        Projectile.GetComponent<Projectile>().ExplosionTimer = 3;
+        Projectile.GetComponent<Projectile>().ShootNonRaycastType();
+    }
+    
     public IEnumerator DeathSequence()
     {
-        yield return new WaitForSeconds(1.6f);
-        isDead = true;
-        deathscreen.SetActive(true);
-        GameObject GO = Instantiate(DeathBag, transform.position, Quaternion.identity);
-        ShoveLootInDeathBag(GO);
+        if (pv.IsMine)
+        {
+            yield return new WaitForSeconds(1.6f);
+            isDead = true;
+            deathscreen.SetActive(true);
+            PhotonView pvBag = PhotonNetwork.Instantiate(DeathBag.name, transform.position, Quaternion.identity).GetComponent<PhotonView>();
+
+           // pv.RPC("ShoveLootInDeathBag", RpcTarget.All, pvBag.ViewID);
+            ShoveLootInDeathBag(pvBag.ViewID);
+        }
+    }
+
+    private void ShiftIcons()
+    {
+        List<GameObject> iconList = new List<GameObject> { RadiationIcon, HealIcon, bleedingIcon, SickIcon, FullIcon, PoisonIcon, BuildingDisabledIcon };
+        int currIndex = 0;
+
+        foreach (GameObject icon in iconList) {
+            if (icon.activeSelf)
+            {
+                icon.GetComponent<RectTransform>().anchoredPosition = new Vector2(currIndex * -105.6f + 429.6f, icon.GetComponent<RectTransform>().anchoredPosition.y);
+                currIndex++;
+            }
+        }
     }
 }

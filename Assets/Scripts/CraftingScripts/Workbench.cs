@@ -9,10 +9,4 @@ public class Workbench : MonoBehaviour
     void Awake()
     {
     }
-
-
-    public void SetLevel(int level)
-    {
-        Level = level;
-    }
 }

@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class RocketLauncher : WeaponInfo
 {
-	public GameObject BarrlTip;
-
+	public GameObject Miniexplosion;
 	public override void Init()
     {
         MagRounds = MaxMagRounds = 1;
@@ -28,24 +27,19 @@ public class RocketLauncher : WeaponInfo
 
 
     // Discharge this weapon
-    public override bool Discharge(Transform transform)
+    public override bool Discharge()
 	{
 		if (CanFire)
 		{
 			// If there is still ammo in the magazine, then fire
 			if (MagRounds > 0 || InfiniteAmmo)
 			{
-				GameObject projectile = Instantiate(BulletPrefab, BarrlTip.transform.position, Quaternion.identity);
-				projectile.GetComponent<Projectile>().Damage = Damage;
-				projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
-				projectile.GetComponent<Projectile>().ParentGunTip = BarrlTip;
-				projectile.GetComponent<Projectile>().SetAimCone(AimCone);
-                projectile.transform.parent = null;
-				projectile.transform.rotation = transform.rotation;
-				projectile.GetComponent<Projectile>().itemID = AmmoType;
-				projectile.GetComponent<Projectile>().JustFired = true;
-				projectile.GetComponent<Projectile>().ShootNonRaycastType();
+				//Get Player PhotonView
+				int PhotonViewID = PhotonNetwork.Instantiate("missile", this.BarrelTip.transform.position, Quaternion.identity).GetComponent<PhotonView>().ViewID;
+				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
+				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All, PhotonViewID);
 
+				Instantiate(Miniexplosion, BarrelTip.transform.position, Quaternion.identity);
 				// Lock the weapon after this discharge
 				CanFire = false;
 				// Reset the dElapsedTime to dTimeBetweenShots for the next shot
@@ -59,5 +53,29 @@ public class RocketLauncher : WeaponInfo
 		}
 		return false;
 	}
+	// Discharge this weapon
+	public override bool NonPlayerDischarge(PhotonView ViewID)
+	{
+		if (CanFire)
+		{
+			// If there is still ammo in the magazine, then fire
+			if (MagRounds > 0 || InfiniteAmmo)
+			{
+				//Get Player PhotonView
+				int PhotonViewID = PhotonNetwork.Instantiate("missile", this.BarrelTip.transform.position, Quaternion.identity).GetComponent<PhotonView>().ViewID;
+				ViewID.RPC("DefaultProjectileInit", RpcTarget.All, PhotonViewID);
 
+				Instantiate(Miniexplosion, BarrelTip.transform.position, Quaternion.identity);
+				// Lock the weapon after this discharge
+				CanFire = false;
+				// Reset the dElapsedTime to dTimeBetweenShots for the next shot
+				ElapsedTime = TimeBetweenShots;
+				// Reduce the rounds by 1
+				if (!InfiniteAmmo)
+					MagRounds--;
+				return true;
+			}
+		}
+		return false;
+	}
 }

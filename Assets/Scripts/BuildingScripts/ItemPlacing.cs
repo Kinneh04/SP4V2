@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class ItemPlacing : MonoBehaviour
 {
@@ -17,7 +18,14 @@ public class ItemPlacing : MonoBehaviour
     {
         if (canPlace)
         {
-            Instantiate(ObjectToPlace, transform.position, Quaternion.identity);
+            if (GetComponent<ItemInfo>().NetworkedReplacement)
+            {
+                PhotonNetwork.Instantiate(ObjectToPlace.name, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(ObjectToPlace, transform.position, Quaternion.identity);
+            }
             Destroy(gameObject);
         }
     }
