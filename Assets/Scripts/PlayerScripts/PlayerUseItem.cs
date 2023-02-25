@@ -750,7 +750,7 @@ public class PlayerUseItem : MonoBehaviour
             }
 
             //Updates Gun Ammo if Gun is done reloading
-            if (playerProperties.CurrentlyHoldingItem != null)
+            if (playerProperties.CurrentlyHoldingItem != null && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().itemID == inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID)
             {
                 if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
                 {
@@ -772,29 +772,29 @@ public class PlayerUseItem : MonoBehaviour
 
             }
 
-            //Updates Gun Ammo if Gun is done reloading
-            if (playerProperties.CurrentlyHoldingItem)
-            {
-                //Debug.Log(playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>());
-                if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
-                {
-                    //Current gun ammo not matching ammo displayed
-                    if (inventoryManager.CheckAmmoUpdated())
-                    {
-                        inventoryManager.UpdateItemCountPerSlot();
-                    }
-                }
-                else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Axe
-                    || playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Pickaxe)
-                {
-                    //Current gun ammo not matching ammo displayed
-                    if (inventoryManager.CheckDurabilityUpdated())
-                    {
-                        inventoryManager.UpdateItemCountPerSlot();
-                    }
-                }
+            ////Updates Gun Ammo if Gun is done reloading
+            //if (playerProperties.CurrentlyHoldingItem)
+            //{
+            //    //Debug.Log(playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>());
+            //    if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
+            //    {
+            //        //Current gun ammo not matching ammo displayed
+            //        if (inventoryManager.CheckAmmoUpdated())
+            //        {
+            //            inventoryManager.UpdateItemCountPerSlot();
+            //        }
+            //    }
+            //    else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Axe
+            //        || playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Pickaxe)
+            //    {
+            //        //Current gun ammo not matching ammo displayed
+            //        if (inventoryManager.CheckDurabilityUpdated())
+            //        {
+            //            inventoryManager.UpdateItemCountPerSlot();
+            //        }
+            //    }
 
-            }
+            //}
             
 
             //Hotbar
@@ -940,7 +940,7 @@ public class PlayerUseItem : MonoBehaviour
             else if (ItemToPairToHand.GetComponent<BoxCollider>() != null) ItemToPairToHand.GetComponent<BoxCollider>().isTrigger = false;
 
             ItemToPairToHand.transform.position = RHand.transform.position;
-            ItemToPairToHand.transform.SetParent(null);
+            //ItemToPairToHand.transform.SetParent(null);
             ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = false;
         }
     }
@@ -1058,7 +1058,7 @@ public class PlayerUseItem : MonoBehaviour
             GO.GetComponent<Rigidbody>().isKinematic = false;
             //GO.GetComponent<MeshCollider>().isTrigger = false;
             playerProperties.CurrentlyHoldingItem = null;
-            GO.transform.parent = null;
+            //GO.transform.parent = null;
             GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 10;
             inventoryManager.Remove(inventoryManager.EquippedSlot, false);
             detached = true;
