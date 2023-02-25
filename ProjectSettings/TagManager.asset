@@ -45,6 +45,7 @@ TagManager:
   - DoorStructure
   - AudioManager
   - ToolCupboard
+  - Terrain
   layers:
   - Default
   - TransparentFX

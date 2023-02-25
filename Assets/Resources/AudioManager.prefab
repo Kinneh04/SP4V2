@@ -48,9 +48,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 2369061369853699106}
+  GraphicsLoader: {fileID: 0}
   Clips:
   - {fileID: 8300000, guid: f42ba9d37ae41d247a490b5e5d28acce, type: 3}
   - {fileID: 8300000, guid: 82c243a6a68a5c84ebc643140b45f703, type: 3}
+  - {fileID: 8300000, guid: 86ca707243358f64fb2d8933689820c2, type: 3}
+  - {fileID: 8300000, guid: 17f7928c59ee81942ba4de3392e1240c, type: 3}
+  - {fileID: 8300000, guid: 0a0a6b5856de5cd468dceb85c291b444, type: 3}
+  - {fileID: 8300000, guid: 00f2ead8daf0016479e7f5103a90b644, type: 3}
   Volume: 1
 --- !u!82 &2369061369853699106
 AudioSource:

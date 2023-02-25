@@ -3639,8 +3639,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1da122b90461b3c40a89d953ae3714aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DontDestroyOnLoad: 1
   dropdown: {fileID: 258260362}
+  sfxSlider: {fileID: 542026978}
+  musicSlider: {fileID: 1241961908}
   renderDistance: 0
+  musicVolume: 0
+  sfxVolume: 0
+  cam: {fileID: 0}
+  AM: {fileID: 0}
+  terrain: {fileID: 0}
 --- !u!4 &255339440
 Transform:
   m_ObjectHideFlags: 0
@@ -4489,7 +4497,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.479, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5768,6 +5776,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 255339439}
+        m_TargetAssemblyTypeName: DropdownHolder, Assembly-CSharp
+        m_MethodName: RecordSliderValues
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &543850066
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6730,8 +6750,8 @@ RectTransform:
   m_Father: {fileID: 571176149}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.479, y: 0}
-  m_AnchorMax: {x: 0.479, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0.0000076293945}
   m_SizeDelta: {x: 49.6431, y: -11.5764}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11876,6 +11896,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 255339439}
+        m_TargetAssemblyTypeName: DropdownHolder, Assembly-CSharp
+        m_MethodName: RecordSliderValues
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1254485900
 GameObject:
   m_ObjectHideFlags: 0
@@ -13630,7 +13662,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1377858637
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14005,8 +14037,8 @@ RectTransform:
   m_Father: {fileID: 995418027}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.479, y: 0}
-  m_AnchorMax: {x: 0.479, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0.0000076293945}
   m_SizeDelta: {x: 49.6431, y: -11.5764}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -14888,7 +14920,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.479, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

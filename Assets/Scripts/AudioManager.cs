@@ -11,14 +11,19 @@ public class AudioManager : MonoBehaviour
         AK47_Reload,
         SMG_Shoot,
         Pistol_Shoot,
+        Sniper_Shoot,
+        Hitmarker,
         NUM_AUDIO,
     }
     public AudioSource audioSource;
+    public GameObject GraphicsLoader;
     public List<AudioClip> Clips;
     public float Volume = 1.0f;
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        GraphicsLoader = GameObject.Find("GraphicsLoader");
+        Volume = GraphicsLoader.GetComponent<DropdownHolder>().sfxVolume;
     }
     public void SetCurrentAudioSourceClip(int audioID)
     {
