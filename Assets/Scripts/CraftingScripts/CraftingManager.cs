@@ -299,7 +299,6 @@ public class CraftingManager : MonoBehaviour
         //temp = PhotonNetwork.Instantiate(CraftableList[SelectedCraft].name, transform.position, transform.rotation).transform.GetComponent<ItemInfo>();
         temp.gameObject.SetActive(false);
         IM.AddQuantity(temp, CraftAmount * singleAmount);
-        CraftAmount = 0;
         //Selected(SelectedCraft, false);
         if (ScreenCraft)
             CraftSelections[SelectedCraft].load();

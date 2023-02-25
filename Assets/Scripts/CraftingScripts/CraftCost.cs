@@ -16,14 +16,12 @@ public class CraftCost : MonoBehaviour
 
     int[] materialCounts;
     ItemInfo[] materials;
-    int AmountToMake;
 
     void Awake()
     {
         // CM = GameObject.FindGameObjectWithTag("Crafting").GetComponent<CraftingManager>();
         materialCounts = new int[3];
         materials = new ItemInfo[3];
-        AmountToMake = 1;
     }
 
 
@@ -34,10 +32,11 @@ public class CraftCost : MonoBehaviour
 
     public void ChangeCost()
     {
+        string temp;
         if (CM.Material_1)
         {
             Amount1.text = CM.Quantity_1.ToString();
-            Item1.text = CM.Material_1.ToString();
+            Item1.text = CM.Material_1.ToString().Substring(0, CM.Material_1.ToString().Length - 10);
             Total1.text = (CM.Quantity_1 * CM.CraftAmount).ToString();
             Have1.text = CM.IM.ItemGetInt(CM.Material_1).ToString();
         }
@@ -51,7 +50,7 @@ public class CraftCost : MonoBehaviour
         if (CM.Material_2)
         {
             Amount2.text = CM.Quantity_2.ToString();
-            Item2.text = CM.Material_2.ToString();
+            Item2.text = CM.Material_2.ToString().Substring(0, CM.Material_2.ToString().Length - 10);
             Total2.text = (CM.Quantity_2 * CM.CraftAmount).ToString();
             Have2.text = CM.IM.ItemGetInt(CM.Material_2).ToString();
         }
@@ -65,7 +64,7 @@ public class CraftCost : MonoBehaviour
         if (CM.Material_3)
         {
             Amount3.text = CM.Quantity_3.ToString();
-            Item3.text = CM.Material_3.ToString();
+            Item3.text = CM.Material_3.ToString().Substring(0, CM.Material_3.ToString().Length - 10);
             Total3.text = (CM.Quantity_3 * CM.CraftAmount).ToString();
             Have3.text = CM.IM.ItemGetInt(CM.Material_3).ToString();
         }
@@ -85,26 +84,26 @@ public class CraftCost : MonoBehaviour
             switch (craft.itemID)
             {
                 case ItemInfo.ItemID.AK47_Rifle:
-                    CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 0;
+                    CM.WorkbenchNeeded = 2;
+                    materialCounts[0] = 100;
+                    materialCounts[1] = 50;
                     materialCounts[2] = 0;
-                    materials[0] = CM.prefab2;
-                    materials[1] = null;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.WeaponParts;
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.M1911_Pistol:
                     CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 0;
+                    materialCounts[0] = 25;
+                    materialCounts[1] = 10;
                     materialCounts[2] = 0;
-                    materials[0] = CM.prefab1;
-                    materials[1] = null;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.WeaponParts;
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.Arrow:
                     CM.WorkbenchNeeded = 0;
-                    materialCounts[0] = 1;
+                    materialCounts[0] = 2;
                     materialCounts[1] = 1;
                     materialCounts[2] = 0;
                     materials[0] = CM.Stone;
@@ -219,7 +218,6 @@ public class CraftCost : MonoBehaviour
                     materials[1] = CM.Sulfur;
                     materials[2] = null;
                     break;
-                // Combined Axe here
                 case ItemInfo.ItemID.Homemade_Axe:
                     CM.WorkbenchNeeded = 0;
                     materialCounts[0] = 10;
