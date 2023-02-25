@@ -28,7 +28,7 @@ public class PinSystem : MonoBehaviour
     private void Update()
     {
         PinDisplay.text = currPin;
-        if (Input.GetKey(KeyCode.Escape))
+        if (Input.GetKey(KeyCode.Escape) && PinUI && PinUI.activeSelf)
 		{
             CloseUI();
         }
@@ -106,8 +106,6 @@ public class PinSystem : MonoBehaviour
 
     private void CloseUI()
     {
-        if (!PinUI)
-            return;
         pm.canLookAround = true;
         foreach (Button btn in keypadBtns)
         {

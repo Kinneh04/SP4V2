@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2822505549336865696}
   - component: {fileID: 393383478379147713}
-  - component: {fileID: 7297163990435223573}
   - component: {fileID: 3954691660807173068}
+  - component: {fileID: 2895384450451216059}
   m_Layer: 2
   m_Name: ToolCupboard_Ghost
   m_TagString: Unmarked
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3197658519880511770}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.1232834, y: 1.5, z: -4.1207547}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.8536477, y: 1.9774883, z: 1.0795}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -59,21 +59,6 @@ MonoBehaviour:
   itemID: 61
   ItemCount: 1
   MaxItemCount: 0
---- !u!114 &7297163990435223573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3197658519880511770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ae29e199a5f6824da6d4760fa757042, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 0}
-  ObjectToPlace: {fileID: 3197658519880511770, guid: 6801cea3046235e488f64f44da849064,
-    type: 3}
 --- !u!54 &3954691660807173068
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -90,6 +75,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2895384450451216059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3197658519880511770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae29e199a5f6824da6d4760fa757042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  ObjectToPlace: {fileID: 3197658519880511770, guid: 6801cea3046235e488f64f44da849064,
+    type: 3}
 --- !u!1 &4313423990420520147
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +116,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4313423990420520147}
   m_LocalRotation: {x: -0.43046406, y: -0.43046406, z: 0.560982, w: 0.5609819}
-  m_LocalPosition: {x: -0.30213752, y: 0.25320673, z: 0.2637168}
+  m_LocalPosition: {x: -0.30213752, y: 0.241, z: 0.2637168}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7024687893049796355}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 0.020890296, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []

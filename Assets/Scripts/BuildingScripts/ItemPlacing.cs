@@ -14,7 +14,7 @@ public class ItemPlacing : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("Camera").transform;
     }
 
-    public bool PlaceItem()
+    public virtual bool PlaceItem()
     {
         if (canPlace)
         {

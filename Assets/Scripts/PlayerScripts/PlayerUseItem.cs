@@ -474,6 +474,16 @@ public class PlayerUseItem : MonoBehaviour
                 if (isPlacingItem)
                 {
                     print("PlacedItem!");
+                    if (ItemGO.GetComponent<ItemInfo>().itemID == ItemInfo.ItemID.ToolCupboard_Ghost)
+                    {
+                        // Check if in range of another tool cupboard, if yes, do not place
+                        if (playerProperties.isBuildingDisabled || playerProperties.hasBuildingPrivilege)
+                        {
+                            cp.CreateResourcePopup("Tool cupboard in range", 0);
+                            return;
+                        }
+                    }
+
                     if (ItemGO.GetComponent<ItemPlacing>().PlaceItem())
                     {
                         isPlacingItem = false;
