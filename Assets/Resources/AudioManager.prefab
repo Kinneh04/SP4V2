@@ -69,6 +69,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9fcf6cb48bc9359458c1010c87b97d75, type: 3}
   - {fileID: 8300000, guid: ed4e68a5455dede4385c6b9b0678f7d0, type: 3}
   - {fileID: 8300000, guid: 4b6f8da72631c054e80807356ccd5543, type: 3}
+  - {fileID: 8300000, guid: 5b5fe0a143a65b74eb846d63fe308ed5, type: 3}
+  - {fileID: 8300000, guid: 3b894d7282d92114687647205a592ab0, type: 3}
+  - {fileID: 8300000, guid: 8a61c2b5b2bd7c944b6b4fc587529245, type: 3}
+  - {fileID: 8300000, guid: a484d6446fc25da418f52cd697605caf, type: 3}
+  - {fileID: 8300000, guid: fe40d727c9b255d409baa5e1c628d696, type: 3}
   Volume: 1
 --- !u!82 &2369061369853699106
 AudioSource:

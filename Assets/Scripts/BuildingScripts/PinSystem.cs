@@ -6,6 +6,7 @@ using Photon.Pun;
 
 public class PinSystem : MonoBehaviour
 {
+    public AudioManager audioManager;
     public PlayerMovement pm;
     public CreatePopup cp;
     public GameObject PinUI;
@@ -23,6 +24,8 @@ public class PinSystem : MonoBehaviour
         isSettingPin = isEnteringPin = false;
         PinUI.SetActive(false);
         removePinBtn.gameObject.SetActive(false);
+
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     private void Update()
@@ -40,6 +43,7 @@ public class PinSystem : MonoBehaviour
         removePinBtn.onClick.AddListener(delegate {
             ls.GetComponent<PhotonView>().RPC("RemovePin", RpcTarget.All);
             cp.CreateResourcePopup("Removed old PIN", 0);
+            audioManager.PlayAudio((int)AudioManager.AudioID.LockSuccess);
             CloseUI();
         });
         removePinBtn.gameObject.SetActive(true);
@@ -65,6 +69,7 @@ public class PinSystem : MonoBehaviour
             {
                 ls.GetComponent<PhotonView>().RPC("SetPin", RpcTarget.All, int.Parse(currPin));
                 cp.CreateResourcePopup("Setting PIN success", 0, true);
+                audioManager.PlayAudio((int)AudioManager.AudioID.LockSuccess);
                 CloseUI();
             }
             else if (isEnteringPin)
@@ -73,15 +78,21 @@ public class PinSystem : MonoBehaviour
                 {
                     ls.gameObject.transform.root.GetComponent<PhotonView>().RPC("SetIsOpen", RpcTarget.AllViaServer, true);
                     cp.CreateResourcePopup("PIN Correct", 0, true);
+                    audioManager.PlayAudio((int)AudioManager.AudioID.LockSuccess);
                     CloseUI();
                 }
                 else
                 {
                     cp.CreateResourcePopup("PIN Incorrect", 0);
+                    audioManager.PlayAudio((int)AudioManager.AudioID.LockFail);
                     CloseUI();
                 }
             }
             Cursor.lockState = CursorLockMode.Locked;
+        }
+        else
+        {
+            audioManager.PlayAudio((int)AudioManager.AudioID.LockBtnPress);
         }
     }
 

@@ -25,6 +25,8 @@ public class HammerSystem : MonoBehaviour
     public GameObject stoneObj;
     public CreatePopup cp;
     public AudioManager audioManager;
+    public GameObject smokeVFX;
+    public GameObject destroyVFX;
 
     private bool IsUsingHammer = false;
     private bool IsPickingUp = false;
@@ -325,6 +327,9 @@ public class HammerSystem : MonoBehaviour
                                     cp.CreateResourcePopup("Wood", cost);
                                     im.RemoveQuantity(woodObj.GetComponent<ItemInfo>(), cost);
                                     currStructure.gameObject.GetComponent<PhotonView>().RPC("RepairStructure", RpcTarget.AllViaServer, 25.0f);
+                                    audioManager.PlayAudio((int)AudioManager.AudioID.RepairBuilding);
+                                    //Instantiate(smokeVFX, currStructure.transform);
+
                                 }
                             }
                             else if (selectedObject.costLabel.text.EndsWith("x Stone"))
@@ -339,6 +344,8 @@ public class HammerSystem : MonoBehaviour
                                     cp.CreateResourcePopup("Stone", cost);
                                     im.RemoveQuantity(stoneObj.GetComponent<ItemInfo>(), cost);
                                     currStructure.gameObject.GetComponent<PhotonView>().RPC("RepairStructure", RpcTarget.AllViaServer, 25.0f);
+                                    audioManager.PlayAudio((int)AudioManager.AudioID.RepairBuilding);
+                                    //Instantiate(smokeVFX, currStructure.transform);
                                 }
                             }
                         }
@@ -360,6 +367,7 @@ public class HammerSystem : MonoBehaviour
                                     cp.CreateResourcePopup("Stone", cost);
                                     im.RemoveQuantity(stoneObj.GetComponent<ItemInfo>(), cost);
                                     currStructure.gameObject.GetComponent<PhotonView>().RPC("UpgradeStructure", RpcTarget.AllViaServer);
+                                    //Instantiate(smokeVFX, currStructure.transform);
                                     audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.UpgradeStone, 1.0f);
                                     // Also update current selected
                                     foreach (Transform child in selectedObject.gameObject.transform) // Change look to stone
@@ -379,6 +387,7 @@ public class HammerSystem : MonoBehaviour
                     break;
                 case 3: // Destroy
                     {
+                        //Instantiate(destroyVFX, currStructure.transform);
                         pv.RPC("DestroyStructure", PhotonNetwork.CurrentRoom.GetPlayer(currentObject.GetComponent<StructureObject>().PlayerID), currentObject.GetComponent<PhotonView>().ViewID);
                         audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DestroyBuilding, 1.0f);
                         Destroy(selectedObject.gameObject);
@@ -403,6 +412,7 @@ public class HammerSystem : MonoBehaviour
         IsPickingUp = false;
         selectedObject.gameObject.GetComponentInChildren<CanvasGroup>().alpha = 1;
         Destroy(selectedObject.gameObject);
+        //Instantiate(smokeVFX, currentObject.transform);
         audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.Building, 1f);
     }
 

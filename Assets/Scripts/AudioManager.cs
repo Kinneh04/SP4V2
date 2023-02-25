@@ -26,6 +26,11 @@ public class AudioManager : MonoBehaviour
         Select,
         UpgradeStone,
         DestroyBuilding,
+        DoorOpen,
+        LockBtnPress,
+        LockSuccess,
+        LockFail,
+        RepairBuilding,
         // lmao audio works even if i dont fill this in
         // poggers
         NUM_AUDIO,

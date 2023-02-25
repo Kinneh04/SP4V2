@@ -8,6 +8,7 @@ using Photon.Pun;
 public class StructureObject : MonoBehaviour
 {
     public StructureTypes type;
+    public AudioManager audioManager;
     public GameObject selectedPrefab;
     public Material stoneMaterial;
     public Slider slider;
@@ -32,6 +33,7 @@ public class StructureObject : MonoBehaviour
             slider.gameObject.SetActive(false);
             stabilityLabel.gameObject.SetActive(false);
         }
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     private void Update()
@@ -83,6 +85,7 @@ public class StructureObject : MonoBehaviour
         damageCooldown = 0.5f;
         if (stability <= 0)
         {
+            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DestroyBuilding, 1f);
             PhotonNetwork.Destroy(gameObject);
             return;
         }

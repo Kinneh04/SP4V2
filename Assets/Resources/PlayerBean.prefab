@@ -14042,6 +14042,10 @@ MonoBehaviour:
     type: 3}
   cp: {fileID: 1937501596532756897}
   audioManager: {fileID: 0}
+  smokeVFX: {fileID: 2738436938548131024, guid: 91318c9c0e1d1c84faa98ecb6f75f888,
+    type: 3}
+  destroyVFX: {fileID: 2738436938548131024, guid: 93652f89cda99c74889f8251858dfab8,
+    type: 3}
   ActionCooldown: 1
   menuObject: {fileID: 8147175192208698557}
   stoneMaterial: {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
@@ -14062,6 +14066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f258679ac1f6a41b953adce9b72b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   pm: {fileID: 2215454391473533705}
   cp: {fileID: 1937501596532756897}
   PinUI: {fileID: 7154147581259817069}
