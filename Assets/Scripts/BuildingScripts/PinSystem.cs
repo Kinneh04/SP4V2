@@ -28,10 +28,10 @@ public class PinSystem : MonoBehaviour
     private void Update()
     {
         PinDisplay.text = currPin;
-  //      if (Input.GetKey(KeyCode.Escape))
-		//{
-  //          CloseUI();
-  //      }
+        if (Input.GetKey(KeyCode.Escape))
+		{
+            CloseUI();
+        }
     }
 
     public void StartCreatingPIN(LockStructure ls)
