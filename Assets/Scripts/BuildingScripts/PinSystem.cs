@@ -106,6 +106,8 @@ public class PinSystem : MonoBehaviour
 
     private void CloseUI()
     {
+        if (!PinUI)
+            return;
         pm.canLookAround = true;
         foreach (Button btn in keypadBtns)
         {

@@ -18,6 +18,7 @@ public class HammerSystem : MonoBehaviour
     public LayerMask layer; // To assign it to exclude BuildPreview in raycast checks
     private RaycastHit hit;
 
+    public PlayerProperties pp;
     public InventoryManager im;
     public GameObject woodObj;
     public GameObject stoneObj;
@@ -221,7 +222,9 @@ public class HammerSystem : MonoBehaviour
         prevObject = currentObject;
         currentObject = hit2.collider.gameObject;
 
-        if (currentObject != prevObject && currentObject.GetComponent<StructureObject>().PlayerID == PhotonNetwork.LocalPlayer.ActorNumber && currentObject.GetComponent<StructureObject>().type != StructureTypes.door)
+        if (currentObject != prevObject 
+            && currentObject.GetComponent<StructureObject>().type != StructureTypes.door
+            && (currentObject.GetComponent<StructureObject>().PlayerID == PhotonNetwork.LocalPlayer.ActorNumber || pp.hasBuildingPrivilege))
         {
             if (prevObject != null)
                 prevObject.SetActive(true);
@@ -372,7 +375,12 @@ public class HammerSystem : MonoBehaviour
                     break;
                 case 3: // Destroy
                     {
-                        pv.RPC("DestroyStructure", RpcTarget.AllViaServer);
+                        pv.RPC("DestroyStructure", PhotonNetwork.CurrentRoom.GetPlayer(currentObject.GetComponent<StructureObject>().PlayerID), currentObject.GetComponent<PhotonView>().ViewID);
+                        Destroy(selectedObject.gameObject);
+                        selectedObject = null;
+                        prevObject = null;
+                        currStructure = null;
+                        currentObject = null;
                     }
                     break;
                 default:
@@ -393,13 +401,8 @@ public class HammerSystem : MonoBehaviour
     }
 
     [PunRPC]
-    public void DestroyStructure()
+    public void DestroyStructure(int viewID)
     {
-        if (pv.IsMine)
-        {
-            PhotonNetwork.Destroy(currentObject);
-        }
-        if (selectedObject != null)
-            Destroy(selectedObject.gameObject);
+        PhotonNetwork.Destroy(PhotonView.Find(viewID));
     }
 }

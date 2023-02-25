@@ -148,7 +148,7 @@ public class PlayerUseItem : MonoBehaviour
                             ds = playerProperties.PlayerLookingAtItem.GetComponentInParent<DoorStructure>();
                         }
 
-                        if (ds && !ds.hasLock && ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
+                        if (ds && !ds.hasLock && (ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber || playerProperties.hasBuildingPrivilege))
                         {
                             // Set inactive for previous door
                             if (currDoor != null)
@@ -698,7 +698,7 @@ public class PlayerUseItem : MonoBehaviour
 
                 if (ds && ds.hasLock)
                 {
-                    if (ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber)
+                    if (ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber || playerProperties.hasBuildingPrivilege)
                         ps.StartCreatingPIN(ds.lockObject.GetComponent<LockStructure>());
                     else
                         cp.CreateResourcePopup("Unauthorized", 0);

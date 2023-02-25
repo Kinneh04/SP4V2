@@ -10,6 +10,11 @@ public class BuildingDisabledProperties : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (!other.GetComponent<PlayerProperties>().hasBuildingPrivilege)
+            {
+                other.GetComponent<PlayerProperties>().isBuildingDisabled = true;
+                other.GetComponent<PlayerProperties>().BuildingDisabledIcon.SetActive(true);
+            }
             playersInZone.Add(other.GetComponent<PlayerProperties>());
         }
     }
@@ -20,17 +25,6 @@ public class BuildingDisabledProperties : MonoBehaviour
             other.GetComponent<PlayerProperties>().isBuildingDisabled = false;
             other.GetComponent<PlayerProperties>().BuildingDisabledIcon.SetActive(false);
             playersInZone.Remove(other.GetComponent<PlayerProperties>());
-        }
-    }
-    private void Update()
-    {
-        foreach (PlayerProperties pp in playersInZone)
-        {
-            if (!pp.hasBuildingPrivilege)
-            {
-                pp.isBuildingDisabled = true;
-                pp.BuildingDisabledIcon.SetActive(true);
-            }
         }
     }
 }
