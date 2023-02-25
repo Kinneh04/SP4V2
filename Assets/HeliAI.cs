@@ -96,10 +96,7 @@ public class HeliAI : MonoBehaviour
                             ShootCooldown = 10.0f;
                             burstCooldown = 0.35f;
                         }
-
-
                     }
-
                 }
             }
         }

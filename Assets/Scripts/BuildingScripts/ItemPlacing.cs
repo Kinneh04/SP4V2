@@ -14,7 +14,7 @@ public class ItemPlacing : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("Camera").transform;
     }
 
-    public void PlaceItem()
+    public bool PlaceItem()
     {
         if (canPlace)
         {
@@ -27,7 +27,9 @@ public class ItemPlacing : MonoBehaviour
                 Instantiate(ObjectToPlace, transform.position, Quaternion.identity);
             }
             Destroy(gameObject);
+            return true;
         }
+        return false;
     }
     // Update is called once per frame
     void Update()

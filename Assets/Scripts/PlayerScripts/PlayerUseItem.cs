@@ -474,10 +474,12 @@ public class PlayerUseItem : MonoBehaviour
                 if (isPlacingItem)
                 {
                     print("PlacedItem!");
-                    ItemGO.GetComponent<ItemPlacing>().PlaceItem();
-                    isPlacingItem = false;
-                    inventoryManager.RemoveQuantityFromSlot(inventoryManager.EquippedSlot, 1);
-                    inventoryManager.UpdateItemCountPerSlot();
+                    if (ItemGO.GetComponent<ItemPlacing>().PlaceItem())
+                    {
+                        isPlacingItem = false;
+                        inventoryManager.RemoveQuantityFromSlot(inventoryManager.EquippedSlot, 1);
+                        inventoryManager.UpdateItemCountPerSlot();
+                    }
                 }
                 else if (ItemGO.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.CodeLock)
                 {
@@ -831,28 +833,56 @@ public class PlayerUseItem : MonoBehaviour
             {
                 CurrentItem = inventoryManager.IntGetItem(inventoryManager.EquippedSlot);
             }
-
+            //if(CurrentItem.itemType == ItemInfo.ItemType.unshowable)
+            //{
+            //    print("UNSHOWABLES HERE!");
+            //}
             //Stores Equipped Item into CurrentItem
             if (CurrentItem && //check if there is a item to equip 
                 (!playerProperties.CurrentlyHoldingItem       //equips player with item in slot if hand empty
-                  || (playerProperties.CurrentlyHoldingItem &&  //not null
-                  playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemID() != CurrentItem.GetItemID())     //if player change slot, change item in hand
+                  || (playerProperties.CurrentlyHoldingItem//not null
+                  && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemID() != CurrentItem.GetItemID())     //if player change slot, change item in hand
+                //&&playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().ViewID != CurrentItem.gameObject.GetComponent<PhotonView>().ViewID)     //if player change slot, change item in hand
+                )
+            )
+            {
+                //if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemID() != CurrentItem.GetItemID())
+                //{
+                    if (pv.IsMine)
+                    {
+                        pv.RPC("ClearChildrenInActorRightHand", RpcTarget.Others, pv.ViewID);
+
+                        ForceGiveItem(CurrentItem);
+                        if (CurrentItem.GetComponent<ItemInfo>().itemType != ItemInfo.ItemType.unshowable) pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, CurrentItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
+                    }
+                //}
+
+            }
+            else if (CurrentItem && //check if there is a item to equip 
+                (!playerProperties.CurrentlyHoldingItem       //equips player with item in slot if hand empty
+                  || (playerProperties.CurrentlyHoldingItem//not null
+                  && playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().ViewID != CurrentItem.gameObject.GetComponent<PhotonView>().ViewID)     //if player change slot, change item in hand
+                                                                                                                                                              //&&playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().ViewID != CurrentItem.gameObject.GetComponent<PhotonView>().ViewID)     //if player change slot, change item in hand
                 )
             )
             {
                 if (pv.IsMine)
                 {
-                    pv.RPC("ClearChildrenInActorRightHand", RpcTarget.All, pv.ViewID);
-                    
-                    ForceGiveItem(CurrentItem);
-                    if(CurrentItem.GetComponent<ItemInfo>().itemType != ItemInfo.ItemType.unshowable) pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, CurrentItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
-                }
+                    pv.RPC("ClearChildrenInActorRightHand", RpcTarget.Others, pv.ViewID);
 
+                    ForceGiveItem(CurrentItem);
+                    if (CurrentItem.GetComponent<ItemInfo>().itemType != ItemInfo.ItemType.unshowable) pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, CurrentItem.GetComponent<PhotonView>().ViewID, pv.ViewID);
+                }
             }
             else if(!CurrentItem && playerProperties.CurrentlyHoldingItem) // if player holding something but current slot supposed to have nothing held
             {
-                playerProperties.CurrentlyHoldingItem.gameObject.SetActive(false);
-                playerProperties.CurrentlyHoldingItem = null; 
+                if (pv.IsMine)
+                {
+                    pv.RPC("ClearChildrenInActorRightHand", RpcTarget.Others, pv.ViewID);
+                    playerProperties.CurrentlyHoldingItem.gameObject.SetActive(false);
+                    playerProperties.CurrentlyHoldingItem = null;
+                }
+
             }
         }
     }
@@ -861,12 +891,13 @@ public class PlayerUseItem : MonoBehaviour
     {
         if (pv.IsMine && slotNo != inventoryManager.EquippedSlot)
         {
-            pv.RPC("ClearChildrenInActorRightHand", RpcTarget.All, pv.ViewID);
+           // pv.RPC("ClearChildrenInActorRightHand", RpcTarget.All, pv.ViewID);
         }
         if (inventoryManager.EquippedSlot == slotNo) // Do not do anything as player is already in slot (double tap same slot)
             return;
 
         inventoryManager.EquippedSlot = slotNo;
+       
         isPlacingItem = false;
         if (inventoryManager.InventoryList[inventoryManager.EquippedSlot] != null)
         {
@@ -898,6 +929,8 @@ public class PlayerUseItem : MonoBehaviour
                 bs.SetIsBuilding(false);
                 holdingCodeLock = false;
             }
+           // inventoryManager.InventoryList[inventoryManager.EquippedSlot].gameObject.SetActive(true);
+           // pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, inventoryManager.InventoryList[inventoryManager.EquippedSlot].gameObject.GetComponent<PhotonView>().ViewID, pv.ViewID);
         }
         else
         {
@@ -940,7 +973,7 @@ public class PlayerUseItem : MonoBehaviour
             else if (ItemToPairToHand.GetComponent<BoxCollider>() != null) ItemToPairToHand.GetComponent<BoxCollider>().isTrigger = false;
 
             ItemToPairToHand.transform.position = RHand.transform.position;
-            //ItemToPairToHand.transform.SetParent(null);
+            ItemToPairToHand.transform.SetParent(null);
             ItemToPairToHand.GetComponent<Rigidbody>().isKinematic = false;
         }
     }
@@ -1054,11 +1087,11 @@ public class PlayerUseItem : MonoBehaviour
            // PAnimator.Play("PBeanThrow");
             GameObject GO = playerProperties.CurrentlyHoldingItem;
             yield return new WaitForSeconds(0.45f);
-            pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
+            pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
             GO.GetComponent<Rigidbody>().isKinematic = false;
             //GO.GetComponent<MeshCollider>().isTrigger = false;
             playerProperties.CurrentlyHoldingItem = null;
-            //GO.transform.parent = null;
+            GO.transform.parent = null;
             GO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 10;
             inventoryManager.Remove(inventoryManager.EquippedSlot, false);
             detached = true;
@@ -1097,7 +1130,7 @@ public class PlayerUseItem : MonoBehaviour
             {
                 GO.transform.position = GO.transform.parent.position;
                 yield return new WaitForSeconds(0.15f);
-                pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
+                pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
                 
                 GO.GetComponent<Rigidbody>().isKinematic = false;
                 playerProperties.CurrentlyHoldingItem = null;
@@ -1129,7 +1162,7 @@ public class PlayerUseItem : MonoBehaviour
              
                 GO.SetActive(true);
                 yield return new WaitForSeconds(0.15f);
-                pv.RPC("DetachItemFromParent", RpcTarget.All, GO.name, pv.ViewID);
+                pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
                 GO.SetActive(true);
                 GO.transform.position = RHand.transform.position;
                 GO.GetComponent<Rigidbody>().isKinematic = false;
