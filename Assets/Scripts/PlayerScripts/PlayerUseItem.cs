@@ -963,7 +963,7 @@ public class PlayerUseItem : MonoBehaviour
     }
 
     [PunRPC]
-    void DetachItemFromParent(string newItem, int ActorNumber)
+    void DetachItemFromParent(int newItemiD, int ActorNumber)
     {
 
         GameObject ItemToPairToHand;
@@ -975,9 +975,9 @@ public class PlayerUseItem : MonoBehaviour
         
         //GameObject Actor = ActorView.TagObject as GameObject;
         GameObject RHand = Actor.transform.Find("Capsule").Find("RHand").gameObject;
-        if (RHand.transform.Find(newItem) != null)
+        if (PhotonView.Find(newItemiD) != null)
         {
-            ItemToPairToHand = RHand.transform.Find(newItem).gameObject;
+            ItemToPairToHand = PhotonView.Find(newItemiD).gameObject;
             ItemToPairToHand.SetActive(true);
             if (ItemToPairToHand.GetComponent<MeshCollider>() != null) ItemToPairToHand.GetComponent<MeshCollider>().isTrigger = false;
             else if (ItemToPairToHand.GetComponent<BoxCollider>() != null) ItemToPairToHand.GetComponent<BoxCollider>().isTrigger = false;
@@ -1097,7 +1097,7 @@ public class PlayerUseItem : MonoBehaviour
            // PAnimator.Play("PBeanThrow");
             GameObject GO = playerProperties.CurrentlyHoldingItem;
             yield return new WaitForSeconds(0.45f);
-            pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
+            pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.GetComponent<PhotonView>().ViewID, pv.ViewID);
             GO.GetComponent<Rigidbody>().isKinematic = false;
             //GO.GetComponent<MeshCollider>().isTrigger = false;
             playerProperties.CurrentlyHoldingItem = null;
@@ -1140,7 +1140,7 @@ public class PlayerUseItem : MonoBehaviour
             {
                 GO.transform.position = GO.transform.parent.position;
                 yield return new WaitForSeconds(0.15f);
-                pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
+                pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.GetComponent<PhotonView>().ViewID, pv.ViewID);
                 
                 GO.GetComponent<Rigidbody>().isKinematic = false;
                 playerProperties.CurrentlyHoldingItem = null;
@@ -1172,7 +1172,7 @@ public class PlayerUseItem : MonoBehaviour
              
                 GO.SetActive(true);
                 yield return new WaitForSeconds(0.15f);
-                pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.name, pv.ViewID);
+                pv.RPC("DetachItemFromParent", RpcTarget.Others, GO.GetComponent<PhotonView>().ViewID, pv.ViewID);
                 GO.SetActive(true);
                 GO.transform.position = RHand.transform.position;
                 GO.GetComponent<Rigidbody>().isKinematic = false;

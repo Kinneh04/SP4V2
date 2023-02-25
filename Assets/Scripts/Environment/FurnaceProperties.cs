@@ -80,7 +80,7 @@ public class FurnaceProperties : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
-           
+
             if (IM.InventoryList[i + 42] != null)
             {
                 if (!CheckForItemAndQuantity(IM.InventoryList[i + 42], IM.InventoryList[i + 42].ItemCount))
@@ -161,7 +161,7 @@ public class FurnaceProperties : MonoBehaviour
 
     public void DisplayLoot()
     {
-        ClearLastLootPool();
+        //ClearLastLootPool();
         for (int i = 0; i < ItemsInFurnace.Count; i++)
         {
             IM.AddQuantityInSpecifiedBox(ItemsInFurnace[i], ItemQuantityInFurnace[i], 42 + i);
@@ -228,7 +228,8 @@ public class FurnaceProperties : MonoBehaviour
                 return;
             }
         }
-        ItemsInFurnace.Add(Instantiate(itemToAdd.gameObject).GetComponent<ItemInfo>());
+        GameObject Additem = PhotonNetwork.Instantiate(itemToAdd.gameObject.name, transform.position, Quaternion.identity);
+        ItemsInFurnace.Add(Additem.GetComponent<ItemInfo>());
         ItemQuantityInFurnace.Add(Quantity);
         if (isLookingAtIt)
         {
@@ -250,7 +251,7 @@ public class FurnaceProperties : MonoBehaviour
                 if(!CheckForItemInFurnace(ItemRequiredToStartFurnace))
                 {
                     TurnOn();
-                   // pv.RPC("TurnOn", RpcTarget.All);
+                    //pv.RPC("TurnOnForOtherClients", RpcTarget.All);
                 }
             }
 
@@ -343,19 +344,22 @@ public class FurnaceProperties : MonoBehaviour
 
     public void PrepareToSyncLoot()
     {
-        if (pv.IsMine)
-        {
+  
             print("SYNCING LOOT ACROSS CLIENTS!");
             pv = GetComponent<PhotonView>();
             PhotonViewIDs.Clear();
             //UpdateLoot();
             for (int i = 0; i < ItemsInFurnace.Count; i++)
             {
-                PhotonViewIDs.Add(ItemsInFurnace[i].gameObject.GetComponent<PhotonView>().ViewID);
+                if (ItemsInFurnace[i].gameObject.GetComponent<PhotonView>() != null)
+                {
+
+
+                    PhotonViewIDs.Add(ItemsInFurnace[i].gameObject.GetComponent<PhotonView>().ViewID);
+                }
             }
             int[] PVIDArray = PhotonViewIDs.ToArray();
             int[] PVQuanArray = ItemQuantityInFurnace.ToArray();
             pv.RPC("SyncLootAcrossClients", RpcTarget.Others, PVIDArray, PVQuanArray);
-        }
     }
 }
