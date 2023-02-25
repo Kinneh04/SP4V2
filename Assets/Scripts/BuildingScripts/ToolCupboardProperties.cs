@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class ToolCupboardProperties : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public List<PlayerProperties> playersWithBuildingPrivilege = new List<PlayerProperties>();
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.CompareTag("Player"))
+        {
+            if (playersWithBuildingPrivilege.Contains(other.GetComponent<PlayerProperties>()))
+            {
+                other.GetComponent<PlayerProperties>().hasBuildingPrivilege = true;
+                other.GetComponent<PlayerProperties>().BuildingPrivilegeIcon.SetActive(true);
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (playersWithBuildingPrivilege.Contains(other.GetComponent<PlayerProperties>()))
+            {
+                other.GetComponent<PlayerProperties>().hasBuildingPrivilege = false;
+                other.GetComponent<PlayerProperties>().BuildingPrivilegeIcon.SetActive(false);
+            }
+        }
     }
 }

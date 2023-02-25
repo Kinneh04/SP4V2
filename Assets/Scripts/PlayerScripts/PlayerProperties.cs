@@ -50,6 +50,7 @@ public class PlayerProperties : MonoBehaviour
     public GameObject SickIcon;
     public GameObject HealIcon;
     public GameObject BuildingDisabledIcon;
+    public GameObject BuildingPrivilegeIcon;
     public Animator panim;
     public GameObject bleedingIcon;
 
@@ -69,6 +70,7 @@ public class PlayerProperties : MonoBehaviour
     float RTimer;
 
     public bool isBuildingDisabled;
+    public bool hasBuildingPrivilege;
 
     bool isShowingBlood = false;
     float bloodTimer = 0f;
@@ -249,6 +251,7 @@ public class PlayerProperties : MonoBehaviour
         PoisonIcon.SetActive(false);
         bleedingIcon.SetActive(false);
         BuildingDisabledIcon.SetActive(false);
+        BuildingPrivilegeIcon.SetActive(false);
 
         deathscreen.SetActive(false);
         awokenMenu.SetActive(true);
@@ -680,7 +683,7 @@ public class PlayerProperties : MonoBehaviour
 
     private void ShiftIcons()
     {
-        List<GameObject> iconList = new List<GameObject> { RadiationIcon, HealIcon, bleedingIcon, SickIcon, FullIcon, PoisonIcon, BuildingDisabledIcon };
+        List<GameObject> iconList = new List<GameObject> { RadiationIcon, HealIcon, bleedingIcon, SickIcon, FullIcon, PoisonIcon, BuildingDisabledIcon, BuildingPrivilegeIcon };
         int currIndex = 0;
 
         foreach (GameObject icon in iconList) {

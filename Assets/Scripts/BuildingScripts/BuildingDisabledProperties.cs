@@ -26,8 +26,11 @@ public class BuildingDisabledProperties : MonoBehaviour
     {
         foreach (PlayerProperties pp in playersInZone)
         {
-            pp.isBuildingDisabled = true;
-            pp.BuildingDisabledIcon.SetActive(true);
+            if (!pp.hasBuildingPrivilege)
+            {
+                pp.isBuildingDisabled = true;
+                pp.BuildingDisabledIcon.SetActive(true);
+            }
         }
     }
 }
