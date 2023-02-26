@@ -121,8 +121,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playersWithBuildingPrivilege: []
+  structuresInRange: []
+  audioManager: {fileID: 0}
+  pv: {fileID: 0}
+  ItemsInTC: []
+  ItemQuantityInTC: 
+  PhotonViewIDs: 
+  IM: {fileID: 0}
   hasLock: 0
   lockObject: {fileID: 4992870597349007788}
+  woodReq: 0
+  stoneReq: 0
+  isProtected: 0
+  protectionTimeLeft: 0
+  resourceCollectElapsed: 0
+  isLookingAtIt: 0
 --- !u!1 &4169063461347507364
 GameObject:
   m_ObjectHideFlags: 0

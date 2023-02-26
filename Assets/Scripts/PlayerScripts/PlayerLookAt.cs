@@ -53,6 +53,13 @@ public class PlayerLookAt : MonoBehaviour
 
                 playerProperties.PlayerLookingAtItem = hit.transform.gameObject;
             }
+            else if (hit.transform.gameObject.tag == "ToolCupboard")
+            {
+
+                tmpTextUI.text = "Open Tool Cupboard [E]";
+
+                playerProperties.PlayerLookingAtItem = hit.transform.gameObject;
+            }
             else
             {
                 foreach (string word in BannedWordsFromLookAt)

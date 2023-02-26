@@ -102,6 +102,8 @@ MonoBehaviour:
   - UpdateQuantityForItemOnOtherClients
   - AssignDamageValues
   - SetTCPHasLock
+  - SyncTCInventoryAcrossClients
+  - SyncTCItemsAcrossClients
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

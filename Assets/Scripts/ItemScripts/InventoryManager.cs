@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;using UnityEngine.UI;
+using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System;
 using Photon.Pun;
 public class InventoryManager : MonoBehaviour
 {
-    public const int MaxInventorySize = 48;
+    public const int MaxInventorySize = 57;
     public int EquippedSlot = 1;
-    
+
     public List<TMP_Text> InventoryQuantityTexts = new List<TMP_Text>();
     public List<Image> InventoryImages = new List<Image>();
 
@@ -73,8 +74,8 @@ public class InventoryManager : MonoBehaviour
         {
             return false;
         }
-        
-        
+
+
 
         if (item1Found)
         {
@@ -121,7 +122,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (InventoryList[i])
             {
-                if (InventoryList[i].GetItemID() == Item.GetItemID() )
+                if (InventoryList[i].GetItemID() == Item.GetItemID())
                 {
                     return true;
                 }
@@ -132,7 +133,7 @@ public class InventoryManager : MonoBehaviour
     }
     public bool CheckForItem(ItemInfo Item, int Quantity)
     {
-        for(int i = 0; i < InventoryList.Count; i++)
+        for (int i = 0; i < InventoryList.Count; i++)
         {
             if (InventoryList[i])
             {
@@ -155,6 +156,7 @@ public class InventoryManager : MonoBehaviour
 
     public void SwapTwoSlots(int Slot1ID, int Slot2ID)
     {
+        Debug.Log("ID1: " + Slot1ID + " ID2: " + Slot2ID);
         //If slots are empty shift item to new slot
         if (InventoryList[Slot1ID] == null && InventoryList[Slot2ID])
         {
@@ -171,6 +173,10 @@ public class InventoryManager : MonoBehaviour
             else if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "Crate")
             {
                 pp.PlayerLookingAtItem.GetComponent<LootProperties>().UpdateLoot();
+            }
+            else if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "ToolCupboard")
+            {
+                pp.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>().UpdateLoot();
             }
 
             return;
@@ -192,6 +198,11 @@ public class InventoryManager : MonoBehaviour
             {
                 pp.PlayerLookingAtItem.GetComponent<LootProperties>().UpdateLoot();
             }
+            else if (pp.PlayerLookingAtItem && pp.PlayerLookingAtItem.tag == "ToolCupboard")
+            {
+                pp.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>().UpdateLoot();
+            }
+
             UpdateItemCountPerSlot();
             return;
         }
@@ -233,11 +244,16 @@ public class InventoryManager : MonoBehaviour
                 pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().ItemQuantityInFurnace[Slot2ID - 42] = InventoryList[Slot2ID].ItemCount;
                 pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().PrepareToSyncLoot();
             }
+            else if (pp.PlayerLookingAtItem != null && pp.PlayerLookingAtItem.tag == "ToolCupboard")
+            {
+                pp.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>().ItemQuantityInTC[Slot2ID - 48] = InventoryList[Slot2ID].ItemCount;
+                pp.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>().PrepareToSyncLoot();
+            }
         }
     }
     void Awake()
     {
-        for(int i = 0; i< MaxInventorySize; ++i)
+        for (int i = 0; i < MaxInventorySize; ++i)
         {
             InventoryList.Add(null);
         }
@@ -253,14 +269,14 @@ public class InventoryManager : MonoBehaviour
         pui = GetComponentInParent<PlayerUseItem>();
     }
     // Add a new item if a stack of that said item is full or doesnt exist otherwise add to stack
-    public void Add( ItemInfo item)
+    public void Add(ItemInfo item)
     {
         if (InventoryList.Count <= MaxInventorySize)
         {
             int SlotNum = GetEmptySlot();
             InventoryList[SlotNum] = item;
         }
-        if(item.itemType == ItemInfo.ItemType.unshowable)
+        if (item.itemType == ItemInfo.ItemType.unshowable)
         {
             item.transform.SetParent(null);
         }
@@ -282,7 +298,7 @@ public class InventoryManager : MonoBehaviour
             InventoryList[SlotNum].SetItemCount(QuantityToAdd);
         }
         UpdateItemCountPerSlot();
-    } 
+    }
     public bool AddQuantity(ItemInfo item, int QuantityToAdd = 0, bool DestroyItem = true)
     {
         bool needSetVariable = false;
@@ -293,7 +309,7 @@ public class InventoryManager : MonoBehaviour
             if (InventoryList[SlotNum] != null && item.gameObject.tag != "Weaponry" || InventoryList[SlotNum] != null && item.gameObject.tag != "Workbench" || InventoryList[SlotNum] != null && item.gameObject.tag != "Campfire") //Adds quantity
             {
                 InventoryList[SlotNum].ItemCount += QuantityToAdd;
-                if(DestroyItem)Destroy(item);
+                if (DestroyItem) Destroy(item);
             }
             else //creates a new gameobj and adds quantity
             {
@@ -328,19 +344,19 @@ public class InventoryManager : MonoBehaviour
     }
 
 
-    public int CheckForAvailableSlots(ItemInfo ItemToCheckFor,int Quantity)
+    public int CheckForAvailableSlots(ItemInfo ItemToCheckFor, int Quantity)
     {
-        for(int i = 0; i < InventoryList.Count; i++)
+        for (int i = 0; i < InventoryList.Count; i++)
         {
-            if( InventoryList[i] != null && InventoryList[i].itemID == ItemToCheckFor.itemID && ItemToCheckFor.gameObject.tag != "Weaponry")// && InventoryList[i].MaxItemCount < ItemToCheckFor.MaxItemCount - Quantity)
+            if (InventoryList[i] != null && InventoryList[i].itemID == ItemToCheckFor.itemID && ItemToCheckFor.gameObject.tag != "Weaponry")// && InventoryList[i].MaxItemCount < ItemToCheckFor.MaxItemCount - Quantity)
             {
-               // print("SAME SIDE!");
+                // print("SAME SIDE!");
                 return i;
             }
-            else if(InventoryList[i] == ItemToCheckFor && InventoryList[i].MaxItemCount < ItemToCheckFor.MaxItemCount)
+            else if (InventoryList[i] == ItemToCheckFor && InventoryList[i].MaxItemCount < ItemToCheckFor.MaxItemCount)
             {
                 AddQuantity(ItemToCheckFor, InventoryList[i].MaxItemCount - InventoryList[i].GetItemCount());
-                AddQuantity(ItemToCheckFor, Quantity - (InventoryList[i].MaxItemCount -  InventoryList[i].GetItemCount()));
+                AddQuantity(ItemToCheckFor, Quantity - (InventoryList[i].MaxItemCount - InventoryList[i].GetItemCount()));
             }
         }
         return GetEmptySlot();
@@ -348,7 +364,7 @@ public class InventoryManager : MonoBehaviour
 
     public void UpdateItemCountPerSlot()
     {
-        for(int i = 0; i < MaxInventorySize; i++)
+        for (int i = 0; i < MaxInventorySize; i++)
         {
 
             if (InventoryList[i] != null)
@@ -404,7 +420,7 @@ public class InventoryManager : MonoBehaviour
     //Delete a item
     public void Remove(int SlotToRemove, bool DeleteItem = true)
     {
-        if(DeleteItem)
+        if (DeleteItem)
             Destroy(InventoryList[SlotToRemove]);
         InventoryList[SlotToRemove] = null;
 
@@ -421,7 +437,7 @@ public class InventoryManager : MonoBehaviour
             DeleteHoldingItem();
         }
         UpdateItemCountPerSlot();
-       
+
     }
     // Remove an quantity of a certain item from inventory; if possible return true else false
     public bool Remove(ItemInfo.ItemID itemID, int Quantity, bool Check)
@@ -430,7 +446,7 @@ public class InventoryManager : MonoBehaviour
         int QuantityToDeduct = Quantity;   //how much to remove
         int QuantityDeductible = 0;          //how much can be removed
         //Checks which items to deduct from, and checks how much quantity of that item is there
-        for (int i = 0; i <  MaxInventorySize; ++i)
+        for (int i = 0; i < MaxInventorySize; ++i)
         {
             if (InventoryList[i])
             {
@@ -442,14 +458,14 @@ public class InventoryManager : MonoBehaviour
             }
         }
         //if trying to deduct more than possible return false else true
-        if(QuantityToDeduct > QuantityDeductible)
+        if (QuantityToDeduct > QuantityDeductible)
         {
             return false;
         }
         else //able to deduct
         {
             //Trying to deduct instead of checking deductible
-            if(!Check)
+            if (!Check)
             {
                 for (int i = 0; i < ItemSlotToDeductFrom.Count; ++i)
                 {
@@ -473,15 +489,15 @@ public class InventoryManager : MonoBehaviour
                 return true;
             }
             else
-               return true;
+                return true;
         }
     }
     // Get a empty slot
     public int GetEmptySlot()
     {
-        for(int i = 0; i < MaxInventorySize; i++)
+        for (int i = 0; i < MaxInventorySize; i++)
         {
-            if(InventoryList[i] ==null)
+            if (InventoryList[i] == null)
             {
                 return i;
             }
@@ -489,7 +505,7 @@ public class InventoryManager : MonoBehaviour
         return -1;
     }
 
-	// Get an item by its name
+    // Get an item by its name
     public ItemInfo IntGetItem(int ItemSlot)
     {
         if (InventoryList[ItemSlot])
@@ -516,7 +532,7 @@ public class InventoryManager : MonoBehaviour
     }
     public bool CheckAmmoUpdated()
     {
-        if(InventoryList[EquippedSlot].GetComponent<WeaponInfo>().GetMagRound().ToString() ==
+        if (InventoryList[EquippedSlot].GetComponent<WeaponInfo>().GetMagRound().ToString() ==
                     InventoryQuantityTexts[EquippedSlot].text)
         {
             return false;

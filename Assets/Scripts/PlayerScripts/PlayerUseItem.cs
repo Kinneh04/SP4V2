@@ -244,27 +244,35 @@ public class PlayerUseItem : MonoBehaviour
                         audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DoorOpen, 1.0f, ds.gameObject.transform.position);
                     }
                 }
-
                 else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "ToolCupboard")
                 {
                     ToolCupboardProperties tcp = playerProperties.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>();
-                    if (tcp.hasLock)
-                    {
-                        // Open PIN entry
-                        if (tcp.lockObject.GetComponent<LockStructure>().hasPin)
-                        {
-                            ps.StartEnteringPIN(tcp.lockObject.GetComponent<LockStructure>());
-                        }
-                        else // No pin set, so toggle building privilege
-                        {
-                            UpdateBuildingPrivilege(tcp);
-                        }
-                    }
-                    else // No lock so will just toggle privilege
-                    {
-                        UpdateBuildingPrivilege(tcp);
-                    }
+                    tcp.IM = inventoryManager;
+                    tcp.DisplayLoot();
+                    playerProperties.OpenToolCupboard(tcp);
                 }
+
+                //TODO: TCP HERE!!
+                /*                else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "ToolCupboard")
+                                {
+                                    ToolCupboardProperties tcp = playerProperties.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>();
+                                    if (tcp.hasLock)
+                                    {
+                                        // Open PIN entry
+                                        if (tcp.lockObject.GetComponent<LockStructure>().hasPin)
+                                        {
+                                            ps.StartEnteringPIN(tcp.lockObject.GetComponent<LockStructure>());
+                                        }
+                                        else // No pin set, so toggle building privilege
+                                        {
+                                            UpdateBuildingPrivilege(tcp);
+                                        }
+                                    }
+                                    else // No lock so will just toggle privilege
+                                    {
+                                        UpdateBuildingPrivilege(tcp);
+                                    }
+                                }*/
 
                 else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>() != null)
                 {
@@ -367,11 +375,11 @@ public class PlayerUseItem : MonoBehaviour
                                 }
 
                             }
-                            if(GO_Type != ItemInfo.ItemType.Ranged)
+                            if (GO_Type != ItemInfo.ItemType.Ranged)
                             {
                                 audioManager.PlayAudio(13);
                             }
-                            else if(GO_ID == ItemInfo.ItemID.Revolver || GO_ID == ItemInfo.ItemID.M1911_Pistol)
+                            else if (GO_ID == ItemInfo.ItemID.Revolver || GO_ID == ItemInfo.ItemID.M1911_Pistol)
                             {
                                 audioManager.PlayAudio(10);
                             }

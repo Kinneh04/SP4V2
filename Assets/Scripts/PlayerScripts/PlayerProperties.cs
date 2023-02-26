@@ -89,6 +89,9 @@ public class PlayerProperties : MonoBehaviour
     public GameObject craftingScreen;
     public CraftingManager CM;
 
+    public GameObject tcScreen;
+    public ToolCupboardUI tcUI;
+
     public GameObject LootScreen, inventoryScreen, furnaceScreen;
     public PlayerMovement PM;
     public GameObject DeathBag;
@@ -158,6 +161,8 @@ public class PlayerProperties : MonoBehaviour
 
 
                     LootScreen.SetActive(false);
+                    tcUI.CloseUI();
+                    tcScreen.SetActive(false);
                     if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Crate" && LootScreen.activeSelf)
                     {
                         print("UpdatingCrate!");
@@ -166,6 +171,12 @@ public class PlayerProperties : MonoBehaviour
 
 
                         PlayerLookingAtItem.GetComponent<LootProperties>().ClearLastLootPool();
+                    }
+                    else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "ToolCupboard")
+                    {
+                        PlayerLookingAtItem.GetComponent<ToolCupboardProperties>().isLookingAtIt = false;
+                        PlayerLookingAtItem.GetComponent<ToolCupboardProperties>().UpdateLoot();
+                        PlayerLookingAtItem.GetComponent<ToolCupboardProperties>().ClearLastLootPool();
                     }
                     else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "Campfire")
                     {
@@ -180,6 +191,12 @@ public class PlayerProperties : MonoBehaviour
                     PlayerLookingAtItem.GetComponent<FurnaceProperties>().isLookingAtIt = false;
                     PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
                     PlayerLookingAtItem.GetComponent<FurnaceProperties>().ClearLastLootPool();
+                }
+                else if (PlayerLookingAtItem && PlayerLookingAtItem.tag == "ToolCupboard")
+                {
+                    PlayerLookingAtItem.GetComponent<ToolCupboardProperties>().isLookingAtIt = false;
+                    PlayerLookingAtItem.GetComponent<ToolCupboardProperties>().UpdateLoot();
+                    PlayerLookingAtItem.GetComponent<ToolCupboardProperties>().ClearLastLootPool();
                 }
                 playerMovement.LockCursor();
             }
@@ -239,6 +256,16 @@ public class PlayerProperties : MonoBehaviour
     {
         inventoryScreen.SetActive(true);
         LootScreen.SetActive(true);
+        inventoryIsOpen = true;
+        playerMovement.UnlockCursor();
+    }
+
+    public void OpenToolCupboard(ToolCupboardProperties tcp)
+    {
+        inventoryScreen.SetActive(true);
+        tcUI.OpenUI(tcp, this);
+        tcScreen.SetActive(true);
+        PlayerLookingAtItem.GetComponent<ToolCupboardProperties>().isLookingAtIt = true;
         inventoryIsOpen = true;
         playerMovement.UnlockCursor();
     }

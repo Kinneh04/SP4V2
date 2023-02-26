@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ff702ee36882b49a469322369a9eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotNumber: 37
+  SlotNumber: 52
   Inventory: {fileID: 0}
   SlotText: {fileID: 9079781075509938057}
 --- !u!1 &776287500842256609
@@ -257,6 +257,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8605392082830757003}
+  - component: {fileID: 4727514665324931726}
   m_Layer: 0
   m_Name: ToolCupboardUI
   m_TagString: Untagged
@@ -289,6 +290,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4727514665324931726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844474390386677439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39377897543902a45bbe74a996a51d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingPrivilegeButton: {fileID: 1162162909516598627}
+  btnOnColor: {r: 0, g: 0.59607846, b: 0.105882354, a: 1}
+  btnOffColor: {r: 0.59607846, g: 0.18431373, b: 0, a: 1}
+  woodText: {fileID: 3146413661927656166}
+  stoneText: {fileID: 1985101734772286999}
+  timeLeft: {fileID: 1855444084096308614}
+  decayingText: {fileID: 6417613569053410433}
 --- !u!1 &913051608305442143
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,7 +1095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ff702ee36882b49a469322369a9eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotNumber: 36
+  SlotNumber: 51
   Inventory: {fileID: 0}
   SlotText: {fileID: 3941191168359399110}
 --- !u!1 &2740277917890209052
@@ -1226,7 +1246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ff702ee36882b49a469322369a9eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotNumber: 33
+  SlotNumber: 48
   Inventory: {fileID: 0}
   SlotText: {fileID: 7011464026744829010}
 --- !u!1 &2745770782282416686
@@ -2010,7 +2030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ff702ee36882b49a469322369a9eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotNumber: 40
+  SlotNumber: 55
   Inventory: {fileID: 0}
   SlotText: {fileID: 4893654690700191237}
 --- !u!1 &3684390542242316250
@@ -2431,7 +2451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ff702ee36882b49a469322369a9eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotNumber: 39
+  SlotNumber: 54
   Inventory: {fileID: 0}
   SlotText: {fileID: 7169156954797949200}
 --- !u!1 &4374902946589771753
@@ -2796,7 +2816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ff702ee36882b49a469322369a9eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotNumber: 41
+  SlotNumber: 56
   Inventory: {fileID: 0}
   SlotText: {fileID: 1372135974577790915}
 --- !u!1 &4878973283458161404
@@ -3601,7 +3621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ff702ee36882b49a469322369a9eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotNumber: 35
+  SlotNumber: 50
   Inventory: {fileID: 0}
   SlotText: {fileID: 5940791366288242299}
 --- !u!1 &5463016476786838940
@@ -4157,7 +4177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ff702ee36882b49a469322369a9eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotNumber: 34
+  SlotNumber: 49
   Inventory: {fileID: 0}
   SlotText: {fileID: 2447062903611652718}
 --- !u!1 &5796156159839928916
@@ -4849,7 +4869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ff702ee36882b49a469322369a9eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotNumber: 38
+  SlotNumber: 53
   Inventory: {fileID: 0}
   SlotText: {fileID: 3159814665154438119}
 --- !u!1 &6743543366219374448
