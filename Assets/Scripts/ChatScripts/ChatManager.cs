@@ -28,6 +28,7 @@ public class ChatManager : MonoBehaviour
     public List<ChatText> ChatTexts = new List<ChatText>();
 
     bool isConnected = false;
+    bool left = false;
     public bool isTyping = false;
     int startMessage;
 
@@ -58,13 +59,16 @@ public class ChatManager : MonoBehaviour
 
         if (isConnected)
         {
+            if (!UI)
+            {
+                isConnected = false;
+                return;
+            }
             UI.SetActive(true);
         }
         else
         {
-            //Disconnect and dont back
-            PV.RPC("sendEveryoneMessage", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.NickName + " has left.");
-            UI.transform.GetChild(0).gameObject.GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
+            return;
         }
         Background.SetActive(isTyping);
         if (isTyping)
@@ -185,6 +189,7 @@ public class ChatManager : MonoBehaviour
     {
         if (PV.IsMine)
         {
+            if (!Content) return;
             Content.GetComponentInParent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
             string text = (string)PhotonNetwork.MasterClient.CustomProperties["ChatText"];
 
