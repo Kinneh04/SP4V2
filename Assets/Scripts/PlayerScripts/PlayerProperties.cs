@@ -360,9 +360,13 @@ public class PlayerProperties : MonoBehaviour
 
             RadiationExpireTimer -= Time.deltaTime;
            
-            if (RadiationExpireTimer <= 0)
+            if(RadiationAmount <= 0)
             {
                 RadiationNoisePlayed = false;
+            }
+            if (RadiationExpireTimer <= 0)
+            {
+                
                 if (RTimer > 1)
                 {
                     RTimer = 0;
