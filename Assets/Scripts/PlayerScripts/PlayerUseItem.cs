@@ -483,7 +483,7 @@ public class PlayerUseItem : MonoBehaviour
 
                 }
             }
-
+            /*
             if(Input.GetKeyDown(KeyCode.Backspace))
             {
                 if (inventoryManager.InventoryList[inventoryManager.EquippedSlot])
@@ -491,6 +491,7 @@ public class PlayerUseItem : MonoBehaviour
                 Destroy(playerProperties.CurrentlyHoldingItem);
                 playerProperties.CurrentlyHoldingItem = null;
             }
+            */
             if (!canuse)
             {
                 cooldowntimer -= Time.deltaTime;
