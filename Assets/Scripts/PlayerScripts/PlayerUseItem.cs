@@ -1212,6 +1212,7 @@ public class PlayerUseItem : MonoBehaviour
         print("Stab");
         //PAnimator.Play("PBeanStab");
         pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanStab");
+        audioManager.GetComponent<AudioManager>().MultiplayerPlay3DAudio(45, 1, transform.position);
         StartCoroutine(triggerCooldown());
     }
 
@@ -1220,6 +1221,7 @@ public class PlayerUseItem : MonoBehaviour
         print("Chop");
         playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = true;
         pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanChop");
+        audioManager.GetComponent<AudioManager>().MultiplayerPlay3DAudio(45, 1, transform.position);
         //PAnimator.Play("PBeanChop");
         StartCoroutine(triggerCooldown());
     }
@@ -1229,6 +1231,7 @@ public class PlayerUseItem : MonoBehaviour
         print("Swing");
         playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = true;
         pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSwing");
+        audioManager.GetComponent<AudioManager>().MultiplayerPlay3DAudio(45, 1, transform.position);
         PAnimator.Play("PBeanSwing");
         StartCoroutine(triggerCooldown());
     }

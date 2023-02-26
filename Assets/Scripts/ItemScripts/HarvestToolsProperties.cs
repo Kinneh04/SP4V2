@@ -21,16 +21,23 @@ public class HarvestToolsProperties : ItemInfo
     public ItemInfo II;
     public float usecooldown;
 
-    private void Start()
+    public AudioManager AM;
+
+    private void Awake()
     {
         II = GetComponent<ItemInfo>();
         pv = GetComponent<PhotonView>();
+        
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Tree") || other.CompareTag("Stone") || other.CompareTag("Metal") || other.CompareTag("Sulfur"))
         {
+            if(!AM)
+            {
+                AM = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+            }
             if (TriggerEnabled)
             {
                 TriggerEnabled = false;
@@ -39,26 +46,31 @@ public class HarvestToolsProperties : ItemInfo
                 if (other.CompareTag("Tree"))
                 {
                     other.gameObject.GetComponent<Harvestables>().HarvestAmount(WoodHarvestMultiplier);
+
                     Instantiate(WoodParticles, transform.position, Quaternion.identity);
                     durability -= WoodDurabilityBurn;
+                    AM.MultiplayerPlay3DAudio(46, 1, transform.position);
                 }
                 else if (other.CompareTag("Stone"))
                 {
                     other.gameObject.GetComponent<Harvestables>().HarvestAmount(StoneHarvestMultiplier);
                     Instantiate(StoneParticles, transform.position, Quaternion.identity);
                     durability -= StoneDurabilityBurn;
+                    AM.MultiplayerPlay3DAudio(47, 1, transform.position);
                 }
                 else if(other.CompareTag("Sulfur"))
                 {
                     other.gameObject.GetComponent<Harvestables>().HarvestAmount(StoneHarvestMultiplier);
                     Instantiate(StoneParticles, transform.position, Quaternion.identity);
                     durability -= StoneDurabilityBurn;
+                    AM.MultiplayerPlay3DAudio(47, 1, transform.position);
                 }
                 else if (other.CompareTag("Metal"))
                 {
                     other.gameObject.GetComponent<Harvestables>().HarvestAmount(MetalHarvestMultiplier);
                     Instantiate(StoneParticles, transform.position, Quaternion.identity);
                     durability -= MetalDurabilityBurn;
+                    AM.MultiplayerPlay3DAudio(47, 1, transform.position);
                 }
                 else if (other.CompareTag("Player") || other.CompareTag("EnemyPlayer"))
                 {
@@ -85,6 +97,7 @@ public class HarvestToolsProperties : ItemInfo
                 {
                     other.GetComponent<Harvestables>().HarvestAmount(WoodHarvestMultiplier);
                 }
+                Instantiate(BloodParticleSystem);
             }
         }
         else if (other.CompareTag("Enemy"))

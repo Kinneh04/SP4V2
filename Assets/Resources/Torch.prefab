@@ -5464,6 +5464,7 @@ MonoBehaviour:
   MetalDurabilityBurn: 20
   II: {fileID: 0}
   usecooldown: 0.6
+  AM: {fileID: 0}
 --- !u!54 &578467866
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ public class BushProperties : MonoBehaviour
     InventoryManager IM;
     public int maxAmount;
     public PhotonView pv;
+    AudioManager mAudio;
     private void Start()
     {
         pv = GetComponent<PhotonView>();
@@ -31,6 +32,12 @@ public class BushProperties : MonoBehaviour
             IM.UpdateItemCountPerSlot();
             pv.RPC("SomeoneJustPickedIt", RpcTarget.All);
             StartCoroutine(Refresh());
+
+            if(!mAudio)
+            {
+                mAudio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+                mAudio.MultiplayerPlay3DAudio(44, 1, transform.position);
+            }
         }
     }
 

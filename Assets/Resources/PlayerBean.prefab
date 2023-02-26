@@ -34514,6 +34514,9 @@ MonoBehaviour:
   - Stone
   - Player
   - EnemyPlayer
+  - Deer
+  - Chicken
+  - Enemy
 --- !u!20 &6249247382354149294
 Camera:
   m_ObjectHideFlags: 0
