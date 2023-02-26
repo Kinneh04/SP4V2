@@ -21,11 +21,11 @@ public class StructureObject : MonoBehaviour
     public float pickupCooldown = 15.0f;
     public float damageCooldown = 0.5f;
 
-    public bool isDamaged;
+    public bool isDecaying = true;
+    public float decayCd = 30.0f;
 
     private void Start()
     {
-        isDamaged = false;
         isUpgraded = false;
         stability = 100;
         pickupCooldown = 15.0f;
@@ -46,11 +46,22 @@ public class StructureObject : MonoBehaviour
         if (damageCooldown > 0.0f)
             damageCooldown -= Time.deltaTime;
 
-        if (isDamaged) // To save resources, will only start updating when someone damages this, otherwise it's perma 100%
+        if (isDecaying) // -5HP every 30s
         {
+            if (decayCd > 0.0f)
+            {
+                decayCd -= Time.deltaTime;
+            }
+            else
+            {
+                GetComponent<PhotonView>().RPC("DamageStructure", RpcTarget.AllViaServer, 1.7f);
+                // TODO: Decaying audio maybe?
+                decayCd = isUpgraded ? 60.0f : 30.0f; // Stone takes -5HP every 60s
+            }
+        }
+
             slider.value = stability;
             stabilityLabel.text = Math.Round(stability, 2) + "%";
-        }
     }
 
     [PunRPC]
@@ -89,14 +100,10 @@ public class StructureObject : MonoBehaviour
         {
             audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DestroyBuilding, 1.0f, gameObject.transform.position);
             GetComponent<PhotonView>().RPC("DestroyStructureObject", PhotonNetwork.CurrentRoom.GetPlayer(gameObject.GetComponent<StructureObject>().PlayerID), gameObject.GetComponent<PhotonView>().ViewID);
-            //PhotonNetwork.Destroy(gameObject);
             return;
         }
 
-        if (!isDamaged)
-        {
-            SetDamaged();
-        }
+        SetDamaged(); // Show labels for people that hit this structure
     }
 
     private void SetDamaged()
@@ -106,8 +113,6 @@ public class StructureObject : MonoBehaviour
             stabilityLabel.gameObject.SetActive(true);
             slider.gameObject.SetActive(true);
         }
-
-        isDamaged = true;
     }
 
     [PunRPC]

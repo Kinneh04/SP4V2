@@ -9,5 +9,6 @@ public class SelectedObject : MonoBehaviour
     public Slider slider;
     public TMPro.TMP_Text stabilityLabel;
     public TMPro.TMP_Text costLabel;
+    public CanvasGroup decayingHint;
     public Image actionImage;
 }
