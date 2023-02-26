@@ -14,8 +14,8 @@ public class PlayerProperties : MonoBehaviour
     public float YSensitivity;
     public float Hunger;
     public float Thirst;
-    public GameObject PlayerLookingAtItem;
-    public GameObject CurrentlyHoldingItem;
+    public GameObject PlayerLookingAtItem = null;
+    public GameObject CurrentlyHoldingItem = null;
 
     public Image BloodImage;
 

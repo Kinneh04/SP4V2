@@ -14,7 +14,7 @@ public class PlayerUseItem : MonoBehaviour
     public Camera Cam;
     public Image imageToFade;
     public GameObject sniperScopeImage;
-    public GameObject audioManager;
+    public AudioManager audioManager;
     public float fadeDuration = 0.2f;
     public float scopeDelay = 0.2f;
 
@@ -38,7 +38,7 @@ public class PlayerUseItem : MonoBehaviour
     public PlayerLookAt playerLookAt;
     public bool isReleased = true;
     private bool holdingCodeLock = false;
-    private GameObject currDoor = null;
+    public GameObject currDoorCupboard = null;
     public Material ghostMat;
 
     PhotonView pv;
@@ -46,7 +46,7 @@ public class PlayerUseItem : MonoBehaviour
     {
         inventoryManager = Inventory.GetComponent<InventoryManager>();
         pv = GetComponent<PhotonView>();
-        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
 
         audioManager.GetComponent<AudioManager>().PlayAudio(49);
 
@@ -134,45 +134,58 @@ public class PlayerUseItem : MonoBehaviour
         }
         if (!playerProperties.isDead && Cursor.lockState == CursorLockMode.Locked)
         {
-            if (holdingCodeLock)
+            if (holdingCodeLock && playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem != currDoorCupboard)
             {
-                // When looking at a door, show ghost of codelock
-                if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "DoorStructure")
+                // When looking at a door / TC, show ghost of codelock
+                if (playerProperties.PlayerLookingAtItem.tag == "DoorStructure")
                 {
-                    if (playerProperties.PlayerLookingAtItem != currDoor)
+                    DoorStructure ds = null;
+                    if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
                     {
-                        DoorStructure ds = null;
-                        if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
-                        {
-                            ds = playerProperties.PlayerLookingAtItem.GetComponent<DoorStructure>();
-                        }
-                        else if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("Buildable"))
-                        {
-                            ds = playerProperties.PlayerLookingAtItem.GetComponentInParent<DoorStructure>();
-                        }
+                        ds = playerProperties.PlayerLookingAtItem.GetComponent<DoorStructure>();
+                    }
+                    else if (playerProperties.PlayerLookingAtItem.gameObject.layer == LayerMask.NameToLayer("Buildable"))
+                    {
+                        ds = playerProperties.PlayerLookingAtItem.GetComponentInParent<DoorStructure>();
+                    }
 
-                        if (ds && !ds.hasLock && (ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber || playerProperties.hasBuildingPrivilege))
-                        {
-                            // Set inactive for previous door
-                            if (currDoor != null)
-                            {
-                                ResetCodelockGhost();
-                            }
-
-                            ds.lockObject.SetActive(true);
-                            Material[] mats = ds.lockObject.transform.GetComponent<Renderer>().materials;
-                            Material[] newMats = { mats[0], ghostMat };
-                            ds.lockObject.transform.GetComponent<Renderer>().materials = newMats;
-
-                            currDoor = playerProperties.PlayerLookingAtItem;
-                        }
-                        else if (currDoor != null)
+                    if (ds && !ds.hasLock && (ds.PlayerID == PhotonNetwork.LocalPlayer.ActorNumber || playerProperties.hasBuildingPrivilege))
+                    {
+                        // Set inactive for previous door
+                        if (currDoorCupboard != null)
                         {
                             ResetCodelockGhost();
                         }
+
+                        ds.lockObject.SetActive(true);
+                        Material[] mats = ds.lockObject.transform.GetComponent<Renderer>().materials;
+                        Material[] newMats = { mats[0], ghostMat };
+                        ds.lockObject.transform.GetComponent<Renderer>().materials = newMats;
+
+                        currDoorCupboard = playerProperties.PlayerLookingAtItem;
                     }
                 }
-                else if (currDoor != null)
+                else if (playerProperties.PlayerLookingAtItem.tag == "ToolCupboard")
+                {
+                    ToolCupboardProperties tcp = playerProperties.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>();
+
+                    if (tcp && !tcp.hasLock)
+                    {
+                        // Set inactive for previous door/cupboard
+                        if (currDoorCupboard != null)
+                        {
+                            ResetCodelockGhost();
+                        }
+
+                        tcp.lockObject.SetActive(true);
+                        Material[] mats = tcp.lockObject.transform.GetComponent<Renderer>().materials;
+                        Material[] newMats = { mats[0], ghostMat };
+                        tcp.lockObject.transform.GetComponent<Renderer>().materials = newMats;
+
+                        currDoorCupboard = playerProperties.PlayerLookingAtItem;
+                    }
+                }
+                else if (currDoorCupboard != null)
                 {
                     ResetCodelockGhost();
                 }
@@ -189,7 +202,7 @@ public class PlayerUseItem : MonoBehaviour
                     playerProperties.PlayerLookingAtItem.GetComponent<LootProperties>().IM = inventoryManager;
                     playerProperties.PlayerLookingAtItem.GetComponent<LootProperties>().DisplayLoot();
                     playerProperties.OpenLootInventory();
-                    audioManager.GetComponent<AudioManager>().PlayAudio(8);
+                    audioManager.PlayAudio(8);
                 }
                 else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "Campfire")
                 {
@@ -235,29 +248,21 @@ public class PlayerUseItem : MonoBehaviour
                 else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "ToolCupboard")
                 {
                     ToolCupboardProperties tcp = playerProperties.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>();
-                    if (tcp.playersWithBuildingPrivilege.Contains(playerProperties))
+                    if (tcp.hasLock)
                     {
-                        playerProperties.hasBuildingPrivilege = false;
-                        playerProperties.BuildingPrivilegeIcon.SetActive(false);
-
-                        playerProperties.isBuildingDisabled = true;
-                        playerProperties.BuildingDisabledIcon.SetActive(true);
-
-                        cp.CreateResourcePopup("Build Privilege Removed", 0);
-                        tcp.playersWithBuildingPrivilege.Remove(playerProperties);
-
+                        // Open PIN entry
+                        if (tcp.lockObject.GetComponent<LockStructure>().hasPin)
+                        {
+                            ps.StartEnteringPIN(tcp.lockObject.GetComponent<LockStructure>());
+                        }
+                        else // No pin set, so toggle building privilege
+                        {
+                            UpdateBuildingPrivilege(tcp);
+                        }
                     }
-                    else
+                    else // No lock so will just toggle privilege
                     {
-
-                        playerProperties.hasBuildingPrivilege = true;
-                        playerProperties.BuildingPrivilegeIcon.SetActive(true);
-
-                        playerProperties.isBuildingDisabled = false;
-                        playerProperties.BuildingDisabledIcon.SetActive(false);
-
-                        cp.CreateResourcePopup("Build Privilege Added", 0, true);
-                        tcp.playersWithBuildingPrivilege.Add(playerProperties);
+                        UpdateBuildingPrivilege(tcp);
                     }
                 }
 
@@ -309,7 +314,7 @@ public class PlayerUseItem : MonoBehaviour
                                                                 GO_Dupe.SetActive(false);
                                                             }*/
                             GO_Dupe.SetActive(false);
-                            audioManager.GetComponent<AudioManager>().PlayAudio(13);
+                            audioManager.PlayAudio(13);
                             inventoryManager.UpdateItemCountPerSlot();
                         }
                         else
@@ -364,19 +369,19 @@ public class PlayerUseItem : MonoBehaviour
                             }
                             if(GO_Type != ItemInfo.ItemType.Ranged)
                             {
-                                audioManager.GetComponent<AudioManager>().PlayAudio(13);
+                                audioManager.PlayAudio(13);
                             }
                             else if(GO_ID == ItemInfo.ItemID.Revolver || GO_ID == ItemInfo.ItemID.M1911_Pistol)
                             {
-                                audioManager.GetComponent<AudioManager>().PlayAudio(10);
+                                audioManager.PlayAudio(10);
                             }
                             else if (GO_ID == ItemInfo.ItemID.Handmade_Shotgun || GO_ID == ItemInfo.ItemID.Remington870)
                             {
-                                audioManager.GetComponent<AudioManager>().PlayAudio(11);
+                                audioManager.PlayAudio(11);
                             }
                             else if (GO_ID == ItemInfo.ItemID.MP5A4 || GO_ID == ItemInfo.ItemID.AK47_Rifle || GO_ID == ItemInfo.ItemID.Bolt_Action_Rifle)
                             {
-                                audioManager.GetComponent<AudioManager>().PlayAudio(12);
+                                audioManager.PlayAudio(12);
                             }
                             inventoryManager.UpdateItemCountPerSlot();
                             playerProperties.PlayerLookingAtItem = null;
@@ -505,7 +510,7 @@ public class PlayerUseItem : MonoBehaviour
                 }
                 else if (ItemGO.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.CodeLock)
                 {
-                    if (currDoor != null)
+                    if (currDoorCupboard != null)
                     {
                         ResetCodelockGhost(true);
                     }
@@ -688,7 +693,7 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         isReleased = false;
                         ItemGO.GetComponent<ConsumableProperty>().Eatfood();
-                        audioManager.GetComponent<AudioManager>().PlayAudio(9);
+                        audioManager.PlayAudio(9);
                         GetRidOfItem();
                     }
                 }
@@ -739,6 +744,20 @@ public class PlayerUseItem : MonoBehaviour
                         cp.CreateResourcePopup("Unauthorized", 0);
                 }
             }
+
+            else if (Input.GetMouseButton(1) && playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "ToolCupboard") // Same with TCP
+            {
+                ToolCupboardProperties tcp = playerProperties.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>();
+
+                if (tcp && tcp.hasLock)
+                {
+                    if (tcp.lockObject.GetComponent<LockStructure>().ownerID == PhotonNetwork.LocalPlayer.ActorNumber || playerProperties.hasBuildingPrivilege)
+                        ps.StartCreatingPIN(tcp.lockObject.GetComponent<LockStructure>());
+                    else
+                        cp.CreateResourcePopup("Unauthorized", 0);
+                }
+            }
+
             else if (Input.GetMouseButton(1) && playerProperties.CurrentlyHoldingItem && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() != ItemInfo.ItemType.BuildPlan && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() != ItemInfo.ItemType.Hammer)
             {
                 GameObject ItemGO = playerProperties.CurrentlyHoldingItem;
@@ -787,7 +806,10 @@ public class PlayerUseItem : MonoBehaviour
             }
 
             //Updates Gun Ammo if Gun is done reloading
-            if (playerProperties.CurrentlyHoldingItem != null && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().itemID == inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID)
+            if (playerProperties != null && 
+                playerProperties.CurrentlyHoldingItem != null &&
+                playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>() 
+                && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().itemID == inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID)
             {
                 if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
                 {
@@ -944,12 +966,14 @@ public class PlayerUseItem : MonoBehaviour
             {
                 hs.SetIsUsingHammer(false);
                 bs.SetIsBuilding(true);
+                ResetCodelockGhost();
                 holdingCodeLock = false;
             }
             else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
             {
                 hs.SetIsUsingHammer(true);
                 bs.SetIsBuilding(false);
+                ResetCodelockGhost();
                 holdingCodeLock = false;
             }
             else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.CodeLock)
@@ -962,6 +986,7 @@ public class PlayerUseItem : MonoBehaviour
             {
                 hs.SetIsUsingHammer(false);
                 bs.SetIsBuilding(false);
+                ResetCodelockGhost();
                 holdingCodeLock = false;
             }
            // inventoryManager.InventoryList[inventoryManager.EquippedSlot].gameObject.SetActive(true);
@@ -1240,27 +1265,59 @@ public class PlayerUseItem : MonoBehaviour
 
     private void ResetCodelockGhost(bool placeLock = false)
     {
-        DoorStructure cds = null;
-        if (currDoor.layer == LayerMask.NameToLayer("BuildableParent"))
+        Debug.Log("TAG: " + currDoorCupboard.tag);
+        if (currDoorCupboard.tag == "DoorStructure")
         {
-            cds = currDoor.GetComponent<DoorStructure>();
-        }
-        else if (currDoor.layer == LayerMask.NameToLayer("Buildable"))
-        {
-            cds = currDoor.GetComponentInParent<DoorStructure>();
-        }
+            DoorStructure cds = null;
+            if (currDoorCupboard.layer == LayerMask.NameToLayer("BuildableParent"))
+            {
+                cds = currDoorCupboard.GetComponent<DoorStructure>();
+            }
+            else if (currDoorCupboard.layer == LayerMask.NameToLayer("Buildable"))
+            {
+                cds = currDoorCupboard.GetComponentInParent<DoorStructure>();
+            }
 
-        Material[] prevMats = cds.lockObject.transform.GetComponent<Renderer>().materials;
-        Material[] prevNewMats = { prevMats[0] };
-        cds.lockObject.transform.GetComponent<Renderer>().materials = prevNewMats;
+            Material[] prevMats = cds.lockObject.transform.GetComponent<Renderer>().materials;
+            Material[] prevNewMats = { prevMats[0] };
+            cds.lockObject.transform.GetComponent<Renderer>().materials = prevNewMats;
 
-        if (placeLock)
-        {
-            cds.gameObject.GetComponent<PhotonView>().RPC("SetHasLock", RpcTarget.AllViaServer, true);
-            //cds.SetHasLock(true);
-            inventoryManager.Remove(inventoryManager.EquippedSlot, false);
+            if (placeLock)
+            {
+                cds.lockObject.SetActive(true);
+                cds.gameObject.GetComponent<PhotonView>().RPC("SetHasLock", RpcTarget.AllViaServer, true);
+                holdingCodeLock = false;
+                inventoryManager.Remove(inventoryManager.EquippedSlot, false);
+            }
+            else
+            {
+                cds.lockObject.SetActive(false);
+            }
+            currDoorCupboard = null;
         }
-        currDoor = null;
+        else if (currDoorCupboard.tag == "ToolCupboard")
+        {
+            ToolCupboardProperties tcp = currDoorCupboard.GetComponent<ToolCupboardProperties>();
+
+            Material[] prevMats = tcp.lockObject.transform.GetComponent<Renderer>().materials;
+            Material[] prevNewMats = { prevMats[0] };
+            tcp.lockObject.transform.GetComponent<Renderer>().materials = prevNewMats;
+
+            if (placeLock)
+            {
+                tcp.lockObject.SetActive(true);
+                tcp.gameObject.GetComponent<PhotonView>().RPC("SetTCPHasLock", RpcTarget.AllViaServer, true);
+                tcp.lockObject.GetComponent<LockStructure>().ownerID = PhotonNetwork.LocalPlayer.ActorNumber;
+                inventoryManager.Remove(inventoryManager.EquippedSlot, false);
+                holdingCodeLock = false;
+            }
+            else
+            {
+                Debug.Log("DISABLING");
+                tcp.lockObject.SetActive(false);
+            }
+            currDoorCupboard = null;
+        }
     }
 
     bool OnShoot()
@@ -1277,6 +1334,36 @@ public class PlayerUseItem : MonoBehaviour
         if (playerProperties.CurrentlyHoldingItem != null)
         {
             playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = false;
+        }
+    }
+
+    private void UpdateBuildingPrivilege(ToolCupboardProperties tcp)
+    {
+        if (tcp.playersWithBuildingPrivilege.Contains(playerProperties))
+        {
+            playerProperties.hasBuildingPrivilege = false;
+            playerProperties.BuildingPrivilegeIcon.SetActive(false);
+
+            playerProperties.isBuildingDisabled = true;
+            playerProperties.BuildingDisabledIcon.SetActive(true);
+
+            audioManager.PlayAudio((int)AudioManager.AudioID.Click);
+            cp.CreateResourcePopup("Build Privilege Removed", 0);
+            tcp.playersWithBuildingPrivilege.Remove(playerProperties);
+
+        }
+        else
+        {
+
+            playerProperties.hasBuildingPrivilege = true;
+            playerProperties.BuildingPrivilegeIcon.SetActive(true);
+
+            playerProperties.isBuildingDisabled = false;
+            playerProperties.BuildingDisabledIcon.SetActive(false);
+
+            audioManager.PlayAudio((int)AudioManager.AudioID.LockSuccess);
+            cp.CreateResourcePopup("Build Privilege Added", 0, true);
+            tcp.playersWithBuildingPrivilege.Add(playerProperties);
         }
     }
 }

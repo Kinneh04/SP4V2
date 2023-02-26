@@ -10,6 +10,9 @@ public class LockStructure : MonoBehaviour
     public Light greenLight;
     public Light redLight;
 
+    public bool isTC = false;
+    public int ownerID;
+
     void Start()
     {
         hasPin = false;

@@ -703,3 +703,5 @@ MonoBehaviour:
   pin: 0
   greenLight: {fileID: 8599704989237109432}
   redLight: {fileID: 3246340473442920917}
+  isTC: 0
+  ownerID: 0

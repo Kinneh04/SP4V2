@@ -10,6 +10,7 @@ public class PinSystem : MonoBehaviour
     public PlayerMovement pm;
     public CreatePopup cp;
     public GameObject PinUI;
+    public PlayerProperties playerProperties;
     public List<Button> keypadBtns = new List<Button>();
     public Button removePinBtn;
     public TMPro.TMP_Text title;
@@ -55,7 +56,7 @@ public class PinSystem : MonoBehaviour
     {
         OpenUI(ls);
         removePinBtn.gameObject.SetActive(false);
-        title.text = "Enter the PIN to the door";
+        title.text = "Enter the PIN";
         isEnteringPin = true;
     }
 
@@ -76,10 +77,18 @@ public class PinSystem : MonoBehaviour
             {
                 if (ls.pin == int.Parse(currPin))
                 {
-                    ls.gameObject.transform.root.GetComponent<PhotonView>().RPC("SetIsOpen", RpcTarget.AllViaServer, true);
-                    cp.CreateResourcePopup("PIN Correct", 0, true);
-                    audioManager.PlayAudio((int)AudioManager.AudioID.LockSuccess);
-                    CloseUI();
+                    if (ls.isTC)
+                    {
+                        UpdateBuildingPrivilege(ls.gameObject.transform.root.GetComponent<ToolCupboardProperties>());
+                        CloseUI();
+                    }
+                    else
+                    {
+                        ls.gameObject.transform.root.GetComponent<PhotonView>().RPC("SetIsOpen", RpcTarget.AllViaServer, true);
+                        cp.CreateResourcePopup("PIN Correct", 0, true);
+                        audioManager.PlayAudio((int)AudioManager.AudioID.LockSuccess);
+                        CloseUI();
+                    }
                 }
                 else
                 {
@@ -128,5 +137,35 @@ public class PinSystem : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         isSettingPin = false;
         isEnteringPin = false;
+    }
+
+    private void UpdateBuildingPrivilege(ToolCupboardProperties tcp)
+    {
+        if (tcp.playersWithBuildingPrivilege.Contains(playerProperties))
+        {
+            playerProperties.hasBuildingPrivilege = false;
+            playerProperties.BuildingPrivilegeIcon.SetActive(false);
+
+            playerProperties.isBuildingDisabled = true;
+            playerProperties.BuildingDisabledIcon.SetActive(true);
+
+            audioManager.PlayAudio((int)AudioManager.AudioID.Click);
+            cp.CreateResourcePopup("Build Privilege Removed", 0);
+            tcp.playersWithBuildingPrivilege.Remove(playerProperties);
+
+        }
+        else
+        {
+
+            playerProperties.hasBuildingPrivilege = true;
+            playerProperties.BuildingPrivilegeIcon.SetActive(true);
+
+            playerProperties.isBuildingDisabled = false;
+            playerProperties.BuildingDisabledIcon.SetActive(false);
+
+            audioManager.PlayAudio((int)AudioManager.AudioID.LockSuccess);
+            cp.CreateResourcePopup("Build Privilege Added", 0, true);
+            tcp.playersWithBuildingPrivilege.Add(playerProperties);
+        }
     }
 }

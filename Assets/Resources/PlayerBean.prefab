@@ -13891,6 +13891,7 @@ MonoBehaviour:
   Charging: 0
   playerLookAt: {fileID: 1076643316070719907}
   isReleased: 1
+  currDoorCupboard: {fileID: 0}
   ghostMat: {fileID: 2100000, guid: 5f95ec27a9cfdc6418fa1292745edb1a, type: 2}
 --- !u!95 &724124074
 Animator:
@@ -14068,6 +14069,7 @@ MonoBehaviour:
   pm: {fileID: 2215454391473533705}
   cp: {fileID: 1937501596532756897}
   PinUI: {fileID: 7154147581259817069}
+  playerProperties: {fileID: 2444950040306206}
   keypadBtns:
   - {fileID: 5694552552444031777}
   - {fileID: 6405466306642908111}
