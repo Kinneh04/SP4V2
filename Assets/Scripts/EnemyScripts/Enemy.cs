@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     protected int Health;
     public bool Harvestable = false;
     protected PhotonView PV;
+    public GameObject TankBarrel;
     public AudioManager audioManager;
 
     public virtual void GetDamaged(int damage)
@@ -39,7 +40,8 @@ public class Enemy : MonoBehaviour
         WeaponInfo weaponInfo = gameObject.GetComponentInChildren<WeaponInfo>();
         GameObject Projectile = PhotonView.Find(PhotonViewID).gameObject;
         Projectile.GetComponent<Projectile>().Damage = weaponInfo.GetDamage();
-        Projectile.GetComponent<Projectile>().BulletSpawnPoint = transform;
+        Projectile.GetComponent<Projectile>().BulletSpawnPoint = TankBarrel.transform;
+        //Projectile.GetComponent<Projectile>().BulletSpawnPoint.transform.rotation = Projectile.GetComponent<Projectile>().BulletSpawnPoint.parent.parent.parent.transform.rotation;
         Projectile.GetComponent<Projectile>().ParentGunTip = weaponInfo.BarrelTip;
         Projectile.GetComponent<Projectile>().SetAimCone(weaponInfo.GetAimCone());
         Projectile.transform.parent = null;

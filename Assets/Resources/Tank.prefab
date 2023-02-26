@@ -1446,6 +1446,7 @@ MonoBehaviour:
   Structure: {fileID: 0}
   dead: 0
   Harvestable: 0
+  TankBarrel: {fileID: 995638886162292305}
   audioManager: {fileID: 2369061369853699116, guid: 9d5a09e384b3ee745b8dc73f7f57f1e2,
     type: 3}
   MSpd: 1
@@ -1564,6 +1565,7 @@ MonoBehaviour:
   Structure: {fileID: 0}
   dead: 0
   Harvestable: 0
+  TankBarrel: {fileID: 0}
   audioManager: {fileID: 0}
   MSpd: 2
   EnemyType: 0
