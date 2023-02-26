@@ -6,6 +6,7 @@ using Photon.Pun;
 public class ToolCupboardProperties : MonoBehaviour
 {
     public List<PlayerProperties> playersWithBuildingPrivilege = new List<PlayerProperties>();
+    public List<StructureObject> structuresInRange = new List<StructureObject>();
 
     public bool hasLock;
     public GameObject lockObject;

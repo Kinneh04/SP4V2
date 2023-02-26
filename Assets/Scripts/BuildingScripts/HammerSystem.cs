@@ -67,10 +67,11 @@ public class HammerSystem : MonoBehaviour
         if (!IsUsingHammer || !pv.IsMine)
             return;
 
-        if (selectedObject != null && currStructure != null && currStructure.isDamaged)
+        if (selectedObject != null && currStructure != null)
         {
             selectedObject.slider.value = currStructure.stability;
             selectedObject.stabilityLabel.text = Math.Round(currStructure.stability, 2) + "%";
+            selectedObject.decayingHint.alpha = currStructure.isDecaying ? 1 : 0;
         }
 
         if (IsPickingUp)
