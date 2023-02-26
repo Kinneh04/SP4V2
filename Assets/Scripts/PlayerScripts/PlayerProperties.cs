@@ -256,7 +256,7 @@ public class PlayerProperties : MonoBehaviour
         Health = 75;
         Hunger = 60;
         Thirst = 40;
-
+       
         HealIcon.SetActive(false);
         FullIcon.SetActive(false);
         PoisonIcon.SetActive(false);
@@ -283,8 +283,12 @@ public class PlayerProperties : MonoBehaviour
         TorchPV.gameObject.SetActive(false);
         Rockpv.transform.SetParent(gameObject.transform.Find("Capsule").Find("RHand"));
         TorchPV.transform.SetParent(gameObject.transform.Find("Capsule").Find("RHand"));
-        gameObject.GetComponentInChildren<InventoryManager>().AddQuantity(Rockpv.gameObject.GetComponent<HarvestToolsProperties>(), 1);
-        gameObject.GetComponentInChildren<InventoryManager>().AddQuantity(TorchPV.gameObject.GetComponent<HarvestToolsProperties>(), 1);
+        IM.AddQuantity(Rockpv.gameObject.GetComponent<HarvestToolsProperties>(), 1);
+        IM.AddQuantity(TorchPV.gameObject.GetComponent<HarvestToolsProperties>(), 1);
+
+        IM.UpdateItemCountPerSlot();
+        IM.EquippedSlot = 0;
+        pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, Rockpv.ViewID, pv.ViewID);
     }
 
     public void HealHealth(int HealthAmt, bool HealsBleed, bool HealsPoison, float poisonChance)
@@ -556,6 +560,29 @@ public class PlayerProperties : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
+
+    [PunRPC]
+    public void TakeServerSideDamage(int PVID, float damage)
+    {
+        PhotonView PV = PhotonView.Find(PVID);
+        if (PV.IsMine)
+        {
+            Health -= damage;
+
+            if (Health < 50)
+            {
+                float q = Health / MaxHealth;
+                StartCoroutine(ShowBlood());
+                isShowingBlood = true;
+                bloodTimer = 5.0f;
+                if (Health <= 0)
+                {
+                    die();
+                }
+            }
+
+        }
+    }
     public void TakeDamage(float damage)
     {
         if (pv.IsMine)
@@ -564,21 +591,16 @@ public class PlayerProperties : MonoBehaviour
 
             if (Health < 50)
             {
-                Health -= damage;
-
-                if (Health < 50)
+                float q = Health / MaxHealth;
+                StartCoroutine(ShowBlood());
+                isShowingBlood = true;
+                bloodTimer = 5.0f;
+                if (Health <= 0)
                 {
-                    float q = Health / MaxHealth;
-                    StartCoroutine(ShowBlood());
-                    isShowingBlood = true;
-                    bloodTimer = 5.0f;
-                    if (Health <= 0)
-                    {
-                        die();
-                    }
+                    die();
                 }
-
             }
+
         }
     }
     //Its TakeDamage but without punrpc
@@ -701,7 +723,7 @@ public class PlayerProperties : MonoBehaviour
 
             foreach (GameObject icon in iconList)
             {
-                if (icon.activeSelf)
+                if (icon != null && icon.activeSelf)
                 {
                     icon.GetComponent<RectTransform>().anchoredPosition = new Vector2(currIndex * -105.6f + 429.6f, icon.GetComponent<RectTransform>().anchoredPosition.y);
                     currIndex++;

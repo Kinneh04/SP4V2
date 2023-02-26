@@ -99,7 +99,37 @@ public class InventoryManager : MonoBehaviour
         else return false;
     }
 
+    public ItemInfo FindItemInSlot(ItemInfo Item)
+    {
+        for (int i = 0; i < InventoryList.Count; i++)
+        {
+            if (InventoryList[i])
+            {
+                if (InventoryList[i].GetItemID() == Item.GetItemID())
+                {
+                    return InventoryList[i];
+                }
+            }
 
+        }
+        return null;
+    }
+
+    public bool CheckForItem2(ItemInfo Item)
+    {
+        for (int i = 0; i < InventoryList.Count; i++)
+        {
+            if (InventoryList[i])
+            {
+                if (InventoryList[i].GetItemID() == Item.GetItemID() )
+                {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
     public bool CheckForItem(ItemInfo Item, int Quantity)
     {
         for(int i = 0; i < InventoryList.Count; i++)
@@ -252,7 +282,7 @@ public class InventoryManager : MonoBehaviour
         }
         UpdateItemCountPerSlot();
     } 
-    public bool AddQuantity(ItemInfo item, int QuantityToAdd = 0)
+    public bool AddQuantity(ItemInfo item, int QuantityToAdd = 0, bool DestroyItem = true)
     {
         bool needSetVariable = false;
         print("ATTEMPT TO ADD ITEM: " + item.itemID);
@@ -262,7 +292,7 @@ public class InventoryManager : MonoBehaviour
             if (InventoryList[SlotNum] != null && item.gameObject.tag != "Weaponry" || InventoryList[SlotNum] != null && item.gameObject.tag != "Workbench" || InventoryList[SlotNum] != null && item.gameObject.tag != "Campfire") //Adds quantity
             {
                 InventoryList[SlotNum].ItemCount += QuantityToAdd;
-                Destroy(item);
+                if(DestroyItem)Destroy(item);
             }
             else //creates a new gameobj and adds quantity
             {
