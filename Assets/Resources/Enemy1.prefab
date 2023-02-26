@@ -208,7 +208,6 @@ GameObject:
   - component: {fileID: 742620359173298214}
   - component: {fileID: 1453439375783098899}
   - component: {fileID: 71706916124501383}
-  - component: {fileID: 3493177205802432441}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Enemy
@@ -327,30 +326,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &3493177205802432441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3110613837763264941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2349aded5644d8744991d31fc2eb8514, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PossibleItemsPool:
-  - {fileID: 8098288367122042600, guid: 806b23f88df05044a8a240abee08a25b, type: 3}
-  - {fileID: 315452422639623956, guid: 51b5556a2c123994dbb0ee3f3f1a5e1d, type: 3}
-  - {fileID: 7268146472781844992, guid: 422d461a3ec671741bf5ecc2babd13d5, type: 3}
-  MaxPossibleItems: 1
-  MaxQuantityOfEachItem: 1
-  ItemsInCrate: []
-  PhotonViewIDs: 
-  ItemQuantityInCrate: 
-  IM: {fileID: 0}
-  pv: {fileID: 1453439375783098899}
-  forceLoot: 0
 --- !u!1 &6554151410375703411
 GameObject:
   m_ObjectHideFlags: 0

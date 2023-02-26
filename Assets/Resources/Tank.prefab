@@ -1381,7 +1381,6 @@ GameObject:
   - component: {fileID: 933671758}
   - component: {fileID: 933671763}
   - component: {fileID: 933671762}
-  - component: {fileID: 3909104032701728149}
   m_Layer: 0
   m_Name: Tank
   m_TagString: Tank
@@ -1501,32 +1500,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &3909104032701728149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6529749174189448827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2349aded5644d8744991d31fc2eb8514, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PossibleItemsPool:
-  - {fileID: 7268146472781844992, guid: 422d461a3ec671741bf5ecc2babd13d5, type: 3}
-  - {fileID: 7268146472781844992, guid: 08824ba335a081846ab47bff34cd3d13, type: 3}
-  - {fileID: 8098288367122042600, guid: 806b23f88df05044a8a240abee08a25b, type: 3}
-  - {fileID: 7268146472781844992, guid: effc5913c2e726a4cb098759ad251233, type: 3}
-  - {fileID: 5158569715687409169, guid: ebf517da4730c2b45b2633748e7dde30, type: 3}
-  MaxPossibleItems: 3
-  MaxQuantityOfEachItem: 5
-  ItemsInCrate: []
-  PhotonViewIDs: 
-  ItemQuantityInCrate: 
-  IM: {fileID: 0}
-  pv: {fileID: 933671762}
-  forceLoot: 0
 --- !u!1 &6699448614593682100
 GameObject:
   m_ObjectHideFlags: 0

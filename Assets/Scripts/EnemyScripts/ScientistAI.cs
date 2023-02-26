@@ -247,6 +247,7 @@ public class ScientistAI : Enemy
                     }
                     if (deadTime <= 0 && PV.IsMine)
                     {
+                        PhotonNetwork.Instantiate("ScientistBox", transform.position, Quaternion.identity);
                         PhotonNetwork.Destroy(gameObject);
                     }
                     break;
