@@ -31,8 +31,26 @@ public class AudioManager : MonoBehaviour
         LockSuccess,
         LockFail,
         RepairBuilding,
-        // lmao audio works even if i dont fill this in
-        // poggers
+        C4_Countdown,
+        M1911_Shoot,
+        M1911_Reload,
+        BoltActionRifle_Shoot,
+        BoltActionRifle_Reload,
+        RocketLauncher_Shoot,
+        RocketLauncher_Reload,
+        Explosion,
+        C4_Armed,
+        MP5A4_Shoot,
+        MP5A4_Reload,
+        Bow_Charge,
+        Bow_Shoot,
+        Arrow_Land,
+        HandmadeShotgun_Shoot,
+        Remington870_Pump,
+        Remington870_Shoot,
+        Shotgun_Reload,
+        Revolver_Shoot,
+        Revolver_Reload,
         NUM_AUDIO,
     }
     public AudioSource audioSource;

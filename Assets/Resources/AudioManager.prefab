@@ -50,7 +50,7 @@ MonoBehaviour:
   audioSource: {fileID: 2369061369853699106}
   GraphicsLoader: {fileID: 0}
   Clips:
-  - {fileID: 8300000, guid: f42ba9d37ae41d247a490b5e5d28acce, type: 3}
+  - {fileID: 8300000, guid: 924e41bb8d1b35041bfe45068948838f, type: 3}
   - {fileID: 8300000, guid: 82c243a6a68a5c84ebc643140b45f703, type: 3}
   - {fileID: 8300000, guid: 86ca707243358f64fb2d8933689820c2, type: 3}
   - {fileID: 8300000, guid: 17f7928c59ee81942ba4de3392e1240c, type: 3}
@@ -74,6 +74,26 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8a61c2b5b2bd7c944b6b4fc587529245, type: 3}
   - {fileID: 8300000, guid: a484d6446fc25da418f52cd697605caf, type: 3}
   - {fileID: 8300000, guid: fe40d727c9b255d409baa5e1c628d696, type: 3}
+  - {fileID: 8300000, guid: 0dbeabeac739d92468704fe65886b662, type: 3}
+  - {fileID: 8300000, guid: fdacc91160f49a6499c55d90505c1f1a, type: 3}
+  - {fileID: 8300000, guid: 9ba33ef5dd9bbb34a87f986cfb778e6c, type: 3}
+  - {fileID: 8300000, guid: eeb9aa131b5aeec43a8de79c944b5289, type: 3}
+  - {fileID: 8300000, guid: 63de073165d40da40951211e9f7eb8df, type: 3}
+  - {fileID: 8300000, guid: cf871db49f3f86c4cae707f3fd683bd4, type: 3}
+  - {fileID: 8300000, guid: 0bdfc4b4be3a3984ab97dde973a72fdc, type: 3}
+  - {fileID: 8300000, guid: 3c3fb71adedc78c48adaab14de1a3c25, type: 3}
+  - {fileID: 8300000, guid: 9157b2c7003acf245bbd476ca21b2f28, type: 3}
+  - {fileID: 8300000, guid: 32fb3bb3d4eb2c841a01118c7a60987a, type: 3}
+  - {fileID: 8300000, guid: fc4f473707dde9b419d8321528506fdb, type: 3}
+  - {fileID: 8300000, guid: d84b3e40328527a41966fe9ff63ca2be, type: 3}
+  - {fileID: 8300000, guid: fec14a5c07156774188d464636732720, type: 3}
+  - {fileID: 8300000, guid: fb862ec2da2d30a45aadade4d8b11b5c, type: 3}
+  - {fileID: 8300000, guid: 2a461d9e7738090489f38689ad3bf2d7, type: 3}
+  - {fileID: 8300000, guid: 256be1ca72a95154eae45eae35cf2c95, type: 3}
+  - {fileID: 8300000, guid: 106d5441c8e77654c8f7bff96a06842f, type: 3}
+  - {fileID: 8300000, guid: 9997df5988c8ffc4a9969e43f213bb40, type: 3}
+  - {fileID: 8300000, guid: 9997df5988c8ffc4a9969e43f213bb40, type: 3}
+  - {fileID: 8300000, guid: 3a5f590518a6fbf47b5456d556a07d62, type: 3}
   Volume: 1
 --- !u!82 &2369061369853699106
 AudioSource:

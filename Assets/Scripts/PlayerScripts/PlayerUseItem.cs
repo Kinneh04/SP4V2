@@ -33,6 +33,7 @@ public class PlayerUseItem : MonoBehaviour
     public float zoomFactor = 2f;
     private bool isZoomedIn = false;
     public GameObject Map;
+    public bool Charging = false;
 
     public PlayerLookAt playerLookAt;
     public bool isReleased = true;
@@ -410,42 +411,49 @@ public class PlayerUseItem : MonoBehaviour
                             if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.M1911_PISTOL && !LeftMouseButtonPressed)
                             {
                                 //PAnimator.Play("PBeanReloadM1911");
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.M1911_Reload, 1f);
                                 pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadM1911");
                             }
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REVOLVER && !LeftMouseButtonPressed)
                             {
                                 //PAnimator.Play("PBeanRevolverReload");
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Revolver_Reload, 1f);
                                 pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanRevolverReload");
                             }
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.AK47 && !LeftMouseButtonPressed)
                             {
                                 // PAnimator.Play("PBeanReloadAK");
-                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 1,1f);
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.AK47_Reload,1f);
                                 pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadAK");
                             }
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.HOMEMADE_SHOTGUN && !LeftMouseButtonPressed)
                             {
                                 //PAnimator.Play("PBeanReloadShotgun");
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Shotgun_Reload, 1f);
                                 pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadShotgun");
                             }
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.MP5A4 && !LeftMouseButtonPressed)
                             {
                                 // PAnimator.Play("PBeanSMGReload");
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.MP5A4_Reload, 1f);
                                 pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSMGReload");
                             }
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.REMINGTON870 && !LeftMouseButtonPressed)
                             {
                                 //PAnimator.Play("PBeanShotgunReload");
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Shotgun_Reload, 1f);
                                 pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanShotgunReload");
                             }
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.BOLT_ACTION_RIFLE && !LeftMouseButtonPressed)
                             {
                                 //PAnimator.Play("PBeanSniperReload");
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.BoltActionRifle_Reload, 1f);
                                 pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSniperReload");
                             }
                             else if (ItemGO.GetComponent<WeaponInfo>().GetGunName() == WeaponInfo.GUNNAME.ROCKETLAUNCHER && !LeftMouseButtonPressed)
                             {
                                 //PAnimator.Play("PBeanSniperReload");
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.RocketLauncher_Reload, 1f);
                                 pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanReloadRocketLauncher");
                             }
                         }
@@ -507,7 +515,7 @@ public class PlayerUseItem : MonoBehaviour
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
                             if (OnShoot())
-                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 3, 1f);
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.M1911_Shoot, 1f);
                             print("Shooting m1911");
 
                             if (!isADS)
@@ -524,7 +532,7 @@ public class PlayerUseItem : MonoBehaviour
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
                             if(OnShoot())
-                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 0, 1f);
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.AK47_Shoot , 1f);
                             if (!isADS)
                                 PAnimator.Play("PBeanShootAK");
                             else
@@ -537,6 +545,11 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
+                            if (!Charging)
+                            {
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Bow_Charge, 1f);
+                                Charging = true;
+                            }
                             PAnimator.Play("PBowDraw");
                             StartCoroutine(ItemGO.GetComponent<Bow>().StartCharge());
                         }
@@ -545,6 +558,8 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
+                            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.HandmadeShotgun_Shoot, 1f);
+
                             OnShoot();
                             PAnimator.Play("PBeanShootShotgun");
                         }
@@ -554,7 +569,8 @@ public class PlayerUseItem : MonoBehaviour
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
                             if (OnShoot())
-                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 3, 1f);
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Revolver_Shoot, 1f);
+
                             if (!isADS)
                                 PAnimator.Play("PBeanShootM1911");
                             else
@@ -568,7 +584,7 @@ public class PlayerUseItem : MonoBehaviour
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
                             if (OnShoot())
-                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 4, 1f);
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Sniper_Shoot, 1f);
                             if (!isADS)
                             {
                                 PAnimator.Play("PBeanSniperShoot");
@@ -580,6 +596,7 @@ public class PlayerUseItem : MonoBehaviour
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
                             OnShoot();
+                            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Remington870_Shoot, 1f);
                             PAnimator.Play("PBeanShotgunShoot");
                         }
                     }
@@ -588,6 +605,7 @@ public class PlayerUseItem : MonoBehaviour
                         if (ItemGO.GetComponent<WeaponInfo>().ItemCount > 0)
                         {
                             OnShoot();
+                            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Drop, 1f);
                             PAnimator.Play("PBeanThrow");
                             inventoryManager.RemoveQuantityFromSlot(inventoryManager.EquippedSlot, 1);
                         }
@@ -597,6 +615,7 @@ public class PlayerUseItem : MonoBehaviour
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
                             OnShoot();
+                            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.RocketLauncher_Shoot, 1f);
                             PAnimator.Play("PBeanShootAK");
                         }
                     }
@@ -605,7 +624,7 @@ public class PlayerUseItem : MonoBehaviour
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
                             if (OnShoot())
-                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, 2, 1f);
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.MP5A4_Shoot, 1f);
 
                             if (!isADS)
                                 PAnimator.Play("PBeanSMGHipfire");
@@ -685,7 +704,9 @@ public class PlayerUseItem : MonoBehaviour
                 {
                     if (ItemGO.GetComponent<Bow>().charged)
                     {
-                        OnShoot();
+                        Charging = false;
+                        if(OnShoot())
+                            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Bow_Shoot, 1f);
                     }
                     else
                     {

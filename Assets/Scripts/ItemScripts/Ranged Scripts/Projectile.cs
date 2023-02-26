@@ -35,12 +35,14 @@ public class Projectile : MonoBehaviour
             {
                 GameObject Go = PhotonNetwork.Instantiate(Explosion.name, transform.position,Quaternion.identity);
                 Go.GetComponent<Explosion>().Damage = Damage;
+                GameObject.FindGameObjectWithTag("AudioManager").GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Explosion, 1f);
                 Destroy(this.gameObject);
             }
             else if (itemID == ItemInfo.ItemID.C4)
             {
                 this.GetComponent<Rigidbody>().isKinematic = true;
                 this.transform.parent = collision.transform.parent;
+                GameObject.FindGameObjectWithTag("AudioManager").GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.C4_Armed, 1f);
             }
             else if (itemID == ItemInfo.ItemID.Arrow)
             {
@@ -80,7 +82,7 @@ public class Projectile : MonoBehaviour
                 this.transform.position -= PushPreviousDirection;
                 this.GetComponent<Rigidbody>().isKinematic = true;
                 this.transform.parent = collision.transform.parent;
-
+                GameObject.FindGameObjectWithTag("AudioManager").GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Arrow_Land, 1f);
             }
             JustFired = false;
         }
@@ -145,7 +147,9 @@ public class Projectile : MonoBehaviour
                 GameObject Go = PhotonNetwork.Instantiate(Explosion.name, transform.position, Quaternion.identity);
                 Go.GetComponent<Explosion>().Damage = Damage;
                 Destroy(this.gameObject);
+                GameObject.FindGameObjectWithTag("AudioManager").GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Explosion, 1f);
             }
         }
     }
+
 }
