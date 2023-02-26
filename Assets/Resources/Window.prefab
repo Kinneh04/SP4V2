@@ -317,6 +317,7 @@ MonoBehaviour:
     type: 3}
   stoneMaterial: {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
   slider: {fileID: 8301829858416335787}
+  destroyVFX: {fileID: 0}
   dependentStructures: []
   stabilityLabel: {fileID: 2250995136670385442}
   PlayerID: 0

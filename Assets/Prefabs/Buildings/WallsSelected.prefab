@@ -77,7 +77,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a51fb98242286479dd1d1281950a29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stability: 100
   type: 2
   slider: {fileID: 1006213152486087495}
   stabilityLabel: {fileID: 1421151020761057794}
@@ -280,8 +279,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5f95ec27a9cfdc6418fa1292745edb1a, type: 2}
   - {fileID: 2100000, guid: 7e181fd161a9d4c41a7d09c87806d01d, type: 2}
+  - {fileID: 2100000, guid: 5f95ec27a9cfdc6418fa1292745edb1a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -19,6 +19,10 @@ public class HammerSystem : MonoBehaviour
     public LayerMask layer; // To assign it to exclude BuildPreview in raycast checks
     private RaycastHit hit;
 
+    // To prevent raycast from being reset constantly
+    bool hasHit = false;
+    float prevMouseCoordsX;
+    float prevMouseCoordsY;
 
     public PlayerProperties pp;
     public InventoryManager im;
@@ -50,6 +54,8 @@ public class HammerSystem : MonoBehaviour
         menuObject.SetActive(false);
         pv = GetComponent<PhotonView>();
 
+        prevMouseCoordsX = Input.GetAxis("Mouse X");
+        prevMouseCoordsY = Input.GetAxis("Mouse Y");
         audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
@@ -204,17 +210,31 @@ public class HammerSystem : MonoBehaviour
 
     public void StartSelect()
     {
-        if (Physics.Raycast(cam.position, cam.forward, out hit, LayerMask.NameToLayer("BuildPreview"), layer))
-        {
-            if (hit.transform != transform)
-                ShowSelected(hit);
-        }
-        else if (Physics.Raycast(cam.position, cam.forward, out hit, LayerMask.NameToLayer("BuildPreview"))) // If looking at something that's not buildable
-        {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("BuildPreview")) // Do not count selectable
-                return;
+/*        CheckHasMouseMoved();
 
-            ResetPointers();
+        if (hasHit)
+            return;*/
+
+        if (Physics.Raycast(cam.position, cam.forward, out hit, float.PositiveInfinity))
+        {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
+            {
+                if (hit.transform != transform)
+                    ShowSelected(hit);
+            }
+            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Buildable"))
+            {
+                // Do a second raycast this time limiting to only BuildableParent
+                if (Physics.Raycast(cam.position, cam.forward, out hit, LayerMask.NameToLayer("BuildPreview"), layer))
+                {
+                    if (hit.transform != transform)
+                        ShowSelected(hit);
+                }
+            }
+            else if (hit.collider.gameObject.layer != LayerMask.NameToLayer("BuildPreview"))
+            {
+                ResetPointers();
+            }
         }
         else // If not looking at anything at all
         {
@@ -232,6 +252,8 @@ public class HammerSystem : MonoBehaviour
             && currentObject.GetComponent<StructureObject>().type != StructureTypes.door
             && (currentObject.GetComponent<StructureObject>().PlayerID == PhotonNetwork.LocalPlayer.ActorNumber || pp.hasBuildingPrivilege))
         {
+            hasHit = true;
+
             if (prevObject != null)
                 prevObject.SetActive(true);
             if (selectedObject != null)
@@ -395,7 +417,6 @@ public class HammerSystem : MonoBehaviour
 
                                         Material[] mats = child.GetComponent<MeshRenderer>().materials;
                                         Material[] newMaterials = new Material[] { stoneMaterial, mats[1] };
-                                        Debug.Log(newMaterials.ToString());
                                         child.GetComponent<MeshRenderer>().materials = newMaterials;
                                     }
                                 }
@@ -456,5 +477,16 @@ public class HammerSystem : MonoBehaviour
             PhotonNetwork.Instantiate("DestroyStructure", PhotonView.Find(viewID).gameObject.transform.position, PhotonView.Find(viewID).gameObject.transform.rotation);
         }
         PhotonNetwork.Destroy(PhotonView.Find(viewID));
+    }
+
+    private void CheckHasMouseMoved()
+    {
+        if (Input.GetAxis("Mouse X") != prevMouseCoordsX || Input.GetAxis("Mouse Y") != prevMouseCoordsY)
+        {
+            Debug.Log("MOUSE MOVED!");
+            hasHit = false;
+            prevMouseCoordsX = Input.GetAxis("Mouse X");
+            prevMouseCoordsY = Input.GetAxis("Mouse Y");
+        }
     }
 }

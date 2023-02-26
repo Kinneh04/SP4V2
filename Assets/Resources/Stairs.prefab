@@ -315,10 +315,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+  audioManager: {fileID: 0}
   selectedPrefab: {fileID: 2849478933915083144, guid: 64d49bf2562923b4ab438fce0580a09e,
     type: 3}
   stoneMaterial: {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
   slider: {fileID: 3173921313925313277}
+  destroyVFX: {fileID: 0}
+  dependentStructures: []
   stabilityLabel: {fileID: 610047644997599201}
   PlayerID: 0
   isUpgraded: 0
