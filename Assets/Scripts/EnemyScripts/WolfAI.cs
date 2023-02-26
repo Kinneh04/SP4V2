@@ -44,31 +44,38 @@ public class WolfAI : Enemy
         CurrentState = FSM.IDLE;
         PV = GetComponent<PhotonView>();
     }
+    private void Start()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
 
     // Update is called once per frame
     public virtual void Update()
     {
-        PounceCD -= Time.deltaTime;
-        if (Pouncing)
+        if (!dead)
         {
-            if (PounceCD < 5)
+            PounceCD -= Time.deltaTime;
+            if (Pouncing)
             {
-                navMeshAgent.speed = MSpd;
-                Pouncing = false;
+                if (PounceCD < 5)
+                {
+                    navMeshAgent.speed = MSpd;
+                    Pouncing = false;
+                }
+            }
+
+            if (BiteCD > 0)
+                BiteCD -= Time.deltaTime;
+
+            if (CurrentState != FSM.ATTACK && (TargetPlayer != null || Prey != null))
+            {
+                CurrentState = FSM.ATTACK;
+                navMeshAgent.speed = MSpd * 1.2f;
             }
         }
-
-        if (BiteCD > 0)
-            BiteCD -= Time.deltaTime;
-
-        if (CurrentState != FSM.ATTACK && (TargetPlayer != null || Prey != null))
+        if (Health <= 0 && !dead)
         {
-            CurrentState = FSM.ATTACK;
-            navMeshAgent.speed = MSpd * 1.2f;
-        }
-
-        if (Health <= 0)
-        {
+            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.All, (int)AudioManager.AudioID.Wolf, 1.0f, transform.position);
             CurrentState = FSM.DEAD;
             dead = true;
             navMeshAgent.Stop();

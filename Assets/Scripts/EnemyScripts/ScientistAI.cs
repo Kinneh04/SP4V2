@@ -48,23 +48,33 @@ public class ScientistAI : Enemy
         gun.SetTimeBetweenShots(0.33f);
         gun.SetCanFire(true);
         PV = GetComponent<PhotonView>();
+        
+    }
+
+    private void Start()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
-        gun.SetInfiniteAmmo(true);
+        if (!dead)
+        {
+            gun.SetInfiniteAmmo(true);
 
-        if (Structure != null && !StructureFound)
-        {
-            StructureFound = true;
+            if (Structure != null && !StructureFound)
+            {
+                StructureFound = true;
+            }
+            if (CurrentState != FSM.ATTACK && TargetPlayer != null && !GoingMonument)
+            {
+                CurrentState = FSM.ATTACK;
+            }
         }
-        if (CurrentState != FSM.ATTACK && TargetPlayer != null && !GoingMonument)
+        if (Health <= 0 && !dead)
         {
-            CurrentState = FSM.ATTACK;
-        }
-        if (Health <= 0)
-        {
+            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.All, (int)AudioManager.AudioID.Scientist, 1, transform.position); 
             CurrentState = FSM.DEAD;
             dead = true;
             navMeshAgent.Stop();

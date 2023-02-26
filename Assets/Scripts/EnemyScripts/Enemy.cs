@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     protected int Health;
     public bool Harvestable = false;
     protected PhotonView PV;
+    public AudioManager audioManager;
 
     public virtual void GetDamaged(int damage)
     {

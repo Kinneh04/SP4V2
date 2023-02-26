@@ -82,21 +82,29 @@ public class TankAI : Enemy
         gun.SetCanFire(true);
         //Debug.Log("Awake: " + gun.GetInfiniteAmmo());
     }
+    private void Start()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
 
     // Update is called once per frame
     public virtual void Update()
     {
-        gun.SetInfiniteAmmo(true);
-       //Debug.Log("Update: " + gun.GetInfiniteAmmo());
-        
+        if (!dead)
+        {
+            gun.SetInfiniteAmmo(true);
+            //Debug.Log("Update: " + gun.GetInfiniteAmmo());
 
-        if (CurrentState != FSM.ATTACK && TargetPlayer != null && !GoingMonument)
-        {
-            CurrentState = FSM.ATTACK;
-            navMeshAgent.Stop();
+
+            if (CurrentState != FSM.ATTACK && TargetPlayer != null && !GoingMonument)
+            {
+                CurrentState = FSM.ATTACK;
+                navMeshAgent.Stop();
+            }
         }
-        if (Health <= 0)
+        if (Health <= 0 && !dead)
         {
+            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.All, (int)AudioManager.AudioID.Tank, 1, transform.position);
             CurrentState = FSM.DEAD;
             dead = true;
             navMeshAgent.Stop();

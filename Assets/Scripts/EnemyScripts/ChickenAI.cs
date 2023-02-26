@@ -41,52 +41,59 @@ public class ChickenAI : Enemy
         CurrentState = FSM.IDLE;
         PV = GetComponent<PhotonView>();
     }
+    private void Start()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
 
     // Update is called once per frame
     public virtual void Update()
     {
-        if (hitTime > 0)
+        if (!dead)
         {
-            if (TargetPlayer == null && Predator == null)
+            if (hitTime > 0)
             {
-                hitTime -= Time.deltaTime;
-                Debug.Log("Chicken is Running");
-            }
-            else if (TargetPlayer != null && Predator != null)
-            {
-                if (Vector3.Distance(transform.position, TargetPlayer.transform.position) < Vector3.Distance(transform.position, Predator.transform.position))
+                if (TargetPlayer == null && Predator == null)
+                {
+                    hitTime -= Time.deltaTime;
+                    Debug.Log("Chicken is Running");
+                }
+                else if (TargetPlayer != null && Predator != null)
+                {
+                    if (Vector3.Distance(transform.position, TargetPlayer.transform.position) < Vector3.Distance(transform.position, Predator.transform.position))
+                    {
+                        FromWhere = TargetPlayer.transform.position;
+                    }
+                    else
+                    {
+                        FromWhere = Predator.transform.position;
+                    }
+                }
+                else if (TargetPlayer != null)
                 {
                     FromWhere = TargetPlayer.transform.position;
                 }
-                else
+                else if (Predator != null)
                 {
                     FromWhere = Predator.transform.position;
                 }
+                if (!isRunning)
+                {
+                    isRunning = true;
+                    isMoving = false;
+                    navMeshAgent.speed = MSpd * 1.5f;
+                }
             }
-            else if (TargetPlayer != null)
+            else if (CurrentState == FSM.RUN)
             {
-                FromWhere = TargetPlayer.transform.position;
-            }
-            else if (Predator != null)
-            {
-                FromWhere = Predator.transform.position;
-            }
-            if (!isRunning)
-            {
-                isRunning = true;
+                isRunning = false;
                 isMoving = false;
-                navMeshAgent.speed = MSpd * 1.5f;
+                CurrentState = FSM.WANDER;
             }
         }
-        else if (CurrentState == FSM.RUN)
+        if (Health <= 0 && !dead)
         {
-            isRunning = false;
-            isMoving = false;
-            CurrentState = FSM.WANDER;
-        }
-
-        if (Health <= 0)
-        {
+            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.All, (int)AudioManager.AudioID.Fox, 1, transform.position);
             CurrentState = FSM.DEAD;
             dead = true;
             navMeshAgent.Stop();

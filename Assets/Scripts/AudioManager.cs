@@ -58,6 +58,12 @@ public class AudioManager : MonoBehaviour
         WoodHit,
         Thunder,
         Ambience,
+        Fox,
+        Cow,
+        Wolf,
+        Tank,
+        Scientist,
+        Craft,
         NUM_AUDIO,
     }
     public AudioSource audioSource;

@@ -77,6 +77,8 @@ MonoBehaviour:
   Structure: {fileID: 0}
   dead: 0
   Harvestable: 0
+  audioManager: {fileID: 2369061369853699116, guid: 9d5a09e384b3ee745b8dc73f7f57f1e2,
+    type: 3}
   MSpd: 7
   change: 0
   Predator: {fileID: 0}
@@ -198,6 +200,7 @@ MonoBehaviour:
   Structure: {fileID: 0}
   dead: 0
   Harvestable: 0
+  audioManager: {fileID: 0}
   MSpd: 2
   change: 0
   Predator: {fileID: 0}

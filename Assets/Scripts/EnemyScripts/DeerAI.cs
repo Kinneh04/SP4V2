@@ -42,76 +42,84 @@ public class DeerAI : Enemy
         enemyType = 0;
         PV = GetComponent<PhotonView>();
     }
+    private void Start()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
 
     // Update is called once per frame
     public virtual void Update()
     {
-        if (change)
+
+        if (!dead)
         {
-            if (TargetPlayer != null && Predator != null)
+            if (change)
             {
-                if (Vector3.Distance(transform.position, TargetPlayer.transform.position) < Vector3.Distance(transform.position, Predator.transform.position))
+                if (TargetPlayer != null && Predator != null)
+                {
+                    if (Vector3.Distance(transform.position, TargetPlayer.transform.position) < Vector3.Distance(transform.position, Predator.transform.position))
+                    {
+                        FromWhere = TargetPlayer.transform.position;
+                        enemyType = 1;
+                    }
+                    else
+                    {
+                        FromWhere = Predator.transform.position;
+                        enemyType = 2;
+                    }
+                }
+                else if (TargetPlayer != null)
                 {
                     FromWhere = TargetPlayer.transform.position;
                     enemyType = 1;
                 }
-                else
+                else if (Predator != null)
                 {
                     FromWhere = Predator.transform.position;
                     enemyType = 2;
                 }
-            }
-            else if (TargetPlayer != null)
-            {
-                FromWhere = TargetPlayer.transform.position;
-                enemyType = 1;
-            }
-            else if (Predator != null)
-            {
-                FromWhere = Predator.transform.position;
-                enemyType = 2;
-            }
-            change = false;
-            isRunning = true;
-            runTime = 2;
-            navMeshAgent.speed = MSpd * 2.0f;
-        }
-        if (hitTime > 0)
-        {
-            hitTime -= Time.deltaTime;
-            if (!isRunning)
-            {
+                change = false;
                 isRunning = true;
                 runTime = 2;
                 navMeshAgent.speed = MSpd * 2.0f;
             }
-            else if (TargetPlayer != null || Predator != null && hitTime > 0)
-                change = true;
-        }
-        else if (TargetPlayer == null && Predator == null && isRunning)
-        {
-            navMeshAgent.speed = MSpd;
-            enemyType = 0;
-            if (runTime > 0)
-                runTime -= Time.deltaTime;
-            else
+            if (hitTime > 0)
             {
-                isRunning = false;
-                isMoving = false;
-                CurrentState = FSM.WANDER;
+                hitTime -= Time.deltaTime;
+                if (!isRunning)
+                {
+                    isRunning = true;
+                    runTime = 2;
+                    navMeshAgent.speed = MSpd * 2.0f;
+                }
+                else if (TargetPlayer != null || Predator != null && hitTime > 0)
+                    change = true;
+            }
+            else if (TargetPlayer == null && Predator == null && isRunning)
+            {
+                navMeshAgent.speed = MSpd;
+                enemyType = 0;
+                if (runTime > 0)
+                    runTime -= Time.deltaTime;
+                else
+                {
+                    isRunning = false;
+                    isMoving = false;
+                    CurrentState = FSM.WANDER;
+                }
+            }
+            if (enemyType == 1)
+            {
+                FromWhere = TargetPlayer.transform.position;
+            }
+            else if (enemyType == 2)
+            {
+                FromWhere = Predator.transform.position;
             }
         }
-        if (enemyType == 1)
+        if (Health <= 0 && !dead)
         {
-            FromWhere = TargetPlayer.transform.position;
-        }
-        else if (enemyType == 2)
-        {
-            FromWhere = Predator.transform.position;
-        }
-
-        if (Health <= 0)
-        {
+            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.All, (int)AudioManager.AudioID.Cow, 1, transform.position);
             CurrentState = FSM.DEAD;
             dead = true;
             navMeshAgent.Stop();

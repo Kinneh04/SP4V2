@@ -56665,6 +56665,7 @@ MonoBehaviour:
   quantity: {fileID: 1541120452229744622}
   button: {fileID: 2013496871390938475}
   Items: {fileID: 7605116097849433736}
+  audioManager: {fileID: 0}
   prefab1: {fileID: -8703186645635198778, guid: 56c26f40db964714eaa612779a3a5c8a,
     type: 3}
   prefab2: {fileID: 1748203842126448925, guid: 74ceeb55d9451604cb58dd6bc1eeb58b, type: 3}

@@ -14,6 +14,8 @@ public class CraftingManager : MonoBehaviour
     public CraftButton button;
     public GameObject Items;
 
+    public AudioManager audioManager;
+
     public ItemInfo prefab1, prefab2, prefab3, prefab4, prefab5, prefab6, prefab7, prefab8, prefab9, prefab10, prefab11, prefab12, prefab13, prefab14, prefab15, prefab16, prefab17, prefab18, prefab19, prefab20, prefab21, prefab22, prefab23, prefab24, prefab25, prefab26, prefab27, prefab28, prefab29, prefab30, prefab31, prefab32, prefab33, prefab34;
     public ItemInfo Metal, Sulfur, Wood, Stone, WeaponParts, Cloth, Water;
 
@@ -74,9 +76,11 @@ public class CraftingManager : MonoBehaviour
         CraftableList.Add(prefab31);
         CraftableList.Add(prefab32);
         CraftableList.Add(prefab33);
+        CraftableList.Add(prefab34);
 
         // IM = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryManager>();
         //description = FindObjectOfType<CraftDescription>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
 
         CraftAmount = 0;
     }
@@ -308,6 +312,7 @@ public class CraftingManager : MonoBehaviour
             CraftSelections[SelectedCraft].researched = true;
             CraftSelections[SelectedCraft].gameObject.SetActive(false);
         }
+        audioManager.MultiplayerPlay3DAudio((int)AudioManager.AudioID.Craft, 1, transform.position);
         button.UpdateCraftButton();
         IM.UpdateItemCountPerSlot();
         cost.ChangeCost();

@@ -284,6 +284,8 @@ MonoBehaviour:
   Structure: {fileID: 0}
   dead: 0
   Harvestable: 0
+  audioManager: {fileID: 2369061369853699116, guid: 9d5a09e384b3ee745b8dc73f7f57f1e2,
+    type: 3}
   MSpd: 3
   gun: {fileID: 2012032473162947155}
   EnemyType: 0
@@ -474,6 +476,7 @@ MonoBehaviour:
   Structure: {fileID: 0}
   dead: 0
   Harvestable: 0
+  audioManager: {fileID: 0}
   MSpd: 2
   gun: {fileID: 0}
   EnemyType: 0
