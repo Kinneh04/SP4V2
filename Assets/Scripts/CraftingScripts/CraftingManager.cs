@@ -231,15 +231,11 @@ public class CraftingManager : MonoBehaviour
         int count = CraftableList.Count;
         for (int i = 0; i < count; i++)
         {
-            if (i == 23)
-                Debug.Log("hi");
             CraftSelection temp = CraftSelections[i];
-            Debug.Log("i: " + i + CraftableList[i].itemID);
             temp.gameObject.SetActive(true);
             temp.load();
             if (ScreenCraft)
             {
-                Debug.Log("i:" + i + ", " +( CurrentWorkbenchLv < WorkbenchNeeded) + ", " + temp.researched);
                 if (CurrentWorkbenchLv < WorkbenchNeeded || !temp.researched)
                 {
                     temp.gameObject.SetActive(false);
@@ -261,6 +257,7 @@ public class CraftingManager : MonoBehaviour
                 }
             }
         }
+        description.ChangeDescription(CraftableList[2]);
     }
 
     public void UpdateAmountCost()
