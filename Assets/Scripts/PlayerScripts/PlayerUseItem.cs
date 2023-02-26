@@ -244,35 +244,39 @@ public class PlayerUseItem : MonoBehaviour
                         audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DoorOpen, 1.0f, ds.gameObject.transform.position);
                     }
                 }
-                else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "ToolCupboard")
+/*                else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "ToolCupboard")
                 {
                     ToolCupboardProperties tcp = playerProperties.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>();
                     tcp.IM = inventoryManager;
                     tcp.DisplayLoot();
                     playerProperties.OpenToolCupboard(tcp);
-                }
+                }*/
 
                 //TODO: TCP HERE!!
-                /*                else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "ToolCupboard")
-                                {
-                                    ToolCupboardProperties tcp = playerProperties.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>();
-                                    if (tcp.hasLock)
-                                    {
-                                        // Open PIN entry
-                                        if (tcp.lockObject.GetComponent<LockStructure>().hasPin)
-                                        {
-                                            ps.StartEnteringPIN(tcp.lockObject.GetComponent<LockStructure>());
-                                        }
-                                        else // No pin set, so toggle building privilege
-                                        {
-                                            UpdateBuildingPrivilege(tcp);
-                                        }
-                                    }
-                                    else // No lock so will just toggle privilege
-                                    {
-                                        UpdateBuildingPrivilege(tcp);
-                                    }
-                                }*/
+                else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.tag == "ToolCupboard")
+                {
+                    ToolCupboardProperties tcp = playerProperties.PlayerLookingAtItem.GetComponent<ToolCupboardProperties>();
+                    tcp.IM = inventoryManager;
+
+                    if (tcp.hasLock)
+                    {
+                        // Open PIN entry
+                        if (tcp.lockObject.GetComponent<LockStructure>().hasPin)
+                        {
+                            ps.StartEnteringPIN(tcp.lockObject.GetComponent<LockStructure>());
+                        }
+                        else // No pin set, so display inventory
+                        {
+                            tcp.DisplayLoot();
+                            playerProperties.OpenToolCupboard(tcp);
+                        }
+                    }
+                    else // No lock so will just display inventory
+                    {
+                        tcp.DisplayLoot();
+                        playerProperties.OpenToolCupboard(tcp);
+                    }
+                }
 
                 else if (playerProperties.PlayerLookingAtItem != null && playerProperties.PlayerLookingAtItem.GetComponent<ItemInfo>() != null)
                 {
@@ -1319,36 +1323,6 @@ public class PlayerUseItem : MonoBehaviour
         if (playerProperties.CurrentlyHoldingItem != null)
         {
             playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = false;
-        }
-    }
-
-    private void UpdateBuildingPrivilege(ToolCupboardProperties tcp)
-    {
-        if (tcp.playersWithBuildingPrivilege.Contains(playerProperties))
-        {
-            playerProperties.hasBuildingPrivilege = false;
-            playerProperties.BuildingPrivilegeIcon.SetActive(false);
-
-            playerProperties.isBuildingDisabled = true;
-            playerProperties.BuildingDisabledIcon.SetActive(true);
-
-            audioManager.PlayAudio((int)AudioManager.AudioID.Click);
-            cp.CreateResourcePopup("Build Privilege Removed", 0);
-            tcp.playersWithBuildingPrivilege.Remove(playerProperties);
-
-        }
-        else
-        {
-
-            playerProperties.hasBuildingPrivilege = true;
-            playerProperties.BuildingPrivilegeIcon.SetActive(true);
-
-            playerProperties.isBuildingDisabled = false;
-            playerProperties.BuildingDisabledIcon.SetActive(false);
-
-            audioManager.PlayAudio((int)AudioManager.AudioID.LockSuccess);
-            cp.CreateResourcePopup("Build Privilege Added", 0, true);
-            tcp.playersWithBuildingPrivilege.Add(playerProperties);
         }
     }
 }

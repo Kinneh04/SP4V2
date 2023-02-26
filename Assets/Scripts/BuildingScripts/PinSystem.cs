@@ -79,8 +79,11 @@ public class PinSystem : MonoBehaviour
                 {
                     if (ls.isTC)
                     {
-                        UpdateBuildingPrivilege(ls.gameObject.transform.root.GetComponent<ToolCupboardProperties>());
+                        ls.gameObject.transform.root.GetComponent<ToolCupboardProperties>().DisplayLoot();
+                        playerProperties.OpenToolCupboard(ls.gameObject.transform.root.GetComponent<ToolCupboardProperties>());
                         CloseUI();
+                        pm.canLookAround = false;
+                        Cursor.lockState = CursorLockMode.None;
                     }
                     else
                     {
@@ -97,7 +100,7 @@ public class PinSystem : MonoBehaviour
                     CloseUI();
                 }
             }
-            Cursor.lockState = CursorLockMode.Locked;
+            
         }
         else
         {
@@ -137,35 +140,5 @@ public class PinSystem : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         isSettingPin = false;
         isEnteringPin = false;
-    }
-
-    private void UpdateBuildingPrivilege(ToolCupboardProperties tcp)
-    {
-        if (tcp.playersWithBuildingPrivilege.Contains(playerProperties))
-        {
-            playerProperties.hasBuildingPrivilege = false;
-            playerProperties.BuildingPrivilegeIcon.SetActive(false);
-
-            playerProperties.isBuildingDisabled = true;
-            playerProperties.BuildingDisabledIcon.SetActive(true);
-
-            audioManager.PlayAudio((int)AudioManager.AudioID.Click);
-            cp.CreateResourcePopup("Build Privilege Removed", 0);
-            tcp.playersWithBuildingPrivilege.Remove(playerProperties);
-
-        }
-        else
-        {
-
-            playerProperties.hasBuildingPrivilege = true;
-            playerProperties.BuildingPrivilegeIcon.SetActive(true);
-
-            playerProperties.isBuildingDisabled = false;
-            playerProperties.BuildingDisabledIcon.SetActive(false);
-
-            audioManager.PlayAudio((int)AudioManager.AudioID.LockSuccess);
-            cp.CreateResourcePopup("Build Privilege Added", 0, true);
-            tcp.playersWithBuildingPrivilege.Add(playerProperties);
-        }
     }
 }
