@@ -826,7 +826,7 @@ MonoBehaviour:
   - {fileID: 8281112830767823451, guid: a812f7e3fb4fc794384fb565d09e070a, type: 3}
   - {fileID: 2142025454140451006, guid: 2cb6e2e32a8744b41b9c9e92424f02cc, type: 3}
   - {fileID: 1872355061186864094, guid: f4b90623ec197354a8320b7c33539869, type: 3}
-  MaxPossibleItems: 10
+  MaxPossibleItems: 5
   MaxQuantityOfEachItem: 3
   ItemsInCrate: []
   PhotonViewIDs: 

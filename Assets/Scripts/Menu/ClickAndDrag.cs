@@ -103,6 +103,7 @@ public class ClickAndDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
             else if(raycastResults[i].gameObject.CompareTag("dropArea") && slotname != raycastResults[i].gameObject.name)
             {
                 IM.Drop(Slot);
+                audioManager.PlayAudio(58);
                 return;
             }
         }
