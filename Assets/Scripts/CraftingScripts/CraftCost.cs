@@ -112,26 +112,26 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.Bolt_Action_Rifle:
                     CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 1;
+                    materialCounts[0] = 50;
+                    materialCounts[1] = 50;
                     materialCounts[2] = 0;
-                    materials[0] = CM.Stone;
-                    materials[1] = CM.Wood;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.WeaponParts;
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.Hunting_Bow: // Bow
                     CM.WorkbenchNeeded = 0;
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 1;
+                    materialCounts[0] = 5;
+                    materialCounts[1] = 25;
                     materialCounts[2] = 0;
-                    materials[0] = CM.Stone;
+                    materials[0] = CM.Cloth;
                     materials[1] = CM.Wood;
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.Rocket: // Missile
                     CM.WorkbenchNeeded = 3;
-                    materialCounts[0] = 5;
-                    materialCounts[1] = 5;
+                    materialCounts[0] = 10;
+                    materialCounts[1] = 50;
                     materialCounts[2] = 0;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Sulfur;
@@ -139,16 +139,16 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.RocketLauncher:
                     CM.WorkbenchNeeded = 3;
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 50;
-                    materialCounts[2] = 50;
+                    materialCounts[0] = 500;
+                    materialCounts[1] = 500;
+                    materialCounts[2] = 500;
                     materials[0] = CM.Stone;
                     materials[1] = CM.Metal;
                     materials[2] = CM.WeaponParts;
                     break;
                 case ItemInfo.ItemID.MP5A4:
                     CM.WorkbenchNeeded = 2;
-                    materialCounts[0] = 25;
+                    materialCounts[0] = 50;
                     materialCounts[1] = 10;
                     materialCounts[2] = 0;
                     materials[0] = CM.WeaponParts;
@@ -157,17 +157,17 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.PistolAmmo:
                     CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 1;
+                    materialCounts[0] = 2;
+                    materialCounts[1] = 5;
                     materialCounts[2] = 0;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Sulfur;
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.Remington870:
-                    CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 20;
-                    materialCounts[1] = 10;
+                    CM.WorkbenchNeeded = 2;
+                    materialCounts[0] = 200;
+                    materialCounts[1] = 100;
                     materialCounts[2] = 0;
                     materials[0] = CM.WeaponParts;
                     materials[1] = CM.Metal;
@@ -175,8 +175,8 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.Revolver:
                     CM.WorkbenchNeeded = 2;
-                    materialCounts[0] = 25;
-                    materialCounts[1] = 10;
+                    materialCounts[0] = 50;
+                    materialCounts[1] = 25;
                     materialCounts[2] = 0;
                     materials[0] = CM.WeaponParts;
                     materials[1] = CM.Metal;
@@ -184,8 +184,8 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.RifleAmmo:
                     CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 2;
+                    materialCounts[0] = 3;
+                    materialCounts[1] = 5;
                     materialCounts[2] = 0;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Sulfur;
@@ -193,8 +193,8 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.ShotgunAmmo:
                     CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 3;
+                    materialCounts[0] = 25;
+                    materialCounts[1] = 15;
                     materialCounts[2] = 0;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Sulfur;
@@ -211,8 +211,8 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.SniperAmmo:
                     CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 2;
-                    materialCounts[1] = 1;
+                    materialCounts[0] = 10;
+                    materialCounts[1] = 5;
                     materialCounts[2] = 0;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Sulfur;
@@ -229,8 +229,8 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.Metal_Axe:
                     CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 10;
-                    materialCounts[1] = 5;
+                    materialCounts[0] = 30;
+                    materialCounts[1] = 15;
                     materialCounts[2] = 0;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Wood;
@@ -247,8 +247,8 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.Metal_Pick:
                     CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 10;
-                    materialCounts[1] = 5;
+                    materialCounts[0] = 30;
+                    materialCounts[1] = 15;
                     materialCounts[2] = 0;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Wood;
@@ -256,16 +256,16 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.Spear:
                     CM.WorkbenchNeeded = 0;
-                    materialCounts[0] = 10;
-                    materialCounts[1] = 5;
+                    materialCounts[0] = 50;
+                    materialCounts[1] = 30;
                     materialCounts[2] = 0;
-                    materials[0] = CM.Metal;
+                    materials[0] = CM.Stone;
                     materials[1] = CM.Wood;
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.Torch:
                     CM.WorkbenchNeeded = 0;
-                    materialCounts[0] = 5;
+                    materialCounts[0] = 15;
                     materialCounts[1] = 0;
                     materialCounts[2] = 0;
                     materials[0] = CM.Wood;
@@ -273,8 +273,8 @@ public class CraftCost : MonoBehaviour
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.Bandage:
-                    CM.WorkbenchNeeded = 0;
-                    materialCounts[0] = 10;
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 20;
                     materialCounts[1] = 1;
                     materialCounts[2] = 0;
                     materials[0] = CM.Cloth;
@@ -283,7 +283,7 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.Ibuprofen:
                     CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 10;
+                    materialCounts[0] = 2;
                     materialCounts[1] = 0;
                     materialCounts[2] = 0;
                     materials[0] = CM.Water;
@@ -291,9 +291,9 @@ public class CraftCost : MonoBehaviour
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.Toilet_Paper:
-                    CM.WorkbenchNeeded = 1;
-                    materialCounts[0] = 4;
-                    materialCounts[1] = 2;
+                    CM.WorkbenchNeeded = 0;
+                    materialCounts[0] = 5;
+                    materialCounts[1] = 1;
                     materialCounts[2] = 0;
                     materials[0] = CM.Cloth;
                     materials[1] = CM.Water;
@@ -310,7 +310,7 @@ public class CraftCost : MonoBehaviour
                     break;
                 case ItemInfo.ItemID.SleepingBag:
                     CM.WorkbenchNeeded = 0;
-                    materialCounts[0] = 10;
+                    materialCounts[0] = 25;
                     materialCounts[1] = 0;
                     materialCounts[2] = 0;
                     materials[0] = CM.Cloth;
@@ -397,64 +397,64 @@ public class CraftCost : MonoBehaviour
             switch (craft.itemID)
             {
                 case ItemInfo.ItemID.AK47_Rifle:
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 0;
+                    materialCounts[0] = 50;
+                    materialCounts[1] = 50;
                     materialCounts[2] = 0;
-                    materials[0] = CM.prefab2;
-                    materials[1] = null;
+                    materials[0] = CM.Metal;
+                    materials[1] = CM.WeaponParts;
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.Rocket: // Missile
-                    materialCounts[0] = 5;
-                    materialCounts[1] = 5;
-                    materialCounts[2] = 0;
+                    materialCounts[0] = 150;
+                    materialCounts[1] = 150;
+                    materialCounts[2] = 150;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Sulfur;
-                    materials[2] = null;
+                    materials[2] = CM.WeaponParts;
                     break;
                 case ItemInfo.ItemID.RocketLauncher:
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 50;
-                    materialCounts[2] = 50;
+                    materialCounts[0] = 50;
+                    materialCounts[1] = 200;
+                    materialCounts[2] = 500;
                     materials[0] = CM.Stone;
                     materials[1] = CM.Metal;
                     materials[2] = CM.WeaponParts;
                     break;
                 case ItemInfo.ItemID.PistolAmmo:
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 1;
+                    materialCounts[0] = 50;
+                    materialCounts[1] = 50;
                     materialCounts[2] = 0;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Sulfur;
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.Remington870:
-                    materialCounts[0] = 20;
-                    materialCounts[1] = 10;
-                    materialCounts[2] = 0;
+                    materialCounts[0] = 100;
+                    materialCounts[1] = 100;
+                    materialCounts[2] = 150;
                     materials[0] = CM.WeaponParts;
                     materials[1] = CM.Metal;
-                    materials[2] = null;
+                    materials[2] = CM.Sulfur;
                     break;
                 case ItemInfo.ItemID.Revolver:
-                    materialCounts[0] = 25;
-                    materialCounts[1] = 10;
+                    materialCounts[0] = 150;
+                    materialCounts[1] = 150;
                     materialCounts[2] = 0;
                     materials[0] = CM.WeaponParts;
                     materials[1] = CM.Metal;
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.RifleAmmo:
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 2;
+                    materialCounts[0] = 150;
+                    materialCounts[1] = 100;
                     materialCounts[2] = 0;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Sulfur;
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.ShotgunAmmo:
-                    materialCounts[0] = 1;
-                    materialCounts[1] = 3;
+                    materialCounts[0] = 100;
+                    materialCounts[1] = 200;
                     materialCounts[2] = 0;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Sulfur;
@@ -469,8 +469,8 @@ public class CraftCost : MonoBehaviour
                     materials[2] = null;
                     break;
                 case ItemInfo.ItemID.SniperAmmo:
-                    materialCounts[0] = 2;
-                    materialCounts[1] = 1;
+                    materialCounts[0] = 200;
+                    materialCounts[1] = 100;
                     materialCounts[2] = 0;
                     materials[0] = CM.Metal;
                     materials[1] = CM.Sulfur;
