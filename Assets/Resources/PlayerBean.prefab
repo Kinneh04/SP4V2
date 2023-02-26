@@ -13887,6 +13887,7 @@ MonoBehaviour:
   isADS: 0
   zoomFactor: 2
   Map: {fileID: 3288246262619055621}
+  Charging: 0
   playerLookAt: {fileID: 1076643316070719907}
   isReleased: 1
   ghostMat: {fileID: 2100000, guid: 5f95ec27a9cfdc6418fa1292745edb1a, type: 2}

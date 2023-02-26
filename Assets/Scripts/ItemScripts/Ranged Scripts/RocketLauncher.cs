@@ -39,7 +39,8 @@ public class RocketLauncher : WeaponInfo
 				PhotonView ProjectilephotonView = GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>();
 				ProjectilephotonView.RPC("DefaultProjectileInit", RpcTarget.All, PhotonViewID);
 
-				Instantiate(Miniexplosion, BarrelTip.transform.position, Quaternion.identity);
+				GameObject go = Instantiate(Miniexplosion, BarrelTip.transform.position, Quaternion.identity);
+				Destroy(go, 4);
 				// Lock the weapon after this discharge
 				CanFire = false;
 				// Reset the dElapsedTime to dTimeBetweenShots for the next shot
@@ -65,7 +66,8 @@ public class RocketLauncher : WeaponInfo
 				int PhotonViewID = PhotonNetwork.Instantiate("missile", this.BarrelTip.transform.position, Quaternion.identity).GetComponent<PhotonView>().ViewID;
 				ViewID.RPC("DefaultProjectileInit", RpcTarget.All, PhotonViewID);
 
-				Instantiate(Miniexplosion, BarrelTip.transform.position, Quaternion.identity);
+				GameObject go = Instantiate(Miniexplosion, BarrelTip.transform.position, Quaternion.identity);
+				Destroy(go, 4);
 				// Lock the weapon after this discharge
 				CanFire = false;
 				// Reset the dElapsedTime to dTimeBetweenShots for the next shot

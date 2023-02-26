@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7183947786946082190}
   - component: {fileID: -3451116684617828634}
-  - component: {fileID: 5687957192559055081}
   - component: {fileID: 8416430172667625159}
   - component: {fileID: 4917478896311621748}
   m_Layer: 0
@@ -50,19 +49,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seconds: 4
   NetworkedDestruct: 1
---- !u!114 &5687957192559055081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2738436938548131024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cda92c6046f174c4aaa97c73aab2a6e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 50
 --- !u!114 &8416430172667625159
 MonoBehaviour:
   m_ObjectHideFlags: 0

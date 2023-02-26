@@ -558,9 +558,9 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.HandmadeShotgun_Shoot, 1f);
+                            if (OnShoot())
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.HandmadeShotgun_Shoot, 1f);
 
-                            OnShoot();
                             PAnimator.Play("PBeanShootShotgun");
                         }
                     }
@@ -595,8 +595,8 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            OnShoot();
-                            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Remington870_Shoot, 1f);
+                            if (OnShoot())
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Remington870_Shoot, 1f);
                             PAnimator.Play("PBeanShotgunShoot");
                         }
                     }
@@ -604,8 +604,8 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().ItemCount > 0)
                         {
-                            OnShoot();
-                            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Drop, 1f);
+                            if(OnShoot())
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.Drop, 1f);
                             PAnimator.Play("PBeanThrow");
                             inventoryManager.RemoveQuantityFromSlot(inventoryManager.EquippedSlot, 1);
                         }
@@ -614,8 +614,8 @@ public class PlayerUseItem : MonoBehaviour
                     {
                         if (ItemGO.GetComponent<WeaponInfo>().GetMagRound() > 0)
                         {
-                            OnShoot();
-                            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.RocketLauncher_Shoot, 1f);
+                            if(OnShoot())
+                                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.All, (int)AudioManager.AudioID.RocketLauncher_Shoot, 1f);
                             PAnimator.Play("PBeanShootAK");
                         }
                     }

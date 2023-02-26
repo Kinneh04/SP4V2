@@ -109,6 +109,7 @@ public class Raycast : MonoBehaviour
             }
             Destroy(GO, 1);
         }
+        Destroy(this.gameObject, 1);
     }
 
     private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit)
