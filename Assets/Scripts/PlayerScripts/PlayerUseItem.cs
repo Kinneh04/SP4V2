@@ -458,6 +458,30 @@ public class PlayerUseItem : MonoBehaviour
                         }
                     }
                 }
+
+                //Updates Gun Ammo if Gun is done reloading
+                if (playerProperties.CurrentlyHoldingItem)
+                {
+                    //Debug.Log(playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>());
+                    if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
+                    {
+                        //Current gun ammo not matching ammo displayed
+                        if (inventoryManager.CheckAmmoUpdated())
+                        {
+                            inventoryManager.UpdateItemCountPerSlot();
+                        }
+                    }
+                    else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Axe
+                        || playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Pickaxe)
+                    {
+                        //Current gun ammo not matching ammo displayed
+                        if (inventoryManager.CheckDurabilityUpdated())
+                        {
+                            inventoryManager.UpdateItemCountPerSlot();
+                        }
+                    }
+
+                }
             }
 
             if(Input.GetKeyDown(KeyCode.Backspace))
@@ -505,6 +529,7 @@ public class PlayerUseItem : MonoBehaviour
                     if (currDoorCupboard != null)
                     {
                         ResetCodelockGhost(true);
+                        return;
                     }
                 }
                 else if (ItemGO.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
@@ -797,56 +822,6 @@ public class PlayerUseItem : MonoBehaviour
 
             }
 
-            //Updates Gun Ammo if Gun is done reloading
-            if (playerProperties != null && 
-                playerProperties.CurrentlyHoldingItem != null &&
-                playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>() 
-                && playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().itemID == inventoryManager.InventoryList[inventoryManager.EquippedSlot].itemID)
-            {
-                if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
-                {
-                    //Current gun ammo not matching ammo displayed
-                    if (inventoryManager.CheckAmmoUpdated())
-                    {
-                        inventoryManager.UpdateItemCountPerSlot();
-                    }
-                }
-                else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Axe
-                    || playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Pickaxe)
-                {
-                    //Current gun ammo not matching ammo displayed
-                    if (inventoryManager.CheckDurabilityUpdated())
-                    {
-                        inventoryManager.UpdateItemCountPerSlot();
-                    }
-                }
-
-            }
-
-            ////Updates Gun Ammo if Gun is done reloading
-            //if (playerProperties.CurrentlyHoldingItem)
-            //{
-            //    //Debug.Log(playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>());
-            //    if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Ranged)
-            //    {
-            //        //Current gun ammo not matching ammo displayed
-            //        if (inventoryManager.CheckAmmoUpdated())
-            //        {
-            //            inventoryManager.UpdateItemCountPerSlot();
-            //        }
-            //    }
-            //    else if (playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Axe
-            //        || playerProperties.CurrentlyHoldingItem.GetComponent<ItemInfo>().GetItemType() == ItemInfo.ItemType.Pickaxe)
-            //    {
-            //        //Current gun ammo not matching ammo displayed
-            //        if (inventoryManager.CheckDurabilityUpdated())
-            //        {
-            //            inventoryManager.UpdateItemCountPerSlot();
-            //        }
-            //    }
-
-            //}
-            
 
             //Hotbar
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -958,15 +933,19 @@ public class PlayerUseItem : MonoBehaviour
             {
                 hs.SetIsUsingHammer(false);
                 bs.SetIsBuilding(true);
-                ResetCodelockGhost();
                 holdingCodeLock = false;
+
+                if (currDoorCupboard != null)
+                    ResetCodelockGhost();
             }
             else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.Hammer)
             {
                 hs.SetIsUsingHammer(true);
                 bs.SetIsBuilding(false);
-                ResetCodelockGhost();
                 holdingCodeLock = false;
+
+                if (currDoorCupboard != null)
+                    ResetCodelockGhost();
             }
             else if (inventoryManager.InventoryList[inventoryManager.EquippedSlot].GetItemType() == ItemInfo.ItemType.CodeLock)
             {
@@ -978,8 +957,10 @@ public class PlayerUseItem : MonoBehaviour
             {
                 hs.SetIsUsingHammer(false);
                 bs.SetIsBuilding(false);
-                ResetCodelockGhost();
                 holdingCodeLock = false;
+
+                if (currDoorCupboard != null)
+                    ResetCodelockGhost();
             }
            // inventoryManager.InventoryList[inventoryManager.EquippedSlot].gameObject.SetActive(true);
            // pv.RPC("UpdateOtherClientsAboutYourNewHandItem", RpcTarget.All, inventoryManager.InventoryList[inventoryManager.EquippedSlot].gameObject.GetComponent<PhotonView>().ViewID, pv.ViewID);
@@ -1257,7 +1238,6 @@ public class PlayerUseItem : MonoBehaviour
 
     private void ResetCodelockGhost(bool placeLock = false)
     {
-        Debug.Log("TAG: " + currDoorCupboard.tag);
         if (currDoorCupboard.tag == "DoorStructure")
         {
             DoorStructure cds = null;
@@ -1305,7 +1285,6 @@ public class PlayerUseItem : MonoBehaviour
             }
             else
             {
-                Debug.Log("DISABLING");
                 tcp.lockObject.SetActive(false);
             }
             currDoorCupboard = null;
