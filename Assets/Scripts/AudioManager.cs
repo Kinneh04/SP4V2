@@ -64,6 +64,7 @@ public class AudioManager : MonoBehaviour
         Tank,
         Scientist,
         Craft,
+        Radiation,
         NUM_AUDIO,
     }
     public AudioSource audioSource;

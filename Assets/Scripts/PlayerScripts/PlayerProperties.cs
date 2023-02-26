@@ -377,7 +377,7 @@ public class PlayerProperties : MonoBehaviour
             {
                 RadiationNoisePlayed = true;
                 AudioManager AM = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
-                AM.PlayAudio(50);
+                AM.PlayAudio(57);
             }
             if (RadiationAmount >= 30)
             {
