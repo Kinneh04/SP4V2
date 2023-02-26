@@ -94,6 +94,7 @@ MonoBehaviour:
   - SetPin
   - MultiplayerPlayAudio
   - TurnOnForOtherClients
+  - DestroyStructureObject
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

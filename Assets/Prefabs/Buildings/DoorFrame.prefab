@@ -65,11 +65,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60cd20857e4cea54ca7cef2dc97704e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 4
+  type: 5
+  audioManager: {fileID: 0}
   selectedPrefab: {fileID: 2849478933915083144, guid: dc16d88f303e7ed4a8b9a4879b882b07,
     type: 3}
   stoneMaterial: {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
   slider: {fileID: 0}
+  dependentStructures: []
   stabilityLabel: {fileID: 0}
   PlayerID: 0
   isUpgraded: 0

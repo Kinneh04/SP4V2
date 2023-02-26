@@ -27,6 +27,15 @@ public class PreviewChildCheck : MonoBehaviour
                 po.nextToCol.Add(other);
             }
         }
+        else if (po.type == ObjectTypes.door)
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Buildable")
+                && other.gameObject.transform.position.y >= gameObject.transform.position.y - po.collideLeeway
+                && other.gameObject.CompareTag("NormalStructure"))
+            {
+                po.nextToCol.Add(other);
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -39,6 +48,13 @@ public class PreviewChildCheck : MonoBehaviour
             }
         }
         else if (po.type == ObjectTypes.normal)
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && po.nextToCol.Contains(other))
+            {
+                po.nextToCol.Remove(other);
+            }
+        }
+        else if (po.type == ObjectTypes.door)
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Buildable") && po.nextToCol.Contains(other))
             {

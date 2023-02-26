@@ -12,6 +12,8 @@ public class StructureObject : MonoBehaviour
     public GameObject selectedPrefab;
     public Material stoneMaterial;
     public Slider slider;
+    public GameObject destroyVFX;
+    public List<GameObject> dependentStructures = new List<GameObject>();
     public TMPro.TMP_Text stabilityLabel;
     public int PlayerID;
     public bool isUpgraded = false;
@@ -86,7 +88,8 @@ public class StructureObject : MonoBehaviour
         if (stability <= 0)
         {
             audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DestroyBuilding, 1f);
-            PhotonNetwork.Destroy(gameObject);
+            GetComponent<PhotonView>().RPC("DestroyStructureObject", PhotonNetwork.CurrentRoom.GetPlayer(gameObject.GetComponent<StructureObject>().PlayerID), gameObject.GetComponent<PhotonView>().ViewID);
+            //PhotonNetwork.Destroy(gameObject);
             return;
         }
 
@@ -105,6 +108,22 @@ public class StructureObject : MonoBehaviour
         }
 
         isDamaged = true;
+    }
+
+    [PunRPC]
+    public void DestroyStructureObject(int viewID)
+    {
+        // Also destroy structures dependent on this object
+        foreach (GameObject structure in PhotonView.Find(viewID).gameObject.GetComponent<StructureObject>().dependentStructures)
+        {
+            if (structure) // null check for destroyed ones
+            {
+                PhotonView.Find(viewID).RPC("DestroyStructureObject", PhotonNetwork.CurrentRoom.GetPlayer(structure.GetComponent<StructureObject>().PlayerID), structure.GetComponent<PhotonView>().ViewID);
+            }
+        }
+
+        PhotonNetwork.Instantiate("DestroyStructure", PhotonView.Find(viewID).gameObject.transform.position, PhotonView.Find(viewID).gameObject.transform.rotation);
+        PhotonNetwork.Destroy(PhotonView.Find(viewID));
     }
 }
 

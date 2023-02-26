@@ -283,6 +283,7 @@ MonoBehaviour:
     type: 3}
   stoneMaterial: {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
   slider: {fileID: 8583273517888968223}
+  dependentStructures: []
   stabilityLabel: {fileID: 6467870045772757124}
   PlayerID: 0
   isUpgraded: 0

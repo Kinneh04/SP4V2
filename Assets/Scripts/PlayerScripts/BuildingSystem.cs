@@ -209,14 +209,57 @@ public class BuildingSystem : MonoBehaviour
                 Instantiate(smokeVFX, newObj.transform);
                 audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.Building, 1f);
 
+                switch (currentObject.name)
+                {
+                    case "Walls":
+                    case "Window":
+                    case "DoorFrame":
+                    case "Floor":
+                        {
+                            foreach (Collider col in currentPreview.gameObject.GetComponent<PreviewObject>().nextToCol)
+                            {
+                                if (col.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
+                                {
+                                    col.gameObject.GetComponent<StructureObject>().dependentStructures.Add(newObj);
+                                }
+                                else if (col.gameObject.layer == LayerMask.NameToLayer("Buildable"))
+                                {
+                                    col.gameObject.GetComponentInParent<StructureObject>().dependentStructures.Add(newObj);
+                                }
+                            }
+                        }
+                        break;
+                    case "Door":
+                        {
+                            foreach (Collider col in currentPreview.gameObject.GetComponent<PreviewObject>().nextToCol)
+                            {
+                                Debug.Log("COL: " + col.name);
+                                StructureObject so = null;
+                                if (col.gameObject.layer == LayerMask.NameToLayer("BuildableParent"))
+                                {
+                                    so = col.gameObject.GetComponent<StructureObject>();
+                                }
+                                else if (col.gameObject.layer == LayerMask.NameToLayer("Buildable"))
+                                {
+                                    so = col.gameObject.GetComponentInParent<StructureObject>();
+                                }
+
+                                if (!so || so.type != StructureTypes.doorway)
+                                    return;
+
+                                Debug.Log("ADDED: " + newObj.name);
+                                so.dependentStructures.Add(newObj);
+                            }
+                        }
+                        break;
+                }
+
                 if (currentObject.name == "Door")
                 {
                     newObj.GetComponent<DoorStructure>().PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
                 }
-                else
-                {
-                    newObj.GetComponent<StructureObject>().PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
-                }
+
+                newObj.GetComponent<StructureObject>().PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
             }
         }
         BuildCooldown = 1.0f;

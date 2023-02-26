@@ -177,15 +177,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  audioManager: {fileID: 0}
   selectedPrefab: {fileID: 2849478933915083144, guid: 015c2abb3d383e4409d354645420db76,
     type: 3}
   stoneMaterial: {fileID: 2100000, guid: 094c835627124fe4bbbaa762d2240cb1, type: 2}
   slider: {fileID: 1270458562478066586}
+  destroyVFX: {fileID: 0}
+  dependentStructures: []
   stabilityLabel: {fileID: 5242292444488418308}
   PlayerID: 0
   isUpgraded: 0
   stability: 100
   pickupCooldown: 15
+  damageCooldown: 0.5
+  isDamaged: 0
 --- !u!65 &8717843955794441744
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -428,6 +428,8 @@ MonoBehaviour:
     type: 3}
   stoneMaterial: {fileID: 2100000, guid: 094c835627124fe4bbbaa762d2240cb1, type: 2}
   slider: {fileID: 2981419540290051049}
+  destroyVFX: {fileID: 0}
+  dependentStructures: []
   stabilityLabel: {fileID: 2488789627650652515}
   PlayerID: 0
   isUpgraded: 0

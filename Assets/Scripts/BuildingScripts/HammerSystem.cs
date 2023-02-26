@@ -389,7 +389,6 @@ public class HammerSystem : MonoBehaviour
                     break;
                 case 3: // Destroy
                     {
-                        //Instantiate(destroyVFX, currStructure.transform);
                         pv.RPC("DestroyStructure", PhotonNetwork.CurrentRoom.GetPlayer(currentObject.GetComponent<StructureObject>().PlayerID), currentObject.GetComponent<PhotonView>().ViewID);
                         audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DestroyBuilding, 1.0f);
                         Destroy(selectedObject.gameObject);
@@ -423,6 +422,16 @@ public class HammerSystem : MonoBehaviour
     [PunRPC]
     public void DestroyStructure(int viewID)
     {
+        // Also destroy structures dependent on this object
+        foreach (GameObject structure in PhotonView.Find(viewID).gameObject.GetComponent<StructureObject>().dependentStructures)
+        {
+            if (structure != null) // null check for destroyed ones
+            {
+                PhotonView.Find(viewID).RPC("DestroyStructureObject", PhotonNetwork.CurrentRoom.GetPlayer(structure.GetComponent<StructureObject>().PlayerID), structure.GetComponent<PhotonView>().ViewID);
+            }
+        }
+
+        PhotonNetwork.Instantiate("DestroyStructure", PhotonView.Find(viewID).gameObject.transform.position, PhotonView.Find(viewID).gameObject.transform.rotation);
         PhotonNetwork.Destroy(PhotonView.Find(viewID));
     }
 }
