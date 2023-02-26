@@ -305,9 +305,27 @@ public class HammerSystem : MonoBehaviour
                     {
                         if (currStructure.pickupCooldown > 0.0f)
                         {
+                            if (currStructure.dependentStructures.Count > 0)
+                            {
+                                bool isDependant = false;
+                                foreach (GameObject structure in currStructure.dependentStructures)
+                                {
+                                    if (structure != null) // Check whether every structure in list has been destroyed
+                                    {
+                                        isDependant = true;
+                                        break;
+                                    }
+                                }
+
+                                if (isDependant) // If there is at least one dependant undestroyed structure, show error and do not pickup
+                                {
+                                    cp.CreateResourcePopup("Dependant Structure", 0);
+                                    return;
+                                }                     
+                            }
+
                             currentPreview = Instantiate(bs.objects[(int)currStructure.type].preview, selectedObject.gameObject.transform);
                             IsPickingUp = true;
-                            //selectedObject.gameObject.GetComponentInChildren<CanvasGroup>().alpha = 0;
                         }
                         break;
                     }

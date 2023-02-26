@@ -14043,10 +14043,6 @@ MonoBehaviour:
     type: 3}
   cp: {fileID: 1937501596532756897}
   audioManager: {fileID: 0}
-  smokeVFX: {fileID: 2738436938548131024, guid: 91318c9c0e1d1c84faa98ecb6f75f888,
-    type: 3}
-  destroyVFX: {fileID: 2738436938548131024, guid: 93652f89cda99c74889f8251858dfab8,
-    type: 3}
   ActionCooldown: 1
   menuObject: {fileID: 8147175192208698557}
   stoneMaterial: {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
