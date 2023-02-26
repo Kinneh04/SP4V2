@@ -65,6 +65,9 @@ public class AudioManager : MonoBehaviour
         Scientist,
         Craft,
         Radiation,
+        DropItem,
+        Bandage,
+        Ibuprofen,
         NUM_AUDIO,
     }
     public AudioSource audioSource;

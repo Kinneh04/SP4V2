@@ -6,6 +6,12 @@ using UnityEngine;
 public class Explosion : MonoBehaviour
 {
     public float Damage;
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         //print("Exploded on: " + other.tag);
@@ -34,7 +40,7 @@ public class Explosion : MonoBehaviour
             }
             if (!structure)
                 return;
-
+            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.All, 31, 0.75f, transform.position);
             Debug.Log(structure.type);
 
             if (structure.isUpgraded)
