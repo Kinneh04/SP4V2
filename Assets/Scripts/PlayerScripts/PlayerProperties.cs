@@ -479,7 +479,7 @@ public class PlayerProperties : MonoBehaviour
                 Healtimer -= Time.deltaTime;
                 if (HealInterval < 0)
                 {
-                    Healtimer = OGHI;
+                    HealInterval = OGHI;
                     Health += 1;
 
                     if (Health > 100) Health = 100;
