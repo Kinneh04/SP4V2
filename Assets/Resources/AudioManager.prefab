@@ -113,6 +113,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d6f70c347b93aed48b742c8ce61cef13, type: 3}
   - {fileID: 8300000, guid: 993df3e5a81beca4a82902d31bb8f36a, type: 3}
   - {fileID: 8300000, guid: c32bd0e0e7e6ff84a860730dd836b8a7, type: 3}
+  - {fileID: 8300000, guid: a25f8975afab43d42aeb53f04cccd285, type: 3}
   Volume: 1
 --- !u!82 &2369061369853699106
 AudioSource:

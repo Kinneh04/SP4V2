@@ -19,6 +19,7 @@ public class HeliAI : MonoBehaviour
     public GameObject DeathParticles;
     public GameObject LootBox;
     public int burstAmount = 8;
+    AudioManager ASS;
 
     private void Awake()
     {
@@ -56,6 +57,7 @@ public class HeliAI : MonoBehaviour
         if(PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.Instantiate(ExplosionParticles.name, transform.position, Quaternion.identity);
+            
         }
 
         HeliHealth -= Damage;
@@ -63,7 +65,8 @@ public class HeliAI : MonoBehaviour
         {
             if (pv.IsMine)
             {
-               
+                ASS = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+                ASS.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.All, 61,1.0f,transform.position);
                 PhotonNetwork.Instantiate(DeathParticles.name, transform.position, Quaternion.identity);
                 PhotonNetwork.Instantiate(LootBox.name, transform.position, Quaternion.identity);
                 PhotonNetwork.Destroy(gameObject);

@@ -68,6 +68,7 @@ public class AudioManager : MonoBehaviour
         DropItem,
         Bandage,
         Ibuprofen,
+        HeliExplosion,
         NUM_AUDIO,
     }
     public AudioSource audioSource;
