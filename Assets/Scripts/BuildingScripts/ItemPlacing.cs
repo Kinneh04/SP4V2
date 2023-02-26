@@ -5,13 +5,17 @@ using Photon.Pun;
 
 public class ItemPlacing : MonoBehaviour
 {
+    public AudioManager audioManager;
     public Transform cam;
     public RaycastHit hit;
+    private Vector3 currentRot = Vector3.zero;
     public GameObject ObjectToPlace;
     bool canPlace = false;
     private void Start()
     {
         cam = GameObject.FindGameObjectWithTag("Camera").transform;
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        gameObject.transform.rotation = Quaternion.identity;
     }
 
     public virtual bool PlaceItem()
@@ -21,6 +25,8 @@ public class ItemPlacing : MonoBehaviour
             if (GetComponent<ItemInfo>().NetworkedReplacement)
             {
                 PhotonNetwork.Instantiate(ObjectToPlace.name, transform.position, Quaternion.identity);
+                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.AllViaServer, AudioManager.AudioID.Building, 1.0f, transform.position);
+                PhotonNetwork.Instantiate("PlacingSmoke", transform.position, Quaternion.identity);
             }
             else
             {
@@ -53,11 +59,17 @@ public class ItemPlacing : MonoBehaviour
             renderer.material.color = redTranslucent;
             canPlace = false;
         }
-        if (Input.GetMouseButton(1))
+/*        if (Input.GetMouseButton(1))
         {
-            print("Rotating!");
-            gameObject.transform.rotation = Quaternion.Euler(gameObject.transform.rotation.x, gameObject.transform.rotation.y, gameObject.transform.rotation.z + 90);
+            currentRot += new Vector3(0, 0, 90);
+            gameObject.transform.localEulerAngles = currentRot;
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            currentRot += new Vector3(0, 90, 0);
+            gameObject.transform.localEulerAngles = currentRot;
+        }*/
       
     }
 
