@@ -278,6 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+  audioManager: {fileID: 0}
   selectedPrefab: {fileID: 2849478933915083144, guid: 07da7389cce3b86448d3bd5fd14ac5b8,
     type: 3}
   stoneMaterial: {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}

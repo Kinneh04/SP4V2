@@ -8,6 +8,7 @@ public class HammerSystem : MonoBehaviour
 {
     private GameObject prevObject;
     private GameObject currentObject;
+    private GameObject currentPreview;
     private StructureObject currStructure;
     private SelectedObject selectedObject;
     private int currentAction;
@@ -46,6 +47,7 @@ public class HammerSystem : MonoBehaviour
         currentObject = null;
         selectedObject = null;
         currStructure = null;
+        currentPreview = null;
         // Disable objects until using Building Plan
         menuObject.SetActive(false);
         pv = GetComponent<PhotonView>();
@@ -69,7 +71,7 @@ public class HammerSystem : MonoBehaviour
 
         if (IsPickingUp)
         {
-            bs.StartPreview(selectedObject.gameObject.transform);
+            bs.StartPreview(currentPreview.transform);
         }
         else
         {
@@ -305,9 +307,9 @@ public class HammerSystem : MonoBehaviour
                     {
                         if (currStructure.pickupCooldown > 0.0f)
                         {
+                            currentPreview = Instantiate(bs.objects[(int)currStructure.type].preview, selectedObject.gameObject.transform);
                             IsPickingUp = true;
-                            // TODO Replace selectedObject with previewObjects because they do not have error checking!
-                            selectedObject.gameObject.GetComponentInChildren<CanvasGroup>().alpha = 0;
+                            //selectedObject.gameObject.GetComponentInChildren<CanvasGroup>().alpha = 0;
                         }
                         break;
                     }
@@ -407,13 +409,15 @@ public class HammerSystem : MonoBehaviour
 
     public void PlaceStructure()
     {
-        currentObject.transform.SetPositionAndRotation(selectedObject.transform.position, selectedObject.transform.rotation);
-        currentObject.SetActive(true);
-        IsPickingUp = false;
-        selectedObject.gameObject.GetComponentInChildren<CanvasGroup>().alpha = 1;
-        Destroy(selectedObject.gameObject);
-        //Instantiate(smokeVFX, currentObject.transform);
-        audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.Building, 1f);
+        if (currentPreview.GetComponent<PreviewObject>().IsBuildable)
+        {
+            currentObject.transform.SetPositionAndRotation(currentPreview.transform.position, currentPreview.transform.rotation);
+            currentObject.SetActive(true);
+            IsPickingUp = false;
+            Destroy(currentPreview.gameObject);
+            Instantiate(smokeVFX, currentObject.transform);
+            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.Building, 1f);
+        }
     }
 
     [PunRPC]
