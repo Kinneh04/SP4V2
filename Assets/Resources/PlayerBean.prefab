@@ -13855,6 +13855,7 @@ MonoBehaviour:
   PauseMenu: {fileID: 6441019593026338861}
   Camera: {fileID: 0}
   GraphicsLoader: {fileID: 0}
+  RadiationNoisePlayed: 0
 --- !u!114 &6011576867162725718
 MonoBehaviour:
   m_ObjectHideFlags: 0

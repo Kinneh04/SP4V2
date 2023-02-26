@@ -97,6 +97,9 @@ public class PlayerProperties : MonoBehaviour
     public Camera Camera;
     public GameObject GraphicsLoader;
     PhotonView pv;
+    public bool RadiationNoisePlayed = false;
+
+    float DeathTimer;
 
     private void Awake()
     {
@@ -275,7 +278,9 @@ public class PlayerProperties : MonoBehaviour
 
         craftingIsOpen = false;
         craftingScreen.SetActive(false);
-
+        inventoryIsOpen = false;
+        inventoryScreen.SetActive(false);
+        RadiationNoisePlayed = false;
 
         PhotonView Rockpv = PhotonNetwork.Instantiate("Rock", transform.position, Quaternion.identity, 0).GetComponent<PhotonView>();
         PhotonView TorchPV = PhotonNetwork.Instantiate("Torch", transform.position, Quaternion.identity, 0).GetComponent<PhotonView>();
@@ -348,21 +353,30 @@ public class PlayerProperties : MonoBehaviour
         { 
             Htimer += Time.deltaTime;
             Ttimer += Time.deltaTime;
-            
+            DeathTimer -= Time.deltaTime; 
 
 
             RadiationExpireTimer -= Time.deltaTime;
            
             if (RadiationExpireTimer <= 0)
-            { 
+            {
+                RadiationNoisePlayed = false;
                 if (RTimer > 1)
                 {
                     RTimer = 0;
                     RadiationAmount -= 1;
                 }
             }
+            if (RadiationAmount == 25 && !RadiationNoisePlayed)
+            {
+                RadiationNoisePlayed = true;
+                AudioManager AM = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+                AM.PlayAudio(50);
+            }
             if (RadiationAmount >= 30)
             {
+                
+
                 RadiationAmountText.text = RadiationAmount.ToString();
                 RTimer += Time.deltaTime;
                 if (RTimer > 1)
@@ -643,6 +657,16 @@ public class PlayerProperties : MonoBehaviour
             
             awokenMenu.SetActive(false);
             isDead = true;
+
+            if(DeathTimer <= 0)
+            {
+                AudioManager AM = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+                AM.PlayAudio(48);
+               
+            }
+            DeathTimer = 150;
+            AudioManager AM2 = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+            AM2.PlayAudio(5);
         }
     }
 

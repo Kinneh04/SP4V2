@@ -48,6 +48,8 @@ public class PlayerUseItem : MonoBehaviour
         pv = GetComponent<PhotonView>();
         audioManager = GameObject.FindGameObjectWithTag("AudioManager");
 
+        audioManager.GetComponent<AudioManager>().PlayAudio(49);
+
     }
 
 

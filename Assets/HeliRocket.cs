@@ -6,6 +6,7 @@ using Photon.Pun;
 public class HeliRocket : MonoBehaviour
 {
     public float speed = 10f;
+    public int Damage;
     public float deviance = 0.1f;
     public GameObject ExplosionEffect;
     public PhotonView pv;
@@ -49,8 +50,17 @@ public class HeliRocket : MonoBehaviour
     {
         if (pv.IsMine)
         {
-            Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
+            GameObject GO = PhotonNetwork.Instantiate(ExplosionEffect.name, transform.position, Quaternion.identity).gameObject;
+            pv.RPC("AssignDamageValues", RpcTarget.All, GO.GetComponent<PhotonView>().ViewID, Damage);
+            GO.GetComponent<Explosion>().Damage = Damage;
             Destroy(gameObject);
         }
+    }
+
+    [PunRPC]
+    void AssignDamageValues(int PVID, int damageValue)
+    {
+        GameObject Missle = PhotonView.Find(PVID).gameObject;
+        Missle.GetComponent<Explosion>().Damage = damageValue;
     }
 }

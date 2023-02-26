@@ -105,7 +105,7 @@ public class HeliAI : MonoBehaviour
     public void ShootMissleAtTarget(int targetID)
     {
         print("PEW!");
-        PhotonView newObject = PhotonNetwork.Instantiate("HeliMissle", spawnPoint.transform.position, Quaternion.identity,0).GetComponent<PhotonView>();
+        PhotonView newObject = PhotonNetwork.Instantiate("Helimissle", spawnPoint.transform.position, Quaternion.identity,0).GetComponent<PhotonView>();
         newObject.transform.LookAt(targets[targetID].transform);
     }
 }

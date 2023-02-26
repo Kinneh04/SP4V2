@@ -8,14 +8,15 @@ public class Explosion : MonoBehaviour
     public float Damage;
     private void OnTriggerEnter(Collider other)
     {
-        print("Exploded on: " + other.name);
-        Debug.Log(other.name);
+        //print("Exploded on: " + other.tag);
+        Debug.Log(other.tag);
         if (other.CompareTag("Enemy"))
         {
             other.transform.GetComponent<Enemy>().GetDamaged((int)Damage);
         }
         else if (other.CompareTag("EnemyPlayer") || other.CompareTag("Player"))
         {
+            print("MISSLE HURTY MAN!");
             Debug.Log(other.tag);
             other.transform.GetComponent<PlayerProperties>().TakeDamageV2(Damage);
         }

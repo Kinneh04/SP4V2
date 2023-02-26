@@ -52,6 +52,12 @@ public class AudioManager : MonoBehaviour
         Shotgun_Reload,
         Revolver_Shoot,
         Revolver_Reload,
+        Picking,
+        ItemWoosh,
+        RockHit,
+        WoodHit,
+        Thunder,
+        Ambience,
         NUM_AUDIO,
     }
     public AudioSource audioSource;
