@@ -122,7 +122,14 @@ public class StructureObject : MonoBehaviour
             }
         }
 
-        PhotonNetwork.Instantiate("DestroyStructure", PhotonView.Find(viewID).gameObject.transform.position, PhotonView.Find(viewID).gameObject.transform.rotation);
+        if (PhotonView.Find(viewID).gameObject.GetComponent<StructureObject>().isUpgraded)
+        {
+            PhotonNetwork.Instantiate("DestroyStructureStone", PhotonView.Find(viewID).gameObject.transform.position, PhotonView.Find(viewID).gameObject.transform.rotation);
+        }
+        else
+        {
+            PhotonNetwork.Instantiate("DestroyStructure", PhotonView.Find(viewID).gameObject.transform.position, PhotonView.Find(viewID).gameObject.transform.rotation);
+        }
         PhotonNetwork.Destroy(PhotonView.Find(viewID));
     }
 }
