@@ -104,7 +104,7 @@ public class TankAI : Enemy
         }
         if (Health <= 0 && !dead)
         {
-            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.All, (int)AudioManager.AudioID.Tank, 1, transform.position);
+            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.All, (int)AudioManager.AudioID.Tank, 1.0f, transform.position);
             CurrentState = FSM.DEAD;
             dead = true;
             navMeshAgent.Stop();
