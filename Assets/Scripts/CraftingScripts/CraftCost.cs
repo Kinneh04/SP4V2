@@ -380,6 +380,15 @@ public class CraftCost : MonoBehaviour
                     materials[1] = null;
                     materials[2] = null;
                     break;
+                case ItemInfo.ItemID.ToolCupboard_Ghost:
+                    CM.WorkbenchNeeded = 1;
+                    materialCounts[0] = 100;
+                    materialCounts[1] = 100;
+                    materialCounts[2] = 0;
+                    materials[0] = CM.Wood;
+                    materials[1] = CM.Metal;
+                    materials[2] = null;
+                    break;
 
             }
         }

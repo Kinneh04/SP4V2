@@ -161,6 +161,10 @@ public class CraftDescription : MonoBehaviour
                 Name.text = "Hammer";
                 Info.text = "Allows the modification of built structures";
                 break;
+            case ItemInfo.ItemID.ToolCupboard_Ghost:
+                Name.text = "Tool Cupboard";
+                Info.text = "Stores your tools";
+                break;
             default:
                 break;
 

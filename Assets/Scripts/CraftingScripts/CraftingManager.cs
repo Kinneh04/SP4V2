@@ -14,7 +14,7 @@ public class CraftingManager : MonoBehaviour
     public CraftButton button;
     public GameObject Items;
 
-    public ItemInfo prefab1, prefab2, prefab3, prefab4, prefab5, prefab6, prefab7, prefab8, prefab9, prefab10, prefab11, prefab12, prefab13, prefab14, prefab15, prefab16, prefab17, prefab18, prefab19, prefab20, prefab21, prefab22, prefab23, prefab24, prefab25, prefab26, prefab27, prefab28, prefab29, prefab30, prefab31, prefab32, prefab33;
+    public ItemInfo prefab1, prefab2, prefab3, prefab4, prefab5, prefab6, prefab7, prefab8, prefab9, prefab10, prefab11, prefab12, prefab13, prefab14, prefab15, prefab16, prefab17, prefab18, prefab19, prefab20, prefab21, prefab22, prefab23, prefab24, prefab25, prefab26, prefab27, prefab28, prefab29, prefab30, prefab31, prefab32, prefab33, prefab34;
     public ItemInfo Metal, Sulfur, Wood, Stone, WeaponParts, Cloth, Water;
 
     public List<CraftSelection> CraftSelections = new List<CraftSelection>();
@@ -290,6 +290,7 @@ public class CraftingManager : MonoBehaviour
             case ItemInfo.ItemID.Workbench_1_Ghost:
             case ItemInfo.ItemID.Workbench_2_Ghost:
             case ItemInfo.ItemID.Workbench_3_Ghost:
+            case ItemInfo.ItemID.ToolCupboard_Ghost:
                 temp = Instantiate<ItemInfo>(CraftableList[SelectedCraft]);
                 break;
             default:
@@ -298,7 +299,7 @@ public class CraftingManager : MonoBehaviour
         }
         //temp = PhotonNetwork.Instantiate(CraftableList[SelectedCraft].name, transform.position, transform.rotation).transform.GetComponent<ItemInfo>();
         temp.gameObject.SetActive(false);
-        IM.AddQuantity(temp, CraftAmount * singleAmount);
+        IM.AddQuantity(temp, CraftAmount);
         //Selected(SelectedCraft, false);
         if (ScreenCraft)
             CraftSelections[SelectedCraft].load();
@@ -307,6 +308,8 @@ public class CraftingManager : MonoBehaviour
             CraftSelections[SelectedCraft].researched = true;
             CraftSelections[SelectedCraft].gameObject.SetActive(false);
         }
+        button.UpdateCraftButton();
         IM.UpdateItemCountPerSlot();
+        cost.ChangeCost();
     }
 }

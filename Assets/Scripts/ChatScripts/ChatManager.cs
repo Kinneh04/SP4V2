@@ -27,9 +27,9 @@ public class ChatManager : MonoBehaviour
 
     public List<ChatText> ChatTexts = new List<ChatText>();
 
-    ChatClient chatClient;
     bool isConnected = false;
     public bool isTyping = false;
+    int startMessage;
 
     // Start is called before the first frame update
     void Awake()
@@ -42,11 +42,11 @@ public class ChatManager : MonoBehaviour
         {
             ChatTexts.Add(Content.gameObject.transform.GetChild(i).GetComponent<ChatText>());
         }
-        if (PV != null)
+        if (PV != null && PV.IsMine)
         {
             PV.RPC("sendEveryoneMessage", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.NickName + " has joined.");
         }
-
+        startMessage = -1;
 
     }
 
@@ -268,12 +268,20 @@ public class ChatManager : MonoBehaviour
                 }
             }
             bool over = false;
-            if (MessageCount > 10)
+            if (startMessage == -1 && MessageCount == 1)
+                startMessage = MessageCount - 1;
+            else if (startMessage == -1)
+                startMessage = MessageCount;
+
+            Messages.RemoveRange(0, startMessage);
+            if (MessageCount - startMessage > 10)
             {
                 Messages.RemoveRange(0, MessageCount - 10);
                 MessageCount = 10;
                 over = true;
             }
+            else
+                MessageCount = MessageCount - startMessage;
 
             if (over)
             {
