@@ -95,6 +95,8 @@ MonoBehaviour:
   - MultiplayerPlayAudio
   - TurnOnForOtherClients
   - DestroyStructureObject
+  - MultiplayerPlay3DAudio
+  - DestroyAudio
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

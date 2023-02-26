@@ -408,7 +408,7 @@ public class HammerSystem : MonoBehaviour
                                     im.RemoveQuantity(stoneObj.GetComponent<ItemInfo>(), cost);
                                     currStructure.gameObject.GetComponent<PhotonView>().RPC("UpgradeStructure", RpcTarget.AllViaServer);
                                     PhotonNetwork.Instantiate("PlacingSmoke", currStructure.transform.position, currStructure.transform.rotation);
-                                    audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.UpgradeStone, 1.0f);
+                                    audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.AllViaServer, AudioManager.AudioID.UpgradeStone, 1.0f, currStructure.transform.position);
                                     // Also update current selected
                                     foreach (Transform child in selectedObject.gameObject.transform) // Change look to stone
                                     {
@@ -426,8 +426,8 @@ public class HammerSystem : MonoBehaviour
                     break;
                 case 3: // Destroy
                     {
+                        audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DestroyBuilding, 1.0f, currentObject.transform.position);
                         pv.RPC("DestroyStructure", PhotonNetwork.CurrentRoom.GetPlayer(currentObject.GetComponent<StructureObject>().PlayerID), currentObject.GetComponent<PhotonView>().ViewID);
-                        audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DestroyBuilding, 1.0f);
                         Destroy(selectedObject.gameObject);
                         selectedObject = null;
                         prevObject = null;
@@ -452,7 +452,7 @@ public class HammerSystem : MonoBehaviour
             IsPickingUp = false;
             Destroy(currentPreview.gameObject);
             PhotonNetwork.Instantiate("PlacingSmoke", currentObject.transform.position, currentObject.transform.rotation);
-            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.Building, 1f);
+            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.AllViaServer, AudioManager.AudioID.Building, 1.0f, currentObject.transform.position);
         }
     }
 

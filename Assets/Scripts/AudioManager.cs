@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public class AudioManager : MonoBehaviour
 {
+    public GameObject threeDAudioSourcePrefab;
     public enum AudioID
     {
         AK47_Shoot = 0,
@@ -82,5 +83,14 @@ public class AudioManager : MonoBehaviour
     public void MultiplayerPlayAudio(int audioID, float Vol = 1.0f)
     {
         PlayAudio(audioID, Vol);
+    }
+
+    [PunRPC]
+    public void MultiplayerPlay3DAudio(int audioID, float Vol = 1.0f, Vector3 audioPos = default(Vector3))
+    {
+        // Create empty GO at position
+        AudioSource threeDAudioSource = Instantiate(threeDAudioSourcePrefab, audioPos, Quaternion.identity).GetComponent<AudioSource>();
+        threeDAudioSource.clip = Clips[audioID];
+        threeDAudioSource.PlayOneShot(threeDAudioSource.clip, Vol);
     }
 }

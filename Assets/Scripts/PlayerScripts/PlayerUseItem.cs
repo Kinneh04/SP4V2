@@ -220,13 +220,13 @@ public class PlayerUseItem : MonoBehaviour
                         else // No pin set, open normally
                         {
                             ds.gameObject.GetComponent<PhotonView>().RPC("SetIsOpen", RpcTarget.AllViaServer, !ds.isOpen);
-                            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DoorOpen, 1.0f);
+                            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DoorOpen, 1.0f, ds.gameObject.transform.position);
                         }
                     }
                     else // No Lock or already open so will close door
                     {
                         ds.gameObject.GetComponent<PhotonView>().RPC("SetIsOpen", RpcTarget.AllViaServer, !ds.isOpen);
-                        audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DoorOpen, 1.0f);
+                        audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DoorOpen, 1.0f, ds.gameObject.transform.position);
                     }
                 }
 

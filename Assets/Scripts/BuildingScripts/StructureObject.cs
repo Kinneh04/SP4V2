@@ -87,7 +87,7 @@ public class StructureObject : MonoBehaviour
         damageCooldown = 0.5f;
         if (stability <= 0)
         {
-            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DestroyBuilding, 1f);
+            audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.AllViaServer, AudioManager.AudioID.DestroyBuilding, 1.0f, gameObject.transform.position);
             GetComponent<PhotonView>().RPC("DestroyStructureObject", PhotonNetwork.CurrentRoom.GetPlayer(gameObject.GetComponent<StructureObject>().PlayerID), gameObject.GetComponent<PhotonView>().ViewID);
             //PhotonNetwork.Destroy(gameObject);
             return;

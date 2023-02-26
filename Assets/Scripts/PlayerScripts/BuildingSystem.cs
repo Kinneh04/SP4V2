@@ -207,7 +207,7 @@ public class BuildingSystem : MonoBehaviour
                     newObj.transform.localEulerAngles = currentPreview.transform.localEulerAngles;
                 }
                 Instantiate(smokeVFX, newObj.transform);
-                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlayAudio", RpcTarget.AllViaServer, AudioManager.AudioID.Building, 1f);
+                audioManager.GetComponent<PhotonView>().RPC("MultiplayerPlay3DAudio", RpcTarget.AllViaServer, AudioManager.AudioID.Building, 1.0f, newObj.transform.position);
 
                 switch (currentObject.name)
                 {
