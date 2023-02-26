@@ -97,6 +97,9 @@ MonoBehaviour:
   - DestroyStructureObject
   - MultiplayerPlay3DAudio
   - DestroyAudio
+  - TakeServerSideDamage
+  - AddQuantityForAllClients
+  - UpdateQuantityForItemOnOtherClients
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

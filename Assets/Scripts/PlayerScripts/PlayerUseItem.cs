@@ -1218,7 +1218,7 @@ public class PlayerUseItem : MonoBehaviour
     public void ChopItem()
     {
         print("Chop");
-        playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().RPC("SetTriggerToTrue", RpcTarget.All);
+        playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = true;
         pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanChop");
         //PAnimator.Play("PBeanChop");
         StartCoroutine(triggerCooldown());
@@ -1227,7 +1227,7 @@ public class PlayerUseItem : MonoBehaviour
     public void SwingItem()
     {
         print("Swing");
-        playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().RPC("SetTriggerToTrue", RpcTarget.All);
+        playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = true;
         pv.RPC("PlayServerSideAnimation", RpcTarget.All, pv.ViewID, "PBeanSwing");
         PAnimator.Play("PBeanSwing");
         StartCoroutine(triggerCooldown());
@@ -1271,7 +1271,7 @@ public class PlayerUseItem : MonoBehaviour
 
         if (playerProperties.CurrentlyHoldingItem != null)
         {
-            playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().RPC("SetTriggerToFalse", RpcTarget.All);
+            playerProperties.CurrentlyHoldingItem.GetComponent<HarvestToolsProperties>().TriggerEnabled = false;
         }
     }
 }

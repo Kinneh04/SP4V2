@@ -27,18 +27,6 @@ public class HarvestToolsProperties : ItemInfo
         pv = GetComponent<PhotonView>();
     }
 
-    [PunRPC]
-    void SetTriggerToTrue()
-    {
-        TriggerEnabled = true;
-    }
-
-    [PunRPC]
-    void SetTriggerToFalse()
-    {
-        TriggerEnabled = false;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Tree") || other.CompareTag("Stone") || other.CompareTag("Metal") || other.CompareTag("Sulfur"))
@@ -74,7 +62,8 @@ public class HarvestToolsProperties : ItemInfo
                 }
                 else if (other.CompareTag("Player") || other.CompareTag("EnemyPlayer"))
                 {
-                    other.transform.GetComponent<PlayerProperties>().TakeDamageV2(damage);
+                    //other.transform.GetComponent<PlayerProperties>().TakeDamageV2(damage);
+                    other.transform.GetComponent<PhotonView>().RPC("TakeServerSideDamage", RpcTarget.All, damage);
                     Instantiate(BloodParticleSystem, other.transform.position, Quaternion.identity);
                     durability -= MetalDurabilityBurn;
                 }
