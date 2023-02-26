@@ -30,7 +30,7 @@ public class DeerAI : Enemy
     // Start is called before the first frame update
     public virtual void Awake()
     {
-        MaxHealth = 100;
+        MaxHealth = 200;
         Health = MaxHealth;
         navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
         navMeshAgent.speed = MSpd;
