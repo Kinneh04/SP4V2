@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e211c5d95c4f3b42863fa021d75ec23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemAmount: 100
+  ItemAmount: 15
   BaseHarvestAmount: 10
   ItemToGivePlayerOnHarvest: {fileID: 5606821295262822052, guid: 633b857c136443c4889ca89b681a6eb7,
     type: 3}

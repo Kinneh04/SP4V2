@@ -37,6 +37,12 @@ public class ClickAndDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         OGPosition = gameObject.transform.position;
         clone = Instantiate(emptySlot, OGPosition, Quaternion.identity);
         clone.transform.parent = transform.parent;
+
+        PlayerProperties pp = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerProperties>();
+        if(pp.LootScreen.activeSelf && Slot < 30)
+        {
+            pp.CannotDropHere.SetActive(true);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -59,6 +65,12 @@ public class ClickAndDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
             SelectSwappableSlot();
         }
 
+        PlayerProperties pp = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerProperties>();
+        if (pp.CannotDropHere.activeSelf)
+        {
+            pp.CannotDropHere.SetActive(false);
+        }
+
     }
 
     void SelectSwappableSlot()
@@ -75,8 +87,15 @@ public class ClickAndDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
             {
                intSlotToSwapWith = raycastResults[i].gameObject.GetComponentInChildren<ReadInventory>().SlotNumber;
 
+                if (intSlotToSwapWith >= 30 && intSlotToSwapWith < 42)
+                {
+                    return;
+                }
+                else
+                {
                     IM.SwapTwoSlots(Slot, intSlotToSwapWith);
                     audioManager.PlayAudio(7);
+                }
 
 
                 return;

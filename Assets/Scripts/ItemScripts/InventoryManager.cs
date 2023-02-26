@@ -230,7 +230,8 @@ public class InventoryManager : MonoBehaviour
 
             if (pp.PlayerLookingAtItem != null && pp.PlayerLookingAtItem.tag == "Campfire")
             {
-                pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().UpdateLoot();
+                pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().ItemQuantityInFurnace[Slot2ID - 42] = InventoryList[Slot2ID].ItemCount;
+                pp.PlayerLookingAtItem.GetComponent<FurnaceProperties>().PrepareToSyncLoot();
             }
         }
     }

@@ -99,6 +99,8 @@ public class PlayerProperties : MonoBehaviour
     PhotonView pv;
     public bool RadiationNoisePlayed = false;
 
+    public GameObject CannotDropHere;
+
     float DeathTimer;
 
     private void Awake()
