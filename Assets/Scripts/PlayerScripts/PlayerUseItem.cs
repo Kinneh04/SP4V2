@@ -882,10 +882,11 @@ public class PlayerUseItem : MonoBehaviour
                 //}
 
             }
+            
             else if (CurrentItem && //check if there is a item to equip 
                 (!playerProperties.CurrentlyHoldingItem       //equips player with item in slot if hand empty
                   || (playerProperties.CurrentlyHoldingItem//not null
-                  && playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().ViewID != CurrentItem.gameObject.GetComponent<PhotonView>().ViewID)     //if player change slot, change item in hand
+                  && playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>() != null && playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().ViewID != CurrentItem.gameObject.GetComponent<PhotonView>().ViewID)     //if player change slot, change item in hand
                                                                                                                                                               //&&playerProperties.CurrentlyHoldingItem.GetComponent<PhotonView>().ViewID != CurrentItem.gameObject.GetComponent<PhotonView>().ViewID)     //if player change slot, change item in hand
                 )
             )
