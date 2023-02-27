@@ -191,7 +191,7 @@ public class CraftingManager : MonoBehaviour
 
     public bool UpdateCanCraft()
     {
-        if (WorkbenchNeeded > CurrentWorkbenchLv)
+        if (WorkbenchNeeded > CurrentWorkbenchLv && ScreenCraft)
             return false;
         return IM.Checkforcraft(Material_1, Quantity_1 * CraftAmount, Material_2, Quantity_2 * CraftAmount, Material_3, Quantity_3 * CraftAmount);
     }
@@ -300,7 +300,8 @@ public class CraftingManager : MonoBehaviour
         }
         //temp = PhotonNetwork.Instantiate(CraftableList[SelectedCraft].name, transform.position, transform.rotation).transform.GetComponent<ItemInfo>();
         temp.gameObject.SetActive(false);
-        IM.AddQuantity(temp, CraftAmount);
+        if (ScreenCraft)    
+            IM.AddQuantity(temp, CraftAmount);
         //Selected(SelectedCraft, false);
         if (ScreenCraft)
             CraftSelections[SelectedCraft].load();

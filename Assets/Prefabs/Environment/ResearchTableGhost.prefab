@@ -138,7 +138,7 @@ MonoBehaviour:
     type: 3}
   OwnerActor: {fileID: 0}
   itemType: 9
-  itemID: 55
+  itemID: 57
   ItemCount: 1
   MaxItemCount: 0
 --- !u!114 &713215742
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae29e199a5f6824da6d4760fa757042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   cam: {fileID: 0}
   ObjectToPlace: {fileID: 87419548480613588, guid: 0ce0c739e92f5d541bc0667935ec7ce9,
     type: 3}

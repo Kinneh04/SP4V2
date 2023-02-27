@@ -37,7 +37,7 @@ public class CraftCost : MonoBehaviour
         {
             Amount1.text = CM.Quantity_1.ToString();
             Item1.text = CM.Material_1.ToString().Substring(0, CM.Material_1.ToString().Length - 10);
-            Total1.text = (CM.Quantity_1 * CM.CraftAmount).ToString();
+            Total1.text = (CM.Quantity_1).ToString();
             Have1.text = CM.IM.ItemGetInt(CM.Material_1).ToString();
         }
         else
@@ -51,7 +51,7 @@ public class CraftCost : MonoBehaviour
         {
             Amount2.text = CM.Quantity_2.ToString();
             Item2.text = CM.Material_2.ToString().Substring(0, CM.Material_2.ToString().Length - 10);
-            Total2.text = (CM.Quantity_2 * CM.CraftAmount).ToString();
+            Total2.text = (CM.Quantity_2).ToString();
             Have2.text = CM.IM.ItemGetInt(CM.Material_2).ToString();
         }
         else
@@ -65,7 +65,7 @@ public class CraftCost : MonoBehaviour
         {
             Amount3.text = CM.Quantity_3.ToString();
             Item3.text = CM.Material_3.ToString().Substring(0, CM.Material_3.ToString().Length - 10);
-            Total3.text = (CM.Quantity_3 * CM.CraftAmount).ToString();
+            Total3.text = (CM.Quantity_3).ToString();
             Have3.text = CM.IM.ItemGetInt(CM.Material_3).ToString();
         }
         else
