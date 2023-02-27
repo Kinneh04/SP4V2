@@ -404,7 +404,8 @@ MonoBehaviour:
   stability: 100
   pickupCooldown: 15
   damageCooldown: 0.5
-  isDamaged: 0
+  isDecaying: 1
+  decayCd: 30
 --- !u!65 &4876153073203600451
 BoxCollider:
   m_ObjectHideFlags: 0

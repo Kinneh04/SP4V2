@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 3629153366373393045}
   - component: {fileID: -9079198859782734693}
   m_Layer: 0
-  m_Name: TODO REPLACE ME Building Plan
+  m_Name: BuildingPlan
   m_TagString: Weaponry
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

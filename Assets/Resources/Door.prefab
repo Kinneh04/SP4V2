@@ -96,7 +96,8 @@ MonoBehaviour:
   stability: 100
   pickupCooldown: 15
   damageCooldown: 0.5
-  isDamaged: 0
+  isDecaying: 1
+  decayCd: 30
 --- !u!114 &1053177860430435822
 MonoBehaviour:
   m_ObjectHideFlags: 0
