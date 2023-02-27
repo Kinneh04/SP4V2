@@ -92,11 +92,6 @@ public class JLGameManager : MonoBehaviourPunCallbacks
         player = PhotonNetwork.Instantiate("PlayerBean", position, rotation, 0);
 
         RemoveTagsFromOtherPlayers();
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.Instantiate("Food Crate", position, rotation, 0);
-        }
-
         if(player.GetComponent<PhotonView>().IsMine)
         {
             SpawnItems();
